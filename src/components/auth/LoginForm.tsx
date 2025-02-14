@@ -1,5 +1,5 @@
 "use client"
-import { useForm } from 'react-hook-form';
+import { useForm ,FieldError} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useRouter } from 'next/navigation';
@@ -11,8 +11,65 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { authApi } from '@/services/api';
 import { setCredentials } from '@/store/features/authSlice';
-import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from "framer-motion";
+import { Label } from '../ui/label';
+import { Eye, EyeOff, Loader2, Mail, User, UserRound } from "lucide-react";
+import { Checkbox } from '../ui/checkbox';
+import Image from 'next/image';
+import { useState } from 'react';
+
+interface FormInputProps {
+  type: string;
+  placeholder: string;
+  register: any;
+  name: keyof LoginFormData;
+  error?: FieldError;
+  icon: React.ReactNode;
+  showPassword?: boolean;
+  onTogglePassword?: () => void;
+}
+
+const FormInput = ({ type, placeholder, register, name, error, icon, showPassword, onTogglePassword }: FormInputProps) => (
+  <div className="space-y-2 relative">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <input
+        type={type}
+        placeholder={placeholder}
+        {...register(name)}
+        className="border h-14 w-full px-5 focus:outline-none focus:border-b-2 focus:border-b-[#7877e6] font-light transition-all duration-300 rounded-md"
+      />
+      {onTogglePassword ? (
+        <div 
+          onClick={onTogglePassword}
+          className="absolute right-4 top-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors duration-300"
+        >
+          {showPassword ? <EyeOff /> : <Eye />}
+        </div>
+      ) : (
+        <div className="absolute right-4 top-5 text-gray-400">
+          {icon}
+        </div>
+      )}
+    </motion.div>
+    {error && (
+      <motion.p
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="text-sm text-red-500"
+      >
+        {error.message}
+      </motion.p>
+    )}
+  </div>
+);
+
+
+
 
 const loginSchema = yup.object({
   email: yup.string().email('Invalid email').required('Required'),
@@ -25,6 +82,8 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
@@ -36,10 +95,23 @@ export default function LoginForm() {
   const userType = watch('userType');
 
   const loginMutation = useMutation({
-    mutationFn: (data: LoginFormData) => authApi.login(data),
+    mutationFn: (data: LoginFormData) => {
+      // authApi.login(data)
+      console.log(data);
+      return Promise.resolve(data);
+    },
     onSuccess: (data) => {
-      dispatch(setCredentials(data));
-      router.push('/dashboard');
+      console.log(data);
+      // dispatch(setCredentials(data));
+      // Check if user has completed questionnaire
+      router.push(`/questionnaire`);
+
+      // const questionnaireCompleted = document.cookie.includes('questionnaireCompleted=true');
+      // if (!questionnaireCompleted) {
+      //   router.push(`/questionnaire?userType=${data.user.userType}`);
+      // } else {
+      //   router.push('/dashboard');
+      // }
     },
   });
 
@@ -48,65 +120,125 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <h2 className="text-2xl font-bold text-center">Login</h2>
-      </CardHeader>
-      <CardContent>
-        <Tabs 
-          value={userType}
-          onValueChange={(value) => setValue('userType', value as 'creator' | 'brand')}
-          className="w-full"
+    <div className="w-full h-screen flex flex-col md:flex-row overflow-hidden">
+    <motion.div 
+      className="flex-1 flex justify-center items-center p-4 md:p-8 relative h-full overflow-y-auto"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.img 
+        src="/images/line1.png" 
+        alt="Logo" 
+        width={400} 
+        height={100} 
+        className="absolute top-0 -right-36 -z-10 hidden md:block"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      />
+      <motion.img 
+        src="/images/line2.png" 
+        alt="Logo" 
+        width={400} 
+        height={100} 
+        className="absolute bottom-0 -right-36 -z-10 hidden md:block"
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      />
+      
+      <div className="max-w-2xl w-full space-y-8">
+        <motion.h3 
+          className="text-black font-bold text-3xl text-left"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="creator">Creator</TabsTrigger>
-            <TabsTrigger value="brand">Brand</TabsTrigger>
-          </TabsList>
-          
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Input
-                type="email"
-                placeholder="Email"
-                {...register('email')}
+          Login To Your Account
+        </motion.h3>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+          <motion.div 
+            className="space-y-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+           
+            <div>
+              <Label htmlFor="email">Enter Email</Label>
+            <FormInput
+              type="email"
+              placeholder="Enter Email Address"
+              register={register}
+              name="email"
+              error={errors.email}
+              icon={<Mail className="h-6 w-6" />}
               />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
-              )}
+              </div>
+
+            <div>
+            <Label htmlFor="password">Password</Label>
+            <FormInput
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Password"
+              register={register}
+              name="password"
+              error={errors.password}
+              icon={showPassword ? <Eye className="h-6 w-6" /> : <EyeOff className="h-6 w-6" />}
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+            />
             </div>
-            <div className="space-y-2">
-              <Input
-                type="password"
-                placeholder="Password"
-                {...register('password')}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
-              )}
-            </div>
+          </motion.div>
+
+          <motion.div 
+            className="space-y-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-[#7877e6] hover:bg-[#6564d8] transition-all py-7 text-white text-lg font-semibold font-poppins rounded-lg tracking-widest"
               disabled={loginMutation.isPending}
             >
               {loginMutation.isPending ? (
-                <div className="flex items-center justify-center space-x-2">
+                <div className="flex items-center justify-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   <span>Loading...</span>
                 </div>
               ) : (
-                'Login'
+                "Continue"
               )}
             </Button>
-            <p className="text-center text-muted-foreground">
-              Dont have an account?{' '}
-              <Link href="/register" className="underline">
-                Register
+
+            <p className="text-center text-muted-foreground font-light">
+              Dont have an account?{" "}
+              <Link href="/register" className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors">
+                Sign Up
               </Link>
             </p>
-          </form>
-        </Tabs>
-      </CardContent>
-    </Card>
+          </motion.div>
+        </form>
+      </div>
+    </motion.div>
+
+    <motion.div 
+      className="hidden md:block h-screen"
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Image
+        src={"/images/login.webp"}
+        className="w-full h-full object-contain"
+        width={800}
+        height={800}
+        alt="login"
+      />
+    </motion.div>
+  </div>
   );
 }

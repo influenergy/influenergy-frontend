@@ -1,87 +1,81 @@
 export const questions = {
-  creator: [
-    {
-      title: "Creator Segment",
-      question: "What is your primary content category?",
-      key: "category",
-      options: [
-        "Fashion & Beauty",
-        "Fitness & Wellness",
-        "Travel & Lifestyle",
-        "Food & Beverage",
-        "Technology & Gaming",
-        "Education & Learning",
-        "Entertainment & Comedy",
-        "Others",
-      ],
-    },
-    {
-      title: "Followers Range",
-      question: "What is your current follower count?",
-      key: "followers",
-      options: [
-        "Less than 1,000",
-        "1,000 - 10,000",
-        "10,000 - 50,000",
-        "50,000 - 100,000",
-        "100,000 - 500,000",
-        "500,000+",
-      ],
-    },
-    {
-      title: "Platforms",
-      question: "Which platforms do you actively create content on?",
-      key: "platforms",
-      options: [
-        "Instagram",
-        "YouTube",
-        "TikTok",
-        "Twitter/X",
-        "LinkedIn",
-        "Pinterest",
-        "Blog/Website",
-        "Others",
-      ],
-    },
-  ],
-  brand: [
-    {
-      title: "Brand Segment",
-      question: "What industry does your brand belong to?",
-      key: "industry",
-      options: [    
-        "Fashion & Apparel",
-        "Beauty & Skincare",
-        "Health & Wellness",
-        "Food & Beverage",
-        "Technology & Electronics",
-        "Travel & Hospitality",
-        "Education & E-learning",
-        "Entertainment & Media",
-        "Others",
-      ],
-    },
-    {
-      title: "Company Size",
-      question: "What is the size of your company?",
-      key: "companySize",
-      options: [
-        "Small (1-50 employees)",
-        "Medium (51-500 employees)",
-        "Large (500+ employees)",
-      ],
-    },
-    {
-      title: "Creator Preference",
-      question: "What type of creators are you looking to collaborate with?",
-      key: "creatorPreference",
-      options: [
-        "Micro-influencers (1,000 - 50,000 followers)",
-        "Mid-tier influencers (50,000 - 500,000 followers)",
-        "Macro-influencers (500,000+ followers)",
-        "Specific platforms (Instagram, YouTube, TikTok, etc.)",
-        "Specific content types (Photos, Videos, Blogs, etc.)",
-      ],
-    },
-  ],
+  step1:{
+    title:'Lets Create Your Profile',
+    description:'In order to match you with the right brands, we need a few more details',
+    fields: [
+      {
+        title: "Gender",
+        category:"dropdown",
+        options: [
+          "Male",
+          "Female",
+          "Non-binary",
+          "Prefer not to say",
+        ],
+      },
+      {
+        title: "Your City",
+        category:"dropdown",
+        options: [
+          "New York",
+          "Los Angeles",
+          "Delhi",
+          "Mumbai",
+          "London",
+          "Sydney",
+        ],
+      },
+      {
+        title: "Date of Birth",
+        category:'date'
+      },
+      {
+        title: "Phone Number",
+        category:'number'
+      },
+    ],
+  },
+  step2: {
+    title:'Select Your Preferred Categories',
+    description:'This helps fine tune your brand matches',
+    fields:[
+      {
+        title: "Categories",
+        category: "dropdown",
+        options: [    
+          "Fashion & Apparel",
+          "Beauty & Skincare",
+          "Health & Wellness",
+          "Food & Beverage",
+          "Technology & Electronics",
+          "Travel & Hospitality",
+          "Education & E-learning",
+          "Entertainment & Media",
+          "Others",
+        ],
+      },
+    ],
+  },
+  step3:{
+    title:'We Would Love to Know More About You',
+    description:'This helps fine tune your brand matches',
+    fields:[
+      {
+        title:"What type of content do you enjoy creating the most?",
+        category:"text"
+      },
+      {
+        title:'What tools and platforms do you use for content creation?',
+        category:'text'
+      },
+      {
+        title:'What type of content do you enjoy creating the most?',
+        category:'text'
+      },
+      {
+        title:'What tools and platforms do you use for content creation?',
+        category:'text'
+      }
+    ]
+  }
 };
