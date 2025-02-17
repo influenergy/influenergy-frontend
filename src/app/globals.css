@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-poppins), sans-serif;
 }
+
 
 @layer utilities {
   .text-balance {
@@ -75,4 +76,21 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
 }
