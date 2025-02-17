@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type User = {
-  _id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
+  _id?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
   userType: string;
 };
 
@@ -19,7 +18,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   token:
-    typeof window !== "undefined" ? localStorage.getItem("token") : "testtest",
+    typeof window !== "undefined" ? localStorage.getItem("token") : "",
   isAuthenticated: true,
   questionnaireCompleted: false,
 };
@@ -53,9 +52,12 @@ const authSlice = createSlice({
         document.cookie = "questionnaireCompleted=true; path=/";
       }
     },
+    setUserType: (state, action: PayloadAction<string>) => {
+      state.user = { ...state.user, userType: action.payload };
+    }
   },
 });
 
-export const { setCredentials, logout, completeQuestionnaire } =
+export const { setCredentials, logout, completeQuestionnaire, setUserType } =
   authSlice.actions;
 export default authSlice.reducer;
