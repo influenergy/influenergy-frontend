@@ -1,100 +1,32 @@
 "use client";
-import { useForm, FieldError } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader2, Mail, User, UserRound } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, UserRound } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { motion } from "framer-motion";
-
-const registerSchema = yup.object({
-  fullName: yup
-    .string()
-    .min(2, "Full name must be at least 2 characters")
-    .required("Required"),
-
-  email: yup
-    .string()
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-      "Invalid email format"
-    )
-    .required("Required"),
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Required"),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), undefined], "Passwords must match")
-    .required("Required"),
-  userType: yup.string().oneOf(['creator', 'brand']).required(),
-  terms: yup
-    .boolean()
-    .transform((value) => (value === "on" ? true : value)) // ✅ Converts "on" to true
-    .oneOf([true], "You must accept the terms")
-    .required(),
-});
+import { registerSchema } from "@/lib/AuthSchema";
+import { RegisterFormInput } from "./FormInput";
+import { authApi } from "@/services/api";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
-
-interface FormInputProps {
-  type: string;
-  placeholder: string;
-  register: any;
-  name: keyof RegisterFormData;
-  error?: FieldError;
-  icon: React.ReactNode;
-  showPassword?: boolean;
-  onTogglePassword?: () => void;
-}
-
-const FormInput = ({ type, placeholder, register, name, error, icon, showPassword, onTogglePassword }: FormInputProps) => (
-  <div className="space-y-2 relative">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <input
-        type={type}
-        placeholder={placeholder}
-        {...register(name)}
-        className="border-b h-12 w-full px-5 focus:outline-none focus:border-b-2 focus:border-b-[#7877e6] font-light transition-all duration-300"
-      />
-      {onTogglePassword ? (
-        <div 
-          onClick={onTogglePassword}
-          className="absolute right-4 top-5 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors duration-300"
-        >
-          {icon}
-        </div>
-      ) : (
-        <div className="absolute right-4 top-5 text-gray-400">
-          {icon}
-        </div>
-      )}
-    </motion.div>
-    {error && (
-      <motion.p
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="text-sm text-red-500"
-      >
-        {error.message}
-      </motion.p>
-    )}
-  </div>
-);
 
 export default function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+
+  const userType = localStorage.getItem("userType");
+
+  if (!userType) {
+    router.push("/");
+    return;
+  }
 
   const {
     register,
@@ -104,25 +36,16 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: yupResolver(registerSchema),
-    defaultValues: {
-      userType: 'creator'
-    }
   });
-
-  const userType = watch("userType");
 
   const registerMutation = useMutation({
     mutationFn: (data: RegisterFormData) => {
-      console.log(data);
-      // const registerData = {
-      //   firstName: data.firstName,
-      //   lastName: data.lastName,
-      //   email: data.email,
-      //   password: data.password,
-      //   userType: data.userType,
-      // };
-      // return authApi.register(registerData);
-      return Promise.resolve(data);
+      return authApi.register({
+        full_name: data.fullName,
+        email: data.email,
+        password: data.password,
+        userType: userType,
+      });
     },
     onSuccess: (data) => {
       console.log(data);
@@ -139,42 +62,48 @@ export default function RegisterForm() {
     }
   };
 
-  const onError = (errors: any) => {
-    console.log("Validation errors:", errors);
-  };
-
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row overflow-hidden">
-      <motion.div 
-        className="flex-1 flex justify-center items-center p-4 md:p-8 relative h-full overflow-y-auto"
+    <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
+      <motion.div
+        className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <motion.img 
-          src="/images/line1.png" 
-          alt="Logo" 
-          width={400} 
-          height={100} 
-          className="absolute top-0 -right-36 -z-10 hidden md:block"
+        <motion.div
+          className="absolute top-0 -right-36 -z-10 hidden md:block w-[300px] lg:w-[400px]"
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.5 }}
-        />
-        <motion.img 
-          src="/images/line2.png" 
-          alt="Logo" 
-          width={400} 
-          height={100} 
-          className="absolute bottom-0 -right-36 -z-10 hidden md:block"
+        >
+          <Image
+            src="/images/line1.png"
+            alt="Decorative line"
+            width={400}
+            height={100}
+            className="w-full h-auto"
+            priority
+          />
+        </motion.div>
+
+        <motion.div
+          className="absolute bottom-0 -right-36 -z-10 hidden md:block w-[300px] lg:w-[400px]"
           initial={{ y: 100 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.5 }}
-        />
-        
-        <div className="max-w-2xl w-full space-y-8">
-          <motion.h3 
-            className="text-[#7877e6] font-bold text-3xl text-left"
+        >
+          <Image
+            src="/images/line2.png"
+            alt="Decorative line"
+            width={400}
+            height={100}
+            className="w-full h-auto"
+          />
+        </motion.div>
+
+        <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
+          <motion.h3
+            className="text-[#7877e6] font-bold text-2xl sm:text-3xl text-left"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -182,85 +111,118 @@ export default function RegisterForm() {
             Create Account
           </motion.h3>
 
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-10">
-            <motion.div 
-              className="space-y-5"
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-8 sm:space-y-10"
+          >
+            <motion.div
+              className="space-y-4 sm:space-y-5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <FormInput
+              <RegisterFormInput
                 type="text"
                 placeholder="Full Name"
                 register={register}
                 name="fullName"
                 error={errors.fullName}
-                icon={<UserRound className="h-6 w-6" />}
+                icon={<UserRound className="h-5 w-5 sm:h-6 sm:w-6" />}
               />
 
-              <FormInput
+              <RegisterFormInput
                 type="email"
                 placeholder="Email Address"
                 register={register}
                 name="email"
                 error={errors.email}
-                icon={<Mail className="h-6 w-6" />}
+                icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
               />
 
-              <FormInput
+              <RegisterFormInput
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 register={register}
                 name="password"
                 error={errors.password}
-                icon={showPassword ? <Eye className="h-6 w-6" /> : <EyeOff className="h-6 w-6" />}
+                icon={
+                  showPassword ? (
+                    <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                  ) : (
+                    <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                  )
+                }
                 showPassword={showPassword}
                 onTogglePassword={() => setShowPassword(!showPassword)}
               />
 
-              <FormInput
+              <RegisterFormInput
                 type={showPassword ? "text" : "password"}
                 placeholder="Confirm Password"
                 register={register}
                 name="confirmPassword"
                 error={errors.confirmPassword}
-                icon={showPassword ? <Eye className="h-6 w-6" /> : <EyeOff className="h-6 w-6" />}
+                icon={
+                  showPassword ? (
+                    <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                  ) : (
+                    <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                  )
+                }
                 showPassword={showPassword}
                 onTogglePassword={() => setShowPassword(!showPassword)}
               />
 
               <motion.div
-                className="flex items-center gap-2 text-gray-500"
+                className="flex items-start sm:items-center gap-2 text-gray-500 mt-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
                 <Checkbox
-                  className="text-[#7877e6] bg-white border-[#7877e6] data-[state=checked]:bg-[#7877e6] data-[state=checked]:border-[#7877e6]"
-                  {...register('terms')}
+                  className="mt-1 sm:mt-0 text-[#7877e6] bg-white border-[#7877e6] 
+                  data-[state=checked]:bg-[#7877e6] data-[state=checked]:border-[#7877e6]"
+                  checked={watch("terms") ?? false} // Ensure default value is boolean
+                  onCheckedChange={(checked) =>
+                    setValue("terms", Boolean(checked))
+                  } // Explicitly cast to boolean
                 />
-                <p className="text-sm font-light">
+
+                <p className="text-xs sm:text-sm font-light">
                   I accept all{" "}
-                  <Link href="/terms" className="underline text-[#7877e6] hover:text-[#6564d8] transition-colors">
+                  <Link
+                    href="/terms"
+                    className="underline text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                  >
                     terms of use
                   </Link>{" "}
                   and{" "}
-                  <Link href="/privacy" className="underline text-[#7877e6] hover:text-[#6564d8] transition-colors">
+                  <Link
+                    href="/privacy"
+                    className="underline text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                  >
                     privacy policy
                   </Link>
                 </p>
               </motion.div>
+              {errors.terms && (
+                <p className="text-xs sm:text-sm text-red-500 mt-1">
+                  {errors.terms.message}
+                </p>
+              )}
             </motion.div>
 
-            <motion.div 
-              className="space-y-6"
+            <motion.div
+              className="space-y-4 sm:space-y-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
               <Button
                 type="submit"
-                className="w-full bg-[#7877e6] hover:bg-[#6564d8] transition-all py-5 text-white text-lg font-semibold font-poppins rounded-full tracking-widest"
+                className="w-full bg-[#7877e6] hover:bg-[#6564d8] transition-all py-6 sm:py-7 text-white 
+                  text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest 
+                  disabled:opacity-70"
                 disabled={registerMutation.isPending}
               >
                 {registerMutation.isPending ? (
@@ -273,9 +235,12 @@ export default function RegisterForm() {
                 )}
               </Button>
 
-              <p className="text-center text-muted-foreground font-light">
+              <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
                 Already have an account?{" "}
-                <Link href="/login" className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors">
+                <Link
+                  href="/login"
+                  className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                >
                   Login
                 </Link>
               </p>
@@ -284,19 +249,22 @@ export default function RegisterForm() {
         </div>
       </motion.div>
 
-      <motion.div 
-        className="hidden md:block h-screen"
+      <motion.div
+        className="hidden md:flex md:w-[45%] lg:w-[40%] relative bg-gray-50"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Image
-          src={"/images/register.webp"}
-          className="w-full h-full object-contain"
-          width={800}
-          height={800}
-          alt="register"
-        />
+        <div className="relative w-full">
+          <Image
+            src="/images/register.webp"
+            alt="Register illustration"
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 40vw"
+            priority
+          />
+        </div>
       </motion.div>
     </div>
   );
