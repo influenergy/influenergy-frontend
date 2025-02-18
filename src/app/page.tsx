@@ -34,11 +34,8 @@ export default function Home() {
               className="flex gap-4 px-5 md:px-14"
             >
               <Link
-                href="/login"
+                href="/login?role=brand"
                 className="group"
-                onClick={() => {
-                  localStorage.setItem("type", "brand");
-                }}
               >
                 <div className="flex cursor-pointer h-48 w-52 flex-col  justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
@@ -58,11 +55,8 @@ export default function Home() {
               </Link>
 
               <Link
-                href="/login"
+                href="/login?role=creator"
                 className="group"
-                onClick={() => {
-                  localStorage.setItem("type", "creator");
-                }}
               >
                 <div className="flex cursor-pointer h-48 w-52 flex-col  justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image

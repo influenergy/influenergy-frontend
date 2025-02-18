@@ -8,8 +8,6 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import Link from 'next/link';
 
 export default function DashboardPage() { 
-  const router = useRouter();
-  const dispatch = useDispatch();
   const questionnaireCompleted = document.cookie.includes(
     "questionnaireCompleted=true"
   );

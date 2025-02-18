@@ -16,7 +16,7 @@ export const Step1 = ({ fields }: StepProps) => {
   return (
     <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-6">
       {fields.map((field) => (
-        <div key={field.title} className="space-y-2">
+        <div key={field.title} className="space-y-2 mt-4">
           <label className="block text-sm font-medium text-gray-700">
             {field.title}
             <span className="text-red-500 ml-1">*</span>

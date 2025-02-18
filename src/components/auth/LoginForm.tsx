@@ -1,8 +1,8 @@
 "use client";
-import { useForm, FieldError } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -19,10 +19,10 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export default function LoginForm() {
   const router = useRouter();
-  const user = localStorage.getItem("userType");
   const [showPassword, setShowPassword] = useState(false);
-
-  if (!user) {
+  
+  const userType = useSearchParams().get("role");
+  if (!userType) {
     router.push("/");
   }
 
@@ -33,19 +33,20 @@ export default function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
     defaultValues: {
-      userType: "creator",
+      userType: userType as "creator" | "brand",
     },
   });
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {
       console.log(data);
+      // return Promise.resolve();
       return authApi.login(data);
     },
     onSuccess: (data) => {
       console.log(data);
-      router.push("/questionnaire");
-    }
+      router.push(`/questionnaire?role=${userType}`);
+    },
   });
 
   const onSubmit = (data: LoginFormData) => {
@@ -178,7 +179,7 @@ export default function LoginForm() {
               <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
                 Don&apos;t have an account?{" "}
                 <Link
-                  href="/register"
+                  href={`/register?role=${userType}`}
                   className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors"
                 >
                   Sign Up

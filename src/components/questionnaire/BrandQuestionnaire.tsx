@@ -41,12 +41,6 @@ const BrandQuestionnaire = () => {
     trigger();
   }, [trigger]);
 
-  // Watch form values for debugging
-  const formValues = watch();
-  useEffect(() => {
-    console.log('Form values:', formValues);
-    console.log('Form errors:', errors);
-  }, [formValues, errors]);
 
   const onSubmit = useCallback(
     async (data: BrandFormData) => {
@@ -64,7 +58,8 @@ const BrandQuestionnaire = () => {
           return;
         }
 
-        console.log("Submitting data:", data);
+        // console.log("Submitting data:", data);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
         await brandApi.submitQuestionnaire(data);
 
         toast({
@@ -124,7 +119,7 @@ const BrandQuestionnaire = () => {
                 Submitting...
               </span>
             ) : (
-              "Submit"
+              "Lets Collaborate"
             )}
           </Button>
         </div>

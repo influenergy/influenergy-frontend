@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Loader2, Mail, UserRound } from "lucide-react";
@@ -21,7 +21,7 @@ export default function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  const userType = localStorage.getItem("userType");
+  const userType = useSearchParams().get("role");
 
   if (!userType) {
     router.push("/");
@@ -40,6 +40,8 @@ export default function RegisterForm() {
 
   const registerMutation = useMutation({
     mutationFn: (data: RegisterFormData) => {
+      // return Promise.resolve();
+
       return authApi.register({
         full_name: data.fullName,
         email: data.email,
@@ -238,7 +240,7 @@ export default function RegisterForm() {
               <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
                 Already have an account?{" "}
                 <Link
-                  href="/login"
+                  href={`/login?role=${userType}`}
                   className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors"
                 >
                   Login

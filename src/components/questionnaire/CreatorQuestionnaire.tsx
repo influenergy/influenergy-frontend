@@ -32,7 +32,9 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const router = useRouter();
-  const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>({});
+  const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
+    {}
+  );
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
@@ -66,7 +68,9 @@ const CreatorQuestionnaire = (): JSX.Element => {
       };
 
       try {
-        const stepFields = fields.map((field: Field) => field.slug) as Array<keyof CreatorQuestionnaireData>;
+        const stepFields = fields.map((field: Field) => field.slug) as Array<
+          keyof CreatorQuestionnaireData
+        >;
         const isValid = await trigger(stepFields);
 
         if (!isValid) {
@@ -91,9 +95,10 @@ const CreatorQuestionnaire = (): JSX.Element => {
           // Convert dateOfBirth to ISO string before sending to API
           const submitData = {
             ...updatedData,
-            dateOfBirth: updatedData.dateOfBirth instanceof Date 
-              ? updatedData.dateOfBirth.toISOString()
-              : updatedData.dateOfBirth,
+            dateOfBirth:
+              updatedData.dateOfBirth instanceof Date
+                ? updatedData.dateOfBirth.toISOString()
+                : updatedData.dateOfBirth,
           };
           await creatorApi.submitQuestionnaire(
             submitData as CreatorQuestionnaireData
