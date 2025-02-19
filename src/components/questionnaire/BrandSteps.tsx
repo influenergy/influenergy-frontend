@@ -29,7 +29,7 @@ export const Step1 = ({ fields }: StepProps) => {
             className={`w-full p-3 border rounded-lg transition-all duration-200
               ${errors[field.slug as keyof BrandFormData]
                 ? "border-red-500 focus:ring-red-500"
-                : "border-gray-300 focus:ring-[#7877e6]"
+                : "border-gray-300 focus:ring-primary"
               } 
               focus:outline-none focus:ring-2 focus:border-transparent
               disabled:bg-gray-50 disabled:text-gray-500

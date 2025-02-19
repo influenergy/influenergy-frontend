@@ -22,7 +22,7 @@ const FormField = ({ field }: { field: Field }) => {
         className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
           error
             ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-[#7877e6]"
+            : "border-gray-300 focus:ring-primary"
         } focus:outline-none focus:ring-2 `}
       >
         <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
@@ -44,7 +44,7 @@ const FormField = ({ field }: { field: Field }) => {
       className={`w-full p-3 border rounded-lg transition-all duration-200 ${
         error
           ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-[#7877e6]"
+          : "border-gray-300 focus:ring-primary"
       } focus:outline-none focus:ring-2`}
     />
   );

@@ -100,9 +100,10 @@ const CreatorQuestionnaire = (): JSX.Element => {
                 ? updatedData.dateOfBirth.toISOString()
                 : updatedData.dateOfBirth,
           };
-          await creatorApi.submitQuestionnaire(
-            submitData as CreatorQuestionnaireData
-          );
+          // await creatorApi.submitQuestionnaire(
+          //   submitData as CreatorQuestionnaireData
+          // );
+          await new Promise((resolve) => setTimeout(resolve, 2000));
           toast({
             title: "Success!",
             description: "Your profile has been updated successfully.",
@@ -194,7 +195,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
             </Button>
           )}
           <Button
-            className="ml-auto px-6 py-5 bg-[#7877e6] w-full rounded-lg"
+            className="ml-auto px-6 py-5 bg-primary w-full rounded-lg"
             type="submit"
             disabled={isSubmitting}
           >

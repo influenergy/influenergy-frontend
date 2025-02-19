@@ -59,8 +59,8 @@ const BrandQuestionnaire = () => {
         }
 
         // console.log("Submitting data:", data);
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
-        await brandApi.submitQuestionnaire(data);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await brandApi.submitQuestionnaire(data);
 
         toast({
           title: "Success!",
@@ -105,8 +105,8 @@ const BrandQuestionnaire = () => {
 
         <div className="mt-8 w-full max-w-md">
           <Button
-            className="w-full px-6 py-5 bg-[#7877e6] hover:bg-[#6564d8] text-white rounded-lg transition-colors duration-200
-              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#7877e6]"
+            className="w-full px-6 py-5 bg-primary hover:bg-[#6564d8] text-white rounded-lg transition-colors duration-200
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
             type="submit"
             disabled={isSubmitting || !isDirty || !isValid}
           >

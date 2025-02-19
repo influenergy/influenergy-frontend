@@ -105,7 +105,7 @@ export default function RegisterForm() {
 
         <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
           <motion.h3
-            className="text-[#7877e6] font-bold text-2xl sm:text-3xl text-left"
+            className="text-primary font-bold text-2xl sm:text-3xl text-left"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -182,8 +182,8 @@ export default function RegisterForm() {
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
                 <Checkbox
-                  className="mt-1 sm:mt-0 text-[#7877e6] bg-white border-[#7877e6] 
-                  data-[state=checked]:bg-[#7877e6] data-[state=checked]:border-[#7877e6]"
+                  className="mt-1 sm:mt-0 text-primary bg-white border-primary 
+                  data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                   checked={watch("terms") ?? false} // Ensure default value is boolean
                   onCheckedChange={(checked) =>
                     setValue("terms", Boolean(checked))
@@ -194,14 +194,14 @@ export default function RegisterForm() {
                   I accept all{" "}
                   <Link
                     href="/terms"
-                    className="underline text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                    className="underline text-primary hover:text-[#6564d8] transition-colors"
                   >
                     terms of use
                   </Link>{" "}
                   and{" "}
                   <Link
                     href="/privacy"
-                    className="underline text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                    className="underline text-primary hover:text-[#6564d8] transition-colors"
                   >
                     privacy policy
                   </Link>
@@ -222,7 +222,7 @@ export default function RegisterForm() {
             >
               <Button
                 type="submit"
-                className="w-full bg-[#7877e6] hover:bg-[#6564d8] transition-all py-6 sm:py-7 text-white 
+                className="w-full bg-primary hover:bg-[#6564d8] transition-all py-6 sm:py-7 text-white 
                   text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest 
                   disabled:opacity-70"
                 disabled={registerMutation.isPending}
@@ -241,7 +241,7 @@ export default function RegisterForm() {
                 Already have an account?{" "}
                 <Link
                   href={`/login?role=${userType}`}
-                  className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                  className="font-medium text-primary hover:text-[#6564d8] transition-colors"
                 >
                   Login
                 </Link>
