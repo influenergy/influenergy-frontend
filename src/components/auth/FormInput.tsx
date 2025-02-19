@@ -48,7 +48,7 @@ export const RegisterFormInput = ({
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className="border h-12 sm:h-14 w-full px-4 sm:px-5 focus:outline-none focus:border-b-2 focus:border-b-[#7877e6] font-light 
+        className="border h-12 sm:h-14 w-full px-4 sm:px-5 focus:outline-none focus:border-b-2 focus:border-b-primary font-light 
             transition-all duration-300 rounded-md text-base sm:text-lg"
       />
       {onTogglePassword ? (
@@ -97,7 +97,7 @@ export const LoginFormInput = ({
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className="border h-12 sm:h-14 w-full px-4 sm:px-5 focus:outline-none focus:border-b-2 focus:border-b-[#7877e6] font-light transition-all duration-300 rounded-md text-base sm:text-lg"
+        className="border h-12 sm:h-14 w-full px-4 sm:px-5 focus:outline-none focus:border-b-2 focus:border-b-primary font-light transition-all duration-300 rounded-md text-base sm:text-lg"
       />
       {onTogglePassword ? (
         <div

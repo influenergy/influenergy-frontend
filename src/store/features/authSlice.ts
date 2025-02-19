@@ -5,7 +5,7 @@ type User = {
   first_name?: string;
   last_name?: string;
   email?: string;
-  userType: string;
+  userType?: string;
 };
 
 interface AuthState {
@@ -13,14 +13,16 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   questionnaireCompleted: boolean;
+  userType: string | null;
 }
 
 const initialState: AuthState = {
-  user: null,
-  token:
-    typeof window !== "undefined" ? localStorage.getItem("token") : "",
+  user: {},
+  token: typeof window !== "undefined" ? localStorage.getItem("token") : "",
   isAuthenticated: true,
   questionnaireCompleted: false,
+  userType:
+    typeof window !== "undefined" ? localStorage.getItem("userType") : null,
 };
 
 const authSlice = createSlice({
@@ -43,7 +45,12 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       if (typeof window !== "undefined") {
+        console.log("window");
         localStorage.removeItem("token");
+        document.cookie.split(";").forEach((cookie) => {
+          const name = cookie.split("=")[0].trim();
+          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        });
       }
     },
     completeQuestionnaire: (state) => {
@@ -53,8 +60,14 @@ const authSlice = createSlice({
       }
     },
     setUserType: (state, action: PayloadAction<string>) => {
-      state.user = { ...state.user, userType: action.payload };
-    }
+      state.userType = action.payload;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("userType", action.payload);
+      }
+      if (state.user) {
+        state.user.userType = action.payload;
+      }
+    },
   },
 });
 

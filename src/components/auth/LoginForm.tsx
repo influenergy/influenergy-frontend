@@ -40,8 +40,8 @@ export default function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {
       console.log(data);
-      // return Promise.resolve();
-      return authApi.login(data);
+      return Promise.resolve();
+      // return authApi.login(data);
     },
     onSuccess: (data) => {
       console.log(data);
@@ -163,7 +163,7 @@ export default function LoginForm() {
             >
               <Button
                 type="submit"
-                className="w-full bg-[#7877e6] hover:bg-[#6564d8] transition-all py-6 sm:py-7 text-white text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest disabled:opacity-70"
+                className="w-full bg-primary hover:bg-primary transition-all py-6 sm:py-7 text-white text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest disabled:opacity-70"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending ? (
@@ -180,7 +180,7 @@ export default function LoginForm() {
                 Don&apos;t have an account?{" "}
                 <Link
                   href={`/register?role=${userType}`}
-                  className="font-medium text-[#7877e6] hover:text-[#6564d8] transition-colors"
+                  className="font-medium text-primary hover:text-primary transition-colors"
                 >
                   Sign Up
                 </Link>

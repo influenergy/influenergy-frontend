@@ -2,8 +2,19 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useAppDispatch } from "@/store";
+import { setUserType } from "@/store/features/authSlice";
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+
+  const handleUserTypeSelection = (type: string) => {
+    dispatch(setUserType(type));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("userType", type);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full h-screen bg-white">
       <div className="mx-auto max-w-screen h-full">
@@ -36,6 +47,7 @@ export default function Home() {
               <Link
                 href="/login?role=brand"
                 className="group"
+                onClick={() => handleUserTypeSelection("brand")}
               >
                 <div className="flex cursor-pointer h-48 w-52 flex-col  justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
@@ -46,7 +58,7 @@ export default function Home() {
                     className="mb-2"
                   />
                   <div>
-                    <p className="text-sm">I'm a</p>
+                    <p className="text-sm">I am a</p>
                     <p className="font-semibold text-gray-800 tracking-wide ">
                       Brand or Agency
                     </p>
@@ -57,6 +69,7 @@ export default function Home() {
               <Link
                 href="/login?role=creator"
                 className="group"
+                onClick={() => handleUserTypeSelection("creator")}
               >
                 <div className="flex cursor-pointer h-48 w-52 flex-col  justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
@@ -67,7 +80,7 @@ export default function Home() {
                     className="mb-2"
                   />
                   <div>
-                    <p className="text-sm">I'm a</p>
+                    <p className="text-sm">I am a</p>
                     <p className="font-semibold text-gray-800 tracking-wide">
                       Creator
                     </p>
@@ -78,7 +91,7 @@ export default function Home() {
           </div>
 
           {/* Right Section */}
-          <motion.div className="relative bg-[#7877e6] h-full hidden lg:block">
+          <motion.div className="relative bg-primary h-full hidden lg:block">
             <div className="absolute -left-28 top-1/2  -translate-y-1/2">
               <Image
                 src="/images/Home/image.png"

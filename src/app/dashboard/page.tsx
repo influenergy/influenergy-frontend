@@ -1,24 +1,21 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useDispatch } from "react-redux";
-import { logout } from "@/store/features/authSlice";
-import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Link from 'next/link';
+import Link from "next/link";
 
-export default function DashboardPage() { 
+
+export default function DashboardPage() {
   const questionnaireCompleted = document.cookie.includes(
     "questionnaireCompleted=true"
   );
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar userType="creator" />
-      <main className="flex-1 p-8 ml-64">
+    <div className="min-h-screen">
+
+      {/* main content */}
+     
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <LogoutButton />
         </div>
 
         {!questionnaireCompleted ? (
@@ -46,19 +43,7 @@ export default function DashboardPage() {
             {/* Add more dashboard cards and content here */}
           </div>
         )}
-      </main>
+      
     </div>
   );
-}
-
-function LogoutButton() {
-  const dispatch = useDispatch();
-  const router = useRouter();
-
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push('/login');
-  };
-
-  return <Button onClick={handleLogout}>Logout</Button>;
 }

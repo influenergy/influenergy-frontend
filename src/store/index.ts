@@ -1,13 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import authReducer from './features/authSlice';
+import authReducer from "./features/authSlice";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['auth']
+  whitelist: ["auth", "userType"],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
@@ -18,8 +18,8 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
-    })
+      serializableCheck: false,
+    }),
 });
 
 export const persistor = persistStore(store);
@@ -33,6 +33,8 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 // Auth selectors
 export const selectAuth = (state: RootState) => state.auth;
-export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
+export const selectIsAuthenticated = (state: RootState) =>
+  state.auth.isAuthenticated;
 export const selectUser = (state: RootState) => state.auth.user;
-export const selectToken = (state: RootState) => state.auth.token
+export const selectToken = (state: RootState) => state.auth.token;
+export const selectUserType = (state: RootState) => state.auth.userType;

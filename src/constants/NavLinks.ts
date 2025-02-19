@@ -2,59 +2,123 @@ import {
   LayoutDashboard,
   Users,
   Package,
-  BarChart,
-  Briefcase,
   Film,
   ClipboardList,
+  Settings,
+  PenLine,
+  Link,
+  Bell,
+  LucideIcon,
+  Mail,
+  WandSparkles,
+  ChartNoAxesCombined,
 } from "lucide-react";
 
-const creatorNav = [
+interface NavItem {
+  href?: string;
+  icon: LucideIcon;
+  label: string;
+  children?: Array<{
+    href: string;
+    label: string;
+  }>;
+}
+
+interface NavLinks {
+  [key: string]: {
+    profile: NavItem[];
+    dashboard: NavItem[];
+  };
+}
+
+const creatorNav: NavItem[] = [
   {
-    href: "/dashboard",
-    icon: LayoutDashboard,
-    label: "Dashboard",
+    href: "/dashboard/creator/analytics",
+    icon: ChartNoAxesCombined,
+    label: "My Analytics",
   },
   {
-    href: "/dashboard/content",
+    href: "/dashboard/creator/content",
     icon: Film,
-    label: "My Content",
+    label: "My Videos",
   },
   {
-    href: "/dashboard/collaborations",
-    icon: Briefcase,
-    label: "Collaborations",
-  },
-  {
-    href: "/dashboard/analytics",
-    icon: BarChart,
-    label: "Analytics",
+    href: "/dashboard/creator/inbox",
+    icon: Mail,
+    label: "Inbox",
   },
 ];
 
-const brandNav = [
+const brandNav: NavItem[] = [
   {
-    href: "/dashboard",
     icon: LayoutDashboard,
-    label: "Dashboard",
+    label: "My Postings",
+    children: [
+      {
+        href: "/dashboard/brand/posts",
+        label: "My Posts",
+      },
+      {
+        href: "/dashboard/brand/create-post",
+        label: "Create Post",
+      },
+    ],
   },
   {
-    href: "/dashboard/campaigns",
-    icon: ClipboardList,
-    label: "Campaigns",
+    href: "/dashboard/brand/findai",
+    icon: WandSparkles,
+    label: "AI Find",
   },
   {
-    href: "/dashboard/creators",
-    icon: Users,
-    label: "Creators",
-  },
-  {
-    href: "/dashboard/products",
-    icon: Package,
-    label: "Products",
+    href: "/dashboard/brand/inbox",
+    icon: Mail,
+    label: "Inbox",
   },
 ];
 
-export const navLinks = {
-  creator: creatorNav,
-  brand: brandNav,
+const creatorProfileNav: NavItem[] = [
+  {
+    href: "/user-profile",
+    icon: Settings,
+    label: "Account Settings",
+  },
+  {
+    href: "/user-profile/profile",
+    icon: PenLine,
+    label: "Complete Profile",
+  },
+  {
+    href: "/user-profile/socials",
+    icon: Link,
+    label: "Linked Socials",
+  },
+  {
+    href: "/user-profile/notifications",
+    icon: Bell,
+    label: "Notifications",
+  },
+];
+
+const brandProfileNav: NavItem[] = [
+  {
+    href: "/user-profile",
+    icon: Settings,
+    label: "Account Settings",
+  },
+  {
+    href: "/user-profile/notifications",
+    icon: Bell,
+    label: "Notifications",
+  },
+];
+
+export const navLinks: NavLinks = {
+  creator: {
+    profile: creatorProfileNav,
+    dashboard: creatorNav,
+  },
+  brand: {
+    profile: brandProfileNav,
+    dashboard: brandNav,
+  },
 };
