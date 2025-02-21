@@ -19,7 +19,7 @@ export default function DashboardPage() {
         </div>
 
         {!questionnaireCompleted ? (
-          <Card className="p-6 bg-yellow-100 border border-yellow-400 text-yellow-800">
+          <Card className="p-6 bg-violet-100 border border-violet-400 text-black">
             <h2 className="text-xl font-semibold mb-2">
               Complete Your Preferences
             </h2>
