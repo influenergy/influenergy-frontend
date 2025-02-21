@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import DeleteModal from "@/components/userProfile/DeleteModal";
 import { Info, PenLine } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -33,14 +34,13 @@ export default function Page() {
         <div className="border w-full mt-10 rounded-xl py-3 px-4 sm:px-7">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
             <p>Personal Info</p>
-            <Button
-              size="sm"
-              variant="outline"
-              className="flex items-center gap-2 rounded-xl text-md w-full sm:w-auto"
+            <Link
+              href="/user-profile/profile"
+              className="flex items-center gap-2 rounded-xl text-md w-full sm:w-auto hover:text-primary transition-colors border py-1 px-3"
             >
               <PenLine size={20} />
               Edit
-            </Button>
+            </Link>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-start md:justify-between items-start sm:items-center gap-4 mt-4 sm:space-x-5">
