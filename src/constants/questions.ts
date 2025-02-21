@@ -1,6 +1,6 @@
 export interface Field {
   title: string;
-  category: 'text' | 'number' | 'date' | 'dropdown' | 'email';
+  category: "text" | "number" | "date" | "dropdown" | "email";
   slug: string;
   options?: string[];
 }
@@ -23,7 +23,7 @@ export const CREATOR_QUESTIONS: Questions = {
     fields: [
       {
         title: "Gender",
-        slug:"gender",
+        slug: "gender",
         category: "dropdown",
         options: ["Male", "Female", "Non-binary", "Prefer not to say"],
       },
@@ -99,7 +99,7 @@ export const CREATOR_QUESTIONS: Questions = {
         category: "text",
       },
     ],
-  },
+  }
 };
 
 export const BRAND_QUESTIONS: Questions = {
