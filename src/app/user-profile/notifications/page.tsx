@@ -1,4 +1,6 @@
 "use client";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/dashboard/Header";
