@@ -22,6 +22,7 @@ interface NavItem {
   children?: Array<{
     href: string;
     label: string;
+    icon: LucideIcon;
   }>;
 }
 
@@ -42,7 +43,9 @@ export default function Sidebar({ type }: { type: string }) {
   return (
     <div className="border-r bg-white md:block fixed left-0 top-0 h-screen w-16 md:w-[240px] z-10 transition-all duration-300">
       <div className="flex h-full flex-col gap-2 p-4">
-        <Image src="/images/logo.svg" width={200} height={200} alt="logo" />
+        <Link href="/dashboard">
+          <Image src="/images/logo.svg" width={200} height={200} alt="logo" />
+        </Link>
         <nav className="grid items-start gap-2 mt-10">
           {navItems.map((item: NavItem) =>
             item.children ? (
@@ -74,7 +77,8 @@ export default function Sidebar({ type }: { type: string }) {
                           pathname === child.href && "bg-secondary"
                         )}
                       >
-                        {child.label}
+                        {child.icon && <child.icon className="h-4 w-4" />}
+                        <p className="text-sm">{child.label}</p>
                       </Button>
                     </Link>
                   ))}

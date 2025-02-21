@@ -1,7 +1,5 @@
 import {
   LayoutDashboard,
-  Users,
-  Package,
   Film,
   ClipboardList,
   Settings,
@@ -11,7 +9,7 @@ import {
   LucideIcon,
   Mail,
   WandSparkles,
-  ChartNoAxesCombined,
+  // ChartNoAxesCombined,
 } from "lucide-react";
 
 interface NavItem {
@@ -21,6 +19,7 @@ interface NavItem {
   children?: Array<{
     href: string;
     label: string;
+    icon: LucideIcon;
   }>;
 }
 
@@ -33,10 +32,15 @@ interface NavLinks {
 
 const creatorNav: NavItem[] = [
   {
-    href: "/dashboard/creator/analytics",
-    icon: ChartNoAxesCombined,
-    label: "My Analytics",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
   },
+  // {
+  //   href: "/dashboard/creator/analytics",
+  //   icon: ChartNoAxesCombined,
+  //   label: "My Analytics",
+  // },
   {
     href: "/dashboard/creator/content",
     icon: Film,
@@ -51,15 +55,22 @@ const creatorNav: NavItem[] = [
 
 const brandNav: NavItem[] = [
   {
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
+  },
+  {
     icon: LayoutDashboard,
     label: "My Postings",
     children: [
       {
         href: "/dashboard/brand/posts",
+        icon: ClipboardList,
         label: "My Posts",
       },
       {
         href: "/dashboard/brand/create-post",
+        icon: PenLine,
         label: "Create Post",
       },
     ],
