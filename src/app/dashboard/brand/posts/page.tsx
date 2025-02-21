@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Cards from "@/components/common/Cards";
+import Cards from "@/components/common/PostCard";
 import CardSkeleton from "@/components/common/CardSkeleton";
 import { DESCRIPTION } from "@/constants/Description";
 import PostDescription from "@/components/dashboard/Post";

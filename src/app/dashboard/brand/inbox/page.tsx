@@ -1,7 +1,8 @@
+import CreatorsProfile from "@/components/creators/CreatorsProfile";
 import React from "react";
 
 const Page = () => {
-  return <div>brand Inbox</div>;
+  return <CreatorsProfile />;
 };
 
 export default Page;

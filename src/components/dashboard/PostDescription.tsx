@@ -1,8 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import { Calendar, MapPin, Users, BarChart } from "lucide-react";
+import { Calendar, MapPin, Users, BarChart, PenLine } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface PostData {
   id: string;
@@ -23,8 +24,21 @@ interface PostDescriptionProps {
 }
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
+  const router = useRouter();
+
   return (
     <div className="bg-white rounded-lg border p-6 space-y-4">
+      {/* Header with edit button */}
+      <div className="flex justify-end mb-4">
+        <Button
+          onClick={() => router.push(`/dashboard/brand/posts/edit/${data.id}`)}
+          className="flex items-center gap-2 bg-primary text-white hover:bg-primary/90"
+        >
+          <PenLine className="h-4 w-4" />
+          Edit Post
+        </Button>
+      </div>
+
       {/* Header with image and basic info */}
       <div className="flex flex-col md:flex-row gap-6">
         {/* Image container */}
@@ -86,7 +100,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           </div>
           {/* Preview of markdown content */}
           <div className="mt-4 pt-4 border-t">
-              <ReactMarkdown>{data.offerDescription}</ReactMarkdown>
+            <ReactMarkdown>{data.offerDescription}</ReactMarkdown>
           </div>
         </div>
       </div>
