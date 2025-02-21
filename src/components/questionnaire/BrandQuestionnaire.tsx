@@ -63,6 +63,7 @@ const BrandQuestionnaire = () => {
         // console.log("Submitting data:", data);
         await new Promise((resolve) => setTimeout(resolve, 2000));
         // await brandApi.submitQuestionnaire(data);
+        dispatch(completeQuestionnaire());
 
         toast({
           title: "Success!",
@@ -87,7 +88,6 @@ const BrandQuestionnaire = () => {
   );
 
   const handleSkip = () => {
-    dispatch(completeQuestionnaire());
     router.push("/dashboard");
     toast({
       title: "Skipped",
