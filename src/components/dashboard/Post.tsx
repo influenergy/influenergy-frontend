@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Calendar, MapPin, Users, TrendingUp } from "lucide-react";
 interface PostDescriptionProps {
   data: {
+    id:string;
     image: string;
     title: string;
     description: string;

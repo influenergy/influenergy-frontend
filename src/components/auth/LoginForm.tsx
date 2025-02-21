@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { loginSchema } from "@/lib/AuthSchema";
 import { LoginFormInput } from "./FormInput";
-import { authApi } from "@/services/api";
+// import { authApi } from "@/services/api";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 

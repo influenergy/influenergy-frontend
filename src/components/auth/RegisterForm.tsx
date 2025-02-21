@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter,useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Loader2, Mail, UserRound } from "lucide-react";
@@ -14,18 +14,16 @@ import { motion } from "framer-motion";
 import { registerSchema } from "@/lib/AuthSchema";
 import { RegisterFormInput } from "./FormInput";
 import { authApi } from "@/services/api";
+import { useAppSelector } from "@/store";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 export default function RegisterForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
-  const userType = useSearchParams().get("role");
-
+  const userType = useAppSelector((state) => state.auth.userType);
   if (!userType) {
     router.push("/");
-    return;
   }
 
   const {
@@ -43,10 +41,10 @@ export default function RegisterForm() {
       // return Promise.resolve();
 
       return authApi.register({
-        full_name: data.fullName,
+        fullName: data.fullName,
         email: data.email,
         password: data.password,
-        userType: userType,
+        userType: userType!,
       });
     },
     onSuccess: (data) => {

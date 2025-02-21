@@ -44,7 +44,7 @@ export const authApi = {
     return response.data;
   },
   register: async (userData: {
-    full_name: string;
+    fullName: string;
     email: string;
     password: string;
     userType: string;

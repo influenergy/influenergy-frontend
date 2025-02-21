@@ -1,7 +1,7 @@
-import Header from "@/components/dashboard/Header";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteModal from "@/components/userProfile/DeleteModal";
+import ProfileActions from "@/components/userProfile/ProfileActions";
 import { Info, PenLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,8 +9,6 @@ import Link from "next/link";
 export default function Page() {
   return (
     <div className="h-full flex flex-col items-center">
-      <Header />
-
       <div className="w-full h-full px-4 sm:px-8 pt-5">
         {/* first section */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4">
@@ -23,9 +21,7 @@ export default function Page() {
               height={70}
               className="w-full h-full object-cover"
             />
-            <Button className="bg-primary text-white border-2 border-white rounded-full  absolute bottom-0 right-2 h-10 w-10">
-              <PenLine size={20} />
-            </Button>
+            <ProfileActions />
           </div>
           <DeleteModal />
         </div>

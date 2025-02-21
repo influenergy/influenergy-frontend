@@ -1,6 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
-import { brandApi } from "@/services/api";
+// import { brandApi } from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import { BRAND_QUESTIONS as questions } from "@/constants/questions";
 import { motion } from "framer-motion";
@@ -48,6 +48,7 @@ const BrandQuestionnaire = () => {
     async (data: BrandFormData) => {
       try {
         setIsSubmitting(true);
+        console.log('data',data)
 
         // Additional validation check before submission
         const isFormValid = await trigger();
@@ -84,7 +85,7 @@ const BrandQuestionnaire = () => {
         setIsSubmitting(false);
       }
     },
-    [router, toast, trigger]
+    [router, toast, trigger, dispatch]
   );
 
   const handleSkip = () => {

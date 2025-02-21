@@ -45,7 +45,7 @@ export default function Home() {
               className="flex gap-4 px-5 md:px-14"
             >
               <Link
-                href="/login?role=brand"
+                href="/login"
                 className="group"
                 onClick={() => handleUserTypeSelection("brand")}
               >
@@ -67,7 +67,7 @@ export default function Home() {
               </Link>
 
               <Link
-                href="/login?role=creator"
+                href="/login"
                 className="group"
                 onClick={() => handleUserTypeSelection("creator")}
               >

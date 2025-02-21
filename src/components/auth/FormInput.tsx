@@ -10,7 +10,7 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 interface RegisterFormProps {
   type: string;
   placeholder: string;
-  register: any;
+  register: UseFormRegister<RegisterFormData>;
   name: keyof RegisterFormData;
   error?: FieldError;
   icon: React.ReactNode;

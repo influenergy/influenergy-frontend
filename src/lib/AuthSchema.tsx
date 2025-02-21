@@ -22,7 +22,7 @@ export const registerSchema = yup.object({
     .required("Required"),
   terms: yup
   .boolean()
-  .oneOf([true], "You must accept the terms") // Ensures true value
+  .oneOf([true], "You must accept the terms")
   .required("You must accept the terms") 
 });
 

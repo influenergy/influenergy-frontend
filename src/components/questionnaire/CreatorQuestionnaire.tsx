@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { creatorApi } from "@/services/api";
+// import { creatorApi } from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import { CREATOR_QUESTIONS as questions } from "@/constants/questions";
 import { motion } from "framer-motion";
@@ -55,88 +55,88 @@ const CreatorQuestionnaire = (): JSX.Element => {
     clearErrors();
   }, [currentStep, clearErrors]);
 
-  const handleNext = useCallback(
-    async (data: Partial<CreatorQuestionnaireData>) => {
-      const {
-        currentStep: step,
-        currentFields: fields,
-        formData: prevData,
-      } = {
-        currentStep,
-        currentFields,
-        formData,
-      };
-
-      try {
-        const stepFields = fields.map((field: Field) => field.slug) as Array<
-          keyof CreatorQuestionnaireData
-        >;
-        const isValid = await trigger(stepFields);
-
-        if (!isValid) {
-          return;
-        }
-
-        const currentValues = getValues() as Partial<CreatorQuestionnaireData>;
-        const updatedData = {
-          ...prevData,
-          ...currentValues,
-          // Convert string date to Date object
-          ...(currentValues.dateOfBirth && {
-            dateOfBirth: new Date(currentValues.dateOfBirth),
-          }),
-        };
-        setFormData(updatedData);
-
-        if (!isLastStep) {
-          setCurrentStep(steps[currentStepIndex + 1]);
-        } else {
-          setIsSubmitting(true);
-          // Convert dateOfBirth to ISO string before sending to API
-          const submitData = {
-            ...updatedData,
-            dateOfBirth:
-              updatedData.dateOfBirth instanceof Date
-                ? updatedData.dateOfBirth.toISOString()
-                : updatedData.dateOfBirth,
-          };
-          // await creatorApi.submitQuestionnaire(
-          //   submitData as CreatorQuestionnaireData
-          // );
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-          toast({
-            title: "Success!",
-            description: "Your profile has been updated successfully.",
-          });
-          dispatch(completeQuestionnaire());
-          router.push("/dashboard");
-        }
-      } catch (error) {
-        console.error("Form validation/submission error:", error);
-        if (error instanceof Error) {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: error.message || "Please check all required fields.",
-          });
-        }
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [
+  const handleNext = useCallback(async () => {
+    const {
+      currentFields: fields,
+      formData: prevData,
+      currentStep: step,
+    } = {
       currentStep,
       currentFields,
       formData,
-      isLastStep,
-      currentStepIndex,
-      steps,
-      router,
-      toast,
-      trigger,
-      getValues,
-    ]
-  );
+    };
+    console.log("step", step);
+
+    try {
+      const stepFields = fields.map((field: Field) => field.slug) as Array<
+        keyof CreatorQuestionnaireData
+      >;
+      const isValid = await trigger(stepFields);
+
+      if (!isValid) {
+        return;
+      }
+
+      const currentValues = getValues() as Partial<CreatorQuestionnaireData>;
+      const updatedData = {
+        ...prevData,
+        ...currentValues,
+        // Convert string date to Date object
+        ...(currentValues.dateOfBirth && {
+          dateOfBirth: new Date(currentValues.dateOfBirth),
+        }),
+      };
+      setFormData(updatedData);
+
+      if (!isLastStep) {
+        setCurrentStep(steps[currentStepIndex + 1]);
+      } else {
+        setIsSubmitting(true);
+        // Convert dateOfBirth to ISO string before sending to API
+        const submitData = {
+          ...updatedData,
+          dateOfBirth:
+            updatedData.dateOfBirth instanceof Date
+              ? updatedData.dateOfBirth.toISOString()
+              : updatedData.dateOfBirth,
+        };
+        console.log("submitData", submitData);
+        // await creatorApi.submitQuestionnaire(
+        //   submitData as CreatorQuestionnaireData
+        // );
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        toast({
+          title: "Success!",
+          description: "Your profile has been updated successfully.",
+        });
+        dispatch(completeQuestionnaire());
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Form validation/submission error:", error);
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message || "Please check all required fields.",
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [
+    currentStep,
+    currentFields,
+    formData,
+    isLastStep,
+    currentStepIndex,
+    steps,
+    router,
+    toast,
+    trigger,
+    getValues,
+    dispatch,
+  ]);
 
   const handlePrevious = useCallback(() => {
     if (currentStepIndex > 0) {
