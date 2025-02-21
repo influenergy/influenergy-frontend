@@ -60,7 +60,7 @@ const BrandQuestionnaire = () => {
           return;
         }
 
-        // console.log("Submitting data:", data);
+        console.log("Submitting data:", data);
         await new Promise((resolve) => setTimeout(resolve, 2000));
         // await brandApi.submitQuestionnaire(data);
         dispatch(completeQuestionnaire());
