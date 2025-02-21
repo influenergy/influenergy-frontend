@@ -184,7 +184,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
         </motion.div>
 
         <div className="mt-8 flex justify-between w-full gap-4">
-          {currentStepIndex > 0 && (
+          {currentStepIndex > 0 ? (
             <Button
               variant="outline"
               onClick={handlePrevious}
@@ -192,6 +192,15 @@ const CreatorQuestionnaire = (): JSX.Element => {
               type="button"
             >
               Previous
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="px-6 py-5 w-full rounded-lg"
+              type="button"
+              onClick={() => router.push("/dashboard")}
+            >
+              Skip
             </Button>
           )}
           <Button
