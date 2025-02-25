@@ -93,3 +93,18 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+.react-select__control{
+  @apply w-full p-1 border rounded-xl transition-all duration-200 font-poppins bg-gray-500;
+  
+}
