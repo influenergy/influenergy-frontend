@@ -1,6 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { Field } from "@/constants/questions";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
+import Select from "react-select";
 
 interface StepProps {
   fields: Field[];
@@ -9,6 +10,8 @@ interface StepProps {
 const FormField = ({ field }: { field: Field }) => {
   const {
     register,
+    setValue,
+    watch,
     formState: { errors },
   } = useFormContext<CreatorQuestionnaireData>();
 
@@ -26,14 +29,39 @@ const FormField = ({ field }: { field: Field }) => {
         } focus:outline-none focus:ring-2 `}
       >
         <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
-          Select {field.title}
+          Select
         </option>
         {field.options?.map((option) => (
-          <option key={option} value={option} style={{ fontFamily: "Poppins, sans-serif" }}>
+          <option
+            key={option}
+            value={option}
+            style={{ fontFamily: "Poppins, sans-serif" }}
+          >
             {option}
           </option>
         ))}
       </select>
+    );
+  }
+  if (field.category === "multiselect") {
+    const selectedOptions = watch(fieldName) || [];
+
+    return (
+      <div>
+        <Select
+          isMulti
+          options={field.options?.map((option) => ({
+            label: option,
+            value: option,
+          }))}
+          value={(selectedOptions as string[]).map((value: string) => ({ label: value, value }))}
+          onChange={(selected) => {
+            const values = selected.map((opt) => opt.value);
+            setValue(fieldName, values, { shouldValidate: true });
+          }}
+          classNamePrefix="react-select"
+        />
+      </div>
     );
   }
 
@@ -80,20 +108,8 @@ const StepComponent = ({ fields }: StepProps) => {
   );
 };
 
-export const Step1 = ({ fields }: StepProps) => (
-  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2  items-start justify-center gap-4">
-    <StepComponent fields={fields} />
-  </div>
-);
-
-export const Step2 = ({ fields }: StepProps) => (
-  <div className="space-y-4">
-    <StepComponent fields={fields} />
-  </div>
-);
-
-export const Step3 = ({ fields }: StepProps) => (
-  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+export const Step = ({ fields }: StepProps) => (
+  <div className="grid grid-cols-1 md:grid-cols-2  items-start justify-center gap-4">
     <StepComponent fields={fields} />
   </div>
 );

@@ -15,6 +15,10 @@ export const registerSchema = yup.object({
   password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+      "Password must contain at least one uppercase letter, one number, and one special character"
+    )
     .required("Required"),
   confirmPassword: yup
     .string()
@@ -31,5 +35,5 @@ export const registerSchema = yup.object({
 export const loginSchema = yup.object({
   email: yup.string().email('Invalid email').required('Required'),
   password: yup.string().min(6, 'Minimum 6 characters').required('Required'),
-  userType: yup.string().oneOf(['creator', 'brand']).required()
+  // userType: yup.string().oneOf(['creator', 'brand']).required()
 });
