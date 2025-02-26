@@ -1,93 +1,91 @@
-"use client";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import Header from "@/components/dashboard/Header";
+// "use client";
+import ComingSoon from "@/components/common/ComingSoon";
+// import Image from "next/image";
+// import { motion } from "framer-motion";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Button } from "@/components/ui/button";
 
-interface NotificationProps {
-  user: {
-    name: string;
-    avatar: string;
-  };
-  type: "comment" | "request";
-  content: string;
-  time: string;
-}
+// interface NotificationProps {
+//   user: {
+//     name: string;
+//     avatar: string;
+//   };
+//   type: "comment" | "request";
+//   content: string;
+//   time: string;
+// }
 
-const NotificationItem = ({ user, type, content, time }: NotificationProps) => {
-  return (
-    <div className="flex items-start gap-4 p-4 hover:bg-gray-50 transition-colors w-full">
-      <Avatar className="h-10 w-10">
-        <AvatarImage src={user.avatar} />
-        <AvatarFallback>{user.name[0]}</AvatarFallback>
-      </Avatar>
-      <div className="flex-1">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-900">{user.name}</p>
-            <p className="text-sm text-gray-500">{content}</p>
-            <span className="text-xs text-gray-400">{time}</span>
-          </div>
-        </div>
-        {type === "request" && (
-          <div className="mt-2 space-x-2">
-            <Button size="sm" className="bg-primary">
-              Approve
-            </Button>
-            <Button variant="outline" size="sm">
-              Decline
-            </Button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+// const NotificationItem = ({ user, type, content, time }: NotificationProps) => {
+//   return (
+//     <div className="flex items-start gap-4 p-4 hover:bg-gray-50 transition-colors w-full">
+//       <Avatar className="h-10 w-10">
+//         <AvatarImage src={user.avatar} />
+//         <AvatarFallback>{user.name[0]}</AvatarFallback>
+//       </Avatar>
+//       <div className="flex-1">
+//         <div className="flex items-start justify-between">
+//           <div>
+//             <p className="text-sm font-medium text-gray-900">{user.name}</p>
+//             <p className="text-sm text-gray-500">{content}</p>
+//             <span className="text-xs text-gray-400">{time}</span>
+//           </div>
+//         </div>
+//         {type === "request" && (
+//           <div className="mt-2 space-x-2">
+//             <Button size="sm" className="bg-primary">
+//               Approve
+//             </Button>
+//             <Button variant="outline" size="sm">
+//               Decline
+//             </Button>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
 
 const NotificationsPage = () => {
-  const notifications = [
-    {
-      user: {
-        name: "Dennis Nedry",
-        avatar: "https://avatar.iran.liara.run/public/boy",
-      },
-      type: "comment" as const,
-      content: "commented on Isla Nublar SOC2 compliance report",
-      time: "Last Wednesday at 9:42 AM",
-    },
-    {
-      user: {
-        name: "Dennis Nedry",
-        avatar: "https://avatar.iran.liara.run/public/boy",
-      },
-      type: "request" as const,
-      content: "requested access to Isla Nublar SOC2 compliance report",
-      time: "Last Wednesday at 9:42 AM",
-    },
-    {
-      user: {
-        name: "Dennis Nedry",
-        avatar: "https://avatar.iran.liara.run/public/boy",
-      },
-      type: "comment" as const,
-      content: "commented on Isla Nublar SOC2 compliance report",
-      time: "Last Wednesday at 9:42 AM",
-    },
-  ];
+  // const notifications = [
+  //   {
+  //     user: {
+  //       name: "Dennis Nedry",
+  //       avatar: "https://avatar.iran.liara.run/public/boy",
+  //     },
+  //     type: "comment" as const,
+  //     content: "commented on Isla Nublar SOC2 compliance report",
+  //     time: "Last Wednesday at 9:42 AM",
+  //   },
+  //   {
+  //     user: {
+  //       name: "Dennis Nedry",
+  //       avatar: "https://avatar.iran.liara.run/public/boy",
+  //     },
+  //     type: "request" as const,
+  //     content: "requested access to Isla Nublar SOC2 compliance report",
+  //     time: "Last Wednesday at 9:42 AM",
+  //   },
+  //   {
+  //     user: {
+  //       name: "Dennis Nedry",
+  //       avatar: "https://avatar.iran.liara.run/public/boy",
+  //     },
+  //     type: "comment" as const,
+  //     content: "commented on Isla Nublar SOC2 compliance report",
+  //     time: "Last Wednesday at 9:42 AM",
+  //   },
+  // ];
 
   return (
-    <div className="h-full relative w-[calc(100vw - 96px)] md:w[calc(100vw - 240px)]">
-      <Header />
-      
-        <div className="w-full flex justify-center items-start h-[calc(100vh-96px)] p-10 ">
-          <div className="bg-white rounded-lg shadow-md divide-y w-full">
-            {notifications.map((notification, index) => (
+    <div className=" relative w-[calc(100vw - 96px)] md:w[calc(100vw - 240px)]">
+      <div className="w-full flex justify-center items-start h-[calc(100vh-96px)]">
+        <div className=" h-screen bg-white rounded-lg  w-full pt-10">
+          {/* {notifications.map((notification, index) => (
               <NotificationItem key={index} {...notification} />
-            ))}
-          </div>
+            ))} */}
+          <ComingSoon />
         </div>
-     
+      </div>
     </div>
   );
 };

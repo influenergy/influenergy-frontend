@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { creatorApi } from "@/services/api";
+import { userApi } from "@/services/userServices";
 import { useToast } from "@/hooks/use-toast";
 import { CREATOR_QUESTIONS as questions } from "@/constants/questions";
 import { motion } from "framer-motion";
@@ -9,11 +9,20 @@ import { completeQuestionnaire } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { step1Schema, step2Schema, step3Schema } from "@/lib/CreatorSchema";
-import { Step1, Step2, Step3 } from "./CreatorSteps";
+import {
+  step1Schema,
+  step2Schema,
+  step3Schema,
+  step4Schema,
+  step5Schema,
+  step6Schema,
+} from "@/lib/CreatorSchema";
+import { Step } from "./CreatorSteps";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import { AnyObjectSchema } from "yup";
 import { Field } from "@/constants/questions";
+import ReviewStep from "./ReviewStep";
+import { selectUser, useAppSelector } from "@/store";
 
 type StepSchemas = {
   [key in keyof typeof questions]: AnyObjectSchema;
@@ -23,14 +32,19 @@ const schemas: StepSchemas = {
   step1: step1Schema,
   step2: step2Schema,
   step3: step3Schema,
+  step4: step4Schema,
+  step5: step5Schema,
+  step6: step6Schema,
 };
 
 const CreatorQuestionnaire = (): JSX.Element => {
-  const [currentStep, setCurrentStep] =
-    useState<keyof typeof questions>("step1");
+  const [currentStep, setCurrentStep] = useState<
+    keyof typeof questions | "review"
+  >("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const user = useAppSelector(selectUser);
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
     {}
@@ -38,10 +52,25 @@ const CreatorQuestionnaire = (): JSX.Element => {
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
-  const isLastStep = currentStepIndex === steps.length - 1;
+  const isLastStep = currentStep === "review";
 
-  const currentFields = questions[currentStep].fields;
-  const currentSchema = schemas[currentStep];
+  if (!user?._id) {
+    toast({
+      title: "Please login first",
+      description: "You need to be logged in to complete the questionnaire.",
+      variant: "destructive",
+    });
+    router.push("/login");
+  }
+
+  const currentFields =
+    currentStep !== "review"
+      ? questions[currentStep as keyof typeof questions].fields
+      : [];
+  const currentSchema =
+    currentStep !== "review"
+      ? schemas[currentStep as keyof typeof questions]
+      : schemas.step6;
 
   const methods = useForm<CreatorQuestionnaireData>({
     resolver: yupResolver(currentSchema),
@@ -55,88 +84,97 @@ const CreatorQuestionnaire = (): JSX.Element => {
     clearErrors();
   }, [currentStep, clearErrors]);
 
-  const handleNext = useCallback(
-    async (data: Partial<CreatorQuestionnaireData>) => {
-      const {
-        currentStep: step,
-        currentFields: fields,
-        formData: prevData,
-      } = {
-        currentStep,
-        currentFields,
-        formData,
+  const handleNext = useCallback(async () => {
+    const { currentFields: fields, formData: prevData } = {
+      currentFields,
+      formData,
+    };
+
+    try {
+      const stepFields = fields.map((field: Field) => field.slug) as Array<
+        keyof CreatorQuestionnaireData
+      >;
+
+      const isValid = await trigger(stepFields);
+
+      if (!isValid) {
+        return;
+      }
+
+      const currentValues = getValues() as Partial<CreatorQuestionnaireData>;
+      const updatedData = {
+        ...prevData,
+        ...currentValues,
+        // Convert string date to Date object
+        ...(currentValues.dob && {
+          dob: new Date(currentValues.dob),
+        }),
       };
+      setFormData(updatedData);
 
-      try {
-        const stepFields = fields.map((field: Field) => field.slug) as Array<
-          keyof CreatorQuestionnaireData
-        >;
-        const isValid = await trigger(stepFields);
-
-        if (!isValid) {
-          return;
-        }
-
-        const currentValues = getValues() as Partial<CreatorQuestionnaireData>;
-        const updatedData = {
-          ...prevData,
-          ...currentValues,
-          // Convert string date to Date object
-          ...(currentValues.dateOfBirth && {
-            dateOfBirth: new Date(currentValues.dateOfBirth),
-          }),
+      if (currentStepIndex === steps.length - 1) {
+        setCurrentStep("review");
+      } else if (currentStep !== "review") {
+        setCurrentStep(steps[currentStepIndex + 1]);
+      } else {
+        setIsSubmitting(true);
+        // Convert dateOfBirth to ISO string before sending to API
+        const submitData = {
+          ...updatedData,
+          dateOfBirth:
+            updatedData.dob instanceof Date
+              ? updatedData.dob.toISOString()
+              : updatedData.dob,
         };
-        setFormData(updatedData);
-
-        if (!isLastStep) {
-          setCurrentStep(steps[currentStepIndex + 1]);
-        } else {
-          setIsSubmitting(true);
-          // Convert dateOfBirth to ISO string before sending to API
-          const submitData = {
-            ...updatedData,
-            dateOfBirth:
-              updatedData.dateOfBirth instanceof Date
-                ? updatedData.dateOfBirth.toISOString()
-                : updatedData.dateOfBirth,
-          };
-          // await creatorApi.submitQuestionnaire(
-          //   submitData as CreatorQuestionnaireData
-          // );
-          await new Promise((resolve) => setTimeout(resolve, 2000));
+        if (user && user._id) {
+          await userApi.submitQuestionnaire(
+            user._id,
+            submitData as CreatorQuestionnaireData
+          );
           toast({
             title: "Success!",
             description: "Your profile has been updated successfully.",
           });
           dispatch(completeQuestionnaire());
           router.push("/dashboard");
-        }
-      } catch (error) {
-        console.error("Form validation/submission error:", error);
-        if (error instanceof Error) {
+        } else {
+          // handle the case where user._id is undefined
           toast({
+            title: "Please login first",
+            description:
+              "You need to be logged in to complete the questionnaire.",
             variant: "destructive",
-            title: "Error",
-            description: error.message || "Please check all required fields.",
           });
         }
-      } finally {
-        setIsSubmitting(false);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
       }
-    },
-    [
-      currentStep,
-      currentFields,
-      formData,
-      isLastStep,
-      currentStepIndex,
-      steps,
-      router,
-      toast,
-      trigger,
-      getValues,
-    ]
-  );
+    } catch (error) {
+      console.error("Form validation/submission error:", error);
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description:
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (error as any).response?.data?.message ||
+            "Please check all required fields.",
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [
+    currentFields,
+    formData,
+    isLastStep,
+    currentStepIndex,
+    steps,
+    router,
+    toast,
+    trigger,
+    getValues,
+    dispatch,
+  ]);
 
   const handlePrevious = useCallback(() => {
     if (currentStepIndex > 0) {
@@ -145,74 +183,105 @@ const CreatorQuestionnaire = (): JSX.Element => {
   }, [currentStepIndex, steps]);
 
   const renderStepComponent = useCallback(() => {
-    switch (currentStep) {
-      case "step1":
-        return <Step1 fields={currentFields} />;
-      case "step2":
-        return <Step2 fields={currentFields} />;
-      case "step3":
-        return <Step3 fields={currentFields} />;
-      default:
-        return null;
-    }
+    return <Step fields={currentFields} />;
   }, [currentStep, currentFields]);
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(handleNext)}
-        className="max-w-5xl w-full h-screen p-6 flex flex-col items-center justify-evenly"
-      >
-        <div className="mb-8 flex flex-col items-center">
-          <h2 className="text-2xl font-bold mb-2">
-            {questions[currentStep].title}
-          </h2>
-          <p className="text-gray-600">{questions[currentStep].description}</p>
-          <div className="mt-4 text-sm text-gray-500">
-            Step {currentStepIndex + 1} of {steps.length}
-          </div>
+    <>
+      {currentStep === "review" ? (
+        <div className="flex flex-col w-full">
+          <FormProvider {...methods}>
+            <ReviewStep
+              onBack={() => setCurrentStep(steps[steps.length - 1])}
+              onEdit={(step) => setCurrentStep(steps[step - 1])}
+            />
+            <div className="my-3 flex justify-center items-center max-w-5xl mx-auto w-full gap-4">
+              <Button
+                variant="outline"
+                onClick={() => setCurrentStep(steps[steps.length - 1])}
+                className="p-6  rounded-lg border-primary text-primary"
+                type="button"
+                disabled={isSubmitting}
+              >
+                Previous
+              </Button>
+
+              <Button
+                className="ml-auto p-6   bg-primary text-white rounded-lg"
+                type="submit"
+                disabled={isSubmitting}
+                onClick={handleSubmit(handleNext)}
+              >
+                {!isSubmitting ? "Complete Profile" : "Submitting..."}
+              </Button>
+            </div>
+          </FormProvider>
         </div>
-
-        <motion.div
-          key={currentStep}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          className="w-full"
-        >
-          {renderStepComponent()}
-        </motion.div>
-
-        <div className="mt-8 flex justify-between w-full gap-4">
-          {currentStepIndex > 0 ? (
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              className="px-6 py-5 w-full rounded-lg"
-              type="button"
-            >
-              Previous
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              className="px-6 py-5 w-full rounded-lg"
-              type="button"
-              onClick={() => router.push("/dashboard")}
-            >
-              Skip
-            </Button>
-          )}
-          <Button
-            className="ml-auto px-6 py-5 bg-primary w-full rounded-lg"
-            type="submit"
-            disabled={isSubmitting}
+      ) : (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(handleNext)}
+            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly"
           >
-            {isLastStep ? (isSubmitting ? "Submitting..." : "Submit") : "Next"}
-          </Button>
-        </div>
-      </form>
-    </FormProvider>
+            <div className="mb-8 flex flex-col items-center">
+              <h2 className="text-2xl font-bold mb-2">
+                Lets Create Your Profile
+              </h2>
+              <p className="text-gray-600">
+                In order to match you with the right brands, we need a few more
+                details
+              </p>
+              <div className="mt-4 text-sm text-gray-500">
+                Step {currentStepIndex + 1} of {steps.length}
+              </div>
+            </div>
+
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              className="w-full"
+            >
+              {renderStepComponent()}
+            </motion.div>
+
+            <div className="mt-8 flex justify-between w-full gap-4">
+              {currentStepIndex > 0 ? (
+                <Button
+                  variant="outline"
+                  onClick={handlePrevious}
+                  className="px-6 py-5 w-full rounded-lg"
+                  type="button"
+                >
+                  Previous
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  className="px-6 py-5 w-full rounded-lg"
+                  type="button"
+                  onClick={() => router.push("/dashboard")}
+                >
+                  Skip
+                </Button>
+              )}
+              <Button
+                className="ml-auto px-6 py-5 bg-primary w-full rounded-lg"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isLastStep
+                  ? isSubmitting
+                    ? "Submitting..."
+                    : "Submit"
+                  : "Next"}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
+      )}
+    </>
   );
 };
 

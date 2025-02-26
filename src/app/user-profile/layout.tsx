@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import UserProfileLayout from "./UserProfileLayout";
+import Header from "@/components/dashboard/Header";
 
 export const metadata: Metadata = {
   title: "Influenergy Demo",
@@ -11,5 +12,10 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <UserProfileLayout>{children}</UserProfileLayout>;
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <UserProfileLayout>{children}</UserProfileLayout>
+    </div>
+  );
 }

@@ -9,10 +9,18 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type CreatorType = "ugc" | "influencer";
 
+interface Creator {
+  id: string;
+  name: string;
+  image?: string;
+  followers?: number;
+  category?: string;
+}
+
 interface CreatorSection {
   type: CreatorType;
   title: string;
-  data: any[];
+  data: Creator[];
 }
 
 const CreatorsList = ({ type, title, data }: CreatorSection) => (

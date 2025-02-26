@@ -1,11 +1,10 @@
-import React from "react";
 import { cn } from "@/lib/utils";
 
 interface CardSkeletonProps {
   className?: string;
 }
 
-const CardSkeleton = ({ className }: CardSkeletonProps) => {
+export default function CardSkeleton({ className }: CardSkeletonProps) {
   return (
     <div
       className={cn(
@@ -38,6 +37,4 @@ const CardSkeleton = ({ className }: CardSkeletonProps) => {
       <div className="absolute inset-0 -translate-x-full animate-[shimmer_1s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </div>
   );
-};
-
-export default CardSkeleton;
+}

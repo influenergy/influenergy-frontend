@@ -1,38 +1,39 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { socialSchema } from "@/lib/SocialSchema";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+// import { Button } from "@/components/ui/button";
+// import { socialSchema } from "@/lib/SocialSchema";
+// import { useForm } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as yup from "yup";
 import { motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
+// import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { SocialLinkInput } from "@/components/userProfile/SocialLinkInput";
+// import { SocialLinkInput } from "@/components/userProfile/SocialLinkInput";
+import ComingSoon from "@/components/common/ComingSoon";
 
-type ProfileFormData = yup.InferType<typeof socialSchema>;
+// type ProfileFormData = yup.InferType<typeof socialSchema>;
 
 export default function Page() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<ProfileFormData>({
-    resolver: yupResolver(socialSchema),
-  });
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors, isSubmitting },
+  // } = useForm<ProfileFormData>({
+  //   resolver: yupResolver(socialSchema),
+  // });
 
-  const onSubmit = async (data: ProfileFormData) => {
-    try {
-      console.log(data);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // Add your API call here
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const onSubmit = async (data: ProfileFormData) => {
+  //   try {
+  //     console.log(data);
+  //     await new Promise((resolve) => setTimeout(resolve, 2000));
+  //     // Add your API call here
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className="h-screen relative overflow-hidden">
-      <div className="max-w-4xl mx-auto mt-10">
+      {/* <div className="max-w-4xl mx-auto mt-10">
         <div className="space-y-4 mb-8">
           <h1 className="text-2xl md:text-3xl font-semibold text-center">
             Linked Accounts
@@ -72,7 +73,8 @@ export default function Page() {
             </Button>
           </div>
         </form>
-      </div>
+      </div> */}
+      <ComingSoon/>
       {/* Decorative left lines  */}
       <motion.div
         className="absolute -bottom-5 -left-24 hidden md:block w-[300px] lg:w-[400px]"

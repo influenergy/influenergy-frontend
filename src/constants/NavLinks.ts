@@ -93,11 +93,11 @@ const creatorProfileNav: NavItem[] = [
     icon: Settings,
     label: "Account Settings",
   },
-  {
-    href: "/user-profile/profile",
-    icon: PenLine,
-    label: "Complete Profile",
-  },
+  // {
+  //   href: "/user-profile/profile",
+  //   icon: PenLine,
+  //   label: "Complete Profile",
+  // },
   {
     href: "/user-profile/socials",
     icon: Link,
