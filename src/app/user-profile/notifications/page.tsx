@@ -77,9 +77,9 @@ const NotificationsPage = () => {
   // ];
 
   return (
-    <div className="h-full relative w-[calc(100vw - 96px)] md:w[calc(100vw - 240px)]">
+    <div className=" relative w-[calc(100vw - 96px)] md:w[calc(100vw - 240px)]">
       <div className="w-full flex justify-center items-start h-[calc(100vh-96px)]">
-        <div className="bg-white rounded-lg  w-full pt-10">
+        <div className=" h-screen bg-white rounded-lg  w-full pt-10">
           {/* {notifications.map((notification, index) => (
               <NotificationItem key={index} {...notification} />
             ))} */}
