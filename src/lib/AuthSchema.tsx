@@ -35,5 +35,5 @@ export const registerSchema = yup.object({
 export const loginSchema = yup.object({
   email: yup.string().email('Invalid email').required('Required'),
   password: yup.string().min(6, 'Minimum 6 characters').required('Required'),
-  // userType: yup.string().oneOf(['creator', 'brand']).required()
+  userType: yup.string().oneOf(['creator', 'brand']).required()
 });

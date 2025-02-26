@@ -15,6 +15,8 @@ export interface CreatorQuestionnaireData {
   "primary-followers": string;
   "secondary-social-media": string;
   "secondary-followers": string;
+  "primary-social-media-followers":string;
+  "secondary-social-media-followers":string;
 
   // Step 4
   "primary-social-media-link": string;

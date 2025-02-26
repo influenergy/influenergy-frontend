@@ -138,7 +138,7 @@ export const step4Schema = yup.object().shape({
     .min(1000, "Must have at least 1000 followers")
     .typeError("Number of followers must be a number")
     .required("Number of followers is required"),
-}) as Schema;
+}) as unknown as Schema;
 
 export const step5Schema = yup.object().shape({
   "growth-rate": yup
