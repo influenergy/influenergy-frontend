@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect } from "react";
 // import { brandApi } from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
-import { BRAND_QUESTIONS as questions } from "@/constants/questions";
+import { CREATOR_QUESTIONS as questions } from "@/constants/questions";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
