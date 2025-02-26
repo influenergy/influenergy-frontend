@@ -1,12 +1,18 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteModal from "@/components/userProfile/DeleteModal";
 import ProfileActions from "@/components/userProfile/ProfileActions";
+import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { Info, PenLine } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
+import { selectUser, useAppSelector } from "@/store";
 
 export default function Page() {
+  const user = useAppSelector(selectUser);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   return (
     <div className="h-full flex flex-col items-center">
       <div className="w-full h-full px-4 sm:px-8 pt-5">
@@ -15,7 +21,7 @@ export default function Page() {
           <p>Edit Profile</p>
           <div className="relative">
             <Image
-              src="https://avatar.iran.liara.run/public/boy"
+              src={user?.image || "https://avatar.iran.liara.run/public/boy"}
               alt="logo"
               width={70}
               height={70}
@@ -30,28 +36,30 @@ export default function Page() {
         <div className="border w-full mt-10 rounded-xl py-3 px-4 sm:px-7">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
             <p>Personal Info</p>
-            <Link
-              href="/user-profile/profile"
+            <button
+              onClick={() => setIsEditModalOpen(true)}
               className="flex items-center gap-2 rounded-xl text-md w-full sm:w-auto hover:text-primary transition-colors border py-1 px-3"
             >
               <PenLine size={20} />
               Edit
-            </Link>
+            </button>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-start md:justify-between items-start sm:items-center gap-4 mt-4 sm:space-x-5">
             <div className="w-full sm:w-auto">
               <Label className="text-sm font-light">Name</Label>
-              <p className="text-lg">John Doe</p>
+              <p className="text-lg">{user?.fullName || "Not Available"}</p>
             </div>
             <div className="w-full sm:w-auto">
               <Label className="text-sm font-light">Email</Label>
-              <p className="text-lg break-all">johndoe@gmail.com</p>
+              <p className="text-lg break-all">
+                {user?.email || "Not Available"}
+              </p>
             </div>
-            <div className="w-full sm:w-auto">
+            {/* <div className="w-full sm:w-auto">
               <p className="text-sm font-light">Phone</p>
               <p className="text-lg">911234567890</p>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -72,6 +80,10 @@ export default function Page() {
           <Info size={24} className="text-red-600 shrink-0" />
         </div>
       </div>
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
     </div>
   );
 }
