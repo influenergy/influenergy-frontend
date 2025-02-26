@@ -8,10 +8,71 @@ import { Info, PenLine } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { selectUser, useAppSelector } from "@/store";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/store/features/authSlice";
+import { useToast } from "@/hooks/use-toast";
+import { userApi } from "@/services/userServices";
 
 export default function Page() {
   const user = useAppSelector(selectUser);
+  const dispatch = useDispatch();
+  const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type and size
+    const validTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (!validTypes.includes(file.type)) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a JPEG or PNG image",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
+      toast({
+        title: "File too large",
+        description: "Please upload an image smaller than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append("photo", file);
+
+      const response = await userApi.updateProfile(formData);
+
+      // Update Redux state with new image URL
+      dispatch(
+        setCredentials({
+          user: { ...user, image: response.data.profileIcon },
+        })
+      );
+
+      toast({
+        title: "Success",
+        description: "Profile image updated successfully",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   return (
     <div className="h-full flex flex-col items-center">
@@ -25,9 +86,44 @@ export default function Page() {
               alt="logo"
               width={70}
               height={70}
-              className="w-full h-full object-cover"
+              className={`w-full h-full object-cover rounded-full ${
+                isUploading ? "opacity-50" : ""
+              }`}
             />
             <ProfileActions />
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/png, image/jpeg"
+              className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+              onChange={handleImageUpload}
+              disabled={isUploading}
+            />
+            {isUploading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <svg
+                  className="animate-spin h-5 w-5 text-primary"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              </div>
+            )}
           </div>
           <DeleteModal />
         </div>

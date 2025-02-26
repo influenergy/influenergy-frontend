@@ -1,12 +1,16 @@
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import { api } from "./api";
 
-interface ProfileFormData {
-  name: string;
-  email: string;
+
+interface UpdateProfileData {
+  fullName?: string;
+  photo?: File;
 }
 
-const transformQuestionnaireData = (formData:CreatorQuestionnaireData, id:string) => {
+const transformQuestionnaireData = (
+  formData: CreatorQuestionnaireData,
+  id: string
+) => {
   const transformedData = {
     fullName: formData["full-name"],
     stageName: formData["stage-name"],
@@ -53,8 +57,13 @@ export const userApi = {
     const response = await api.get(`/creator/profile/${id}`);
     return response.data;
   },
-  updateProfile: async (id: string, formData: ProfileFormData) => {
-    const response = await api.put("/creator/profile", formData);
+  updateProfile: async (data: UpdateProfileData | FormData) => {
+    const isFormData = data instanceof FormData;
+    const response = await api.put(`/creator/update`, data, {
+      headers: {
+        "Content-Type": isFormData ? "multipart/form-data" : "application/json",
+      },
+    });
     return response.data;
   },
   submitQuestionnaire: async (

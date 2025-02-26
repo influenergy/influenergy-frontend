@@ -8,6 +8,12 @@ const nextConfig = {
             port: '',
             pathname: '/public/**',
           },
+          {
+            protocol: 'https',
+            hostname: 'influenergy.s3.ap-south-1.amazonaws.com',
+            port: '',
+            pathname: '/creators/**',
+          },
         ],
       },
 };

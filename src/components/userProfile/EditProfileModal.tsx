@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
 import { selectUser, useAppSelector } from "@/store";
-import { authApi } from "@/services/authServices";
+import { userApi } from "@/services/userServices";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
     setIsLoading(true);
 
     try {
-      await authApi.updateProfile(user?._id as string, {
+      await userApi.updateProfile({
         fullName: name,
       });
 

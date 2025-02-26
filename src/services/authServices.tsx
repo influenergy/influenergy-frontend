@@ -12,9 +12,7 @@ interface RegisterUserData {
   password: string;
 }
 
-interface UpdateProfileData {
-  fullName: string;
-}
+
 
 export const authApi = {
   login: async (credentials: LoginCredentials) => {
@@ -37,10 +35,6 @@ export const authApi = {
   },
   verifyEmail: async (token: string) => {
     const response = await api.get(`/creator/verify-email/${token}`);
-    return response.data;
-  },
-  updateProfile: async (id: string, data: UpdateProfileData) => {
-    const response = await api.put(`/creator/update`, data);
     return response.data;
   },
 };
