@@ -1,24 +1,27 @@
-"use client";
-import CardSkeleton from "@/components/common/CardSkeleton";
-import React, { useEffect, useState } from "react";
-import PostCard from "@/components/common/PostCard";
+// "use client";
+// import CardSkeleton from "@/components/common/CardSkeleton";
+// import React, { useEffect, useState } from "react";11
+// import PostCard from "@/components/common/PostCard";
+import ComingSoon from "@/components/common/ComingSoon";
 
 const Page = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 2000);
+  // }, []);
 
   return (
     <div className="p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {isLoading
+        {/* {isLoading
           ? [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
-          : [...Array(10)].map((_, i) => <PostCard key={i} />)}
+          : [...Array(10)].map((_, i) => <PostCard key={i} />)} */}
+
       </div>
+          <ComingSoon/>
     </div>
   );
 };
