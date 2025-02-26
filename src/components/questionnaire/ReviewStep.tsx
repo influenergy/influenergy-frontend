@@ -15,8 +15,8 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
   const { watch } = useFormContext<CreatorQuestionnaireData>();
   const formData = watch();
 
-  const sections = Object.entries(questions).map(([key, step], index) => {
-    console.log("key", key);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const sections = Object.entries(questions).map(([_, step], index) => {
     return {
       title: step.title || `Step ${index + 1}`,
       icon: step.icon,
