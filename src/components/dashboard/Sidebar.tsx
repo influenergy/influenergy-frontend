@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown, Settings } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/constants/NavLinks";
@@ -103,7 +103,7 @@ export default function Sidebar({ type }: { type: string }) {
         </nav>
 
         {/* Settings button */}
-        <div className="mt-auto">
+        {/* <div className="mt-auto">
           <Link href="/dashboard/settings">
             <Button
               variant="ghost"
@@ -116,7 +116,7 @@ export default function Sidebar({ type }: { type: string }) {
               <p className="text-sm md:block hidden">Settings</p>
             </Button>
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );
