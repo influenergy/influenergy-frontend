@@ -13,9 +13,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { loginSchema } from "@/lib/AuthSchema";
 import { LoginFormInput } from "./FormInput";
-import { useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { authApi } from "@/services/authServices";
 import { useToast } from "@/hooks/use-toast";
+import { setCredentials } from "@/store/features/authSlice";
 // import { authApi } from "@/services/api";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
@@ -23,9 +24,9 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 export default function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const userType = useAppSelector((state) => state.auth.userType);
-  
   if (!userType) {
     router.push("/");
   }
@@ -35,19 +36,26 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: yupResolver(loginSchema)
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      userType: userType as "creator" | "brand",
+    },
   });
-  // console.log('errors',errors)
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {
-      // console.log(data);
-      // return Promise.resolve();
       return authApi.login(data);
     },
-    onSuccess: () => {
-      // console.log(data);
-      router.push(`/dashboard`);
+    onSuccess: (data) => {
+      if (userType !== null) {
+        dispatch(
+          setCredentials({
+            user: data?.data,
+            // token: data?.data?.token,
+          })
+        );
+        router.push(`/dashboard`);
+      }
     },
     onError: (error: Error) => {
       console.error("Login error:", error);
@@ -62,7 +70,6 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    console.log('data',data)
     loginMutation.mutate(data);
   };
 
@@ -150,13 +157,13 @@ export default function LoginForm() {
                   Password
                 </Label>
                 <LoginFormInput
-                  type={showPassword ? "text" : "password"}
+                  type={!showPassword ? "text" : "password"}
                   placeholder="Enter Password"
                   register={register}
                   name="password"
                   error={errors.password}
                   icon={
-                    !showPassword ? (
+                    showPassword ? (
                       <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
                     ) : (
                       <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
