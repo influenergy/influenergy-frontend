@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,15 +13,19 @@ import Image from "next/image";
 import { useState } from "react";
 import { loginSchema } from "@/lib/AuthSchema";
 import { LoginFormInput } from "./FormInput";
+import { useAppSelector } from "@/store";
+import { authApi } from "@/services/authServices";
+import { useToast } from "@/hooks/use-toast";
 // import { authApi } from "@/services/api";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export default function LoginForm() {
   const router = useRouter();
+  const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const userType = useAppSelector((state) => state.auth.userType);
   
-  const userType = useSearchParams().get("role");
   if (!userType) {
     router.push("/");
   }
@@ -31,25 +35,34 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: yupResolver(loginSchema),
-    defaultValues: {
-      userType: userType as "creator" | "brand",
-    },
+    resolver: yupResolver(loginSchema)
   });
+  // console.log('errors',errors)
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {
-      console.log(data);
-      return Promise.resolve();
-      // return authApi.login(data);
+      // console.log(data);
+      // return Promise.resolve();
+      return authApi.login(data);
     },
-    onSuccess: (data) => {
-      console.log(data);
-      router.push(`/questionnaire?role=${userType}`);
+    onSuccess: () => {
+      // console.log(data);
+      router.push(`/dashboard`);
+    },
+    onError: (error: Error) => {
+      console.error("Login error:", error);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description:
+          (error as { response?: { data?: { message?: string } } })?.response
+            ?.data?.message || "Failed to register. Please try again.",
+      });
     },
   });
 
   const onSubmit = (data: LoginFormData) => {
+    console.log('data',data)
     loginMutation.mutate(data);
   };
 
@@ -143,7 +156,7 @@ export default function LoginForm() {
                   name="password"
                   error={errors.password}
                   icon={
-                    showPassword ? (
+                    !showPassword ? (
                       <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
                     ) : (
                       <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />

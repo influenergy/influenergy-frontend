@@ -1,19 +1,7 @@
-import { BrandQuestionnaireData } from "@/types/Questionnaire";
+import { BrandQuestionnaireData, QuestionnaireData } from "@/types/Questionnaire";
 import axios from "axios";
 
-export interface QuestionnaireData {
-  gender: string;
-  "Your City": string;
-  "Date of Birth": string;
-  "Phone Number": number;
-  categories: string;
-  "What type of content do you enjoy creating the most?": string;
-  "What tools and platforms do you use for content creation?": string;
-  "What is your target audience?": string;
-  "What are your content creation goals?": string;
-}
-
-const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/";
+const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/v1/api";
 
 export const api = axios.create({
   baseURL,
@@ -23,13 +11,34 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => { 
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // console.log('errors',error)
+    if (error.response) {
+      // Handle unauthorized access
+      if (error.response.status === 401) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+      
+      // Handle rate limiting
+      if (error.response.status === 429) {
+        // You might want to implement retry logic or show a user-friendly message
+        console.error("Too many requests. Please try again later.");
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const creatorApi = {
   submitQuestionnaire: async (formData: QuestionnaireData) => {
@@ -38,25 +47,6 @@ export const creatorApi = {
   },
 };
 
-export const authApi = {
-  login: async (credentials: { email: string; password: string }) => {
-    const response = await api.post("/login", credentials);
-    return response.data;
-  },
-  register: async (userData: {
-    fullName: string;
-    email: string;
-    password: string;
-    userType: string;
-  }) => {
-    const response = await api.post("/signup", userData);
-    return response.data;
-  },
-  logout: async () => {
-    const response = await api.post("/logout");
-    return response.data;
-  },
-};
 
 export const brandApi = {
   submitQuestionnaire: async (data: BrandQuestionnaireData) => {
@@ -67,4 +57,4 @@ export const brandApi = {
       throw error;
     }
   },
-};
+}

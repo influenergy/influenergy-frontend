@@ -13,18 +13,17 @@ import { Checkbox } from "../ui/checkbox";
 import { motion } from "framer-motion";
 import { registerSchema } from "@/lib/AuthSchema";
 import { RegisterFormInput } from "./FormInput";
-import { authApi } from "@/services/api";
+import { useToast } from "@/hooks/use-toast";
 import { useAppSelector } from "@/store";
+import { authApi } from "@/services/authServices";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 export default function RegisterForm() {
   const router = useRouter();
+  const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const userType = useAppSelector((state) => state.auth.userType);
-  if (!userType) {
-    router.push("/");
-  }
 
   const {
     register,
@@ -37,25 +36,38 @@ export default function RegisterForm() {
   });
 
   const registerMutation = useMutation({
-    mutationFn: (data: RegisterFormData) => {
-      // return Promise.resolve();
-
+    mutationFn: async (data: RegisterFormData) => {
+      if (!authApi?.register) {
+        throw new Error("Registration service is not available");
+      }
       return authApi.register({
         fullName: data.fullName,
         email: data.email,
-        password: data.password,
-        userType: userType!,
+        password: data.password
       });
     },
     onSuccess: (data) => {
-      console.log(data);
+      console.log("Registration successful:", data);
+      toast({
+        title: "Success!",
+        description: "Registration successful. Please verify your email.",
+      });
       router.push("/verify-email");
+    },
+    onError: (error: Error) => {
+      console.error("Registration error:", error);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description:
+          (error as { response?: { data?: { message?: string } } })?.response
+            ?.data?.message || "Failed to register. Please try again.",
+      });
     },
   });
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      console.log("Form submission started", data);
       await registerMutation.mutateAsync(data);
     } catch (error) {
       console.error("Form submission error:", error);
