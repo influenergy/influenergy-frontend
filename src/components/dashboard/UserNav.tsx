@@ -14,10 +14,12 @@ import {
 import { useAppDispatch } from "@/store";
 import { logout } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
+import { selectUser, useAppSelector } from "@/store";
 
 export function UserNav() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const  user  = useAppSelector(selectUser);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -40,9 +42,11 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">John Doe</p>
+            <p className="text-sm font-medium leading-none">
+              {user?.fullName || "Not available"}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">
-              john@example.com
+              {user?.email || "Not available"}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -51,11 +55,11 @@ export function UserNav() {
           <DropdownMenuItem onClick={() => router.push("/user-profile")}>
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => router.push("/user-profile/settings")}
           >
             Settings
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
