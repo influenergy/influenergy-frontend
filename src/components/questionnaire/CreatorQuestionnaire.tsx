@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-// import { creatorApi } from "@/services/api";
+import { userApi } from "@/services/userServices";
 import { useToast } from "@/hooks/use-toast";
 import { CREATOR_QUESTIONS as questions } from "@/constants/questions";
 import { motion } from "framer-motion";
@@ -22,6 +22,7 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import { AnyObjectSchema } from "yup";
 import { Field } from "@/constants/questions";
 import ReviewStep from "./ReviewStep";
+import { selectUser, useAppSelector } from "@/store";
 
 type StepSchemas = {
   [key in keyof typeof questions]: AnyObjectSchema;
@@ -43,6 +44,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const user = useAppSelector(selectUser);
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
     {}
@@ -51,6 +53,15 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
   const isLastStep = currentStep === "review";
+
+  if (!user?._id) {
+    toast({
+      title: "Please login first",
+      description: "You need to be logged in to complete the questionnaire.",
+      variant: "destructive",
+    });
+    router.push("/login");
+  }
 
   const currentFields =
     currentStep !== "review"
@@ -74,16 +85,10 @@ const CreatorQuestionnaire = (): JSX.Element => {
   }, [currentStep, clearErrors]);
 
   const handleNext = useCallback(async () => {
-    const {
-      currentFields: fields,
-      formData: prevData,
-      currentStep: step,
-    } = {
-      currentStep,
+    const { currentFields: fields, formData: prevData } = {
       currentFields,
       formData,
     };
-    console.log("step", step);
 
     try {
       const stepFields = fields.map((field: Field) => field.slug) as Array<
@@ -121,17 +126,27 @@ const CreatorQuestionnaire = (): JSX.Element => {
               ? updatedData.dob.toISOString()
               : updatedData.dob,
         };
-        console.log("submitData", submitData);
-        // await creatorApi.submitQuestionnaire(
-        //   submitData as CreatorQuestionnaireData
-        // );
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        toast({
-          title: "Success!",
-          description: "Your profile has been updated successfully.",
-        });
-        dispatch(completeQuestionnaire());
-        router.push("/dashboard");
+        if (user && user._id) {
+          await userApi.submitQuestionnaire(
+            user._id,
+            submitData as CreatorQuestionnaireData
+          );
+          toast({
+            title: "Success!",
+            description: "Your profile has been updated successfully.",
+          });
+          dispatch(completeQuestionnaire());
+          router.push("/dashboard");
+        } else {
+          // handle the case where user._id is undefined
+          toast({
+            title: "Please login first",
+            description:
+              "You need to be logged in to complete the questionnaire.",
+            variant: "destructive",
+          });
+        }
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {
       console.error("Form validation/submission error:", error);
@@ -139,14 +154,16 @@ const CreatorQuestionnaire = (): JSX.Element => {
         toast({
           variant: "destructive",
           title: "Error",
-          description: error.message || "Please check all required fields.",
+          description:
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (error as any).response?.data?.message ||
+            "Please check all required fields.",
         });
       }
     } finally {
       setIsSubmitting(false);
     }
   }, [
-    currentStep,
     currentFields,
     formData,
     isLastStep,
@@ -184,6 +201,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
                 onClick={() => setCurrentStep(steps[steps.length - 1])}
                 className="p-6  rounded-lg border-primary text-primary"
                 type="button"
+                disabled={isSubmitting}
               >
                 Previous
               </Button>
