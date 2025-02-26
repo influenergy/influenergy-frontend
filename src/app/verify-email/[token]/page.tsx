@@ -32,6 +32,8 @@ export default function VerificationComplete() {
     queryFn: () => authApi.verifyEmail(token as string),
     enabled: !!token,
     retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
 
