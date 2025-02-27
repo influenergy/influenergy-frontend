@@ -15,13 +15,15 @@ import { useAppDispatch } from "@/store";
 import { logout } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { selectUser, useAppSelector } from "@/store";
+import { authApi } from "@/services/authServices";
 
 export function UserNav() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const  user  = useAppSelector(selectUser);
+  const user = useAppSelector(selectUser);
 
   const handleLogout = () => {
+    authApi.logout();
     dispatch(logout());
     router.push("/login");
   };
