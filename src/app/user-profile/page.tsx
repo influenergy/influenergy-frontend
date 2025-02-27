@@ -58,7 +58,7 @@ export default function Page() {
         setCredentials({
           user: {
             ...user,
-            image: response.data.profileIcon,
+            profileIcon: response.data.profileIcon,
             isProfileCompleted: user?.isProfileCompleted ?? false,
             isEmailVerified: user?.isEmailVerified ?? false,
           },
