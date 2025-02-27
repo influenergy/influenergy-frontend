@@ -1,35 +1,30 @@
-import { loginSchema, registerSchema } from "@/lib/AuthSchema";
-import { FieldError, UseFormRegister } from "react-hook-form";
+import { FieldError, UseFormRegister, Path } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
-import * as yup from "yup";
 
-type RegisterFormData = yup.InferType<typeof registerSchema>;
-type LoginFormData = yup.InferType<typeof loginSchema>;
-
-interface RegisterFormProps {
+interface RegisterFormProps<T extends object> {
   type: string;
   placeholder: string;
-  register: UseFormRegister<RegisterFormData>;
-  name: keyof RegisterFormData;
+  register: UseFormRegister<T>;
+  name: Path<T>;
   error?: FieldError;
   icon: React.ReactNode;
   showPassword?: boolean;
   onTogglePassword?: () => void;
 }
 
-interface LoginFormProps {
+interface LoginFormProps<T extends object> {
   type: string;
   placeholder: string;
-  register: UseFormRegister<LoginFormData>;
-  name: keyof LoginFormData;
+  register: UseFormRegister<T>;
+  name: Path<T>;
   error?: FieldError;
   icon: React.ReactNode;
   showPassword?: boolean;
   onTogglePassword?: () => void;
 }
 
-export const RegisterFormInput = ({
+export const RegisterFormInput = <T extends object>({
   type,
   placeholder,
   register,
@@ -37,7 +32,7 @@ export const RegisterFormInput = ({
   error,
   icon,
   onTogglePassword,
-}: RegisterFormProps) => (
+}: RegisterFormProps<T>) => (
   <div className="space-y-2 relative">
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -76,7 +71,7 @@ export const RegisterFormInput = ({
   </div>
 );
 
-export const LoginFormInput = ({
+export const LoginFormInput = <T extends object>({
   type,
   placeholder,
   register,
@@ -85,7 +80,7 @@ export const LoginFormInput = ({
   icon,
   showPassword,
   onTogglePassword,
-}: LoginFormProps) => (
+}: LoginFormProps<T>) => (
   <div className="space-y-2">
     <motion.div
       initial={{ opacity: 0, y: 20 }}

@@ -2,55 +2,58 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader2, Mail, UserRound } from "lucide-react";
+import { Globe, Loader2, Mail, UserRound } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { motion } from "framer-motion";
-import { registerSchema } from "@/lib/AuthSchema";
+import { brandRegisterSchema } from "@/lib/AuthSchema";
 import { RegisterFormInput } from "./FormInput";
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/authServices";
 
-type RegisterFormData = yup.InferType<typeof registerSchema>;
+type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
 
-export default function RegisterForm({userType}: {userType: string}) {
-  const router = useRouter();
+export default function BrandRegisterForm({ userType }: { userType: string }) {
   const { toast } = useToast();
-  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
-  } = useForm<RegisterFormData>({
-    resolver: yupResolver(registerSchema),
+  } = useForm<BrandRegisterFormData>({
+    resolver: yupResolver(brandRegisterSchema),
+    defaultValues: {
+      companyName: "",
+      companyWebsite: "",
+    },
   });
 
   const registerMutation = useMutation({
-    mutationFn: async (data: RegisterFormData) => {
-      if (!authApi?.creatorRegister) {
+    mutationFn: async (data: BrandRegisterFormData) => {
+      if (!authApi?.brandRegister) {
         throw new Error("Registration service is not available");
       }
-      return authApi.creatorRegister({
+      return authApi.brandRegister({
         fullName: data.fullName,
-        email: data.email,
-        password: data.password
+        companyEmail: data.companyEmail,
+        companyName: data.companyName || "",
+        companyWebsite: data.companyWebsite || "",
       });
     },
     onSuccess: (data) => {
       console.log("Registration successful:", data);
       toast({
-        title: "Success!",
-        description: "Registration successful. Please verify your email.",
+        title: "Registration successful 🎉",
+        description: "We will verify your details and get back to you soon. 😀",
       });
-      router.push("/verify-email");
+      reset();
+      //   router.push("/verify-email");
     },
     onError: (error: Error) => {
       console.error("Registration error:", error);
@@ -64,7 +67,7 @@ export default function RegisterForm({userType}: {userType: string}) {
     },
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const onSubmit = async (data: BrandRegisterFormData) => {
     try {
       await registerMutation.mutateAsync(data);
     } catch (error) {
@@ -133,7 +136,7 @@ export default function RegisterForm({userType}: {userType: string}) {
             >
               <RegisterFormInput
                 type="text"
-                placeholder="Full Name"
+                placeholder="Full Name*"
                 register={register}
                 name="fullName"
                 error={errors.fullName}
@@ -141,46 +144,30 @@ export default function RegisterForm({userType}: {userType: string}) {
               />
 
               <RegisterFormInput
-                type="email"
-                placeholder="Email Address"
+                type="text"
+                placeholder="Company Name"
                 register={register}
-                name="email"
-                error={errors.email}
+                name="companyName"
+                error={errors.companyName}
+                icon={<UserRound className="h-5 w-5 sm:h-6 sm:w-6" />}
+              />
+
+              <RegisterFormInput
+                type="email"
+                placeholder="Company Email Address*"
+                register={register}
+                name="companyEmail"
+                error={errors.companyEmail}
                 icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
               />
 
               <RegisterFormInput
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                type="text"
+                placeholder="Company Website"
                 register={register}
-                name="password"
-                error={errors.password}
-                icon={
-                  showPassword ? (
-                    <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-                  ) : (
-                    <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-                  )
-                }
-                showPassword={showPassword}
-                onTogglePassword={() => setShowPassword(!showPassword)}
-              />
-
-              <RegisterFormInput
-                type={showPassword ? "text" : "password"}
-                placeholder="Confirm Password"
-                register={register}
-                name="confirmPassword"
-                error={errors.confirmPassword}
-                icon={
-                  showPassword ? (
-                    <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-                  ) : (
-                    <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-                  )
-                }
-                showPassword={showPassword}
-                onTogglePassword={() => setShowPassword(!showPassword)}
+                name="companyWebsite"
+                error={errors.companyWebsite}
+                icon={<Globe className="h-5 w-5 sm:h-6 sm:w-6" />}
               />
 
               <motion.div
