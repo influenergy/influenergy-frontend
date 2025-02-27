@@ -22,8 +22,8 @@ export function UserNav() {
   const router = useRouter();
   const user = useAppSelector(selectUser);
 
-  const handleLogout = () => {
-    authApi.logout();
+  const handleLogout = async() => {
+    await authApi.logout();
     dispatch(logout());
     router.push("/login");
   };
