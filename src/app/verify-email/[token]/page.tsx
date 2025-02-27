@@ -114,7 +114,7 @@ export default function VerificationComplete() {
       initial="hidden"
       animate="visible"
     >
-      {!error && data?.success ? (
+      {!error && data?.status ? (
         // Success UI
         <>
           <motion.div
