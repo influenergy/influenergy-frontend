@@ -12,6 +12,13 @@ interface RegisterUserData {
   password: string;
 }
 
+interface BrandUserData {
+  fullName: string;
+  companyName?: string;
+  companyEmail:string;
+  companyWebsite?: string;
+}
+
 
 
 export const authApi = {
@@ -19,7 +26,11 @@ export const authApi = {
     const response = await api.post("/login", credentials);
     return response.data;
   },
-  register: async (userData: RegisterUserData) => {
+  brandRegister: async (userData: BrandUserData) => {
+    const response = await api.post("/brand/register", userData);
+    return response.data;
+  },
+  creatorRegister: async (userData: RegisterUserData) => {
     const response = await api.post("/creator/register", userData);
     return response.data;
   },

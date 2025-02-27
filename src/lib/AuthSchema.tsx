@@ -20,20 +20,49 @@ export const registerSchema = yup.object({
       "Password must contain at least one uppercase letter, one number, and one special character"
     )
     .required("Required"),
+
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password"), undefined], "Passwords must match")
-    .required("Required"),
+    .oneOf([yup.ref("password"), undefined], "Passwords must match"),
   terms: yup
-  .boolean()
-  .oneOf([true], "You must accept the terms")
-  .required("You must accept the terms") 
+    .boolean()
+    .oneOf([true], "You must accept the terms")
+    .required("You must accept the terms"),
 });
 
-
+export const brandRegisterSchema = yup.object({
+  fullName: yup
+    .string()
+    .min(2, "Full name must be at least 2 characters")
+    .required("Required"),
+  companyEmail: yup
+    .string()
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+      "Invalid email format"
+    )
+    .required("Required"),
+  companyName: yup
+    .string()
+    .min(2, "Company name must be at least 2 characters")
+    .nullable()
+    .transform((value) => (value === "" ? null : value)),
+  companyWebsite: yup
+    .string()
+    .matches(
+      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/.*)?$/,
+      "Invalid website URL"
+    )
+    .nullable()
+    .transform((value) => (value === "" ? null : value)),
+  terms: yup
+    .boolean()
+    .oneOf([true], "You must accept the terms")
+    .required("You must accept the terms"),
+});
 
 export const loginSchema = yup.object({
-  email: yup.string().email('Invalid email').required('Required'),
-  password: yup.string().min(6, 'Minimum 6 characters').required('Required'),
-  userType: yup.string().oneOf(['creator', 'brand']).required()
+  email: yup.string().email("Invalid email").required("Required"),
+  password: yup.string().min(6, "Minimum 6 characters").required("Required"),
+  userType: yup.string().oneOf(["creator", "brand"]).required(),
 });
