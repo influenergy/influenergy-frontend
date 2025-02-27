@@ -5,7 +5,7 @@ import { CREATOR_QUESTIONS as questions } from "@/constants/questions";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { completeQuestionnaire } from "@/store/features/authSlice";
+import { setCredentials, User } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -48,7 +48,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
     {}
-  );
+  )
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
@@ -131,11 +131,15 @@ const CreatorQuestionnaire = (): JSX.Element => {
             user._id,
             submitData as CreatorQuestionnaireData
           );
+          dispatch(
+            setCredentials({
+              user: { ...user, isProfileCompleted: true } as User,
+            })
+          );
           toast({
             title: "Success!",
             description: "Your profile has been updated successfully.",
           });
-          dispatch(completeQuestionnaire());
           router.push("/dashboard");
         } else {
           // handle the case where user._id is undefined

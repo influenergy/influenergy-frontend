@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type User = {
+export interface User {
   _id?: string;
   fullName?: string;
   email?: string;
   userType?: string;
   image?:string;
+  isProfileCompleted: boolean;
+  isEmailVerified: boolean;
 };
 
 interface AuthState {
@@ -36,24 +38,12 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
-      if (typeof window !== "undefined") {
-        document.cookie.split(";").forEach((cookie) => {
-          const name = cookie.split("=")[0].trim();
-          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        });
-      }
     },
     completeQuestionnaire: (state) => {
       state.questionnaireCompleted = true;
-      if (typeof window !== "undefined") {
-        document.cookie = "questionnaireCompleted=true; path=/";
-      }
     },
     setUserType: (state, action: PayloadAction<string>) => {
       state.userType = action.payload;
-      if (typeof window !== "undefined") {
-        localStorage.setItem("userType", action.payload);
-      }
       if (state.user) {
         state.user.userType = action.payload;
       }

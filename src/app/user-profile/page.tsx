@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { userApi } from "@/services/userServices";
+import Link from "next/link";
 
 export default function Page() {
   const user = useAppSelector(selectUser);
@@ -55,7 +56,12 @@ export default function Page() {
       // Update Redux state with new image URL
       dispatch(
         setCredentials({
-          user: { ...user, image: response.data.profileIcon },
+          user: {
+            ...user,
+            image: response.data.profileIcon,
+            isProfileCompleted: user?.isProfileCompleted ?? false,
+            isEmailVerified: user?.isEmailVerified ?? false,
+          },
         })
       );
 
@@ -160,11 +166,13 @@ export default function Page() {
         </div>
 
         {/* Complete Button */}
-        <div className="w-full flex items-center justify-center">
-          <Button className="mt-4 bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
-            Complete Profile
-          </Button>
-        </div>
+        {!user?.isProfileCompleted && (
+          <Link href="/questionnaire" className="w-full flex items-center justify-center">
+            <Button className="mt-4 bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
+              Complete Profile
+            </Button>
+          </Link>
+        )}
 
         {/* Second Section */}
         <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-8 mb-8 shadow-sm hover:shadow-md transition-shadow">

@@ -3,17 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { useRouteProtection } from "@/hooks/useRouteProtection";
+import { selectUser, useAppSelector } from "@/store";
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
-
+    const user = useAppSelector(selectUser);
   if (!isAuthenticated) {
     return null; // Or a loading spinner
   }
 
-  const questionnaireCompleted =
-    typeof window !== "undefined" &&
-    document.cookie.includes("questionnaireCompleted=true");
 
   return (
     <div className="min-h-screen">
@@ -23,7 +21,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
 
-      {!questionnaireCompleted ? (
+      {!user?.isProfileCompleted ? (
         <Card className="p-6 bg-violet-100 border border-violet-400 text-black">
           <h2 className="text-xl font-semibold mb-2">
             Complete Your Preferences
