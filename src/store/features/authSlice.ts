@@ -5,7 +5,7 @@ export interface User {
   fullName?: string;
   email?: string;
   userType?: string;
-  image?:string;
+  profileIcon?:string;
   isProfileCompleted: boolean;
   isEmailVerified: boolean;
 };

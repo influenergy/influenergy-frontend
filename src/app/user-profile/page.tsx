@@ -88,7 +88,7 @@ export default function Page() {
           <p>Edit Profile</p>
           <div className="relative">
             <Image
-              src={user?.image || "https://avatar.iran.liara.run/public/boy"}
+              src={user?.profileIcon || "https://avatar.iran.liara.run/public/boy"}
               alt="logo"
               width={70}
               height={70}
@@ -167,22 +167,27 @@ export default function Page() {
 
         {/* Complete Button */}
         {!user?.isProfileCompleted && (
-          <Link href="/questionnaire" className="w-full flex items-center justify-center">
-            <Button className="mt-4 bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
-              Complete Profile
-            </Button>
-          </Link>
-        )}
+          <>
+            <Link
+              href="/questionnaire"
+              className="w-full flex items-center justify-center"
+            >
+              <Button className="mt-4 bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
+                Complete Profile
+              </Button>
+            </Link>
 
-        {/* Second Section */}
-        <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-8 mb-8 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3 text-center sm:text-left">
-            <p className="text-gray-700 font-medium">
-              Complete Your Profile and add all your details
-            </p>
-          </div>
-          <Info size={24} className="text-red-600 shrink-0" />
-        </div>
+            {/* Second Section */}
+            <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-8 mb-8 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 text-center sm:text-left">
+                <p className="text-gray-700 font-medium">
+                  Complete Your Profile and add all your details
+                </p>
+              </div>
+              <Info size={24} className="text-red-600 shrink-0" />
+            </div>
+          </>
+        )}
       </div>
       <EditProfileModal
         isOpen={isEditModalOpen}
