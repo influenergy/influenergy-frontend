@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "@/store/features/authSlice";
+import { setCredentials, User } from "@/store/features/authSlice";
 import { selectUser, useAppSelector } from "@/store";
 import { userApi } from "@/services/userServices";
 
@@ -38,7 +38,12 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
 
       dispatch(
         setCredentials({
-          user: { ...user, fullName: name },
+          user: {
+            ...user,
+            fullName: name,
+            isProfileCompleted: user?.isProfileCompleted ?? false,
+            isEmailVerified: user?.isEmailVerified ?? false,
+          } as User,
         })
       );
 
