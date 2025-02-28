@@ -86,12 +86,11 @@ export default function Page() {
         {/* first section */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4">
           <p>Edit Profile</p>
-          <div className="relative">
+          <div className="relative w-[100px] h-[100px]">
             <Image
               src={user?.profileIcon || "https://avatar.iran.liara.run/public/boy"}
               alt="logo"
-              width={70}
-              height={70}
+              fill
               className={`w-full h-full object-cover rounded-full ${
                 isUploading ? "opacity-50" : ""
               }`}

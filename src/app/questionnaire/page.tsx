@@ -10,7 +10,7 @@ export default function QuestionnairePage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="h-full flex items-center justify-center relative">
       {userType === "creator" ? (
         <CreatorQuestionnaire />
       ) : (

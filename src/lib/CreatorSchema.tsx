@@ -58,7 +58,6 @@ export const step2Schema = yup.object().shape({
     .min(1, "Select at least one niche")
     .max(3, "Cannot select more than three niches")
     .required("Primary niche is required"),
-    
 }) as Schema;
 
 export const step3Schema = yup.object().shape({
@@ -169,7 +168,16 @@ export const step4Schema = yup.object().shape({
 export const step5Schema = yup.object().shape({
   "top-two-audiences": yup
     .string()
-    .oneOf(["18-24", "25-34", "35-44", "45-54", "55-64", "65 or older"])
+    .oneOf([
+      "5-10",
+      "11-17",
+      "18-24",
+      "25-34",
+      "35-44",
+      "45-54",
+      "55-64",
+      "65 or older",
+    ])
     .required("Age bracket is required"),
   "average-views": yup
     .string()

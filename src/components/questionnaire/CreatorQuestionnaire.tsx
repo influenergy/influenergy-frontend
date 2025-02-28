@@ -22,6 +22,7 @@ import { AnyObjectSchema } from "yup";
 import { Field } from "@/constants/questions";
 import ReviewStep from "./ReviewStep";
 import { selectUser, useAppSelector } from "@/store";
+import { MoveLeft, MoveRight } from "lucide-react";
 
 type StepSchemas = {
   [key in keyof typeof questions]: AnyObjectSchema;
@@ -248,20 +249,21 @@ const CreatorQuestionnaire = (): JSX.Element => {
               {renderStepComponent()}
             </motion.div>
 
-            <div className="mt-8 flex justify-between w-full gap-4">
+            <div className="mt-8 flex justify-center items-center w-full gap-4 ">
               {currentStepIndex > 0 ? (
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
-                  className="px-6 py-5 w-full rounded-lg"
+                  className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
                   type="button"
                 >
+                  <MoveLeft size={20} />
                   Previous
                 </Button>
               ) : (
                 <Button
                   variant="outline"
-                  className="px-6 py-5 w-full rounded-lg"
+                  className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
                   type="button"
                   onClick={() => router.push("/dashboard")}
                 >
@@ -269,7 +271,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
                 </Button>
               )}
               <Button
-                className="ml-auto px-6 py-5 bg-primary w-full rounded-lg"
+                className="p-6  bg-primary text-lg  rounded-lg flex items-center justify-center gap-2"
                 type="submit"
                 disabled={isSubmitting}
               >
@@ -278,6 +280,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
                     ? "Submitting..."
                     : "Submit"
                   : "Next"}
+                <MoveRight size={20} />
               </Button>
             </div>
           </form>
