@@ -10,9 +10,6 @@ export default function Home() {
 
   const handleUserTypeSelection = (type: string) => {
     dispatch(setUserType(type));
-    if (typeof window !== "undefined") {
-      localStorage.setItem("userType", type);
-    }
   };
 
   return (

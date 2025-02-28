@@ -1,5 +1,5 @@
-import { BrandQuestionnaireData, QuestionnaireData } from "@/types/Questionnaire";
 import axios from "axios";
+import { safeNavigate } from "@/utils/navigation";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/v1/api";
 
@@ -11,13 +11,6 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => { 
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 api.interceptors.response.use(
   (response) => response,
@@ -26,10 +19,8 @@ api.interceptors.response.use(
     if (error.response) {
       // Handle unauthorized access
       if (error.response.status === 401) {
-        import("next/router").then((nextRouter) => {
-          const router = nextRouter.useRouter();
-          router.push("/login");
-        });
+        // Use safeNavigate for navigation that works in both client and server environments
+        safeNavigate('/login');
       }
       
       // Handle rate limiting
@@ -41,22 +32,3 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export const creatorApi = {
-  submitQuestionnaire: async (formData: QuestionnaireData) => {
-    const response = await api.post("/creator/questionnaire", formData);
-    return response.data;
-  },
-};
-
-
-export const brandApi = {
-  submitQuestionnaire: async (data: BrandQuestionnaireData) => {
-    try {
-      const response = await axios.post("/api/brand/questionnaire", data);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-}

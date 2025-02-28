@@ -28,8 +28,6 @@ export function UserNav() {
     router.push("/login");
   };
 
-  console.log('user',user)
-
 
   return (
     <DropdownMenu>

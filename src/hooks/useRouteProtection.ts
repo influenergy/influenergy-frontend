@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector } from "@/store";
+import { isClient } from "@/utils/isClient";
 
 export const useRouteProtection = () => {
   const router = useRouter();
@@ -11,6 +12,9 @@ export const useRouteProtection = () => {
   const [isAuthChecked, setIsAuthChecked] = useState(false); // Prevent hydration issues
 
   useEffect(() => {
+    // Only run this effect on the client side
+    if (!isClient) return;
+    
     if (!isAuthenticated && isAuthChecked) {
       if (pathname !== "/login") {
         router.push("/login");
