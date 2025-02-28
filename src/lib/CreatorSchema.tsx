@@ -6,20 +6,19 @@ type Schema = yup.ObjectSchema<Partial<CreatorQuestionnaireData>>;
 export const step1Schema = yup.object().shape({
   "are-you-ugc-creator": yup
     .string()
-    .oneOf(["Yes", "No"], "Please select yes or no")
+    .oneOf(["Influencer", "UGC"], "Please select any option")
     .required("This field is required"),
   "full-name": yup
     .string()
     .min(2, "Name must be at least 2 characters")
     .required("Full name is required"),
-  "stage-name": yup
-    .string()
-    .min(2, "Stage name must be at least 2 characters")
-    .nullable(),
+  "stage-name": yup.string().nullable().optional(),
   dob: yup
     .date()
+    .min(new Date(1900, 0, 1), "Date cannot be before 1900")
     .max(new Date(), "Date cannot be in the future")
-    .required("Date of birth is required"),
+    .required("Date of birth is required")
+    .notOneOf([null], "Date of birth cannot be empty"),
 }) as Schema;
 
 export const step2Schema = yup.object().shape({
@@ -45,24 +44,21 @@ export const step2Schema = yup.object().shape({
       "Please select a valid country"
     )
     .required("Country is required"),
+
+  language: yup
+    .array()
+    .of(yup.string())
+    .min(1, "Select at least one language")
+    .max(3, "Cannot select more than three languages")
+    .required("Primary languages are required"),
+
   "primary-niche": yup
-    .string()
-    .oneOf(
-      [
-        "Fashion",
-        "Beauty",
-        "Health and Wellness",
-        "Food",
-        "Travel",
-        "Technology",
-        "Sports",
-        "Gaming",
-        "Business",
-        "Finance",
-      ],
-      "Please select a valid niche"
-    )
+    .array()
+    .of(yup.string())
+    .min(1, "Select at least one niche")
+    .max(3, "Cannot select more than three niches")
     .required("Primary niche is required"),
+    
 }) as Schema;
 
 export const step3Schema = yup.object().shape({
@@ -80,7 +76,11 @@ export const step3Schema = yup.object().shape({
       "Reddit",
       "Tumblr",
     ])
-    .required("Primary social media is required"),
+    .required("This Field is Required"),
+  "primary-social-media-link": yup
+    .string()
+    .url("Must be a valid URL")
+    .required("This Field is Required"),
   "primary-followers": yup
     .string()
     .oneOf([
@@ -90,7 +90,7 @@ export const step3Schema = yup.object().shape({
       "100,000 - 1,000,000",
       "More than 1,000,000",
     ])
-    .required("Number of followers is required"),
+    .required("This Field is Required"),
   "secondary-social-media": yup
     .string()
     .oneOf([
@@ -105,7 +105,11 @@ export const step3Schema = yup.object().shape({
       "Reddit",
       "Tumblr",
     ])
-    .required("Secondary social media is required"),
+    .required("Required"),
+  "secondary-social-media-link": yup
+    .string()
+    .url("Must be a valid URL")
+    .required("This Field is Required"),
   "secondary-followers": yup
     .string()
     .oneOf([
@@ -115,32 +119,10 @@ export const step3Schema = yup.object().shape({
       "100,000 - 1,000,000",
       "More than 1,000,000",
     ])
-    .required("Number of followers is required"),
+    .required("This Field is Required"),
 }) as Schema;
 
 export const step4Schema = yup.object().shape({
-  "primary-social-media-link": yup
-    .string()
-    .url("Must be a valid URL")
-    .required("Primary social media link is required"),
-    
-  "secondary-social-media-link": yup
-    .string()
-    .url("Must be a valid URL")
-    .required("Secondary social media link is required"),
-  "primary-social-media-followers": yup
-    .number()
-    .min(1000, "Must have at least 1000 followers")
-    .typeError("Number of followers must be a number")
-    .required("Number of followers is required"),
-  "secondary-social-media-followers": yup
-    .number()
-    .min(1000, "Must have at least 1000 followers")
-    .typeError("Number of followers must be a number")
-    .required("Number of followers is required"),
-}) as unknown as Schema;
-
-export const step5Schema = yup.object().shape({
   "growth-rate": yup
     .string()
     .oneOf([
@@ -184,7 +166,7 @@ export const step5Schema = yup.object().shape({
     .required("Gender distribution is required"),
 }) as Schema;
 
-export const step6Schema = yup.object().shape({
+export const step5Schema = yup.object().shape({
   "top-two-audiences": yup
     .string()
     .oneOf(["18-24", "25-34", "35-44", "45-54", "55-64", "65 or older"])
@@ -221,5 +203,4 @@ export const fullSchema = yup.object().shape({
   ...step3Schema.fields,
   ...step4Schema.fields,
   ...step5Schema.fields,
-  ...step6Schema.fields,
 }) as Schema;

@@ -15,7 +15,6 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
-  step6Schema,
 } from "@/lib/CreatorSchema";
 import { Step } from "./CreatorSteps";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
@@ -34,7 +33,6 @@ const schemas: StepSchemas = {
   step3: step3Schema,
   step4: step4Schema,
   step5: step5Schema,
-  step6: step6Schema,
 };
 
 const CreatorQuestionnaire = (): JSX.Element => {
@@ -48,7 +46,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
     {}
-  )
+  );
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
@@ -70,7 +68,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const currentSchema =
     currentStep !== "review"
       ? schemas[currentStep as keyof typeof questions]
-      : schemas.step6;
+      : schemas.step5;
 
   const methods = useForm<CreatorQuestionnaireData>({
     resolver: yupResolver(currentSchema),

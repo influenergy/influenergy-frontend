@@ -19,7 +19,7 @@ const transformQuestionnaireData = (
     gender: formData.gender.toLowerCase(),
     city: formData.country, // Using country as city for now
     languages: ["English"], // Default language
-    category: [formData["primary-niche"].toLowerCase()],
+    category: formData["primary-niche"],
     socialLinks: {
       primary: {
         platform: formData["primary-social-media"],

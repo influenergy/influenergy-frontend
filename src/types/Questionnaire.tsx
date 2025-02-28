@@ -8,7 +8,8 @@ export interface CreatorQuestionnaireData {
   // Step 2
   gender: string;
   country: string;
-  "primary-niche": string;
+  language: string[];
+  "primary-niche": string[];
 
   // Step 3
   "primary-social-media": string;
