@@ -18,7 +18,7 @@ import { authApi } from "@/services/authServices";
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
-export default function RegisterForm({userType}: {userType: string}) {
+export default function RegisterForm({ userType }: { userType: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -41,16 +41,15 @@ export default function RegisterForm({userType}: {userType: string}) {
       return authApi.creatorRegister({
         fullName: data.fullName,
         email: data.email,
-        password: data.password
+        password: data.password,
       });
     },
-    onSuccess: (data) => {
-      console.log("Registration successful:", data);
+    onSuccess: () => {
       toast({
         title: "Success!",
         description: "Registration successful. Please verify your email.",
       });
-      router.push("/verify-email");
+      router.push(`/verify-email?email=${watch("email")}`);
     },
     onError: (error: Error) => {
       console.error("Registration error:", error);
