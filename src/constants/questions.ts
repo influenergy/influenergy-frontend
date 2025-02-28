@@ -313,7 +313,7 @@ export const CREATOR_QUESTIONS: Questions = {
         title: "What is the age bracket of your top two audiences?",
         slug: "top-two-audiences",
         category: "dropdown",
-        options: ["18-24", "25-34", "35-44", "45-54", "55-64", "65 or older"],
+        options: ["5-10","11-17","18-24", "25-34", "35-44", "45-54", "55-64", "65 or older"],
       },
       {
         title: "What are the average views of your last 8 videos?",
