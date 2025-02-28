@@ -26,8 +26,10 @@ api.interceptors.response.use(
     if (error.response) {
       // Handle unauthorized access
       if (error.response.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+        import("next/router").then((nextRouter) => {
+          const router = nextRouter.useRouter();
+          router.push("/login");
+        });
       }
       
       // Handle rate limiting

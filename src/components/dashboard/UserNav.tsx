@@ -22,11 +22,14 @@ export function UserNav() {
   const router = useRouter();
   const user = useAppSelector(selectUser);
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     await authApi.logout();
     dispatch(logout());
     router.push("/login");
   };
+
+  console.log('user',user)
+
 
   return (
     <DropdownMenu>
@@ -34,7 +37,9 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src="https://avatar.iran.liara.run/public/boy"
+              src={
+                user?.profileIcon || "https://avatar.iran.liara.run/public/boy"
+              }
               alt="@user"
             />
             <AvatarFallback>SC</AvatarFallback>
