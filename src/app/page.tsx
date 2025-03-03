@@ -90,6 +90,12 @@ export default function Home() {
           {/* Right Section */}
           <motion.div className="relative bg-primary h-full hidden lg:block">
             <div className="absolute -left-28 top-1/2  -translate-y-1/2">
+
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              >
               <Image
                 src="/images/Home/image.png"
                 alt="Influencer"
@@ -98,11 +104,12 @@ export default function Home() {
                 className="relative object-contain"
                 priority
               />
+              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
+                transition={{ duration: 0.5, delay: 1 }}
                 className="absolute -left-16 top-48 -translate-x-1/2 transform rounded-full bg-white p-4 shadow-lg"
               >
                 <div className="h-28 w-28 flex flex-col justify-center items-center gap-2">
@@ -123,8 +130,9 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="rounded-full bg-transparent p-4 border border-white"
+                transition={{ duration: 0.5, delay: 0.8 }}
+                whileHover={{ scale: 1.1 }}
+                className="rounded-full bg-transparent p-4 border border-white cursor-pointer"
               >
                 <div className="h-28 w-28 flex flex-col justify-center items-center gap-2">
                   <Image
@@ -137,13 +145,19 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              <Image
-                src="/images/Home/image2.png"
-                alt="Influencer"
-                width={250}
-                height={250}
-                priority
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              >
+                <Image
+                  src="/images/Home/image2.png"
+                  alt="Influencer"
+                  width={250}
+                  height={250}
+                  priority
+                />
+              </motion.div>
             </div>
           </motion.div>
         </div>
