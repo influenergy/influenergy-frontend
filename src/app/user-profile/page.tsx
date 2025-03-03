@@ -52,7 +52,7 @@ export default function Page() {
       formData.append("photo", file);
 
       const response = await userApi.updateProfile(formData);
-
+      // console.log("response", response);
       // Update Redux state with new image URL
       dispatch(
         setCredentials({
@@ -88,12 +88,21 @@ export default function Page() {
           <p>Edit Profile</p>
           <div className="relative w-[100px] h-[100px]">
             <Image
-              src={user?.profileIcon || "https://avatar.iran.liara.run/public/boy"}
-              alt="logo"
+              src={
+                user?.profileIcon || "https://avatar.iran.liara.run/public/boy"
+              }
+              alt="Profile picture"
               fill
               className={`w-full h-full object-cover rounded-full ${
                 isUploading ? "opacity-50" : ""
               }`}
+              onError={(e) => {
+                // Fallback to default image if S3 image fails to load
+                const target = e.target as HTMLImageElement;
+                target.src = "https://avatar.iran.liara.run/public/boy";
+              }}
+              sizes="100px"
+              priority
             />
             <ProfileActions />
             <input
