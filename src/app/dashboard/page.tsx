@@ -39,7 +39,7 @@ export default function DashboardPage() {
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-2">Welcome Back!</h2>
             <p className="text-muted-foreground">
-              This is your protected dashboard page. Only authenticated users
+              This is your protected dashboard page. Only you
               can see this.
             </p>
           </Card>
