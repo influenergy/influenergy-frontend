@@ -165,38 +165,48 @@ export const step4Schema = yup.object().shape({
     .required("Gender distribution is required"),
 }) as Schema;
 
-export const step5Schema = yup.object().shape({
-  "top-two-audiences": yup
-    .array()
-    .of(yup.string())
-    .min(2, "Select at least two age brackets")
-    .required("Age bracket is required"),
-    
-  "average-views": yup
-    .string()
-    .oneOf([
-      "Less than 1,000",
-      "1,000 - 10,000",
-      "10,000 - 100,000",
-      "100,000 - 1,000,000",
-      "More than 1,000,000",
-    ])
-    .required("Average views is required"),
-  "favourite-brands": yup.string().required("Favourite brands are required"),
-  "worked-with-ai": yup
-    .string()
-    .oneOf(["Yes", "No"])
-    .required("This field is required"),
-  "paid-campaigns": yup.string().when("worked-with-ai", {
-    is: "Yes",
-    then: () =>
-      yup
-        .string()
-        .oneOf(["1-5", "5-10", "10-20", "20-50", "50 or more"])
-        .required("Number of paid campaigns is required"),
-    otherwise: () => yup.string().nullable(),
-  }),
-}) as Schema;
+export const step5Schema = yup
+  .object({
+    "top-two-audiences": yup
+      .array()
+      .of(yup.string())
+      .min(2, "Select at least two age brackets")
+      .max(2, "Select only two age brackets")
+      .required("Age bracket is required")
+      .nullable(),
+    "average-views": yup
+      .string()
+      .oneOf([
+        "Less than 1,000",
+        "1,000 - 10,000",
+        "10,000 - 100,000",
+        "100,000 - 1,000,000",
+        "More than 1,000,000",
+      ])
+      .required("Average views is required")
+      .nullable(),
+    "favourite-brands": yup
+      .string()
+      .required("Favourite brands are required")
+      .nullable(),
+    "worked-with-ai": yup
+      .string()
+      .oneOf(["Yes", "No"])
+      .required("This field is required")
+      .nullable(),
+    "paid-campaigns": yup
+      .string()
+      .when("worked-with-ai", {
+        is: "Yes",
+        then: (schema) =>
+          schema
+            .oneOf(["1-5", "5-10", "10-20", "20-50", "50 or more"])
+            .required("Number of paid campaigns is required"),
+        otherwise: (schema) => schema.nullable(),
+      })
+      .nullable(),
+  })
+  .nullable() as unknown as Schema;
 
 export const fullSchema = yup.object().shape({
   ...step1Schema.fields,
