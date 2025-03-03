@@ -167,18 +167,11 @@ export const step4Schema = yup.object().shape({
 
 export const step5Schema = yup.object().shape({
   "top-two-audiences": yup
-    .string()
-    .oneOf([
-      "5-10",
-      "11-17",
-      "18-24",
-      "25-34",
-      "35-44",
-      "45-54",
-      "55-64",
-      "65 or older",
-    ])
+    .array()
+    .of(yup.string())
+    .min(2, "Select at least two age brackets")
     .required("Age bracket is required"),
+    
   "average-views": yup
     .string()
     .oneOf([

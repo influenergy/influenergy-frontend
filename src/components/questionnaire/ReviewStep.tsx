@@ -47,7 +47,7 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
 
       <div className="space-y-8 max-w-5xl w-full mx-auto">
         {sections.map((section) => (
-          <div key={section.title} className="bg-white">
+          <div key={section.title} >
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                 <section.icon className="text-primary" /> {section.title}

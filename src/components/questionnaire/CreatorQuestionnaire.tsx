@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { userApi } from "@/services/userServices";
 import { useToast } from "@/hooks/use-toast";
 import { CREATOR_QUESTIONS as questions } from "@/constants/questions";
@@ -62,10 +62,13 @@ const CreatorQuestionnaire = (): JSX.Element => {
     router.push("/login");
   }
 
-  const currentFields =
-    currentStep !== "review"
-      ? questions[currentStep as keyof typeof questions].fields
-      : [];
+  const currentFields = useMemo(
+    () =>
+      currentStep !== "review"
+        ? questions[currentStep as keyof typeof questions].fields
+        : [],
+    [currentStep]
+  );
   const currentSchema =
     currentStep !== "review"
       ? schemas[currentStep as keyof typeof questions]
@@ -169,7 +172,6 @@ const CreatorQuestionnaire = (): JSX.Element => {
   }, [
     currentFields,
     formData,
-    isLastStep,
     currentStepIndex,
     steps,
     router,
@@ -177,6 +179,8 @@ const CreatorQuestionnaire = (): JSX.Element => {
     trigger,
     getValues,
     dispatch,
+    currentStep,
+    user,
   ]);
 
   const handlePrevious = useCallback(() => {
@@ -187,7 +191,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
 
   const renderStepComponent = useCallback(() => {
     return <Step fields={currentFields} />;
-  }, [currentStep, currentFields]);
+  }, [currentFields]);
 
   return (
     <>
@@ -224,7 +228,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(handleNext)}
-            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly"
+            className="max-w-7xl w-full h-screen flex flex-col items-center justify-evenly"
           >
             <div className="mb-8 flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2">

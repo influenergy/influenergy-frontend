@@ -149,7 +149,7 @@ const StepComponent = ({ fields }: StepProps) => {
 };
 
 export const Step = ({ fields }: StepProps) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-4">
+  <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
     <StepComponent fields={fields} />
   </div>
 );

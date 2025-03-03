@@ -9,7 +9,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gray-50 relative overflow-hidden">
       {children}
       <motion.div
         className="absolute -bottom-5 -left-5 hidden lg:block w-[200px] lg:w-[200px] "
