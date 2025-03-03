@@ -163,7 +163,7 @@ export default function LoginForm() {
                   name="password"
                   error={errors.password}
                   icon={
-                    showPassword ? (
+                    !showPassword ? (
                       <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
                     ) : (
                       <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
