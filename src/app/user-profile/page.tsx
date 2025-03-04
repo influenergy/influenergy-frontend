@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { userApi } from "@/services/userServices";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
 export default function Page() {
@@ -81,8 +82,8 @@ export default function Page() {
   };
 
   return (
-    <div className="h-full flex flex-col items-center">
-      <div className="w-full h-full px-4 sm:px-8 pt-5">
+    <div className="min-h-[calc(100vh-80px)] flex flex-col items-center px-4 sm:px-8 py-5 overflow-y-auto">
+      <div className="w-full max-w-7xl">
         {/* first section */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4">
           <p>Edit Profile</p>
@@ -116,26 +117,7 @@ export default function Page() {
             />
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <svg
-                  className="animate-spin h-5 w-5 text-primary"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
+                <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
               </div>
             )}
           </div>
@@ -143,7 +125,7 @@ export default function Page() {
         </div>
 
         {/* profile details section */}
-        <div className="border w-full mt-10 rounded-xl py-3 px-4 sm:px-7">
+        <div className="border w-full mt-8 rounded-xl py-4 px-4 sm:px-7">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
             <p>Personal Info</p>
             <button
@@ -173,20 +155,16 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Complete Button */}
+        {/* Complete Profile Section */}
         {!user?.isProfileCompleted && (
-          <>
-            <Link
-              href="/questionnaire"
-              className="w-full flex items-center justify-center"
-            >
-              <Button className="mt-4 bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
+          <div className="w-full mt-8">
+            <Link href="/questionnaire" className="w-full flex justify-center">
+              <Button className="bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
                 Complete Profile
               </Button>
             </Link>
 
-            {/* Second Section */}
-            <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-8 mb-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 text-center sm:text-left">
                 <p className="text-gray-700 font-medium">
                   Complete Your Profile and add all your details
@@ -194,7 +172,7 @@ export default function Page() {
               </div>
               <Info size={24} className="text-red-600 shrink-0" />
             </div>
-          </>
+          </div>
         )}
       </div>
       <EditProfileModal

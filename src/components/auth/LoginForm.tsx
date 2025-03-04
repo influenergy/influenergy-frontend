@@ -157,13 +157,13 @@ export default function LoginForm() {
                   Password
                 </Label>
                 <LoginFormInput
-                  type={!showPassword ? "text" : "password"}
+                  type={showPassword ? "text" : "password"}  
                   placeholder="Enter Password"
                   register={register}
                   name="password"
                   error={errors.password}
                   icon={
-                    !showPassword ? (
+                    showPassword ? (
                       <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
                     ) : (
                       <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />

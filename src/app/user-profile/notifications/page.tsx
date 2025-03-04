@@ -1,19 +1,5 @@
 // "use client";
 import ComingSoon from "@/components/common/ComingSoon";
-// import Image from "next/image";
-// import { motion } from "framer-motion";
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-// import { Button } from "@/components/ui/button";
-
-// interface NotificationProps {
-//   user: {
-//     name: string;
-//     avatar: string;
-//   };
-//   type: "comment" | "request";
-//   content: string;
-//   time: string;
-// }
 
 // const NotificationItem = ({ user, type, content, time }: NotificationProps) => {
 //   return (
@@ -77,15 +63,15 @@ const NotificationsPage = () => {
   // ];
 
   return (
-    <div className=" relative w-[calc(100vw - 96px)] md:w[calc(100vw - 240px)]">
-      <div className="w-full flex justify-center items-start h-[calc(100vh-96px)]">
-        <div className=" h-screen bg-white rounded-lg  w-full pt-10">
-          {/* {notifications.map((notification, index) => (
+    <div className=" relative w-[calc(100vw - 96px)] md:w[calc(100vw - 240px)] ">
+      {/* <div className="w-full flex justify-center items-start h-[calc(100vh-96px)]">
+        <div className=" h-screen bg-white rounded-lg  w-full ">
+          {notifications.map((notification, index) => (
               <NotificationItem key={index} {...notification} />
-            ))} */}
-          <ComingSoon />
+            ))}
         </div>
-      </div>
+      </div> */}
+      <ComingSoon />
     </div>
   );
 };

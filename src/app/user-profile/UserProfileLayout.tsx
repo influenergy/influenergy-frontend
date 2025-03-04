@@ -9,7 +9,7 @@ interface UserProfileLayoutProps {
 const UserProfileLayout: React.FC<UserProfileLayoutProps> = ({ children }) => {
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex max-h-screen">
       <Sidebar type="profile" />
       <main className="ml-16 md:ml-[240px] w-full">
         <div className="">{children}</div>

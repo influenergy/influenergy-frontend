@@ -32,52 +32,14 @@ export default function Page() {
   // };
 
   return (
-    <div className="h-screen relative overflow-hidden">
-      {/* <div className="max-w-4xl mx-auto mt-10">
-        <div className="space-y-4 mb-8">
-          <h1 className="text-2xl md:text-3xl font-semibold text-center">
-            Linked Accounts
-          </h1>
-          <p className="text-muted-foreground text-center text-sm md:text-base">
-            Connect your social media accounts to enhance your profile
-          </p>
-        </div>
+    <div className="min-h-[calc(100vh-80px)] relative px-4 sm:px-8 py-5 overflow-hidden bg-white">
+      <div className="h-full relative z-10">
+        <ComingSoon />
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="flex flex-col gap-4">
-            {["instagram", "snapchat", "tiktok"].map((platform) => (
-              <SocialLinkInput
-                key={platform}
-                name={platform as "instagram" | "snapchat" | "tiktok"}
-                icon={`${platform}.webp`}
-                register={register}
-                error={errors[platform as "instagram" | "snapchat" | "tiktok"]}
-              />
-            ))}
-          </div>
-
-          <div className="flex justify-center pt-6">
-            <Button
-              type="submit"
-              className="bg-primary text-white w-full w:2/4 md:w-3/4 px-8 h-12"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <div className="flex items-center justify-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Saving...</span>
-                </div>
-              ) : (
-                "Save Changes"
-              )}
-            </Button>
-          </div>
-        </form>
-      </div> */}
-      <ComingSoon/>
-      {/* Decorative left lines  */}
+      {/* Decorative elements with adjusted positioning */}
       <motion.div
-        className="absolute -bottom-5 -left-24 hidden md:block w-[300px] lg:w-[400px]"
+        className="absolute bottom-0 -left-24 hidden md:block w-[300px] lg:w-[400px] pointer-events-none z-10"
         initial={{ y: "100%", opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -92,10 +54,8 @@ export default function Page() {
         />
       </motion.div>
 
-      {/* Decorative right lines  */}
-
       <motion.div
-        className="absolute -top-1 -right-24 z-10 hidden md:block w-[300px] lg:w-[400px]"
+        className="absolute top-0 -right-24 hidden md:block w-[300px] lg:w-[400px] pointer-events-none z-10"
         initial={{ y: "-100%", opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
