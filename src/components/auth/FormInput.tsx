@@ -1,6 +1,5 @@
 import { FieldError, UseFormRegister, Path } from "react-hook-form";
 import { motion } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react";
 
 interface RegisterFormProps<T extends object> {
   type: string;
@@ -78,7 +77,6 @@ export const LoginFormInput = <T extends object>({
   name,
   error,
   icon,
-  showPassword,
   onTogglePassword,
 }: LoginFormProps<T>) => (
   <div className="space-y-2">
@@ -99,11 +97,7 @@ export const LoginFormInput = <T extends object>({
           onClick={onTogglePassword}
           className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors duration-300 p-2"
         >
-          {showPassword ? (
-            <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-          ) : (
-            <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-          )}
+          {icon}
         </div>
       ) : (
         <div className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400">
