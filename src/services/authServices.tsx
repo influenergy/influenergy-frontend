@@ -48,4 +48,8 @@ export const authApi = {
     const response = await api.get(`/creator/verify-email/${token}`);
     return response.data;
   },
+  setPassword:async(token:string,password:string)=>{
+    const response = await api.post(`/brand/set-password/${token}`,{password});
+    return response.data;
+  }
 };
