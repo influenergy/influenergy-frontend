@@ -54,7 +54,7 @@ export default function ResetPassword() {
         title: "Password reset successful",
         description: "You can now login with your new password",
       });
-      router.push("/login");
+      router.push("/");
     },
     onError: (error) => {
       toast({
