@@ -17,6 +17,8 @@ import Link from "next/link";
 
 export default function Page() {
   const user = useAppSelector(selectUser);
+  const userType = useAppSelector((state) => state.auth.userType);
+
   const dispatch = useDispatch();
   const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -156,7 +158,7 @@ export default function Page() {
         </div>
 
         {/* Complete Profile Section */}
-        {!user?.isProfileCompleted && (
+        {(!user?.isProfileCompleted && userType == "creator") && (
           <div className="w-full mt-8">
             <Link href="/questionnaire" className="w-full flex justify-center">
               <Button className="bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
