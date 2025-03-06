@@ -1,42 +1,53 @@
-import Blog from "@/components/home/Blog";
-import Footer from "@/components/home/Footer";
-import GetInTouch from "@/components/home/GetInTouch";
+"use client"; // Add this directive to mark as a Client Component
+
+import { Suspense, lazy } from "react";
 import Header from "@/components/home/Header";
-// import HearFromInfluencer from "@/components/home/HearFromInfluencer";
 import HeroSection from "@/components/home/HeroSection";
-import HowItWorks from "@/components/home/HowItWorks";
 import InfluEnergySection from "@/components/home/Influenergy";
-import NewsLetter from "@/components/home/NewsLetter";
-import WeEmpowerBrand from "@/components/home/WeEmpowerBrand";
-import WhatWeDo from "@/components/home/WhatWeDo";
-import WhoAreWe from "@/components/home/WhoAreWe";
-import WhyWeDoIt from "@/components/home/WhyWeDoIt";
+import { Loader } from "@/components/common/Loader";
+const WhoAreWe = lazy(() => import("@/components/home/WhoAreWe"));
+const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
+const WhatWeDo = lazy(() => import("@/components/home/WhatWeDo"));
+const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));
+const WeEmpowerBrand = lazy(() => import("@/components/home/WeEmpowerBrand"));
+const Blog = lazy(() => import("@/components/home/Blog"));
+const GetInTouch = lazy(() => import("@/components/home/GetInTouch"));
+const NewsLetter = lazy(() => import("@/components/home/NewsLetter"));
+const Footer = lazy(() => import("@/components/home/Footer"));
 
 export default function Home() {
   return (
     <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
-      {/* Header */}
       <Header />
-
-      {/* Hero Section */}
       <HeroSection />
 
-      {/* Main content with consistent spacing */}
       <div className="w-full max-w-[1920px] mx-auto">
         <InfluEnergySection />
-        <WhoAreWe />
-        <HowItWorks />
-        <WhatWeDo />
-        <WhyWeDoIt />
-        {/* <HearFromInfluencer /> */}
-        <WeEmpowerBrand />
-        <Blog />
-        <GetInTouch />
-        <NewsLetter />
-      </div>
 
-      {/* Footer */}
-      <Footer />
+        <Suspense fallback={<Loader />}>
+          <WhoAreWe />
+        </Suspense>
+
+        <Suspense fallback={<Loader />}>
+          <HowItWorks />
+        </Suspense>
+
+        <Suspense fallback={<Loader />}>
+          <WhatWeDo />
+          <WhyWeDoIt />
+          <WeEmpowerBrand />
+        </Suspense>
+
+        <Suspense fallback={<Loader />}>
+          <Blog />
+          <GetInTouch />
+          <NewsLetter />
+        </Suspense>
+
+        <Suspense fallback={<Loader />}>
+          <Footer />
+        </Suspense>
+      </div>
     </section>
   );
 }
