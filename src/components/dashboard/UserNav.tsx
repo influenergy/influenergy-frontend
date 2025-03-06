@@ -28,7 +28,6 @@ export function UserNav() {
     router.push("/login");
   };
 
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -50,6 +49,7 @@ export function UserNav() {
             <p className="text-sm font-medium leading-none">
               {user?.fullName || "Not available"}
             </p>
+
             <p className="text-xs leading-none text-muted-foreground">
               {user?.email || "Not available"}
             </p>
@@ -67,7 +67,12 @@ export function UserNav() {
           </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleLogout}
+          className="text-red-500 bg-red-100"
+        >
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

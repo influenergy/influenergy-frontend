@@ -54,7 +54,7 @@ const transformQuestionnaireData = (
 
 export const userApi = {
   getProfile: async (id: string) => {
-    const response = await api.get(`/creator/profile/${id}`);
+    const response = await api.get(`/creator/details/${id}`);
     return response.data;
   },
   updateProfile: async (data: UpdateProfileData | FormData) => {
