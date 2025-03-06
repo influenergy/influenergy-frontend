@@ -4,7 +4,6 @@ export const Loader = () => {
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-white/80">
       <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
-      <p className="mt-4 text-gray-600 text-lg">Processing...</p>
     </div>
   );
 };

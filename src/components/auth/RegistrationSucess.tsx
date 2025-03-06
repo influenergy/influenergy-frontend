@@ -11,6 +11,7 @@ import { ArrowRight } from "lucide-react";
 export default function RegistrationSuccess() {
   const { width, height } = useWindowSize();
   const [isMounted, setIsMounted] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(true);
 
   useEffect(() => {
     setIsMounted(true);
@@ -22,8 +23,6 @@ export default function RegistrationSuccess() {
 
     return () => clearTimeout(timer);
   }, []);
-
-  const [showConfetti, setShowConfetti] = useState(true);
 
   // Animation variants
   const containerVariants = {
@@ -63,53 +62,62 @@ export default function RegistrationSuccess() {
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center px-4 py-8 overflow-hidden bg-white">
       <motion.div
-        className="relative z-10 flex flex-col items-center gap-6 text-center "
+        className="relative z-10 flex flex-col items-center gap-6 text-center max-w-md mx-auto"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="relative w-5/6 ">
-          <motion.div variants={itemVariants} className="w-full">
-            <Image
-              src="/auth/brand.webp"
-              alt="Brand logo"
-              height={400}
-              width={200}
-              className="object-contain ml-16"
-              priority
-            />
-          </motion.div>
+        {/* Image container with improved responsive layout */}
+        <div className="relative w-full aspect-square max-w-[280px] sm:max-w-[320px] mb-6">
           <motion.div
             variants={itemVariants}
             whileHover={{
               rotate: [0, -5, 5, -5, 0],
               transition: { duration: 0.5 },
             }}
-            className="absolute -bottom-10 w-full h-full"
+            className="absolute inset-0 flex items-center justify-center z-10"
           >
             <Image
               src="/auth/celebration.png"
-              alt="Person with coffee and tote bag"
-              fill
-              className="object-cover -rotate-45"
+              alt="Celebration"
+              width={400}
+              height={400}
+              className="object-contain "
+              priority
+            />
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="relative w-full h-full flex justify-center items-center z-20"
+          >
+            <Image
+              src="/auth/brand.webp"
+              alt="Brand logo"
+              height={200}
+              width={200}
+              className="object-contain"
               priority
             />
           </motion.div>
         </div>
+
         <motion.h1
-          className="text-3xl md:text-4xl text-black font-mono"
+          className="text-3xl md:text-4xl text-primary font-bold"
           variants={itemVariants}
         >
           Woohooo!
         </motion.h1>
+
         <motion.p
-          className="text-center text-gray-700 text-lg md:text-xl"
+          className="text-center text-gray-700 text-base sm:text-lg md:text-xl px-4"
           variants={itemVariants}
         >
-          Registration Successful! We Will Get Back To You Soon.
+          Registration Successful! We will get back to you soon.
           <br />
-          Till Then Explore More.
+          Till then explore more.
         </motion.p>
+
         <motion.div
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
@@ -126,34 +134,35 @@ export default function RegistrationSuccess() {
         </motion.div>
       </motion.div>
 
-      {/* Decorative elements with animated opacity */}
+      {/* Decorative elements with responsive positioning */}
       <motion.div
         variants={decorativeVariants}
         initial="hidden"
         animate="visible"
-        className="absolute top-0 right-0 -z-10"
+        className="absolute top-0 right-0 w-1/2 max-w-[250px] -z-10"
       >
         <Image
           src="/images/line1.png"
-          width={300}
-          height={300}
-          alt=""
-          className="w-[200px] sm:w-[300px]"
+          width={250}
+          height={250}
+          alt="Decorative line"
+          className="w-full h-auto"
           priority={false}
         />
       </motion.div>
+
       <motion.div
         variants={decorativeVariants}
         initial="hidden"
         animate="visible"
-        className="absolute bottom-0 -left-10 -z-10"
+        className="absolute bottom-0 left-0 w-1/2 max-w-[250px] -z-10"
       >
         <Image
           src="/images/line1.png"
-          width={300}
-          height={300}
-          alt=""
-          className="w-[200px] sm:w-[300px]"
+          width={250}
+          height={250}
+          alt="Decorative line"
+          className="w-full h-auto"
           priority={false}
         />
       </motion.div>
@@ -166,6 +175,12 @@ export default function RegistrationSuccess() {
           recycle={false}
           numberOfPieces={100}
           gravity={0.05}
+          confettiSource={{
+            x: width / 2,
+            y: height / 3,
+            w: 0,
+            h: 0,
+          }}
         />
       )}
     </div>
