@@ -15,11 +15,9 @@ interface RegisterUserData {
 interface BrandUserData {
   fullName: string;
   companyName?: string;
-  companyEmail:string;
+  companyEmail: string;
   companyWebsite?: string;
 }
-
-
 
 export const authApi = {
   login: async (credentials: LoginCredentials) => {
@@ -48,8 +46,14 @@ export const authApi = {
     const response = await api.get(`/creator/verify-email/${token}`);
     return response.data;
   },
-  setPassword:async(token:string,password:string)=>{
-    const response = await api.post(`/brand/set-password/${token}`,{password});
+  setPassword: async (token: string, password: string) => {
+    const response = await api.post(`/set-password/${token}`, {
+      password,
+    });
     return response.data;
-  }
+  },
+  forgotPassword: async (email: string, userType: string) => {
+    const response = await api.post(`/forgot-password`, { email, userType });
+    return response.data;
+  },
 };

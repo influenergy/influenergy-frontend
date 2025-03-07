@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader2, Mail, UserRound } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2, Mail, UserRound } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -111,6 +111,17 @@ export default function RegisterForm({ userType }: { userType: string }) {
         </motion.div>
 
         <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
+          <Link href="/get-started">
+            <motion.button
+              className="text-sm flex items-center space-x-2 mb-4 text-muted-foreground"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Back</span>
+            </motion.button>
+          </Link>
           <motion.h3
             className="text-primary font-bold text-2xl sm:text-3xl text-left"
             initial={{ opacity: 0, y: -20 }}

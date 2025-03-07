@@ -7,8 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Label } from "../ui/label";
-import { Eye, EyeOff, Loader2, Mail } from "lucide-react";
+
+import { ArrowLeft, Eye, EyeOff, Loader2, Mail } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { loginSchema } from "@/lib/AuthSchema";
@@ -17,7 +17,16 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { authApi } from "@/services/authServices";
 import { useToast } from "@/hooks/use-toast";
 import { setCredentials } from "@/store/features/authSlice";
-// import { authApi } from "@/services/api";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
@@ -26,7 +35,11 @@ export default function LoginForm() {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const userType = useAppSelector((state) => state.auth.userType);
+
   if (!userType) {
     router.push("/");
   }
@@ -73,6 +86,49 @@ export default function LoginForm() {
     loginMutation.mutate(data);
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!forgotPasswordEmail) {
+      toast({
+        variant: "destructive",
+        title: "Email is required",
+        description: "Please enter your email to reset your password",
+      });
+      return;
+    }
+
+    if (!userType) {
+      toast({
+        variant: "destructive",
+        title: "User type is required",
+        description: "Please select your user type",
+      });
+      return;
+    }
+
+    try {
+      setIsResetting(true);
+      await authApi.forgotPassword(forgotPasswordEmail, userType);
+      toast({
+        title: "Email sent successfully",
+        description: "Check your email to reset your password",
+      });
+      setForgotPasswordEmail("");
+      setIsDialogOpen(false);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to send email",
+        description:
+          (error as { response?: { data?: { message?: string } } })?.response
+            ?.data?.message || "Please check your email and try again",
+      });
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
       <motion.div
@@ -113,6 +169,17 @@ export default function LoginForm() {
         </motion.div>
 
         <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
+          <Link href="/get-started">
+            <motion.button
+              className="text-sm flex items-center space-x-2 mb-4 text-muted-foreground"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Back</span>
+            </motion.button>
+          </Link>
           <motion.h3
             className="text-black font-bold text-2xl sm:text-3xl text-left"
             initial={{ opacity: 0, y: -20 }}
@@ -157,7 +224,7 @@ export default function LoginForm() {
                   Password
                 </Label>
                 <LoginFormInput
-                  type={showPassword ? "text" : "password"}  
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter Password"
                   register={register}
                   name="password"
@@ -195,18 +262,68 @@ export default function LoginForm() {
                   "Continue"
                 )}
               </Button>
-
-              <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
-                Don&apos;t have an account?{" "}
-                <Link
-                  href={`/register?role=${userType}`}
-                  className="font-medium text-primary hover:text-primary transition-colors"
-                >
-                  Sign Up
-                </Link>
-              </p>
             </motion.div>
           </form>
+
+          {/* Moved Dialog outside of the form to prevent form submission */}
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="link"
+                type="button"
+                className="w-full justify-end"
+              >
+                Forgot Password?
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Forgot Password</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="forgotEmail" className="text-right">
+                    Email
+                  </Label>
+                  <Input
+                    id="forgotEmail"
+                    type="email"
+                    value={forgotPasswordEmail}
+                    onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                    placeholder="Enter Email"
+                    className="col-span-3"
+                    required
+                  />
+                </div>
+                <DialogFooter>
+                  <Button
+                    type="submit"
+                    disabled={isResetting}
+                    className="bg-primary"
+                  >
+                    {isResetting ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Sending...</span>
+                      </div>
+                    ) : (
+                      "Send Email"
+                    )}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+
+          <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
+            Don&apos;t have an account?{" "}
+            <Link
+              href={`/register?role=${userType}`}
+              className="font-medium text-primary hover:text-primary transition-colors"
+            >
+              Sign Up
+            </Link>
+          </p>
         </div>
       </motion.div>
 
