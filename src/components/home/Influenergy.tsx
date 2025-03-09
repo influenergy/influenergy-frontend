@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function InfluEnergySection() {
   return (
-    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 py-24 md:py-36 bg-gradient-to-b from-white to-[#EAE6FA] min-h-[600px] mt-16">
+    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] mt-16">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}

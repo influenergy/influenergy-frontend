@@ -35,7 +35,7 @@ export default function HowItWorks() {
         </p>
 
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -46,7 +46,7 @@ export default function HowItWorks() {
             className="w-full rounded-xl p-6 bg-[#e6e6ff] transform transition-all duration-300 hover:shadow-lg"
             variants={item}
           >
-            <div className="h-16 w-16 p-4 bg-white rounded-lg shadow-sm">
+            <div className="h-16 w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
               <Image
                 src="/landing/howitworks/user.png"
                 alt="Create Account Icon"
@@ -66,12 +66,12 @@ export default function HowItWorks() {
             className="w-full rounded-xl p-6 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg"
             variants={item}
           >
-            <div className="h-16 w-16 p-4 bg-white rounded-lg shadow-sm">
+            <div className="h-16 w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
               <Image
                 src="/landing/howitworks/image.png"
                 alt="Post Ads Icon"
-                height={30}
-                width={30}
+                height={40}
+                width={40}
               />
             </div>
             <h2 className="text-xl font-bold mt-5">Post & Create Ads</h2>
@@ -86,12 +86,12 @@ export default function HowItWorks() {
             className="w-full rounded-xl p-6 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg"
             variants={item}
           >
-            <div className="h-16 w-16 p-4 bg-white rounded-lg shadow-sm">
+            <div className="h-16 w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
               <Image
                 src="/landing/howitworks/sparkle.png"
                 alt="AI Feature Icon"
-                height={30}
-                width={30}
+                height={40}
+                width={40}
               />
             </div>
             <h2 className="text-xl font-bold mt-5">Utilize AI Feature</h2>
@@ -106,12 +106,12 @@ export default function HowItWorks() {
             className="w-full rounded-xl p-6 bg-[#e6e6ff] transform transition-all duration-300 hover:shadow-lg"
             variants={item}
           >
-            <div className="h-16 w-16 p-4 bg-white rounded-lg shadow-sm">
+            <div className="h-16 w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
               <Image
                 src="/landing/howitworks/Group.png"
                 alt="Collaboration Icon"
-                height={30}
-                width={30}
+                height={40}
+                width={40}
               />
             </div>
             <h2 className="text-xl font-bold mt-5">Seamless Collaboration</h2>
@@ -124,17 +124,22 @@ export default function HowItWorks() {
 
       {/* Right side brand images */}
       <motion.div
-        className="w-full md:w-1/2 flex flex-col gap-8"
+        className="w-full md:w-1/2 flex flex-col gap-10"
         initial={{ opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.3 }}
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div className="flex justify-center md:justify-end gap-6">
+        <div className="flex justify-center md:justify-end gap-10">
           <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px]"
-            whileHover={{ rotate: 0, scale: 1.05 }}
-            transition={{ duration: 0.4 }}
+            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
+            initial={{
+              rotate: 6,
+            }}
+            whileHover={{
+              y: -10,
+            }}
+            transition={{ duration: 0.3 }}
           >
             <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
               <Image
@@ -151,9 +156,15 @@ export default function HowItWorks() {
           </motion.div>
 
           <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px]"
-            whileHover={{ rotate: 0, scale: 1.05 }}
-            transition={{ duration: 0.4 }}
+            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
+            initial={{
+              rotate: 6,
+              boxShadow: "-15px -15px 0px rgba(213, 213, 250)",
+            }}
+            whileHover={{
+              y: -10,
+            }}
+            transition={{ duration: 0.3 }}
           >
             <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
               <Image
@@ -172,9 +183,15 @@ export default function HowItWorks() {
 
         <div className="flex justify-center md:justify-end gap-6 mt-4">
           <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px]"
-            whileHover={{ rotate: 0, scale: 1.05 }}
-            transition={{ duration: 0.4 }}
+            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
+            initial={{
+              rotate: 6,
+              boxShadow: "-15px -15px 0px rgba(213, 213, 250)",
+            }}
+            whileHover={{
+              y: -10,
+            }}
+            transition={{ duration: 0.3 }}
           >
             <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
               <Image
@@ -191,9 +208,14 @@ export default function HowItWorks() {
           </motion.div>
 
           <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px]"
-            whileHover={{ rotate: 0, scale: 1.05 }}
-            transition={{ duration: 0.4 }}
+            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
+            initial={{
+              rotate: 6,
+            }}
+            whileHover={{
+              y: -10,
+            }}
+            transition={{ duration: 0.3 }}
           >
             <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
               <Image

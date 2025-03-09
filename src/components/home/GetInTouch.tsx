@@ -20,7 +20,7 @@ const GetInTouch = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev) => ({ 
       ...prev,
       [id]: value,
     }));
@@ -108,7 +108,7 @@ const GetInTouch = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Your Name"
-                    className="w-full px-4 py-5 h-14 border-0 border-b-2 border-gray-700 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
+                    className="w-full px-4 py-5 h-14 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
                     required
                   />
                   <div className="absolute h-0.5 w-0 bg-primary bottom-0 left-0 transition-all duration-300 peer-focus:w-full"></div>
@@ -121,7 +121,7 @@ const GetInTouch = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email Address"
-                    className="w-full px-4 py-5 h-14 border-0 border-b-2 border-gray-700 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
+                    className="w-full px-4 py-5 h-14 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -132,7 +132,7 @@ const GetInTouch = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Phone Number (optional)"
-                    className="w-full px-4 py-5 h-14 border-0 border-b-2 border-gray-700 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
+                    className="w-full px-4 py-5 h-14 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
                   />
                 </div>
               </div>
@@ -143,7 +143,7 @@ const GetInTouch = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Message"
-                  className="w-full px-4 py-5 border-0 border-b-2 border-gray-700 shadow-none rounded-none bg-transparent min-h-[150px] focus-visible:ring-0 focus-visible:border-primary transition-colors resize-none"
+                  className="w-full px-4 py-5 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent min-h-[150px] focus-visible:ring-0 focus-visible:border-primary transition-colors resize-none"
                   required
                 />
               </div>

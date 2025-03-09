@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { MoveUpRight } from "lucide-react";
+import Link from "next/link";
 
 export default function WhoAreWe() {
   return (
@@ -16,7 +17,7 @@ export default function WhoAreWe() {
       >
         <Image
           src="/landing/whoarewe.webp"
-          alt="Who are we"
+          alt="Who we are"
           width={500}
           height={500}
           className="rounded-3xl object-cover shadow-lg"
@@ -31,7 +32,7 @@ export default function WhoAreWe() {
         viewport={{ once: true, amount: 0.3 }}
       >
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
-          Who Are We
+          Who We Are
         </h1>
         <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
           We are Influenergy, the AI-powered bridge between brands and UGC
@@ -43,11 +44,13 @@ export default function WhoAreWe() {
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 font-semibold flex items-center">
-            Explore Now
+          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6  flex items-center">
+            <Link href="/get-started">Explore Now</Link>
           </Button>
-          <div className="bg-primary rounded-full p-3.5 ml-4">
-            <MoveUpRight size={20} className="text-white" />
+          <div className="bg-primary rounded-full p-3.5 absolute left-32 ml-1 hover:bg-primary/90">
+            <Link href="/get-started">
+              <MoveUpRight size={20} className="text-white" />
+            </Link>
           </div>
         </motion.div>
       </motion.div>

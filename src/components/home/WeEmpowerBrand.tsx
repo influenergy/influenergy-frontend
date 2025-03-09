@@ -8,42 +8,34 @@ export default function WeEmpowerBrand() {
       <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-20 md:py-28 gap-10 md:gap-16 items-center max-w-[1440px] mx-auto ">
         {/* Left Column - Profile Card */}
         <motion.div
-          className="flex justify-center items-center"
+          className="flex justify-center items-center relative"
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.div
-            className="relative w-full max-w-[400px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-            whileHover={{ y: -10 }}
+            className=" w-full max-w-[500px] max-h-[500px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            whileHover={{ y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Image
               src="/landing/sandeep.png"
-              alt="Sandeep Ashdhir"
-              width={400}
-              height={350}
-              className="w-full object-cover"
+              alt="Sandeep Ashdir"
+              width={500}
+              height={400}
+              className="w-full object-contain"
             />
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 bg-white p-5 text-center"
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-xl font-bold text-gray-800 mb-1">
-                Sandeep Ashdhir
-              </h3>
-              <p className="text-gray-600 text-sm">Founder, CEO</p>
-            </motion.div>
           </motion.div>
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-white p-4 text-center rounded-b-xl w-[350px] rounded-2xl shadow-lg">
+            <h3 className="text-2xl font-bold text-gray-900">Sandeep Ashdir</h3>
+            <p className="text-gray-600 mt-1">Founder, CEO</p>
+          </div>
         </motion.div>
 
         {/* Right Column - Content */}
         <motion.div
-          className="flex flex-col space-y-6"
+          className="flex flex-col space-y-6 sm:mt-5"
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}

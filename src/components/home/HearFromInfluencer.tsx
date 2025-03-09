@@ -1,19 +1,87 @@
 "use client";
-import React, { useState } from "react";
-import { Play } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function HearFromInfluencer() {
-  const [activeCard, setActiveCard] = useState(2); // Middle card active initially
+type Influencer = {
+  name: string;
+  role: string;
+  color: string;
+  hasVideo: boolean;
+  videoUrl?: string;
+};
 
-  // Influencer data
-  const influencers = [
-    { name: "MIKE", role: "CONTENT CREATOR", color: "#232323" },
-    { name: "SAMITE", role: "LIFESTYLE BLOGGER", color: "#111927" },
-    { name: "KAITY", role: "FASHION CREATOR", color: "#333", hasVideo: true },
-    { name: "OAKES", role: "BEAUTY EXPERT", color: "#722f37" },
-    { name: "LAUREN", role: "STYLE COACH", color: "#252934" },
+export default function HearFromInfluencer() {
+  const [activeCard, setActiveCard] = useState(2);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
+  // const [duration, setDuration] = useState(0);
+  // const [currentTime, setCurrentTime] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  // const progressRef = useRef<HTMLDivElement>(null);
+
+  // Influencer data with video URLs
+  const influencers: Influencer[] = [
+    {
+      name: "MIKE",
+      role: "CONTENT CREATOR",
+      color: "#232323",
+      hasVideo: true,
+      videoUrl: "/landing/hearfromus/1.mov",
+    },
+    {
+      name: "SAMITE",
+      role: "LIFESTYLE BLOGGER",
+      color: "#111927",
+      hasVideo: true,
+      videoUrl: "/landing/hearfromus/2.mov",
+    },
+    {
+      name: "KAITY",
+      role: "FASHION CREATOR",
+      color: "#333",
+      hasVideo: true,
+      videoUrl: "/landing/hearfromus/3.mov",
+    },
+    {
+      name: "OAKES",
+      role: "BEAUTY EXPERT",
+      color: "#722f37",
+      hasVideo: true,
+      videoUrl: "/landing/hearfromus/4.mov",
+    },
   ];
+
+  // Reset video and playing state when active card changes
+  useEffect(() => {
+    setIsPlaying(false);
+    // setCurrentTime(0);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.pause();
+    }
+  }, [activeCard]);
+
+  // Update current time while video is playing
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // const updateProgress = () => {
+    //   setCurrentTime(video.currentTime);
+    //   setDuration(video.duration);
+    // };
+
+    // video.addEventListener("timeupdate", updateProgress);
+    // video.addEventListener("loadedmetadata", () => {
+    //   setDuration(video.duration);
+    // });
+
+    // return () => {
+    //   video.removeEventListener("timeupdate", updateProgress);
+    // };
+  }, [activeCard]);
 
   // Calculate height and scale based on distance from active card
   const getCardStyle = (index: number) => {
@@ -22,8 +90,8 @@ export default function HearFromInfluencer() {
     if (distance === 0) {
       // Active card - largest
       return {
-        height: "h-96 md:h-[450px]",
-        width: "w-64 md:w-80",
+        height: "h-[450px] md:h-[550px]", // Increased from h-96 md:h-[450px]
+        width: "w-72 md:w-96",
         zIndex: "z-30",
         opacity: "opacity-100",
         scale: "scale-100",
@@ -31,16 +99,25 @@ export default function HearFromInfluencer() {
     } else if (distance === 1) {
       // First closest cards - tall but thinner
       return {
-        height: "h-80 md:h-96",
+        height: "h-96 md:h-[450px]", // Increased from h-80 md:h-96
         width: "w-20 md:w-24",
         zIndex: "z-20",
         opacity: "opacity-90",
         scale: "scale-95",
       };
+    } else if (distance === 2) {
+      // Furthest cards - shortest
+      return {
+        height: "h-80 md:h-96", // Increased from h-64 md:h-80
+        width: "w-16 md:w-20",
+        zIndex: "z-10",
+        opacity: "opacity-70",
+        scale: "scale-90",
+      };
     } else {
       // Furthest cards - shortest
       return {
-        height: "h-64 md:h-80",
+        height: "h-64 md:h-80", // Increased from h-56 md:h-64
         width: "w-16 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-70",
@@ -49,16 +126,72 @@ export default function HearFromInfluencer() {
     }
   };
 
+  const togglePlayPause = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  // const handleVideoProgress = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   const progressBar = progressRef.current;
+  //   const video = videoRef.current;
+
+  //   if (!progressBar || !video) return;
+
+  //   const rect = progressBar.getBoundingClientRect();
+  //   const clickPosition = e.clientX - rect.left;
+  //   const clickPercentage = clickPosition / rect.width;
+
+  //   const newTime = clickPercentage * video.duration;
+  //   video.currentTime = newTime;
+  //   setCurrentTime(newTime);
+  // };
+
+  // const formatTime = (seconds: number): string => {
+  //   const mins = Math.floor(seconds / 60);
+  //   const secs = Math.floor(seconds % 60);
+  //   return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  // };
+
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
+    // if (videoRef.current) {
+    //   videoRef.current.currentTime = 0;
+    //   setCurrentTime(0);
+    // }
+  };
+
+  // Determine if controls should be visible
+  const shouldShowControls = !isPlaying || isHovering;
+
   return (
     <motion.div
-      className="w-full py-20 md:py-28 px-4 bg-white"
+      className="w-full py-10 px-4 bg-white relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
       viewport={{ once: true, amount: 0.2 }}
+      id="influencers"
     >
       <motion.h1
-        className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16"
+        className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
@@ -67,62 +200,108 @@ export default function HearFromInfluencer() {
         Hear from our Influencers
       </motion.h1>
 
-      <div className="relative flex justify-center items-center overflow-hidden py-8">
+      <div className="relative flex justify-center items-center overflow-hidden py-2">
         <div className="flex items-center justify-center gap-1 md:gap-3">
           {influencers.map((influencer, index) => {
             const styles = getCardStyle(index);
+            const isActive = index === activeCard;
             return (
               <motion.div
                 key={influencer.name}
-                className={`transform transition-all duration-500 rounded-2xl overflow-hidden relative cursor-pointer
+                className={`transform transition-all duration-500 overflow-hidden relative cursor-pointer
                   ${styles.height} ${styles.width} ${styles.zIndex} ${styles.opacity}`}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 onClick={() => setActiveCard(index)}
-                whileHover={{ scale: index === activeCard ? 1.03 : 1.05 }}
+                onMouseEnter={() => isActive && setIsHovering(true)}
+                onMouseLeave={() => isActive && setIsHovering(false)}
+                whileHover={{ scale: isActive ? 1.03 : 1.05 }}
               >
-                {/* Background color */}
-                <div
-                  className="absolute inset-0"
-                  style={{ backgroundColor: influencer.color }}
-                />
+                {/* Background color or video */}
+                {isActive && influencer.hasVideo && influencer.videoUrl ? (
+                  <div className="absolute inset-0 w-full h-full">
+                    <video
+                      ref={videoRef}
+                      className="w-full h-full object-cover"
+                      src={influencer.videoUrl}
+                      onEnded={handleVideoEnd}
+                      playsInline
+                      muted={isMuted}
+                      loop={false}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="absolute inset-0 backdrop-blur-lg bg-opacity-40"
+                    style={{
+                      backgroundColor: influencer.color,
+                      boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Soft shadow
+                      border: "1px solid rgba(255, 255, 255, 0.3)", // Light border for glass effect
+                      backdropFilter: "blur(10px)", // Glass blur effect
+                      WebkitBackdropFilter: "blur(10px)", // Safari support
+                    }}
+                  />
+                )}
 
                 {/* Content */}
-                {index === activeCard ? (
+                {isActive ? (
                   <div className="absolute inset-0 flex flex-col justify-end p-6 overflow-hidden">
+                    {/* Video controls with conditional visibility */}
                     {influencer.hasVideo && (
-                      <motion.div
-                        className="absolute inset-0 flex items-center justify-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                      >
-                        <motion.button
-                          className="w-16 h-16 rounded-full bg-white/70 flex items-center justify-center"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.95 }}
+                      <>
+                        {/* Main play/pause button - visible only when not playing or on hover */}
+                        <motion.div
+                          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                            shouldShowControls ? "opacity-100" : "opacity-0"
+                          }`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: shouldShowControls ? 1 : 0 }}
+                          transition={{ duration: 0.3 }}
                         >
-                          <Play className="text-black ml-1" size={30} />
-                        </motion.button>
-                      </motion.div>
+                          <motion.button
+                            className="w-16 h-16 bg-white/70 rounded-full flex items-center justify-center backdrop-blur-sm"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={togglePlayPause}
+                          >
+                            {isPlaying ? (
+                              <Pause className="text-black" size={30} />
+                            ) : (
+                              <Play className="text-black ml-1" size={30} />
+                            )}
+                          </motion.button>
+                        </motion.div>
+
+                        {/* Video controls bar - visible only when not playing or on hover */}
+                        <div
+                          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3 transition-opacity duration-300 ${
+                            shouldShowControls ? "opacity-100" : "opacity-0"
+                          }`}
+                        >
+                          {/* Time display and mute button */}
+                          <div className="flex justify-between items-center">
+                            <motion.button
+                              className="p-2 text-white hover:bg-white/20 rounded-full"
+                              whileHover={{ scale: 1.1 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={toggleMute}
+                            >
+                              {isMuted ? (
+                                <VolumeX size={18} />
+                              ) : (
+                                <Volume2 size={18} />
+                              )}
+                            </motion.button>
+                          </div>
+                        </div>
+                      </>
                     )}
-                    <motion.div
-                      className="relative z-10"
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <h3 className="text-2xl font-bold text-white mb-1">
-                        {influencer.name}
-                      </h3>
-                      <p className="text-white/80">{influencer.role}</p>
-                    </motion.div>
                   </div>
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="transform rotate-90 whitespace-nowrap text-white/80 font-bold tracking-wider text-sm md:text-base">
-                      {influencer.name}
+                      {influencer.role}
                     </div>
                   </div>
                 )}

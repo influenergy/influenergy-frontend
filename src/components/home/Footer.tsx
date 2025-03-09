@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Footer() {
+  const router = useRouter();
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -25,8 +28,8 @@ export default function Footer() {
     {
       icon: <Instagram className="h-5 w-5" />,
       href: "#",
-      bgColor: "bg-primary",
-      textColor: "text-white",
+      bgColor: "bg-white",
+      textColor: "text-primary",
     },
     {
       icon: <Youtube className="h-5 w-5" />,
@@ -42,13 +45,39 @@ export default function Footer() {
     },
   ];
 
+  // Function to handle smooth scrolling
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    targetId: string
+  ) => {
+    e.preventDefault();
+
+    // Check if we're on the home page
+    if (window.location.pathname !== "/") {
+      // If not on home page, navigate to home and then scroll
+      router.push(`/?scrollTo=${targetId}`);
+      return;
+    }
+
+    // Get the target element
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      // Scroll smoothly to the element
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   const quickLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "#" },
-    { name: "Services", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Contact", href: "#" },
-    { name: "Get Started", href: "/get-started" },
+    { name: "Home", href: "/", section: "" },
+    { name: "How It Works", href: "#how-it-works", section: "how-it-works" },
+    { name: "Who We Are", href: "#who-we-are", section: "who-we-are" },
+    { name: "What We Do", href: "#what-we-do", section: "what-we-do" },
+    { name: "Contact", href: "#get-in-touch", section: "get-in-touch" },
+    { name: "Why We do It", href: "#why-we-do-it", section: "why-we-do-it" },
   ];
 
   return (
@@ -69,11 +98,11 @@ export default function Footer() {
         >
           {/* Quick Contact */}
           <motion.div
-            className="space-y-5 text-center md:text-left"
+            className="space-y-4 text-center md:text-left w-full flex flex-col items-center justify-start"
             variants={item}
           >
-            <h3 className="text-xl font-semibold mb-4">Quick Contact</h3>
-            <div className="h-0.5 w-16 bg-white mx-auto md:mx-0"></div>
+            <h3 className="text-xl font-semibold">Quick Contact</h3>
+            <hr className="border border-white w-full" />
             <p className="text-gray-300 font-light">
               123 Tech Avenue, Silicon Valley, <br />
               CA 94043, United States
@@ -83,13 +112,16 @@ export default function Footer() {
           </motion.div>
 
           {/* Company Info */}
-          <motion.div className="space-y-5 w-full" variants={item}>
+          <motion.div
+            className="space-y-4 w-full flex flex-col items-center justify-center"
+            variants={item}
+          >
             <div className="mb-6 w-full flex justify-center">
               <Image
                 src="/images/logo.svg"
                 alt="Influenergy Logo"
                 width={180}
-                height={50}
+                height={180}
                 className="object-cover"
               />
             </div>
@@ -108,7 +140,7 @@ export default function Footer() {
                 >
                   <Link
                     href={link.href}
-                    className={`${link.bgColor} ${link.textColor} transition-colors p-2.5 rounded-full hover:scale-105 flex items-center justify-center`}
+                    className={`${link.bgColor} ${link.textColor} hover:text-white hover:bg-primary transition-colors p-2.5 rounded-full hover:scale-105 flex items-center justify-center`}
                   >
                     {link.icon}
                   </Link>
@@ -119,11 +151,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <motion.div
-            className="space-y-5 text-center md:text-left"
+            className="space-y-4 text-center md:text-left flex flex-col items-center justify-start"
             variants={item}
           >
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-            <div className="h-0.5 w-16 bg-white mx-auto md:mx-0"></div>
+            {/* <hr className="border border-gray-400 w-full" />
+             */}
+             <div className="h-0.5 bg-gray-400 w-full"/>
             <ul className="space-y-3 font-light">
               {quickLinks.map((link, index) => (
                 <motion.li
@@ -131,12 +165,22 @@ export default function Footer() {
                   whileHover={{ x: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <Link
-                    href={link.href}
-                    className="text-gray-300 hover:text-primary transition-colors inline-block"
-                  >
-                    {link.name}
-                  </Link>
+                  {link.section ? (
+                    <a
+                      href={link.href}
+                      className="text-gray-300 hover:text-primary transition-colors inline-block"
+                      onClick={(e) => handleSmoothScroll(e, link.section)}
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-gray-300 hover:text-primary transition-colors inline-block"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </motion.li>
               ))}
             </ul>

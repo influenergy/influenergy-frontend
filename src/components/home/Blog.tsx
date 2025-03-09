@@ -68,33 +68,30 @@ export default function Blog() {
       transition={{ duration: 0.7 }}
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative">
         {/* Header section with title and view all link */}
         <motion.div
-          className="flex flex-col md:flex-row justify-between items-center mb-12 md:mb-16"
+          className="flex flex-col md:flex-row justify-between items-center mb-12 md:mb-16 "
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-0">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl text-center font-bold mb-4 md:mb-0 w-full ">
             Explore Our Blogs
           </h2>
-          <motion.div
-            whileHover={{ x: 5 }}
-            transition={{ type: "spring", stiffness: 300 }}
+        </motion.div>
+        <motion.div
+          whileHover={{ x: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
+          className="absolute top-0 right-0"
+        >
+          <Link
+            href="/blog"
+            className="flex items-center text-primary font-semibold hover:underline group "
           >
-            <Link
-              href="/blog"
-              className="flex items-center text-primary font-semibold hover:underline group"
-            >
-              View All
-              <MoveUpRight
-                size={20}
-                className="ml-2 transition-transform group-hover:translate-x-1"
-              />
-            </Link>
-          </motion.div>
+            View All
+          </Link>
         </motion.div>
 
         {/* Blog posts grid */}

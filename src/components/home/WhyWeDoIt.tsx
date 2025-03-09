@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { MoveUpRight } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function WhyWeDoIt() {
   const container = {
@@ -176,11 +177,13 @@ export default function WhyWeDoIt() {
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 font-semibold flex items-center">
-                Explore Now
+              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6  flex items-center">
+                <Link href="/get-started">Explore Now</Link>
               </Button>
-              <div className="bg-primary rounded-full p-3.5 ml-4">
-                <MoveUpRight size={20} className="text-white" />
+              <div className="bg-primary rounded-full p-3.5 absolute left-32 ml-1 hover:bg-primary/90">
+                <Link href="/get-started">
+                  <MoveUpRight size={20} className="text-white" />
+                </Link>
               </div>
             </motion.div>
           </div>
