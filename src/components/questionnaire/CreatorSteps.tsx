@@ -4,10 +4,68 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
 import SocialMediaInput from "../ui/SocialMediaInput";
 import { ChevronDown } from "lucide-react";
+import {
+  step1Schema,
+  step2Schema,
+  step3Schema,
+  step4Schema,
+  step5Schema,
+} from "@/lib/CreatorSchema";
 
 interface StepProps {
   fields: Field[];
 }
+
+// Helper function to determine if a field is required based on validation schemas
+const isFieldRequired = (fieldName: string): boolean => {
+  try {
+    const combinedFields = {
+      ...step1Schema.fields,
+      ...step2Schema.fields,
+      ...step3Schema.fields,
+      ...step4Schema.fields,
+      ...step5Schema.fields,
+    };
+    console.log("fieldName", fieldName);
+
+    const field = combinedFields[fieldName as keyof typeof combinedFields] as
+      | yup.Schema<unknown>
+      | undefined;
+
+    console.log("field", field);
+
+    if (!field) return false;
+
+    const fieldDescription = field.describe();
+    console.log("fieldDescription", fieldDescription);
+
+    // Check if explicitly required
+    const isExplicitlyRequired = fieldDescription.tests.some(
+      (test) => test.name === "required"
+    );
+
+    // Handle date fields separately (if not nullable)
+    const isDateRequired =
+      fieldDescription.type === "date" &&
+      !fieldDescription.tests.some((test) => test.name === "nullable");
+
+    // Handle array fields: required if min(1) is present
+    console.log('nullable',!fieldDescription.nullable)
+    const isArrayRequired =
+      fieldDescription.type === "array" && !fieldDescription.nullable;
+    console.log("isExplicitlyRequired", isExplicitlyRequired);
+    console.log("isDateRequired", isDateRequired);
+    console.log("isArrayRequired", isArrayRequired);
+
+    return isExplicitlyRequired || isDateRequired || isArrayRequired;
+  } catch (error) {
+    console.warn(
+      `Could not determine if field ${fieldName} is required`,
+      error
+    );
+    return false;
+  }
+};
 
 const FormField = ({ field }: { field: Field }) => {
   const {
@@ -98,6 +156,7 @@ const StepComponent = ({ fields }: StepProps) => {
       {fields.map((field) => {
         const fieldName = field.slug as keyof CreatorQuestionnaireData;
         const error = errors[fieldName];
+        const required = isFieldRequired(field.slug);
 
         // Skip link fields as they're handled within SocialMediaInput
         if (
@@ -116,7 +175,7 @@ const StepComponent = ({ fields }: StepProps) => {
             <div key={field.title} className="space-y-2 mt-4">
               <label className="block text-sm font-medium text-gray-700">
                 {field.title}
-                <span className="text-red-500 ml-1">*</span>
+                {required && <span className="text-red-500 ml-1">*</span>}
               </label>
               <SocialMediaInput field={field} />
               {error && (
@@ -133,7 +192,7 @@ const StepComponent = ({ fields }: StepProps) => {
           <div key={field.title} className="space-y-2 mt-4">
             <label className="block text-sm font-medium text-gray-700">
               {field.title}
-              {/* <span className="text-red-500 ml-1">*</span> */}
+              {required && <span className="text-red-500 ml-1">*</span>}
             </label>
             <FormField field={field} />
             {error && (

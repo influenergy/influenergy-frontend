@@ -172,14 +172,14 @@ export const step4Schema = yup.object().shape({
 }) as Schema;
 
 export const step5Schema = yup
-  .object({
+  .object()
+  .shape({
     "top-two-audiences": yup
       .array()
       .of(yup.string())
       .min(2, "Select at least two age brackets")
       .max(2, "Select only two age brackets")
-      .required("Age bracket is required")
-      .nullable(),
+      .required("Age bracket is required"),
     "average-views": yup
       .string()
       .oneOf([
