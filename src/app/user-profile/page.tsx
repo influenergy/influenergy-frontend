@@ -180,6 +180,7 @@ export default function Page() {
       <EditProfileModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
+        userType={userType ?? ''}
       />
     </div>
   );

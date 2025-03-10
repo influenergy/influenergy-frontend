@@ -41,11 +41,12 @@ export default function Sidebar({ type }: { type: string }) {
   const navItems = (navLinks as NavLinks)[user][type];
 
   return (
-    <div className="border-r bg-white md:block fixed left-0 top-0 h-screen w-16 md:w-[240px] z-10 transition-all duration-300">
+    <div className="border-r bg-primary md:block fixed left-0 top-0 h-screen w-16 md:w-[240px] z-10 transition-all duration-300">
       <div className="flex h-full flex-col gap-2 p-4">
         <Link href="/dashboard">
-          <Image src="/images/logo.svg" width={200} height={200} alt="logo" />
+          <Image src="/images/logo-white.svg" width={200} height={200} alt="logo" />
         </Link>
+        <hr />
         <nav className="grid items-start gap-2 mt-10">
           {navItems.map((item: NavItem) =>
             item.children ? (

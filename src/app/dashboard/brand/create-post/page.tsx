@@ -1,9 +1,8 @@
-import React from 'react'
+import PostQuestionnaire from "@/components/questionnaire/PostQuestionnaire";
+import React from "react";
 
 const Page = () => {
-  return (
-    <div>Create Post</div>
-  )
-}
+  return <PostQuestionnaire />;
+};
 
-export default Page
+export default Page;

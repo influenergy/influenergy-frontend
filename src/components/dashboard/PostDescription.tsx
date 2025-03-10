@@ -32,7 +32,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
       <div className="flex justify-end mb-4">
         <Button
           onClick={() => router.push(`/dashboard/brand/posts/edit/${data.id}`)}
-          className="flex items-center gap-2 bg-primary text-white hover:bg-primary/90"
+          className="flex items-center gap-2 text-primary bg-secondary hover:bg-primary/90"
         >
           <PenLine className="h-4 w-4" />
           Edit Post

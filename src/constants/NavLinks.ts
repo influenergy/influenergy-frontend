@@ -3,7 +3,6 @@ import {
   Film,
   ClipboardList,
   Settings,
-  PenLine,
   Link,
   Bell,
   LucideIcon,
@@ -60,20 +59,9 @@ const brandNav: NavItem[] = [
     label: "Dashboard",
   },
   {
-    icon: LayoutDashboard,
-    label: "My Postings",
-    children: [
-      {
-        href: "/dashboard/brand/posts",
-        icon: ClipboardList,
-        label: "My Posts",
-      },
-      {
-        href: "/dashboard/brand/create-post",
-        icon: PenLine,
-        label: "Create Post",
-      },
-    ],
+    label:"My Posts",
+    href:"/dashboard/brand/posts",
+    icon: ClipboardList,
   },
   {
     href: "/dashboard/brand/findai",
