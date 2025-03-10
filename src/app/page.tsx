@@ -19,10 +19,9 @@ const GetInTouch = lazy(() => import("@/components/home/GetInTouch"));
 const NewsLetter = lazy(() => import("@/components/home/NewsLetter"));
 const Footer = lazy(() => import("@/components/home/Footer"));
 
-export default function Home() {
+function SearchParamsComponent() {
   const searchParams = useSearchParams();
 
-  // Effect to handle scrolling when redirected from another page
   useEffect(() => {
     const scrollTo = searchParams.get("scrollTo");
     if (scrollTo) {
@@ -31,10 +30,14 @@ export default function Home() {
         if (element) {
           element.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }, 500); // Small delay to ensure components are rendered
+      }, 500);
     }
   }, [searchParams]);
 
+  return null;
+}
+
+export default function Home() {
   return (
     <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
       <Header />
@@ -78,6 +81,10 @@ export default function Home() {
           <Footer />
         </Suspense>
       </div>
+
+      <Suspense fallback={<div>Loading search parameters...</div>}>
+        <SearchParamsComponent />
+      </Suspense>
     </section>
   );
 }
