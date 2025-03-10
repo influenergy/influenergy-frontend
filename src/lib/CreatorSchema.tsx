@@ -3,6 +3,12 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 
 type Schema = yup.ObjectSchema<Partial<CreatorQuestionnaireData>>;
 
+const minDate = new Date();
+minDate.setFullYear(minDate.getFullYear() - 85); // 85 years ago
+
+const maxDate = new Date();
+maxDate.setFullYear(maxDate.getFullYear() - 5); // 5 years ago
+
 export const step1Schema = yup.object().shape({
   "are-you-ugc-creator": yup
     .string()
@@ -15,8 +21,8 @@ export const step1Schema = yup.object().shape({
   "stage-name": yup.string().nullable().optional(),
   dob: yup
     .date()
-    .min(new Date(1900, 0, 1), "Date cannot be before 1900")
-    .max(new Date(), "Date cannot be in the future")
+    .min(minDate, "Age must be at most 85 years")
+    .max(maxDate, "Age must be at least 5 years")
     .required("Date of birth is required")
     .notOneOf([null], "Date of birth cannot be empty"),
 }) as Schema;
