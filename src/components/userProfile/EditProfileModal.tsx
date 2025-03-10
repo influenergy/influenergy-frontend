@@ -25,11 +25,47 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
   const [name, setName] = useState(user?.fullName || "");
   const [email, setEmail] = useState(user?.email || "test");
   const [isLoading, setIsLoading] = useState(false);
+  const [nameError, setNameError] = useState("");
   const { toast } = useToast();
   const dispatch = useDispatch();
 
+  // Name validation function - only allow letters and spaces
+  const validateName = (value: string) => {
+    if (!value) {
+      setNameError("Name is required");
+      return false;
+    }
+
+    // Regex to check for alphabetic characters and spaces only
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(value)) {
+      setNameError("Name should only contain letters and spaces");
+      return false;
+    }
+
+    if (value.length < 2) {
+      setNameError("Name must be at least 2 characters");
+      return false;
+    }
+
+    setNameError("");
+    return true;
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    validateName(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate before submission
+    if (!validateName(name)) {
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -80,11 +116,14 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
             <Input
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleNameChange}
               placeholder="Enter your full name"
               className="w-full"
               required
             />
+            {nameError && (
+              <p className="text-sm text-red-500 mt-1">{nameError}</p>
+            )}
           </div>
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium">
@@ -105,6 +144,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
               variant="outline"
               onClick={() => {
                 setName(user?.fullName || "");
+                setNameError("");
                 onClose();
               }}
               disabled={isLoading}
@@ -112,7 +152,7 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading || !!nameError}>
               {isLoading ? "Saving..." : "Save changes"}
             </Button>
           </div>
