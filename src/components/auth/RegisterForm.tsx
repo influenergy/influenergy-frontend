@@ -22,6 +22,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -178,20 +179,20 @@ export default function RegisterForm({ userType }: { userType: string }) {
               />
 
               <RegisterFormInput
-                type={showPassword ? "text" : "password"}
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
                 register={register}
                 name="confirmPassword"
                 error={errors.confirmPassword}
                 icon={
-                  showPassword ? (
+                  showConfirmPassword ? (
                     <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
                   ) : (
                     <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
                   )
                 }
-                showPassword={showPassword}
-                onTogglePassword={() => setShowPassword(!showPassword)}
+                showPassword={showConfirmPassword}
+                onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
               />
 
               <motion.div
