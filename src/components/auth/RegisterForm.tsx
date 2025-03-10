@@ -31,6 +31,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: yupResolver(registerSchema),
+    mode: "onBlur",
   });
 
   const registerMutation = useMutation({
