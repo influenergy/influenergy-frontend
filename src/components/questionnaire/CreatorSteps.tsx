@@ -26,18 +26,14 @@ const isFieldRequired = (fieldName: string): boolean => {
       ...step4Schema.fields,
       ...step5Schema.fields,
     };
-    console.log("fieldName", fieldName);
 
     const field = combinedFields[fieldName as keyof typeof combinedFields] as
       | yup.Schema<unknown>
       | undefined;
 
-    console.log("field", field);
-
     if (!field) return false;
 
     const fieldDescription = field.describe();
-    console.log("fieldDescription", fieldDescription);
 
     // Check if explicitly required
     const isExplicitlyRequired = fieldDescription.tests.some(
@@ -53,9 +49,6 @@ const isFieldRequired = (fieldName: string): boolean => {
     console.log('nullable',!fieldDescription.nullable)
     const isArrayRequired =
       fieldDescription.type === "array" && !fieldDescription.nullable;
-    console.log("isExplicitlyRequired", isExplicitlyRequired);
-    console.log("isDateRequired", isDateRequired);
-    console.log("isArrayRequired", isArrayRequired);
 
     return isExplicitlyRequired || isDateRequired || isArrayRequired;
   } catch (error) {
