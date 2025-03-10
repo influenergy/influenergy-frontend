@@ -103,7 +103,7 @@ export default function GetStarted() {
                     onClick={() => handleUserTypeSelection("creator", "/login")}
                     className="text-gray-800 hover:bg-gray-200"
                   >
-                    Creator
+                    UGC Creator
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
