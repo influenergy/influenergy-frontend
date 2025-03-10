@@ -4,6 +4,8 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
 import SocialMediaInput from "../ui/SocialMediaInput";
 import { ChevronDown } from "lucide-react";
+import * as yup from "yup";
+
 import {
   step1Schema,
   step2Schema,
