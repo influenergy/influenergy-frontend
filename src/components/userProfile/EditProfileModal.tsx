@@ -17,6 +17,7 @@ import { userApi } from "@/services/userServices";
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+  userType: string;
 }
 
 export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
@@ -102,7 +103,10 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
             <Button
               type="button"
               variant="outline"
-              onClick={onClose}
+              onClick={() => {
+                setName(user?.fullName || "");
+                onClose();
+              }}
               disabled={isLoading}
               className="border-primary text-primary"
             >
