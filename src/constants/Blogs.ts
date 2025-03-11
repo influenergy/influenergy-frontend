@@ -46,11 +46,11 @@ export const blogs = [
     title: "FEATURE: Exploring Life & Business with Sandeep Asdhir of Influenergy Marketing ",
     description:
       "Enjoy the Feature I had with VoyageLA Magazine highlighting myself and Influenergy.",
-    slug:"feature-exploring-life-and-business-with-sandeep-asdhir-of-influenergy-marketing"
+    link:"https://voyagela.com/interview/exploring-life-business-with-sandeep-asdhir-of-influenergy-marketing"
   },
 ];
 
 
-export const BlogContent =[
+// export const BlogContent =[
     
-]
+// ]
