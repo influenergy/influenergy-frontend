@@ -19,7 +19,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full px-6 md:px-16 lg:px-24 py-16 md:py-28 gap-8 md:gap-16 items-center max-w-[1440px] mx-auto bg-white">
+    <div className="flex flex-col md:flex-row w-full px-6 md:px-16 lg:px-24 py-14 gap-8 md:gap-16 items-center max-w-[1440px] mx-auto">
       <motion.div
         className="w-full md:w-1/2"
         initial={{ opacity: 0 }}

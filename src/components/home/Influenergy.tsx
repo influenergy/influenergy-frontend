@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function InfluEnergySection() {
   return (
-    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] mt-16">
+    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] mt-10">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -29,8 +29,8 @@ export default function InfluEnergySection() {
             />
           </motion.span>
           CONNECTS GLOBAL <br className="hidden md:block" />
-          CREATORS WITH BRANDS, <br className="hidden md:block" />
-          TRANSFORMING
+          CREATORS WITH BRANDS,{" "}
+          
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -45,7 +45,7 @@ export default function InfluEnergySection() {
               className="rounded-full object-cover inline-block align-middle mx-2 shadow-md"
             />
           </motion.span>
-          CROSS-CULTURAL
+          TO CREATE 
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -60,7 +60,7 @@ export default function InfluEnergySection() {
               className="rounded-full object-cover inline-block align-middle mx-2 shadow-md"
             />
           </motion.span>
-          PARTNERSHIPS.
+          CROSS-CULTURAL PARTNERSHIPS.
         </p>
       </motion.div>
     </div>

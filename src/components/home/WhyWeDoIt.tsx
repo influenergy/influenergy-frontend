@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import { MoveUpRight } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -23,7 +22,7 @@ export default function WhyWeDoIt() {
 
   return (
     <div className="bg-[#f7f6ff] w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-20 md:py-28 gap-10 items-center max-w-[1440px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 items-center max-w-[1440px] mx-auto">
         {/* Left Column - Feature Cards */}
         <motion.div
           className="relative w-full space-y-12"
@@ -180,11 +179,6 @@ export default function WhyWeDoIt() {
               <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6  flex items-center">
                 <Link href="/get-started">Explore Now</Link>
               </Button>
-              <div className="bg-primary rounded-full p-3.5 absolute left-32 ml-1 hover:bg-primary/90">
-                <Link href="/get-started">
-                  <MoveUpRight size={20} className="text-white" />
-                </Link>
-              </div>
             </motion.div>
           </div>
         </motion.div>

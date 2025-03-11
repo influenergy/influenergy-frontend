@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function WeEmpowerBrand() {
   return (
     <div className="bg-[#fefaf6] w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-20 md:py-28 gap-10 md:gap-16 items-center max-w-[1440px] mx-auto ">
+      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 md:gap-16 items-center max-w-[1440px] mx-auto ">
         {/* Left Column - Profile Card */}
         <motion.div
           className="flex justify-center items-center relative"

@@ -61,7 +61,7 @@ export default function Blog() {
 
   return (
     <motion.div
-      className="w-full py-20 md:py-28 px-6 md:px-16 lg:px-24 bg-gray-50"
+      className="w-full py-16 px-6 md:px-16 lg:px-24 bg-gray-50"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}

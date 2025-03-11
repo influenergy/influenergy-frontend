@@ -28,7 +28,7 @@ const GetInTouch = () => {
 
   return (
     <motion.div
-      className="bg-[#F4F3FF] w-full py-16 md:py-24 px-6 md:px-8"
+      className="bg-[#F4F3FF] w-full py-10 px-6 md:px-8"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
