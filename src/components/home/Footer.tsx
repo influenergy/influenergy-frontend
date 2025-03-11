@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { getCurrentPath } from "@/utils/navigation";
 
 export default function Footer() {
   const router = useRouter();
@@ -53,7 +54,7 @@ export default function Footer() {
     e.preventDefault();
 
     // Check if we're on the home page
-    if (window.location.pathname !== "/") {
+    if (getCurrentPath() !== "/") {
       // If not on home page, navigate to home and then scroll
       router.push(`/?scrollTo=${targetId}`);
       return;

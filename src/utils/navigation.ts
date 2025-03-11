@@ -10,3 +10,14 @@ export const safeNavigate = (path: string) => {
   }
   // On server, do nothing - navigation will happen on client
 };
+
+/**
+ * Get the current URL path safely (works in both client and server environments)
+ * @returns The current path or empty string if on server
+ */
+export const getCurrentPath = () => {
+  if (isClient) {
+    return window.location.pathname;
+  }
+  return ''; // Return empty string on server
+};
