@@ -95,13 +95,13 @@ export default function GetStarted() {
                 <DropdownMenuContent className="w-52 bg-white shadow-lg">
                   <DropdownMenuItem
                     onClick={() => handleUserTypeSelection("creator", "/login")}
-                    className="text-gray-800 hover:bg-gray-200"
+                    className="text-gray-800 hover:bg-gray-200 cursor-pointer"
                   >
                     Influencer
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleUserTypeSelection("creator", "/login")}
-                    className="text-gray-800 hover:bg-gray-200"
+                    className="text-gray-800 hover:bg-gray-200 cursor-pointer"
                   >
                     UGC Creator
                   </DropdownMenuItem>

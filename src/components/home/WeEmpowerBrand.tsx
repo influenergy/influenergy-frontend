@@ -20,7 +20,7 @@ export default function WeEmpowerBrand() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Image
-              src="/landing/sandeep.png"
+              src="/landing/sandy.jpg"
               alt="Sandeep Ashdir"
               width={500}
               height={400}
