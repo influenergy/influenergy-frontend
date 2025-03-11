@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
-import { MoveUpRight } from "lucide-react";
+// import { MoveUpRight } from "lucide-react";
 import Link from "next/link";
 
 export default function WhoAreWe() {
@@ -19,7 +19,7 @@ export default function WhoAreWe() {
           loop
           muted
           playsInline
-          className="rounded-3xl object-cover shadow-lg h-[550px]"
+          className="rounded-3xl object-contain shadow-lg h-[550px] w-[550px]"
           controls
         >
           <source src="/landing/hearfromus/1.mov" />
@@ -49,11 +49,11 @@ export default function WhoAreWe() {
           <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6  flex items-center">
             <Link href="/get-started">Explore Now</Link>
           </Button>
-          <div className="bg-primary rounded-full p-3.5 absolute left-32 ml-1 hover:bg-primary/90">
+          {/* <div className="bg-primary rounded-full p-3.5 absolute left-32 ml-1 hover:bg-primary/90">
             <Link href="/get-started">
               <MoveUpRight size={20} className="text-white" />
             </Link>
-          </div>
+          </div> */}
         </motion.div>
       </motion.div>
     </div>

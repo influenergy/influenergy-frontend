@@ -75,6 +75,35 @@ export default function WhatWeDo() {
               </p>
             </div>
           </motion.div>
+
+
+          <motion.div
+            className="flex items-start gap-4 sm:gap-6"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-14 w-14 sm:h-16 sm:w-16 bg-[#f3e8ff] rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+              <Image
+                src="/landing/whatwedo/note.png"
+                width={18}
+                height={18}
+                alt="AI Solution Icon"
+              />
+            </div>
+            <div className="flex flex-col">
+              <h2 className="text-xl font-semibold mb-2">
+              Free Reporting & Analytics
+              </h2>
+              <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+              Our Analytics ensure that you are getting the best reports and analytics
+              </p>
+            </div>
+          </motion.div>
+
+
+
         </div>
       </motion.div>
 

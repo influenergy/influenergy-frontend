@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
+import { Linkedin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function WeEmpowerBrand() {
   return (
@@ -28,7 +30,7 @@ export default function WeEmpowerBrand() {
             />
           </motion.div>
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-white p-4 text-center rounded-b-xl w-[350px] rounded-2xl shadow-lg">
-            <h3 className="text-2xl font-bold text-gray-900">Sandeep Ashdir</h3>
+            <h3 className="text-2xl font-bold text-gray-900">Sandeep Asdhir</h3>
             <p className="text-gray-600 mt-1">Founder, CEO</p>
           </div>
         </motion.div>
@@ -53,17 +55,17 @@ export default function WeEmpowerBrand() {
             eye for trends, and a sharp financial mind.
           </p>
 
-          <motion.blockquote
-            className="border-l-4 border-primary pl-6 italic text-gray-600 my-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500
-          </motion.blockquote>
+            <Link
+              href="#"
+              className={`bg-primary w-fit text-white border border-primary hover:bg-white hover:text-primary  transition-colors p-2.5 rounded-full hover:scale-105 flex items-center justify-center`}
+            >
+              <Linkedin className="h-5 w-5" />
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </div>

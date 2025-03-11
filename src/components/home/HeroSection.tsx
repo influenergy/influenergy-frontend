@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Label } from "../ui/label";
+// import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { MarqueeLogos } from "../magicui/marquee";
 
@@ -40,7 +40,7 @@ export default function HeroSection() {
         transition={{ duration: 0.7 }}
       >
         <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-tight font-mona-sans">
-          YOUR CREATORS AND <br className="hidden sm:block" /> BRAND AGENCY
+        WHERE CREATORS & BRANDS  <br className="hidden sm:block" /> CONNECT TO MAKE MONEY
         </h1>
         <p className="mt-6 text-lg sm:text-xl md:text-2xl mx-auto max-w-4xl">
           Lets create AI & Tech Influencer campaigns that connect, inspire, and
@@ -63,17 +63,11 @@ export default function HeroSection() {
       {/* Companies Bar - Repositioned for better centering */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
         <motion.div
-          className="relative -bottom-14 px-6 py-4 w-11/12 max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl shadow-xl bg-white z-20 mx-auto"
+          className="relative -bottom-14 px-6 py-4 w-11/12 max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-          <p className="text-lg sm:text-xl font-semibold whitespace-nowrap">
-            You are in a{" "}
-            <Label className="text-primary text-lg font-semibold">
-              Good Company
-            </Label>
-          </p>
 
           {/* Replace static logos with Marquee component */}
           <div className="w-full overflow-hidden">
