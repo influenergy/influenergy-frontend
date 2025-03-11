@@ -18,6 +18,13 @@ import { useState } from "react";
 
 type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
 
+interface BrandRegister{
+  fullName:string;
+  companyEmail:string;
+  companyName?:string;
+  companyWebsite?:string;
+}
+
 export default function BrandRegisterForm({ userType }: { userType: string }) {
   const { toast } = useToast();
   const [showSuccess, setShowSuccess] = useState(false);
@@ -42,12 +49,17 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       if (!authApi?.brandRegister) {
         throw new Error("Registration service is not available");
       }
-      return authApi.brandRegister({
+      const obj:BrandRegister = {
         fullName: data.fullName,
         companyEmail: data.companyEmail,
-        companyName: data.companyName || "",
-        companyWebsite: data.companyWebsite || "",
-      });
+      };
+      if (data.companyName) {
+        obj["companyName"] = data.companyName;
+      }
+      if (data.companyWebsite) {
+        obj["companyWebsite"] = data.companyWebsite;
+      }
+      return authApi.brandRegister(obj);
     },
     onSuccess: (data) => {
       console.log("Registration successful:", data);
