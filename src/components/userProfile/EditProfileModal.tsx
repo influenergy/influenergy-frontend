@@ -17,7 +17,6 @@ import { userApi } from "@/services/userServices";
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userType: string;
 }
 
 export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {

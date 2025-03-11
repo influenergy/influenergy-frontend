@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import DeleteModal from "@/components/userProfile/DeleteModal";
 import ProfileActions from "@/components/userProfile/ProfileActions";
 import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
+import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
 import { Info, PenLine } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -127,29 +128,58 @@ export default function Page() {
         </div>
 
         {/* profile details section */}
-        <div className="border w-full mt-8 rounded-xl py-4 px-4 sm:px-7">
+        <div className="border mt-8 rounded-xl py-4 px-4 sm:px-7">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
             <p>Personal Info</p>
             <button
               onClick={() => setIsEditModalOpen(true)}
-              className="flex items-center gap-2 rounded-xl text-md w-full sm:w-auto hover:text-primary transition-colors border py-1 px-3"
+              className="flex items-center gap-2 rounded-xl text-md w-fit hover:text-primary transition-colors border py-1 px-3"
             >
               <PenLine size={20} />
               Edit
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-start md:justify-between items-start sm:items-center gap-4 mt-4 sm:space-x-5">
-            <div className="w-full sm:w-auto">
-              <Label className="text-sm font-light">Name</Label>
-              <p className="text-lg">{user?.fullName || "Not Available"}</p>
-            </div>
-            <div className="w-full sm:w-auto">
-              <Label className="text-sm font-light">Email</Label>
-              <p className="text-lg break-all">
-                {user?.email || "Not Available"}
-              </p>
-            </div>
+          <div className="flex flex-col flex-wrap sm:flex-row justify-start md:justify-between items-start sm:items-center gap-4 mt-4">
+            {userType == "creator" ? (
+              <>
+                <div className="w-full sm:w-auto">
+                  <Label className="text-sm font-light">Name</Label>
+                  <p className="text-lg">{user?.fullName || "Not Available"}</p>
+                </div>
+                <div className="w-full sm:w-auto">
+                  <Label className="text-sm font-light">Email</Label>
+                  <p className="text-lg break-all">
+                    {user?.email || "Not Available"}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="w-full sm:w-auto">
+                  <Label className="text-sm font-light">Name</Label>
+                  <p className="text-lg">{user?.fullName || "Not Available"}</p>
+                </div>
+                <div className="w-full sm:w-auto">
+                  <Label className="text-sm font-light">Email</Label>
+                  <p className="text-lg break-all">
+                    {user?.email || "Not Available"}
+                  </p>
+                </div>
+                <div className="w-full sm:w-auto">
+                  <Label className="text-sm font-light">Company Name</Label>
+                  <p className="text-lg break-all">
+                    {user?.companyName || "Not Available"}
+                  </p>
+                </div>
+                <div className="w-full sm:w-auto">
+                  <Label className="text-sm font-light">Website</Label>
+                  <p className="text-lg break-all">
+                    {user?.companyWebsite || "Not Available"}
+                  </p>
+                </div>
+              </>
+            )}
             {/* <div className="w-full sm:w-auto">
               <p className="text-sm font-light">Phone</p>
               <p className="text-lg">911234567890</p>
@@ -158,7 +188,7 @@ export default function Page() {
         </div>
 
         {/* Complete Profile Section */}
-        {(!user?.isProfileCompleted && userType == "creator") && (
+        {!user?.isProfileCompleted && userType == "creator" && (
           <div className="w-full mt-8">
             <Link href="/questionnaire" className="w-full flex justify-center">
               <Button className="bg-primary text-white border-2 border-primary rounded-lg text-md py-5 px-8 w-full sm:w-2/3 md:w-1/3">
@@ -177,11 +207,17 @@ export default function Page() {
           </div>
         )}
       </div>
-      <EditProfileModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        userType={userType ?? ''}
-      />
+      {userType == "brand" ? (
+        <EditBrandProfileModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      ) : (
+        <EditProfileModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
