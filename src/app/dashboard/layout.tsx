@@ -17,7 +17,7 @@ export default function DashboardLayout({
       <Sidebar type="dashboard" />
       <main className="ml-16 md:ml-[240px] w-full">
         <Header />
-        <div className="p-8">{children}</div>
+        <div className="p-2">{children}</div>
       </main>
     </div>
   );

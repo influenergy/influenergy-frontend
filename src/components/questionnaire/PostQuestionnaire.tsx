@@ -16,7 +16,7 @@ import {
   step4Schema,
   step5Schema,
 } from "@/lib/PostSchema";
-import { Step } from "./CreatorSteps";
+import { Step } from "./PostSteps";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import { AnyObjectSchema } from "yup";
 import { Field } from "@/constants/questions";
@@ -235,7 +235,7 @@ const PostQuestionnaire = (): JSX.Element => {
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(handleNext)}
-            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly"
+            className="max-w-7xl w-full h-full p-2 flex flex-col items-center justify-evenly"
           >
             <div className="mb-8 flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2">

@@ -37,7 +37,7 @@ export default function GetStarted() {
               <div className="space-y-5 pl-10">
                 <h1 className="text-2xl font-medium md:text-4xl lg:text-5xl ml-10">
                   Join{" "}
-                  <span className="text-[#7C3AED] font-bold">Influenergy</span>
+                  <span className="text-primary font-bold">Influenergy</span>
                 </h1>
                 <p className="mt-5 text-xl text-gray-800">
                   Your Premier AI & Tech Influencer Marketing Agency
