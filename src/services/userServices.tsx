@@ -1,12 +1,16 @@
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import { api } from "./api";
 
-
 interface UpdateProfileData {
   fullName?: string;
   photo?: File;
 }
-
+// interface UpdateBrandProfileData {
+//   fullName: string;
+//   email: string;
+//   companyName: string;
+//   companyWebsite: string;
+// }
 const transformQuestionnaireData = (
   formData: CreatorQuestionnaireData,
   id: string
@@ -60,6 +64,23 @@ export const userApi = {
   updateProfile: async (data: UpdateProfileData | FormData) => {
     const isFormData = data instanceof FormData;
     const response = await api.put(`/creator/update`, data, {
+      headers: {
+        "Content-Type": isFormData ? "multipart/form-data" : "application/json",
+      },
+    });
+    return response.data;
+  },
+  updateBrandProfile: async (
+    id: string,
+    data: {
+      fullName: string;
+      email: string;
+      companyName: string;
+      companyWebsite: string;
+    }
+  ) => {
+    const isFormData = data instanceof FormData;
+    const response = await api.patch(`/brand/update/${id}`, data, {
       headers: {
         "Content-Type": isFormData ? "multipart/form-data" : "application/json",
       },

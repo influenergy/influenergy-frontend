@@ -32,10 +32,15 @@ const editProfileSchema = yup.object({
 
 type FormData = yup.InferType<typeof editProfileSchema>;
 
-export function EditBrandProfileModal({ isOpen, onClose }: EditProfileModalProps) {
+export function EditBrandProfileModal({
+  isOpen,
+  onClose,
+}: EditProfileModalProps) {
   const user = useAppSelector(selectUser);
   const { toast } = useToast();
   const dispatch = useDispatch();
+
+  // console.log("user", user);
 
   const {
     register,
@@ -54,9 +59,21 @@ export function EditBrandProfileModal({ isOpen, onClose }: EditProfileModalProps
   const website = user?.companyWebsite || "";
 
   const onSubmit = async (data: FormData) => {
+    if (!user?._id) {
+      toast({
+        title: "Error",
+        description: "User ID not found",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      await userApi.updateProfile({
+      await userApi.updateBrandProfile(user._id, {
         fullName: data.fullName,
+        email,
+        companyName: company,
+        companyWebsite: website,
       });
 
       dispatch(
