@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { Button } from "../ui/button";
 import { MoveUpRight } from "lucide-react";
 import Link from "next/link";
