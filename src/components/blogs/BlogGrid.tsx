@@ -7,10 +7,11 @@ import { motion } from "framer-motion";
 
 interface Blog {
   image: string;
-  author: string;
   date: string;
   title: string;
   description: string;
+  link?: string;
+  slug?: string;
 }
 
 interface BlogGridProps {
@@ -99,7 +100,6 @@ export default function BlogGrid({ blogs }: BlogGridProps) {
             </div>
             <div className="p-4 sm:p-6">
               <div className="flex items-center text-gray-500 text-sm mb-2">
-                <p className="mr-2">{blog.author}</p>
                 <p className="mr-2">•</p>
                 <p>{blog.date}</p>
               </div>
@@ -110,7 +110,7 @@ export default function BlogGrid({ blogs }: BlogGridProps) {
                 {blog.description}
               </p>
               <motion.a
-                href="#"
+                href={blog?.link ? blog.link : `blogs/${blog.slug}`}
                 className="inline-block mt-3 sm:mt-4 text-blue-500 hover:text-blue-700 font-medium"
                 whileHover={{
                   textDecoration: "underline",
