@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import ProfileActions from "@/components/userProfile/ProfileActions";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CREATE_POST } from "@/constants/CreatePost";
 import { useToast } from "@/hooks/use-toast";
@@ -43,6 +43,9 @@ const combinedSchemas = {
   step3: step5Schema,
 };
 
+// Ensure schemas are properly typed
+type PostSchema = yup.ObjectSchema<Partial<PostQuestionnaireData>>;
+
 const EditPostModal: React.FC<EditPostModalProps> = ({
   open,
   onOpenChange,
@@ -51,22 +54,26 @@ const EditPostModal: React.FC<EditPostModalProps> = ({
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Get the current schema for the combined step
-  const getCurrentSchema = () => {
+  // Get the current schema for the combined step with proper typing
+  const getCurrentSchema = (): PostSchema => {
     switch (step) {
       case 1:
-        return combinedSchemas.step1;
+        return combinedSchemas.step1 as PostSchema;
       case 2:
-        return combinedSchemas.step2;
+        return combinedSchemas.step2 as PostSchema;
       case 3:
-        return combinedSchemas.step3;
+        return combinedSchemas.step3 as PostSchema;
       default:
-        return combinedSchemas.step1;
+        return combinedSchemas.step1 as PostSchema;
     }
   };
 
   const methods = useForm<PostQuestionnaireData>({
-    resolver: yupResolver(getCurrentSchema()),
+    // Use a more specific type cast for the resolver to ensure compatibility
+    resolver: yupResolver(getCurrentSchema()) as unknown as Resolver<
+      PostQuestionnaireData,
+      object
+    >,
     mode: "onBlur",
   });
 
@@ -74,23 +81,25 @@ const EditPostModal: React.FC<EditPostModalProps> = ({
 
   const nextStep = async () => {
     // Get field names for current steps to validate
-    let fieldsToValidate: string[] = [];
+    let fieldsToValidate: Array<keyof PostQuestionnaireData> = [];
 
     if (step === 1) {
       // Validate fields from steps 1 and 2
       fieldsToValidate = [
         ...CREATE_POST.step1.fields.map((f) => f.slug),
         ...CREATE_POST.step2.fields.map((f) => f.slug),
-      ];
+      ] as Array<keyof PostQuestionnaireData>;
     } else if (step === 2) {
       // Validate fields from steps 3 and 4
       fieldsToValidate = [
         ...CREATE_POST.step3.fields.map((f) => f.slug),
         ...CREATE_POST.step4.fields.map((f) => f.slug),
-      ];
+      ] as Array<keyof PostQuestionnaireData>;
     } else {
       // Validate fields from step 5
-      fieldsToValidate = CREATE_POST.step5.fields.map((f) => f.slug);
+      fieldsToValidate = CREATE_POST.step5.fields.map((f) => f.slug) as Array<
+        keyof PostQuestionnaireData
+      >;
     }
 
     // Trigger validation for the current step fields

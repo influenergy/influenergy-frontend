@@ -84,12 +84,12 @@ export const CREATOR_QUESTIONS: Questions = {
         category: "text",
       },
       {
-        title: "Enter if you have stage names",
+        title: "Do you have preferred name?",
         slug: "stage-name",
         category: "text",
       },
       {
-        title: "What is your D.O.B?",
+        title: "What is your Date Of Birth?",
         slug: "dob",
         category: "date",
       },

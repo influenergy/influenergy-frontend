@@ -52,8 +52,8 @@ const config: Config = {
         },
         fontFamily: {
           poppins: "var(--font-poppins)",
-          "mona-sans": ["var(--font-mona-sans)"],
-          catamaran: ["var(--font-catamaran)"],
+          "mona-sans": "var(--font-mona-sans)",
+          catamaran: "var(--font-catamaran)",
         },
       },
       borderRadius: {
