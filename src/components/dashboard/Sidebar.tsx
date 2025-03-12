@@ -63,8 +63,8 @@ export default function Sidebar({ type }: { type: string }) {
                     variant="ghost"
                     className="w-full justify-start gap-3"
                   >
-                    {item.icon && <item.icon className="h-4 w-4" />}
-                    <p className="text-sm md:block hidden">{item.label}</p>
+                    {item.icon && <item.icon className="h-4 w-4 hover:text-primary" />}
+                    <p className="text-sm md:block hidden text-primary">{item.label}</p>
                     <ChevronsUpDown className="h-4 w-4 ml-7 md:block hidden" />
                   </Button>
                 </CollapsibleTrigger>
@@ -75,7 +75,7 @@ export default function Sidebar({ type }: { type: string }) {
                         variant="ghost"
                         className={cn(
                           "w-full justify-start text-sm",
-                          pathname === child.href && "bg-secondary"
+                          pathname === child.href && "bg-white text-primary"
                         )}
                       >
                         {child.icon && <child.icon className="h-4 w-4" />}
@@ -92,7 +92,7 @@ export default function Sidebar({ type }: { type: string }) {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start gap-3",
-                    pathname === item.href && "bg-secondary"
+                    pathname === item.href && "bg-white text-primary"
                   )}
                 >
                   {item.icon && <item.icon className="h-4 w-4" />}
