@@ -15,6 +15,7 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
+  step6Schema, // Add step6Schema
 } from "@/lib/CreatorSchema";
 import { Step } from "./CreatorSteps";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
@@ -34,6 +35,7 @@ const schemas: StepSchemas = {
   step3: step3Schema,
   step4: step4Schema,
   step5: step5Schema,
+  step6: step6Schema, // Add step6Schema to schemas
 };
 
 const CreatorQuestionnaire = (): JSX.Element => {

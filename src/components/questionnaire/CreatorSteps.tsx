@@ -7,13 +7,19 @@ import GenderInput from "../ui/GenderInput";
 import { ChevronDown } from "lucide-react";
 import * as yup from "yup";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
+
 import {
   step1Schema,
   step2Schema,
   step3Schema,
   step4Schema,
   step5Schema,
+  step6Schema,
 } from "@/lib/CreatorSchema";
+import PrimaryNicheInput from "../ui/PrimaryNicheInput";
 
 interface StepProps {
   fields: Field[];
@@ -28,6 +34,7 @@ const isFieldRequired = (fieldName: string): boolean => {
       ...step3Schema.fields,
       ...step4Schema.fields,
       ...step5Schema.fields,
+      ...step6Schema.fields,
     };
 
     const field = combinedFields[fieldName as keyof typeof combinedFields] as
@@ -79,6 +86,10 @@ const FormField = ({ field }: { field: Field }) => {
     return <GenderInput field={field} />;
   }
 
+  if (fieldName === "primary-niche") {
+    return <PrimaryNicheInput field={field} />;
+  }
+
   if (field.category === "dropdown") {
     return (
       <div className="relative w-full">
@@ -109,6 +120,7 @@ const FormField = ({ field }: { field: Field }) => {
       </div>
     );
   }
+
   if (field.category === "multiselect") {
     const selectedOptions = watch(fieldName) || [];
 
@@ -132,6 +144,23 @@ const FormField = ({ field }: { field: Field }) => {
         />
       </div>
     );
+  }
+
+  if (field.category === "textarea") {
+    return (
+      <div>
+        <textarea
+          {...register(fieldName)}
+          cols={30}
+          rows={10}
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary focus:outline-none focus:ring-2"
+        ></textarea>
+      </div>
+    );
+  }
+
+  if (field.category === "date") {
+    return <DateInput field={field} />;
   }
 
   return (
@@ -213,3 +242,36 @@ export const Step = ({ fields }: StepProps) => (
     <StepComponent fields={fields} />
   </div>
 );
+
+const DateInput = ({ field }: { field: Field }) => {
+  const { setValue, watch } = useFormContext<CreatorQuestionnaireData>();
+
+  const fieldName = field.slug as keyof CreatorQuestionnaireData;
+
+  // Watch for date field value
+  const selectedDate = watch(fieldName);
+
+  return (
+    <div className="w-full">
+      <DatePicker
+        selected={
+          typeof selectedDate === "string"
+            ? new Date(selectedDate)
+            : selectedDate instanceof Date
+            ? selectedDate
+            : null
+        }
+        onChange={(date: Date | null) => {
+          setValue(fieldName, date ? format(date, "yyyy-MM-dd") : "", {
+            shouldValidate: true,
+          });
+        }}
+        dateFormat="MM/dd/yyyy"
+        placeholderText="mm/dd/yyyy"
+        className="w-full p-3 border rounded-lg transition-all duration-200"
+      />
+    </div>
+  );
+};
+
+export default DateInput;

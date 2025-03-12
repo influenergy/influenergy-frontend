@@ -15,21 +15,48 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
   const { watch } = useFormContext<CreatorQuestionnaireData>();
   const formData = watch();
 
+  // Function to format field values for display
+  const formatFieldValue = (field: string, value: string | Date | string[] | undefined): string => {
+    // Special case for gender field
+    if (field === "gender" && value === "Others") {
+      const customGender = formData["gender-other"];
+      return customGender ? `Others (${customGender})` : "Others";
+    }
+
+    // Handle arrays
+    if (Array.isArray(value)) {
+      return value.join(", ");
+    }
+
+    // Handle Date objects
+    if (value instanceof Date) {
+      return value.toLocaleDateString();
+    }
+
+    // Return the value as string or "Not provided" if empty
+    return String(value || "Not provided");
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const sections = Object.entries(questions).map(([_, step], index) => {
     return {
       title: step.title || `Step ${index + 1}`,
       icon: step.icon,
-      fields: step.fields.map((field) => ({
-        label: field.title,
-        value: Array.isArray(
-          formData[field.slug as keyof CreatorQuestionnaireData]
-        )
-          ? (
-              formData[field.slug as keyof CreatorQuestionnaireData] as string[]
-            )?.join(", ")
-          : formData[field.slug as keyof CreatorQuestionnaireData],
-      })),
+      fields: step.fields
+        .map((field) => {
+          // Skip "gender-other" as it will be combined with "gender"
+          if (field.slug === "gender-other") return null;
+
+          return {
+            label: field.title,
+            value: formatFieldValue(
+              field.slug,
+              formData[field.slug as keyof CreatorQuestionnaireData]
+            ),
+            slug: field.slug,
+          };
+        })
+        .filter((field): field is NonNullable<typeof field> => field !== null), // Filter out null values with type guard
       step: index + 1,
     };
   });
@@ -47,7 +74,7 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
 
       <div className="space-y-8 max-w-5xl w-full mx-auto">
         {sections.map((section) => (
-          <div key={section.title} >
+          <div key={section.title}>
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                 <section.icon className="text-primary" /> {section.title}
@@ -63,49 +90,17 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg shadow-sm border p-6">
               {section.fields.map((field) => (
-                <div key={field.label} className="space-y-1">
+                <div key={field.slug} className="space-y-1">
                   <p className="text-sm font-medium text-gray-500">
                     {field.label}
                   </p>
-                  <p className="text-base text-gray-900">
-                    {String(field.value) || "Not provided"}
-                  </p>
+                  <p className="text-base text-gray-900">{field.value}</p>
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-
-      {/* <motion.div
-        className="absolute top-0 -right-5 hidden md:block w-[300px] lg:w-[400px]"
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Image
-          src="/images/line1.png"
-          alt="Decorative line"
-          width={400}
-          height={100}
-          className="w-full h-auto"
-          priority
-        />
-      </motion.div>
-
-      <motion.div
-        className="absolute -bottom-1 -left-1  hidden md:block w-[200px] lg:w-[200px]"
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Image
-          src="/images/line1.png"
-          alt="Decorative line"
-          fill
-          className="w-full h-auto"
-        />
-      </motion.div> */}
     </div>
   );
 };

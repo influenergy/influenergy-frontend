@@ -99,6 +99,9 @@
     transform: translateY(0px);
   }
 }
+.react-datepicker-wrapper {
+  width: 100%;
+}
 
 .animate-float {
   animation: float 3s ease-in-out infinite;

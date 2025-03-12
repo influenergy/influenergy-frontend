@@ -79,9 +79,6 @@ const GenderInput = ({ field }: { field: Field }) => {
         )}
       </div>
 
-      {error && (
-        <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
-      )}
       {otherGenderError && (
         <p className="text-red-500 text-sm mt-1">
           {otherGenderError.message as string}

@@ -11,31 +11,35 @@ export interface CreatorQuestionnaireData {
   country: string;
   language: string[];
   "primary-niche": string[];
+  "primary-niche-other"?: string;
 
   // Step 3
-  "primary-social-media": string;
-  "primary-followers": string;
-  "secondary-social-media"?: string;
-  "secondary-followers": string;
-  "primary-social-media-followers": string;
-  "secondary-social-media-followers"?: string;
+  "tell-us-about-yourself": string;
+  "primary-audience-age": string;
+  "primary-audience-gender": string;
+  "primary-audience-location": string;
 
   // Step 4
-  "primary-social-media-link": string;
-  "secondary-social-media-link": string;
-
-  // Step 5
   "growth-rate": string;
   "primary-locations": string[];
   "us-based-audience": string;
   "gender-distribution": string;
 
+  // Step 5
+  "primary-social-media": string;
+  "primary-social-media-link": string;
+  "primary-followers": string;
+  "secondary-social-media"?: string;
+  "secondary-social-media-link"?: string;
+  "secondary-followers"?: string;
+
   // Step 6
-  "top-two-audiences": string;
+  "top-two-audiences": string[];
   "average-views": string;
   "favourite-brands": string;
   "worked-with-ai": string;
-  "paid-campaigns"?: string;
+  "paid-campaigns": string;
+  "budget-video": string;
 }
 
 export interface BrandQuestionnaireData {

@@ -9,7 +9,8 @@ export interface Field {
     | "dropdown"
     | "email"
     | "text"
-    | "multiselect";
+    | "multiselect"
+    | "textarea";
   slug: string;
   options?: string[];
   dependsOn?: string;
@@ -211,13 +212,122 @@ export const CREATOR_QUESTIONS: Questions = {
           "Tech Gadgets",
           "Travel & Adventure",
           "Video Gaming",
-          "Others"
+          "Others",
         ],
       },
     ],
   },
 
   step3: {
+    title: "About Yourself",
+    icon: User,
+    description: "Tell us a bit about your social media presence.",
+    fields: [
+      {
+        title: "Tell Us About Yourself",
+        slug: "tell-us-about-yourself",
+        category: "text",
+      },
+      {
+        title: "Primary Audience Age",
+        slug: "primary-audience-age",
+        category: "text",
+      },
+      {
+        title: "Primary Audience Gender",
+        slug: "primary-audience-gender",
+        category: "dropdown",
+        options: ["Male", "Female", "Non-binary", "Prefer not to say"],
+      },
+      {
+        title: "Primary Audience Location",
+        slug: "primary-audience-location",
+        category: "dropdown",
+        options: [
+          "United States",
+          "Canada",
+          "Mexico",
+          "United Kingdom",
+          "France",
+          "Germany",
+          "Japan",
+          "China",
+          "India",
+          "Australia",
+          "Brazil",
+        ],
+      },
+    ],
+  },
+  step4: {
+    title: "Audience Insights",
+    icon: ChartPie,
+    description: "Tell us a bit about your audience.",
+    fields: [
+      {
+        title: "What's the growth rate of your followers over last six months?",
+        slug: "growth-rate",
+        category: "dropdown",
+        options: [
+          "Less than 10%",
+          "10% - 20%",
+          "20% - 30%",
+          "30% - 40%",
+          "40% - 50%",
+          "50% - 60%",
+          "60% - 70%",
+          "70% - 80%",
+          "80% - 90%",
+          "90% - 100%",
+          "More than 100%",
+        ],
+      },
+      {
+        title:
+          "What are the top three primary geographic locations of your audience?",
+        slug: "primary-locations",
+        category: "multiselect",
+        options: [
+          "United States",
+          "Canada",
+          "Mexico",
+          "United Kingdom",
+          "France",
+          "Germany",
+          "Japan",
+          "China",
+          "India",
+          "Australia",
+          "Brazil",
+        ],
+      },
+      {
+        title: "What % of your audience is US based?",
+        slug: "us-based-audience",
+        category: "dropdown",
+        options: [
+          "Less than 10%",
+          "10% - 20%",
+          "20% - 30%",
+          "30% - 40%",
+          "40% - 50%",
+          "50% - 60%",
+          "60% - 70%",
+          "70% - 80%",
+          "80% - 90%",
+          "90% - 100%",
+          "More than 100%",
+        ],
+      },
+      {
+        title: "What is the gender distribution of your audience?",
+        slug: "gender-distribution",
+        category: "text",
+      },
+    ],
+  },
+
+  step5: {
     title: "Your Social Media",
     icon: Share2,
     description: "Tell us a bit about your social media presence.",
@@ -294,74 +404,8 @@ export const CREATOR_QUESTIONS: Questions = {
       },
     ],
   },
-  step4: {
-    title: "Audience Insights",
-    icon: ChartPie,
-    description: "Tell us a bit about your audience.",
-    fields: [
-      {
-        title: "What's the growth rate of your followers over last six months?",
-        slug: "growth-rate",
-        category: "dropdown",
-        options: [
-          "Less than 10%",
-          "10% - 20%",
-          "20% - 30%",
-          "30% - 40%",
-          "40% - 50%",
-          "50% - 60%",
-          "60% - 70%",
-          "70% - 80%",
-          "80% - 90%",
-          "90% - 100%",
-          "More than 100%",
-        ],
-      },
-      {
-        title:
-          "What are the top three primary geographic locations of your audience?",
-        slug: "primary-locations",
-        category: "multiselect",
-        options: [
-          "United States",
-          "Canada",
-          "Mexico",
-          "United Kingdom",
-          "France",
-          "Germany",
-          "Japan",
-          "China",
-          "India",
-          "Australia",
-          "Brazil",
-        ],
-      },
-      {
-        title: "What % of your audience is US based?",
-        slug: "us-based-audience",
-        category: "dropdown",
-        options: [
-          "Less than 10%",
-          "10% - 20%",
-          "20% - 30%",
-          "30% - 40%",
-          "40% - 50%",
-          "50% - 60%",
-          "60% - 70%",
-          "70% - 80%",
-          "80% - 90%",
-          "90% - 100%",
-          "More than 100%",
-        ],
-      },
-      {
-        title: "What is the gender distribution of your audience?",
-        slug: "gender-distribution",
-        category: "text",
-      },
-    ],
-  },
-  step5: {
+
+  step6: {
     title: "Content and Engagement",
     icon: Book,
     description: "Tell us a bit about your content and engagement.",
@@ -396,10 +440,15 @@ export const CREATOR_QUESTIONS: Questions = {
         options: ["Yes", "No"],
       },
       {
-        title: "If Yes, how many paid campaigns have you made?",
+        title: "Do you have any experience in paid campaigns?",
         slug: "paid-campaigns",
         category: "dropdown",
-        options: ["1-5", "5-10", "10-20", "20-50", "50 or more"],
+        options: ["Yes", "No"],
+      },
+      {
+        title: "Budget Per Video?",
+        slug: "budget-video",
+        category: "text",
       },
     ],
   },

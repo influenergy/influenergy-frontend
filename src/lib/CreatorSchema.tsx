@@ -68,73 +68,28 @@ export const step2Schema = yup.object().shape({
 }) as Schema;
 
 export const step3Schema = yup.object().shape({
-  "primary-social-media": yup
+  "tell-us-about-yourself": yup.string().required("This field is required"),
+  "primary-audience-age": yup.string().required("This field is required"),
+  "primary-audience-gender": yup
+    .string()
+    .oneOf(["Male", "Female", "Non-binary", "Prefer not to say"])
+    .required("This field is required"),
+  "primary-audience-location": yup
     .string()
     .oneOf([
-      "Facebook",
-      "Instagram",
-      "LinkedIn",
-      "Newsletter",
-      "Pinterest",
-      "TikTok",
-      "Twitch",
-      "Twitter / X",
-      "Youtube",
-      "Youtube Reel",
+      "United States",
+      "Canada",
+      "Mexico",
+      "United Kingdom",
+      "France",
+      "Germany",
+      "Japan",
+      "China",
+      "India",
+      "Australia",
+      "Brazil",
     ])
-    .required("This Field is Required"),
-  "primary-social-media-link": yup
-    .string()
-    .url("Must be a valid URL")
-    .required("This Field is Required"),
-  "primary-followers": yup
-    .string()
-    .oneOf([
-      "Less than 1,000",
-      "1,000 - 10,000",
-      "10,000 - 100,000",
-      "100,000 - 1,000,000",
-      "More than 1,000,000",
-    ])
-    .required("This Field is Required"),
-  "secondary-social-media": yup
-    .string()
-    .oneOf([
-      "Facebook",
-      "Instagram",
-      "LinkedIn",
-      "Newsletter",
-      "Pinterest",
-      "TikTok",
-      "Twitch",
-      "Twitter / X",
-      "Youtube",
-      "Youtube Reel",
-    ])
-    .nullable()
-    .optional(),
-  "secondary-social-media-link": yup
-    .string()
-    .url("Must be a valid URL")
-    .when("secondary-social-media", (secondarySocialMedia, schema) => {
-      return secondarySocialMedia
-        ? schema.required("Social media link is required")
-        : schema.optional();
-    }),
-  "secondary-followers": yup
-    .string()
-    .oneOf([
-      "Less than 1,000",
-      "1,000 - 10,000",
-      "10,000 - 100,000",
-      "100,000 - 1,000,000",
-      "More than 1,000,000",
-    ])
-    .when("secondary-social-media", (secondarySocialMedia, schema) => {
-      return secondarySocialMedia
-        ? schema.required("Followers count is required")
-        : schema.optional();
-    }),
+    .required("This field is required"),
 }) as Schema;
 
 export const step4Schema = yup.object().shape({
@@ -181,7 +136,78 @@ export const step4Schema = yup.object().shape({
     .required("Gender distribution is required"),
 }) as Schema;
 
-export const step5Schema = yup
+export const step5Schema = yup.object().shape({
+  "primary-social-media": yup
+    .string()
+    .oneOf([
+      "Facebook",
+      "Instagram",
+      "LinkedIn",
+      "Newsletter",
+      "Pinterest",
+      "TikTok",
+      "Twitch",
+      "Twitter / X",
+      "Youtube",
+      "Youtube Reel",
+    ])
+    .required("This Field is Required"),
+  "primary-social-media-link": yup
+    .string()
+    .url("Must be a valid URL")
+    .required("This Field is Required"),
+  "primary-followers": yup
+    .string()
+    .oneOf([
+      "Less than 1,000",
+      "1,000 - 10,000",
+      "10,000 - 100,000",
+      "100,000 - 1,000,000",
+      "More than 1,000,000",
+    ])
+    .required("This Field is Required"),
+  "secondary-social-media": yup
+    .string()
+    .oneOf([
+      "Facebook",
+      "Instagram",
+      "LinkedIn",
+      "Newsletter",
+      "Pinterest",
+      "TikTok",
+      "Twitch",
+      "Twitter / X",
+      "Youtube",
+      "Youtube Reel",
+      "", // Allow empty string
+    ])
+    .nullable()
+    .optional(),
+  "secondary-social-media-link": yup.string().when("secondary-social-media", {
+    is: (val: string) => val && val.length > 0,
+    then: (schema) =>
+      schema
+        .url("Must be a valid URL")
+        .required("Social media link is required"),
+    otherwise: (schema) => schema.optional(),
+  }),
+  "secondary-followers": yup.string().when("secondary-social-media", {
+    is: (val: string) => val && val.length > 0,
+    then: (schema) =>
+      schema
+        .oneOf([
+          "Less than 1,000",
+          "1,000 - 10,000",
+          "10,000 - 100,000",
+          "100,000 - 1,000,000",
+          "More than 1,000,000",
+        ])
+        .required("Followers count is required"),
+    otherwise: (schema) => schema.optional(),
+  }),
+}) as Schema;
+
+export const step6Schema = yup
   .object()
   .shape({
     "top-two-audiences": yup
@@ -212,15 +238,10 @@ export const step5Schema = yup
       .nullable(),
     "paid-campaigns": yup
       .string()
-      .when("worked-with-ai", {
-        is: "Yes",
-        then: (schema) =>
-          schema
-            .oneOf(["1-5", "5-10", "10-20", "20-50", "50 or more"])
-            .required("Number of paid campaigns is required"),
-        otherwise: (schema) => schema.nullable(),
-      })
+      .oneOf(["Yes", "No"])
+      .required("This field is required")
       .nullable(),
+    "budget-video": yup.string().required("Budget per video is required"),
   })
   .nullable() as unknown as Schema;
 
@@ -230,4 +251,5 @@ export const fullSchema = yup.object().shape({
   ...step3Schema.fields,
   ...step4Schema.fields,
   ...step5Schema.fields,
+  ...step6Schema.fields,
 }) as Schema;
