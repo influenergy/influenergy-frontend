@@ -3,6 +3,7 @@ import { Field } from "@/constants/questions";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
 import SocialMediaInput from "../ui/SocialMediaInput";
+import GenderInput from "../ui/GenderInput";
 import { ChevronDown } from "lucide-react";
 import * as yup from "yup";
 
@@ -13,8 +14,6 @@ import {
   step4Schema,
   step5Schema,
 } from "@/lib/CreatorSchema";
-
-
 
 interface StepProps {
   fields: Field[];
@@ -50,7 +49,7 @@ const isFieldRequired = (fieldName: string): boolean => {
       !fieldDescription.tests.some((test) => test.name === "nullable");
 
     // Handle array fields: required if min(1) is present
-    console.log('nullable',!fieldDescription.nullable)
+    console.log("nullable", !fieldDescription.nullable);
     const isArrayRequired =
       fieldDescription.type === "array" && !fieldDescription.nullable;
 
@@ -74,6 +73,11 @@ const FormField = ({ field }: { field: Field }) => {
 
   const fieldName = field.slug as keyof CreatorQuestionnaireData;
   const error = errors[fieldName];
+
+  // Special handling for gender field
+  if (fieldName === "gender") {
+    return <GenderInput field={field} />;
+  }
 
   if (field.category === "dropdown") {
     return (

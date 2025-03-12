@@ -7,6 +7,7 @@ export interface CreatorQuestionnaireData {
 
   // Step 2
   gender: string;
+  "gender-other"?: string;
   country: string;
   language: string[];
   "primary-niche": string[];
@@ -14,10 +15,10 @@ export interface CreatorQuestionnaireData {
   // Step 3
   "primary-social-media": string;
   "primary-followers": string;
-  "secondary-social-media": string;
+  "secondary-social-media"?: string;
   "secondary-followers": string;
   "primary-social-media-followers": string;
-  "secondary-social-media-followers": string;
+  "secondary-social-media-followers"?: string;
 
   // Step 4
   "primary-social-media-link": string;
