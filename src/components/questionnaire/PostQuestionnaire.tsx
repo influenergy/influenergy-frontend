@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
@@ -136,10 +136,7 @@ const PostQuestionnaire = (): JSX.Element => {
               formData.append(key, value.toString());
             }
           });
-          await postApi.createAdPost(
-            user._id,
-            formData
-          );
+          await postApi.createAdPost(user._id, formData);
           dispatch(
             setCredentials({
               user: { ...user, isProfileCompleted: true } as User,
@@ -149,7 +146,7 @@ const PostQuestionnaire = (): JSX.Element => {
             title: "Success!",
             description: "Your profile has been updated successfully.",
           });
-          router.push("/dashboard");
+          router.push("/dashboard/brand/posts");
         } else {
           // handle the case where user._id is undefined
           toast({

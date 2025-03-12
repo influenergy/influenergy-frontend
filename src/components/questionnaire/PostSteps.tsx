@@ -4,6 +4,8 @@ import { PostQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
 import { ChevronDown } from "lucide-react";
 import * as yup from "yup";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import {
   step1Schema,
@@ -126,6 +128,10 @@ export const FormField = ({ field }: { field: Field }) => {
     );
   }
 
+  if (field.category === "date") {
+    return <DateInput field={field} />
+  }
+
   return (
     <input
       type={field.category}
@@ -167,6 +173,41 @@ export const StepComponent = ({ fields }: StepProps) => {
         );
       })}
     </>
+  );
+};
+
+// Date input component using react-datepicker
+const DateInput = ({ field }: { field: Field }) => {
+  const {
+    setValue,
+    watch,
+    register,
+    formState: { errors },
+  } = useFormContext<PostQuestionnaireData>();
+
+  const fieldName = field.slug as keyof PostQuestionnaireData;
+  const error = errors[fieldName];
+  const value = watch(fieldName);
+  
+  // Register the field but don't use the ref
+  register(fieldName);
+
+  return (
+    <div className="relative w-full">
+      <DatePicker
+        selected={value ? new Date(value) : null}
+        onChange={(date) => {
+          setValue(fieldName, date, { shouldValidate: true });
+        }}
+        dateFormat="MM/dd/yyyy"
+        className={`w-full p-3 border rounded-lg transition-all duration-200 ${
+          error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-primary"
+        } focus:outline-none focus:ring-2`}
+        placeholderText="Select date"
+      />
+    </div>
   );
 };
 

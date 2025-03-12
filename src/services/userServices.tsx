@@ -198,9 +198,9 @@ export const userApi = {
     id: string,
     formData: CreatorQuestionnaireData
   ) => {
-    console.log("before", formData);
+   
     const transformedData = transformQuestionnaireData(formData, id);
-    console.log("Sending data:", JSON.stringify(transformedData, null, 2));
+    
 
     try {
       const response = await api.post(
