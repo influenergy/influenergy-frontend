@@ -37,25 +37,6 @@ const Post = ({ data }: PostDescriptionProps) => {
             className="object-cover rounded-xl"
           />
         </div>
-
-        <div className="mt-2 space-y-1">
-          {/* Requirements */}
-          <div className="space-y-1">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-800">Engagement Rate</span>
-              <span className="font-semibold text-primary">
-                {data.requirement.minEngagement}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-800">Followers</span>
-              <span className="font-semibold text-primary">
-                {data.requirement.minFollowers}
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </Link>
   );
