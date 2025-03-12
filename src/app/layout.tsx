@@ -4,11 +4,14 @@ import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "500", "700", "800"],
   variable: "--font-poppins",
+  display: "swap",
 });
+
 const monaSans = localFont({
   src: [
     {
@@ -18,6 +21,26 @@ const monaSans = localFont({
     },
   ],
   variable: "--font-mona-sans",
+  display: "swap",
+});
+
+// Update catamaran font configuration to properly support multiple weights
+const catamaran = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Catamaran-Regular.ttf",
+      weight: "400", 
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Catamaran-Medium.ttf",
+      weight: "500", 
+      style: "normal",
+    }
+    
+  ],
+  variable: "--font-catamaran",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -31,8 +54,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.className} ${monaSans.variable}`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${monaSans.variable} ${catamaran.variable}`}
+    >
+      <body className={`${poppins.className} font-poppins`}>
         <Providers>{children}</Providers>
         <Toaster />
       </body>

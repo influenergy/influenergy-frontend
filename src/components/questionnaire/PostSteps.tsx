@@ -1,8 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { Field } from "@/constants/questions";
-import { CreatorQuestionnaireData } from "@/types/Questionnaire";
+import { PostQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
-import SocialMediaInput from "../ui/SocialMediaInput";
 import { ChevronDown } from "lucide-react";
 import * as yup from "yup";
 
@@ -14,14 +13,12 @@ import {
   step5Schema,
 } from "@/lib/PostSchema";
 
-
-
 interface StepProps {
   fields: Field[];
 }
 
 // Helper function to determine if a field is required based on validation schemas
-const isFieldRequired = (fieldName: string): boolean => {
+export const isFieldRequired = (fieldName: string): boolean => {
   try {
     const combinedFields = {
       ...step1Schema.fields,
@@ -63,15 +60,15 @@ const isFieldRequired = (fieldName: string): boolean => {
   }
 };
 
-const FormField = ({ field }: { field: Field }) => {
+export const FormField = ({ field }: { field: Field }) => {
   const {
     register,
     setValue,
     watch,
     formState: { errors },
-  } = useFormContext<CreatorQuestionnaireData>();
+  } = useFormContext<PostQuestionnaireData>();
 
-  const fieldName = field.slug as keyof CreatorQuestionnaireData;
+  const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
 
   if (field.category === "dropdown") {
@@ -79,7 +76,7 @@ const FormField = ({ field }: { field: Field }) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins ${
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
             error
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-300 focus:ring-primary"
@@ -142,48 +139,18 @@ const FormField = ({ field }: { field: Field }) => {
   );
 };
 
-const StepComponent = ({ fields }: StepProps) => {
+export const StepComponent = ({ fields }: StepProps) => {
   const {
     formState: { errors },
-  } = useFormContext<CreatorQuestionnaireData>();
+  } = useFormContext<PostQuestionnaireData>();
 
   return (
     <>
       {fields.map((field) => {
-        const fieldName = field.slug as keyof CreatorQuestionnaireData;
+        const fieldName = field.slug as keyof PostQuestionnaireData;
         const error = errors[fieldName];
         const required = isFieldRequired(field.slug);
 
-        // Skip link fields as they're handled within SocialMediaInput
-        if (
-          fieldName === "primary-social-media-link" ||
-          fieldName === "secondary-social-media-link"
-        ) {
-          return null;
-        }
-
-        // Special handling for social media fields
-        if (
-          fieldName === "primary-social-media" ||
-          fieldName === "secondary-social-media"
-        ) {
-          return (
-            <div key={field.title} className="space-y-2 mt-4">
-              <label className="block text-sm font-medium text-gray-700">
-                {field.title}
-                {required && <span className="text-red-500 ml-1">*</span>}
-              </label>
-              <SocialMediaInput field={field} />
-              {error && (
-                <p className="text-red-500 text-sm mt-1">
-                  {error.message as string}
-                </p>
-              )}
-            </div>
-          );
-        }
-
-        // Regular field rendering
         return (
           <div key={field.title} className="space-y-2 mt-4">
             <label className="block text-sm font-medium text-gray-700">

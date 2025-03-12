@@ -35,11 +35,13 @@ export default function GetStarted() {
               className="mb-10"
             >
               <div className="space-y-5 pl-10">
-                <h1 className="text-2xl font-medium md:text-4xl lg:text-5xl ml-10">
+                <h1 className="text-2xl font-medium md:text-4xl lg:text-5xl ml-10 font-poppins">
                   Join{" "}
-                  <span className="text-primary font-bold">Influenergy</span>
+                  <span className="text-primary font-bold font-mona-sans">
+                    Influenergy
+                  </span>
                 </h1>
-                <p className="mt-5 text-xl text-gray-800">
+                <p className="mt-5 text-xl text-gray-800 font-poppins">
                   Your Premier AI & Tech Influencer Marketing Agency
                 </p>
               </div>
@@ -56,7 +58,7 @@ export default function GetStarted() {
                 className="group"
                 onClick={() => handleUserTypeSelection("brand", "/login")}
               >
-                <div className="flex cursor-pointer h-48 w-52 flex-col  justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
+                <div className="flex cursor-pointer h-48 w-52 flex-col justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
                     src="/images/Home/icon.png"
                     alt="Brand Icon"
@@ -65,8 +67,8 @@ export default function GetStarted() {
                     className="mb-2"
                   />
                   <div>
-                    <p className="text-sm">I am a</p>
-                    <p className="font-semibold tracking-wide ">
+                    <p className="text-sm font-poppins">I am a</p>
+                    <p className="font-semibold tracking-wide font-poppins">
                       Brand or Agency
                     </p>
                   </div>
@@ -84,8 +86,8 @@ export default function GetStarted() {
                   />
                   <div className="flex justify-between items-center w-full">
                     <div>
-                      <p className="text-sm text-left">I am a</p>
-                      <p className="font-semibold tracking-wide text-left">
+                      <p className="text-sm text-left font-poppins">I am a</p>
+                      <p className="font-semibold tracking-wide text-left font-poppins">
                         Creator
                       </p>
                     </div>
@@ -95,13 +97,13 @@ export default function GetStarted() {
                 <DropdownMenuContent className="w-52 bg-white shadow-lg">
                   <DropdownMenuItem
                     onClick={() => handleUserTypeSelection("creator", "/login")}
-                    className="text-gray-800 hover:bg-gray-200 cursor-pointer"
+                    className="text-gray-800 hover:bg-gray-200 cursor-pointer font-poppins"
                   >
                     Influencer
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => handleUserTypeSelection("creator", "/login")}
-                    className="text-gray-800 hover:bg-gray-200 cursor-pointer"
+                    className="text-gray-800 hover:bg-gray-200 cursor-pointer font-poppins"
                   >
                     UGC Creator
                   </DropdownMenuItem>
@@ -112,7 +114,7 @@ export default function GetStarted() {
 
           {/* Right Section */}
           <motion.div className="relative bg-primary h-full hidden lg:block">
-            <div className="absolute -left-28 top-1/2  -translate-y-1/2">
+            <div className="absolute -left-28 top-1/2 -translate-y-1/2">
               <Image
                 src="/images/Home/image.png"
                 alt="Influencer"
@@ -135,14 +137,32 @@ export default function GetStarted() {
                     width={50}
                     height={50}
                   />
-                  <p className="text-sm text-center text-gray-600">
+                  <p className="text-sm text-center text-gray-600 font-catamaran-regular">
                     100% Trusted Influencers
                   </p>
                 </div>
               </motion.div>
             </div>
 
-            <div className="flex flex-col justify-end items-center h-full w-full ml-10">
+            <div className="flex flex-col justify-around items-center h-full w-full ml-10">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+                className="h-36 w-36 flex flex-col justify-center items-center gap-2 border border-white rounded-full p-2.5"
+              >
+                <div className="bg-white p-2.5 rounded-full">
+                  <Image
+                    src="/images/Home/heart.png"
+                    alt="Trust"
+                    width={30}
+                    height={30}
+                  />
+                </div>
+                <p className="text-sm text-center text-white font-catamaran-medium">
+                  99% Satisfied Users
+                </p>
+              </motion.div>
               <Image
                 src="/images/Home/image2.png"
                 alt="Influencer"

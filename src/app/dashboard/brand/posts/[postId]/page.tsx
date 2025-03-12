@@ -8,7 +8,7 @@ const Page = () => {
   const { postId } = useParams();
 
   const description = DESCRIPTION.filter((item) => {
-    return item.id == postId;
+    return String(item.id) === String(postId);
   });
 
   return <PostDescription data={description[0]} />;

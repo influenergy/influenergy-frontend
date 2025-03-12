@@ -1,14 +1,40 @@
 import Image from "next/image";
-import React from "react";
-import ReactMarkdown from "react-markdown";
-import { Calendar, MapPin, Users, BarChart, PenLine } from "lucide-react";
+import React, { useState } from "react";
+import { PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import EditPostModal from "./EditPostModal";
 
 interface PostData {
   id: string;
   image: string;
   title: string;
+  companyLogo?: string;
+  companyName?: string;
+  campaignObjective?: string;
+  campaignDescription?: string;
+  targetGroup?: string;
+  contentVibe?: {
+    contentType?: string;
+    durationOfVideo?: string;
+    catchPhrase?: string;
+    keyMessage?: string;
+    toneStyle?: string;
+    creatorLookingFor?: string;
+  };
+  idealCreatorChecklist?: {
+    minFollowerCount?: string;
+    ugcCreatorOrInfluencer?: string;
+    preferredSocialMedia?: string;
+    pastExperience?: string;
+    preferredCreatorNiche?: string;
+    preferredCreatorDemographics?: string;
+  };
+  compensation?: {
+    budget?: string;
+    expectedDeliverables?: string;
+    deliveryDays?: string;
+    additionalInstructions?: string;
+  };
   description: string;
   createdAt: string;
   requirement: {
@@ -24,84 +50,202 @@ interface PostDescriptionProps {
 }
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
-  const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white rounded-lg border p-6 space-y-4">
-      {/* Header with edit button */}
+    <div className="bg-white rounded-lg p-6 space-y-4">
       <div className="flex justify-end mb-4">
         <Button
-          onClick={() => router.push(`/dashboard/brand/posts/edit/${data.id}`)}
-          className="flex items-center gap-2 text-primary bg-secondary hover:bg-primary/90"
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-2 text-primary bg-secondary hover:bg-primary/50"
         >
           <PenLine className="h-4 w-4" />
-          Edit Post
+          Edit
         </Button>
+        <EditPostModal open={open} onOpenChange={setOpen} />
       </div>
 
-      {/* Header with image and basic info */}
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Image container */}
-        <div className="w-full md:w-1/3 aspect-video relative rounded-lg overflow-hidden">
+        <div className="w-fit relative rounded-lg overflow-hidden ">
           <Image
             src={data.image}
             alt={data.title}
-            fill
+            width={400}
+            height={400}
             className="object-cover"
           />
         </div>
 
-        {/* Basic info */}
-        <div className="w-full md:w-2/3 space-y-4">
-          <h3 className="text-xl font-semibold text-gray-900 line-clamp-2">
-            {data.title}
-          </h3>
-
-          {/* Meta information */}
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span>{data.createdAt}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <MapPin className="h-4 w-4" />
-              <span>{data.requirement.location}</span>
-            </div>
+        <div className="w-full  space-y-4">
+          <div className="flex items-center gap-2">
+            <h3 className="text-2xl  text-gray-900 line-clamp-2">
+              {data.title}
+            </h3>
           </div>
+          {data.companyLogo && (
+            <div className=" relative rounded-full overflow-hidden flex items-center gap-4">
+              <Image
+                src={data.companyLogo}
+                alt="Company Logo"
+                height={30}
+                width={30}
+                className="object-cover rounded-full"
+              />
+              <p className="text-black text-lg">
+                {data?.companyName || "Nike"}
+              </p>
+            </div>
+          )}
+          {data.campaignObjective && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold">Campaign Objective</h4>
+              <p className="text-gray-600">{data.campaignObjective}</p>
+            </div>
+          )}
 
-          {/* Requirements */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-primary" />
-              <div className="text-sm">
-                <p className="text-gray-600">Min Followers</p>
-                <p className="font-medium">{data.requirement.minFollowers}</p>
+          {data.campaignDescription && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold">Campaign Description</h4>
+              <p className="text-gray-600">{data.campaignDescription}</p>
+            </div>
+          )}
+
+          {data.targetGroup && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold">Target Group</h4>
+              <p className="text-gray-600">{data.targetGroup}</p>
+            </div>
+          )}
+
+          {data.contentVibe && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold flex items-center gap-2">
+                <div className="relative">
+                  <div className="h-5 w-5 bg-primary/40 rounded-full" />
+                  <Image
+                    src="/images/editpost/1.png"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  />
+                </div>
+                What is the Content Vibe?
+              </h4>
+              <div className="grid grid-cols-2 gap-4 mt-2 px-6">
+                <div>
+                  <p className="text-gray-600">Content Type</p>
+                  <p>{data.contentVibe.contentType}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Duration of Video?</p>
+                  <p>{data.contentVibe.durationOfVideo}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Catch Phrase</p>
+                  <p>{data.contentVibe.catchPhrase}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Key Message & Hashtags</p>
+                  <p>{data.contentVibe.keyMessage}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Tone & Style</p>
+                  <p>{data.contentVibe.toneStyle}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">
+                    What kind of creator are you looking for?
+                  </p>
+                  <p>{data.contentVibe.creatorLookingFor}</p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <BarChart className="h-4 w-4 text-primary" />
-              <div className="text-sm">
-                <p className="text-gray-600">Min Engagement</p>
-                <p className="font-medium">{data.requirement.minEngagement}</p>
+          )}
+
+          {data.idealCreatorChecklist && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold flex items-center gap-2">
+                <div className="relative">
+                  <div className="h-5 w-5 bg-primary/40 rounded-full" />
+                  <Image
+                    src="/images/editpost/2.png"
+                    alt=""
+                    width={18}
+                    height={18}
+                    className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  />
+                </div>
+                Your Ideal Creator Checklist
+              </h4>
+              <div className="grid grid-cols-2 gap-4 mt-2 px-6">
+                <div>
+                  <p className="text-gray-600">Minimum Follower Count</p>
+                  <p>{data.idealCreatorChecklist.minFollowerCount}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">UGC Creator or Influencer</p>
+                  <p>{data.idealCreatorChecklist.ugcCreatorOrInfluencer}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Preferred Social Media</p>
+                  <p>{data.idealCreatorChecklist.preferredSocialMedia}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Past Experience</p>
+                  <p>{data.idealCreatorChecklist.pastExperience}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Preferred Creator Niche</p>
+                  <p>{data.idealCreatorChecklist.preferredCreatorNiche}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">
+                    Preferred Creator Demographics
+                  </p>
+                  <p>
+                    {data.idealCreatorChecklist.preferredCreatorDemographics}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2">
-            {data.description.split("|").map((category, index) => (
-              <span
-                key={index}
-                className="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full"
-              >
-                {category.trim()}
-              </span>
-            ))}
-          </div>
-          {/* Preview of markdown content */}
-          <div className="mt-4 pt-4 border-t">
-            <ReactMarkdown>{data.offerDescription}</ReactMarkdown>
-          </div>
+          {data.compensation && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold flex items-center gap-2">
+                <div className="relative">
+                  <div className="h-5 w-5 bg-primary/40 rounded-full" />
+                  <Image
+                    src="/images/editpost/3.png"
+                    alt=""
+                    width={45}
+                    height={45}
+                    className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  />
+                </div>
+                Compensation & Deliverables
+              </h4>
+              <div className="grid grid-cols-2 gap-4 mt-2 px-6">
+                <div>
+                  <p className="text-gray-600">Budget for Campaign</p>
+                  <p>{data.compensation.budget}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Expected Deliverables</p>
+                  <p>{data.compensation.expectedDeliverables}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">No. Of Days for Delivery</p>
+                  <p>{data.compensation.deliveryDays}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Additional Instructions</p>
+                  <p>{data.compensation.additionalInstructions}</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

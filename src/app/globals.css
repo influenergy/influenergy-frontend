@@ -2,24 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: var(--font-poppins), sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  .font-poppins {
-    font-family: var(--font-poppins), sans-serif;
-  }
-}
-.font-mona-sans {
-  font-family: var(--font-mona-sans);
-}
-
 @layer base {
   :root {
+    --font-poppins: "Poppins", sans-serif;
+    --font-mona-sans: "Mona Sans", sans-serif;
+    --font-catamaran: "Catamaran", sans-serif;
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -41,6 +29,11 @@ body {
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
   }
+
+  body {
+    font-family: var(--font-poppins);
+  }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -64,6 +57,31 @@ body {
   }
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-poppins {
+    font-family: var(--font-poppins) !important;
+  }
+
+  .font-mona-sans {
+    font-family: var(--font-mona-sans) !important;
+  }
+
+  .font-catamaran-regular {
+    font-family: var(--font-catamaran) !important;
+    font-weight: 400 !important;
+  }
+
+  .font-catamaran-medium {
+    font-family: var(--font-catamaran) !important;
+    font-weight: 500 !important;
+  }
+}
+
+/* Animations */
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
