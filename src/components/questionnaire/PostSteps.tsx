@@ -14,6 +14,7 @@ import {
   step4Schema,
   step5Schema,
 } from "@/lib/PostSchema";
+import PrimaryNicheInput from "../ui/PrimaryNicheInput";
 
 interface StepProps {
   fields: Field[];
@@ -72,6 +73,11 @@ export const FormField = ({ field }: { field: Field }) => {
 
   const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
+
+
+  if (fieldName === "target-interests") {
+      return <PrimaryNicheInput field={field} />;
+    }
 
   if (field.category === "dropdown") {
     return (
@@ -195,9 +201,9 @@ const DateInput = ({ field }: { field: Field }) => {
   return (
     <div className="relative w-full">
       <DatePicker
-        selected={value ? new Date(value) : null}
+        selected={value && !Array.isArray(value) ? new Date(value) : null}
         onChange={(date) => {
-          setValue(fieldName, date, { shouldValidate: true });
+          setValue(fieldName, date ? date.toISOString() : undefined, { shouldValidate: true });
         }}
         dateFormat="MM/dd/yyyy"
         className={`w-full p-3 border rounded-lg transition-all duration-200 ${
