@@ -9,15 +9,15 @@ import { MarqueeLogos } from "../magicui/marquee";
 export default function HeroSection() {
   const router = useRouter();
   const imageList = [
-    { logo: "/landing/company1.png" },
-    { logo: "/landing/company2.png" },
-    { logo: "/landing/company3.png" },
-    { logo: "/landing/company4.png" },
-    { logo: "/landing/company5.png" },
-    { logo: "/landing/company6.png" },
-    { logo: "/landing/company7.png" },
-    { logo: "/landing/company1.png" },
-    { logo: "/landing/company2.png" },
+    { logo: "/landing/marquee/company1.png" },
+    { logo: "/landing/marquee/company2.png" },
+    { logo: "/landing/marquee/company3.png" },
+    { logo: "/landing/marquee/company4.png" },
+    { logo: "/landing/marquee/company5.png" },
+    { logo: "/landing/marquee/company6.png" },
+    { logo: "/landing/marquee/company7.png" },
+    { logo: "/landing/marquee/company8.png" },
+    { logo: "/landing/marquee/company9.png" }
   ];
 
   return (
