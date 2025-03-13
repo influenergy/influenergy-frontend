@@ -26,32 +26,47 @@ export default function HearFromInfluencer() {
     {
       name: "MIKE",
       role: "CONTENT CREATOR",
-      color: "#232323",
+      color: "#1B1F3B", // Deep Navy Blue for content creator (professional and creative)
       hasVideo: true,
       videoUrl: "/landing/hearfromus/1.mov",
     },
     {
       name: "SAMITE",
       role: "LIFESTYLE BLOGGER",
-      color: "#111927",
+      color: "#2F4858", // Rich Teal Blue for lifestyle (sophisticated yet modern)
       hasVideo: true,
       videoUrl: "/landing/hearfromus/2.mov",
     },
     {
       name: "KAITY",
       role: "FASHION CREATOR",
-      color: "#333",
+      color: "#5C5470", // Elegant Deep Mauve for fashion (stylish and refined)
       hasVideo: true,
       videoUrl: "/landing/hearfromus/3.mov",
     },
     {
       name: "OAKES",
       role: "BEAUTY EXPERT",
-      color: "#722f37",
+      color: "#4B0082", // Royal Indigo for beauty expert (luxurious and high-end)
       hasVideo: true,
       videoUrl: "/landing/hearfromus/4.mov",
     },
+    {
+      name: "OAKES",
+      role: "BEAUTY & FASHION",
+      color: "#1F3A93", // Rich Royal Blue for beauty & fashion (bold and sophisticated)
+      hasVideo: true,
+      videoUrl: "/landing/hearfromus/5.mov",
+    },
+    {
+      name: "OAKES",
+      role: "AI & TECH",
+      color: "#0B5345", // Deep Emerald Green for AI & Tech (futuristic and professional)
+      hasVideo: true,
+      videoUrl: "/landing/hearfromus/6.mp4",
+    },
   ];
+  
 
   // Reset video and playing state when active card changes
   useEffect(() => {
@@ -114,7 +129,7 @@ export default function HearFromInfluencer() {
         opacity: "opacity-70",
         scale: "scale-90",
       };
-    } else {
+    } else if (distance == 3) {
       // Furthest cards - shortest
       return {
         height: "h-64 md:h-80", // Increased from h-56 md:h-64
@@ -122,6 +137,22 @@ export default function HearFromInfluencer() {
         zIndex: "z-10",
         opacity: "opacity-70",
         scale: "scale-90",
+      };
+    } else if (distance == 4) {
+      return {
+        height: "h-60 md:h-72", // Modified height for distance 4
+        width: "w-16 md:w-20",
+        zIndex: "z-10",
+        opacity: "opacity-60",
+        scale: "scale-90",
+      };
+    } else {
+      return {
+        height: "h-56 md:h-64", // Modified height for else condition
+        width: "w-16 md:w-20",
+        zIndex: "z-10",
+        opacity: "opacity-50",
+        scale: "scale-85",
       };
     }
   };

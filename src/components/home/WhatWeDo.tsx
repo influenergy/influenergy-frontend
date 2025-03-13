@@ -67,11 +67,10 @@ export default function WhatWeDo() {
             </div>
             <div className="flex flex-col">
               <h2 className="text-xl font-semibold mb-2">
-                Smarter Influencer Marketing
+              Time Saving Influencer Marketing
               </h2>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                Our technology makes influencer marketing smarter, faster, and
-                more efficient.
+              Saves time on creator search, find best creator, custom briefs & pitches for creators.
               </p>
             </div>
           </motion.div>

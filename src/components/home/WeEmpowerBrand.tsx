@@ -60,7 +60,7 @@ export default function WeEmpowerBrand() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Link
-              href="#"
+              href="https://www.linkedin.com/company/influenergy-marketing/"
               className={`bg-primary w-fit text-white border border-primary hover:bg-white hover:text-primary  transition-colors p-2.5 rounded-full hover:scale-105 flex items-center justify-center`}
             >
               <Linkedin className="h-5 w-5" />
