@@ -28,19 +28,19 @@ export default function Footer() {
   const socialLinks = [
     {
       icon: <Instagram className="h-5 w-5" />,
-      href: "#",
+      href: "https://www.instagram.com/influenergy/",
       bgColor: "bg-white",
       textColor: "text-primary",
     },
     {
       icon: <Youtube className="h-5 w-5" />,
-      href: "#",
+      href: "https://www.youtube.com/@Influenergy",
       bgColor: "bg-white",
       textColor: "text-primary",
     },
     {
       icon: <Linkedin className="h-5 w-5" />,
-      href: "#",
+      href: "https://www.linkedin.com/company/influenergy-marketing/",
       bgColor: "bg-white",
       textColor: "text-primary",
     },
@@ -105,11 +105,10 @@ export default function Footer() {
             <h3 className="text-xl font-semibold">Quick Contact</h3>
             <hr className="border border-white w-full" />
             <p className="text-gray-300 font-light">
-              123 Tech Avenue, Silicon Valley, <br />
-              CA 94043, United States
+            W 13TH Part Suite 559, California
             </p>
-            <p className="text-gray-300 font-light">+1 (555) 123-4567</p>
-            <p className="text-gray-300 font-light">contact@influenergy.com</p>
+            <p className="text-gray-300 font-light">+ (408) 1386-9334</p>
+            <p className="text-gray-300 font-light">contact@influenergy.co</p>
           </motion.div>
 
           {/* Company Info */}
