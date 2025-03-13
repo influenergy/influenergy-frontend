@@ -17,13 +17,19 @@ export interface CreatorQuestionnaireData {
   "tell-us-about-yourself": string;
   "primary-audience-age": string;
   "primary-audience-gender": string;
+  "primary-audience-gender-other"?: string;
   "primary-audience-location": string;
+  "primary-audience-percentage": string;
+  "secondary-audience-age": string;
+  "secondary-audience-gender": string;
+  "secondary-audience-gender-other"?: string;
+  "secondary-audience-location": string;
+  "secondary-audience-percentage": string;
 
   // Step 4
   "growth-rate": string;
   "primary-locations": string[];
   "us-based-audience": string;
-  "gender-distribution": string;
 
   // Step 5
   "primary-social-media": string;

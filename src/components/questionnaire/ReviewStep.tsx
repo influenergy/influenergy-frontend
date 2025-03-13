@@ -16,10 +16,23 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
   const formData = watch();
 
   // Function to format field values for display
-  const formatFieldValue = (field: string, value: string | Date | string[] | undefined): string => {
-    // Special case for gender field
+  const formatFieldValue = (
+    field: string,
+    value: string | Date | string[] | undefined
+  ): string => {
+    // Handle all gender fields with "Others" option
     if (field === "gender" && value === "Others") {
       const customGender = formData["gender-other"];
+      return customGender ? `Others (${customGender})` : "Others";
+    }
+
+    if (field === "primary-audience-gender" && value === "Others") {
+      const customGender = formData["primary-audience-gender-other"];
+      return customGender ? `Others (${customGender})` : "Others";
+    }
+
+    if (field === "secondary-audience-gender" && value === "Others") {
+      const customGender = formData["secondary-audience-gender-other"];
       return customGender ? `Others (${customGender})` : "Others";
     }
 
@@ -37,15 +50,20 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
     return String(value || "Not provided");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const sections = Object.entries(questions).map(([_, step], index) => {
+  const sections = Object.entries(questions).map(([, step], index) => {
     return {
       title: step.title || `Step ${index + 1}`,
       icon: step.icon,
       fields: step.fields
         .map((field) => {
-          // Skip "gender-other" as it will be combined with "gender"
-          if (field.slug === "gender-other") return null;
+          // Skip all "other" gender fields as they will be combined with their respective gender fields
+          if (
+            field.slug === "gender-other" ||
+            field.slug === "primary-audience-gender-other" ||
+            field.slug === "secondary-audience-gender-other"
+          ) {
+            return null;
+          }
 
           return {
             label: field.title,

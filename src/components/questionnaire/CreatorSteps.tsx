@@ -18,8 +18,10 @@ import {
   step4Schema,
   step5Schema,
   step6Schema,
+  step7Schema,
 } from "@/lib/CreatorSchema";
 import PrimaryNicheInput from "../ui/PrimaryNicheInput";
+import { Input } from "@/components/ui/input";
 
 interface StepProps {
   fields: Field[];
@@ -35,6 +37,7 @@ const isFieldRequired = (fieldName: string): boolean => {
       ...step4Schema.fields,
       ...step5Schema.fields,
       ...step6Schema.fields,
+      ...step7Schema.fields,
     };
 
     const field = combinedFields[fieldName as keyof typeof combinedFields] as
@@ -56,7 +59,6 @@ const isFieldRequired = (fieldName: string): boolean => {
       !fieldDescription.tests.some((test) => test.name === "nullable");
 
     // Handle array fields: required if min(1) is present
-    console.log("nullable", !fieldDescription.nullable);
     const isArrayRequired =
       fieldDescription.type === "array" && !fieldDescription.nullable;
 
@@ -70,6 +72,82 @@ const isFieldRequired = (fieldName: string): boolean => {
   }
 };
 
+const AudienceGenderInput = ({ field }: { field: Field }) => {
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext<CreatorQuestionnaireData>();
+
+  const fieldName = field.slug as keyof CreatorQuestionnaireData;
+  const error = errors[fieldName];
+
+  const otherGenderFieldName =
+    `${fieldName}-other` as keyof CreatorQuestionnaireData;
+  const otherGenderError = errors[otherGenderFieldName];
+
+  const selectedGender = watch(fieldName); // Watch selected gender
+
+  return (
+    <div>
+      <div className="flex items-center gap-2">
+        <div className="relative w-full">
+          <select
+            {...register(fieldName)}
+            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
+              error
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-primary"
+            } focus:outline-none focus:ring-2 appearance-none`}
+          >
+            <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+              {field.placeholder || "Select"}
+            </option>
+            {field.options?.map((option) => (
+              <option
+                key={option}
+                value={option}
+                style={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                {option}
+              </option>
+            ))}
+          </select>
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
+            <ChevronDown size={20} />
+          </div>
+        </div>
+
+        {selectedGender === "Others" && (
+          <div className="w-full">
+            <Input
+              type="text"
+              placeholder="Please specify gender"
+              {...register(otherGenderFieldName, {
+                validate: (value) =>
+                  selectedGender === "Others" && !value
+                    ? "This field is required"
+                    : true,
+              })}
+              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 ${
+                otherGenderError
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-primary"
+              }`}
+            />
+          </div>
+        )}
+      </div>
+
+      {otherGenderError && (
+        <p className="text-red-500 text-sm mt-1">
+          {otherGenderError.message as string}
+        </p>
+      )}
+    </div>
+  );
+};
+
 const FormField = ({ field }: { field: Field }) => {
   const {
     register,
@@ -81,9 +159,24 @@ const FormField = ({ field }: { field: Field }) => {
   const fieldName = field.slug as keyof CreatorQuestionnaireData;
   const error = errors[fieldName];
 
-  // Special handling for gender field
+  // Special handling for gender fields
   if (fieldName === "gender") {
     return <GenderInput field={field} />;
+  }
+
+  if (
+    fieldName === "primary-audience-gender" ||
+    fieldName === "secondary-audience-gender"
+  ) {
+    return <AudienceGenderInput field={field} />;
+  }
+
+  // Skip the "other" fields as they're handled within the gender inputs
+  if (
+    fieldName === "primary-audience-gender-other" ||
+    fieldName === "secondary-audience-gender-other"
+  ) {
+    return null;
   }
 
   if (fieldName === "primary-niche") {
@@ -102,7 +195,7 @@ const FormField = ({ field }: { field: Field }) => {
           } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
-            Select
+            {field.placeholder || "Select"}
           </option>
           {field.options?.map((option) => (
             <option
@@ -123,7 +216,6 @@ const FormField = ({ field }: { field: Field }) => {
 
   if (field.category === "multiselect") {
     const selectedOptions = watch(fieldName) || [];
-
     return (
       <div>
         <Select
@@ -151,6 +243,7 @@ const FormField = ({ field }: { field: Field }) => {
       <div>
         <textarea
           {...register(fieldName)}
+          placeholder={field.placeholder}
           cols={30}
           rows={10}
           className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary focus:outline-none focus:ring-2"
@@ -166,6 +259,7 @@ const FormField = ({ field }: { field: Field }) => {
   return (
     <input
       type={field.category}
+      placeholder={field.placeholder}
       {...register(fieldName)}
       className={`w-full p-3 border rounded-lg transition-all duration-200 ${
         error
@@ -188,10 +282,12 @@ const StepComponent = ({ fields }: StepProps) => {
         const error = errors[fieldName];
         const required = isFieldRequired(field.slug);
 
-        // Skip link fields as they're handled within SocialMediaInput
+        // Skip certain fields that are handled within other components
         if (
           fieldName === "primary-social-media-link" ||
-          fieldName === "secondary-social-media-link"
+          fieldName === "secondary-social-media-link" ||
+          fieldName === "primary-audience-gender-other" ||
+          fieldName === "secondary-audience-gender-other"
         ) {
           return null;
         }
@@ -238,9 +334,17 @@ const StepComponent = ({ fields }: StepProps) => {
 };
 
 export const Step = ({ fields }: StepProps) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
-    <StepComponent fields={fields} />
-  </div>
+  <>
+    {fields[0].category === "textarea" ? (
+      <div className="w-full">
+        <StepComponent fields={fields} />
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
+        <StepComponent fields={fields} />
+      </div>
+    )}
+  </>
 );
 
 const DateInput = ({ field }: { field: Field }) => {

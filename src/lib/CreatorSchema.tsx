@@ -41,6 +41,7 @@ export const step2Schema = yup.object().shape({
         "United States",
         "Canada",
         "Mexico",
+        "United Kingdom",
         "France",
         "Germany",
         "Japan",
@@ -48,6 +49,15 @@ export const step2Schema = yup.object().shape({
         "India",
         "Australia",
         "Brazil",
+        "Russia",
+        "Italy",
+        "Spain",
+        "South Korea",
+        "Netherlands",
+        "Turkey",
+        "Saudi Arabia",
+        "Sweden",
+        "Switzerland",
       ],
       "Please select a valid country"
     )
@@ -69,30 +79,62 @@ export const step2Schema = yup.object().shape({
 
 export const step3Schema = yup.object().shape({
   "tell-us-about-yourself": yup.string().required("This field is required"),
-  "primary-audience-age": yup.string().required("This field is required"),
-  "primary-audience-gender": yup
-    .string()
-    .oneOf(["Male", "Female", "Non-binary", "Prefer not to say"])
-    .required("This field is required"),
-  "primary-audience-location": yup
-    .string()
-    .oneOf([
-      "United States",
-      "Canada",
-      "Mexico",
-      "United Kingdom",
-      "France",
-      "Germany",
-      "Japan",
-      "China",
-      "India",
-      "Australia",
-      "Brazil",
-    ])
-    .required("This field is required"),
 }) as Schema;
 
-export const step4Schema = yup.object().shape({
+export const step4Schema = yup
+  .object()
+  .shape({
+    "primary-audience-percentage": yup
+      .string()
+      .required("This field is required"),
+    "primary-audience-age": yup.string().required("This field is required"),
+    "primary-audience-gender": yup.string().required("This field is required"),
+    "primary-audience-gender-other": yup
+      .string()
+      .when("primary-audience-gender", {
+        is: (value: string) => value === "Others",
+        then: (schema) => schema.required("Please specify the gender"),
+        otherwise: (schema) => schema.optional(),
+      }),
+    "primary-audience-location": yup
+      .string()
+      .oneOf([
+        "United States",
+        "Canada",
+        "Mexico",
+        "United Kingdom",
+        "France",
+        "Germany",
+        "Japan",
+        "China",
+        "India",
+        "Australia",
+        "Brazil",
+        "Russia",
+        "Italy",
+        "Spain",
+        "South Korea",
+        "Netherlands",
+        "Turkey",
+        "Saudi Arabia",
+        "Sweden",
+        "Switzerland",
+      ])
+      .required("This field is required"),
+    "secondary-audience-percentage": yup.string(),
+    "secondary-audience-age": yup.string(),
+    "secondary-audience-gender": yup.string(),
+    "secondary-audience-gender-other": yup
+      .string()
+      .when("secondary-audience-gender", {
+        is: (value: string) => value === "Others",
+        then: (schema) => schema.required("Please specify the gender"),
+        otherwise: (schema) => schema.optional(),
+      }),
+    "secondary-audience-location": yup.string(),
+  }) as Schema;
+
+export const step5Schema = yup.object().shape({
   "growth-rate": yup
     .string()
     .oneOf([
@@ -112,7 +154,7 @@ export const step4Schema = yup.object().shape({
   "primary-locations": yup
     .array()
     .of(yup.string())
-    .min(1, "Select at least one location")
+    .min(3, "Select three location")
     .max(3, "Cannot select more than three locations")
     .required("Primary locations are required"),
   "us-based-audience": yup
@@ -131,12 +173,9 @@ export const step4Schema = yup.object().shape({
       "More than 100%",
     ])
     .required("US based audience percentage is required"),
-  "gender-distribution": yup
-    .string()
-    .required("Gender distribution is required"),
 }) as Schema;
 
-export const step5Schema = yup.object().shape({
+export const step6Schema = yup.object().shape({
   "primary-social-media": yup
     .string()
     .oneOf([
@@ -166,48 +205,12 @@ export const step5Schema = yup.object().shape({
       "More than 1,000,000",
     ])
     .required("This Field is Required"),
-  "secondary-social-media": yup
-    .string()
-    .oneOf([
-      "Facebook",
-      "Instagram",
-      "LinkedIn",
-      "Newsletter",
-      "Pinterest",
-      "TikTok",
-      "Twitch",
-      "Twitter / X",
-      "Youtube",
-      "Youtube Reel",
-      "", // Allow empty string
-    ])
-    .nullable()
-    .optional(),
-  "secondary-social-media-link": yup.string().when("secondary-social-media", {
-    is: (val: string) => val && val.length > 0,
-    then: (schema) =>
-      schema
-        .url("Must be a valid URL")
-        .required("Social media link is required"),
-    otherwise: (schema) => schema.optional(),
-  }),
-  "secondary-followers": yup.string().when("secondary-social-media", {
-    is: (val: string) => val && val.length > 0,
-    then: (schema) =>
-      schema
-        .oneOf([
-          "Less than 1,000",
-          "1,000 - 10,000",
-          "10,000 - 100,000",
-          "100,000 - 1,000,000",
-          "More than 1,000,000",
-        ])
-        .required("Followers count is required"),
-    otherwise: (schema) => schema.optional(),
-  }),
+  "secondary-social-media": yup.string(),
+  "secondary-social-media-link": yup.string(),
+  "secondary-followers": yup.string(),
 }) as Schema;
 
-export const step6Schema = yup
+export const step7Schema = yup
   .object()
   .shape({
     "top-two-audiences": yup
@@ -225,23 +228,19 @@ export const step6Schema = yup
         "100,000 - 1,000,000",
         "More than 1,000,000",
       ])
-      .required("Average views is required")
-      .nullable(),
+      .required("Average views is required"),
     "favourite-brands": yup
       .string()
-      .required("Favourite brands are required")
-      .nullable(),
+      .required("Favourite brands are required"),
     "worked-with-ai": yup
       .string()
       .oneOf(["Yes", "No"])
-      .required("This field is required")
-      .nullable(),
+      .required("This field is required"),
     "paid-campaigns": yup
       .string()
       .oneOf(["Yes", "No"])
-      .required("This field is required")
-      .nullable(),
-    "budget-video": yup.string().required("Budget per video is required"),
+      .required("This field is required"),
+    "budget-video": yup.string().required("Compensation per video is required"),
   })
   .nullable() as unknown as Schema;
 
@@ -252,4 +251,5 @@ export const fullSchema = yup.object().shape({
   ...step4Schema.fields,
   ...step5Schema.fields,
   ...step6Schema.fields,
+  ...step7Schema.fields,
 }) as Schema;
