@@ -39,14 +39,14 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h1 className="text-3xl sm:text-4xl md:text-[5rem] lg:text-[5rem]
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[5rem]
          font-bold leading-tight md:leading-[3.5rem] lg:leading-[4.5rem] font-mona-sans">
         WHERE CREATORS & BRANDS  <br className="hidden sm:block" /> CONNECT TO MAKE MONEY
         </h1>
         <p className="mt-6 text-lg sm:text-xl md:text-3xl mx-auto max-w-4xl">
           Lets create AI & Tech Influencer campaigns that connect, inspire, and
           perform to empower brands.
-        </p>
+        </p> 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
