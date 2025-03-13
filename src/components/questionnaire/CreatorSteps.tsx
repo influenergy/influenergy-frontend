@@ -275,87 +275,22 @@ const StepComponent = ({ fields }: StepProps) => {
     formState: { errors },
   } = useFormContext<CreatorQuestionnaireData>();
 
-  // Group fields by audience type
-  const primaryFields = fields.filter(
-    (field) =>
-      field.slug.startsWith("primary-audience") &&
-      !field.slug.includes("-other")
-  );
-  const secondaryFields = fields.filter(
-    (field) =>
-      field.slug.startsWith("secondary-audience") &&
-      !field.slug.includes("-other")
-  );
-  const otherFields = fields.filter(
-    (field) => !field.slug.includes("audience") || field.slug.includes("-other")
-  );
-
   return (
-    <div className="space-y-6  col-span-2">
-      {primaryFields.length > 0 && (
-        <div className="border border-gray-200 rounded-lg p-4 bg-white w-full">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            Primary Audience
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {primaryFields.map((field) => (
-              <div key={field.title} className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  {field.title}
-                  {isFieldRequired(field.slug) && (
-                    <span className="text-red-500 ml-1">*</span>
-                  )}
-                </label>
-                <FormField field={field} />
-                {errors[field.slug as keyof CreatorQuestionnaireData] && (
-                  <p className="text-red-500 text-sm">
-                    {
-                      errors[field.slug as keyof CreatorQuestionnaireData]
-                        ?.message as string
-                    }
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {secondaryFields.length > 0 && (
-        <div className="border border-gray-200 rounded-lg p-4 bg-white">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            Secondary Audience
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {secondaryFields.map((field) => (
-              <div key={field.title} className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  {field.title}
-                  {isFieldRequired(field.slug) && (
-                    <span className="text-red-500 ml-1">*</span>
-                  )}
-                </label>
-                <FormField field={field} />
-                {errors[field.slug as keyof CreatorQuestionnaireData] && (
-                  <p className="text-red-500 text-sm">
-                    {
-                      errors[field.slug as keyof CreatorQuestionnaireData]
-                        ?.message as string
-                    }
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {otherFields.map((field) => {
+    <>
+      {fields.map((field) => {
         const fieldName = field.slug as keyof CreatorQuestionnaireData;
         const error = errors[fieldName];
         const required = isFieldRequired(field.slug);
 
-        if (fieldName.includes("-other")) return null;
+        // Skip certain fields that are handled within other components
+        if (
+          fieldName === "primary-social-media-link" ||
+          fieldName === "secondary-social-media-link" ||
+          fieldName === "primary-audience-gender-other" ||
+          fieldName === "secondary-audience-gender-other"
+        ) {
+          return null;
+        }
 
         // Special handling for social media fields
         if (
@@ -394,7 +329,7 @@ const StepComponent = ({ fields }: StepProps) => {
           </div>
         );
       })}
-    </div>
+    </>
   );
 };
 
