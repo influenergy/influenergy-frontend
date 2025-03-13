@@ -46,7 +46,7 @@ export function Marquee({
     <div
       {...props}
       className={cn(
-        "group flex overflow-hidden [--duration:10s] [--gap:1rem] [gap:var(--gap)]",
+        "group flex overflow-hidden [--duration:5s] [--gap:1rem] [gap:var(--gap)]",
         {
           "flex-row": !vertical,
           "flex-col": vertical,
@@ -83,7 +83,12 @@ export function MarqueeLogos({
   pauseOnHover = true,
 }: MarqueeLogosProps) {
   return (
-    <Marquee className="py-2" pauseOnHover={pauseOnHover} repeat={2}>
+    <Marquee
+      className="py-4"
+      pauseOnHover={pauseOnHover}
+      repeat={2}
+      style={{ "--duration": "20s" } as React.CSSProperties}
+    >
       {images.map((company, index) => (
         <div key={index} className="flex items-center justify-center mx-6">
           <Image

@@ -9,8 +9,8 @@ export default function Header() {
         <Image src="/images/logo.svg" alt="" width={200} height={200} />
         <div className="flex justify-center items-center gap-3">
           <Link href="/get-started">
-            <Button className="bg-primary text-white rounded-md px-6 py-2">
-              Get Started
+            <Button className="bg-primary text-white rounded-md px-9 py-5">
+              Start Free
             </Button>
           </Link>
         </div>

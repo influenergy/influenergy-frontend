@@ -19,7 +19,7 @@ export default function WhoAreWe() {
           loop
           muted
           playsInline
-          className="rounded-3xl object-contain shadow-lg h-[550px] w-[550px]"
+          className="rounded-3xl object-contain shadow-lg h-[500px] w-[400px]"
           controls
         >
           <source src="/landing/hearfromus/1.mov" />

@@ -4,15 +4,15 @@ import Image from "next/image";
 
 export default function InfluEnergySection() {
   return (
-    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] mt-10">
+    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] mt-10 font-sans">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true, amount: 0.3 }}
-        className="max-w-6xl mx-auto"
+        className="max-w-9xl mx-auto"
       >
-        <p className="text-4xl sm:text-5xl md:text-6xl font-bold text-black leading-tight">
+        <p className="text-4xl sm:text-5xl md:text-7xl font-bold text-black leading-tight">
           <span className="text-[#6C63FF]">INFLUENERGY</span>
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
@@ -30,7 +30,6 @@ export default function InfluEnergySection() {
           </motion.span>
           CONNECTS GLOBAL <br className="hidden md:block" />
           CREATORS WITH BRANDS,{" "}
-          
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -45,6 +44,7 @@ export default function InfluEnergySection() {
               className="rounded-full object-cover inline-block align-middle mx-2 shadow-md"
             />
           </motion.span>
+          <br className="hidden md:block" />
           TO CREATE 
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}

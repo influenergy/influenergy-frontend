@@ -39,10 +39,11 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold leading-tight font-mona-sans">
+        <h1 className="text-3xl sm:text-4xl md:text-[5rem] lg:text-[5rem]
+         font-bold leading-tight md:leading-[3.5rem] lg:leading-[4.5rem] font-mona-sans">
         WHERE CREATORS & BRANDS  <br className="hidden sm:block" /> CONNECT TO MAKE MONEY
         </h1>
-        <p className="mt-6 text-lg sm:text-xl md:text-2xl mx-auto max-w-4xl">
+        <p className="mt-6 text-lg sm:text-xl md:text-3xl mx-auto max-w-4xl">
           Lets create AI & Tech Influencer campaigns that connect, inspire, and
           perform to empower brands.
         </p>
@@ -52,10 +53,10 @@ export default function HeroSection() {
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <Button
-            className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-8 py-6 text-lg"
+            className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-9 py-7 text-lg"
             onClick={() => router.push("/get-started")}
           >
-            Get Started
+            Start Free
           </Button>
         </motion.div>
       </motion.div>
@@ -63,7 +64,7 @@ export default function HeroSection() {
       {/* Companies Bar - Repositioned for better centering */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
         <motion.div
-          className="relative -bottom-14 px-6 py-4 w-11/12 max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
+          className="relative -bottom-14 px-6 py-4 w-10/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
