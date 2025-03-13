@@ -9,7 +9,7 @@ interface Blog {
   image: string;
   date: string;
   title: string;
-  description: string;
+  description?: string;
   link?: string;
   slug?: string;
 }
