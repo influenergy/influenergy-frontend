@@ -116,6 +116,8 @@ export default function BlogGrid({ blogs }: BlogGridProps) {
                   textDecoration: "underline",
                   x: 3,
                 }}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Read More →
               </motion.a>
