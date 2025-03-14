@@ -81,58 +81,57 @@ export const step3Schema = yup.object().shape({
   "tell-us-about-yourself": yup.string().required("This field is required"),
 }) as Schema;
 
-export const step4Schema = yup
-  .object()
-  .shape({
-    "primary-audience-percentage": yup
-      .string()
-      .required("This field is required"),
-    "primary-audience-age": yup.string().required("This field is required"),
-    "primary-audience-gender": yup.string().required("This field is required"),
-    "primary-audience-gender-other": yup
-      .string()
-      .when("primary-audience-gender", {
-        is: (value: string) => value === "Others",
-        then: (schema) => schema.required("Please specify the gender"),
-        otherwise: (schema) => schema.optional(),
-      }),
-    "primary-audience-location": yup
-      .string()
-      .oneOf([
-        "United States",
-        "Canada",
-        "Mexico",
-        "United Kingdom",
-        "France",
-        "Germany",
-        "Japan",
-        "China",
-        "India",
-        "Australia",
-        "Brazil",
-        "Russia",
-        "Italy",
-        "Spain",
-        "South Korea",
-        "Netherlands",
-        "Turkey",
-        "Saudi Arabia",
-        "Sweden",
-        "Switzerland",
-      ])
-      .required("This field is required"),
-    "secondary-audience-percentage": yup.string(),
-    "secondary-audience-age": yup.string(),
-    "secondary-audience-gender": yup.string(),
-    "secondary-audience-gender-other": yup
-      .string()
-      .when("secondary-audience-gender", {
-        is: (value: string) => value === "Others",
-        then: (schema) => schema.required("Please specify the gender"),
-        otherwise: (schema) => schema.optional(),
-      }),
-    "secondary-audience-location": yup.string(),
-  }) as Schema;
+export const step4Schema = yup.object().shape({
+  "primary-audience-location": yup
+    .string()
+    .oneOf([
+      "United States",
+      "Canada",
+      "Mexico",
+      "United Kingdom",
+      "France",
+      "Germany",
+      "Japan",
+      "China",
+      "India",
+      "Australia",
+      "Brazil",
+      "Russia",
+      "Italy",
+      "Spain",
+      "South Korea",
+      "Netherlands",
+      "Turkey",
+      "Saudi Arabia",
+      "Sweden",
+      "Switzerland",
+    ])
+    .required("This field is required"),
+  "primary-audience-gender": yup.string().required("This field is required"),
+  "primary-audience-gender-other": yup
+    .string()
+    .when("primary-audience-gender", {
+      is: (value: string) => value === "Others",
+      then: (schema) => schema.required("Please specify the gender"),
+      otherwise: (schema) => schema.optional(),
+    }),
+  "primary-audience-age": yup.string().required("This field is required"),
+  "primary-audience-percentage": yup
+    .string()
+    .required("This field is required"),
+
+  "secondary-audience-location": yup.string(),
+  "secondary-audience-gender": yup.string(),
+  "secondary-audience-gender-other": yup
+    .string()
+    .when("secondary-audience-gender", {
+      is: (value: string) => value === "Others",
+      then: (schema) => schema.required("Please specify the gender"),
+      otherwise: (schema) => schema.optional(),
+    }),
+  "secondary-audience-age": yup.string(),
+  "secondary-audience-percentage": yup.string(),
+}) as Schema;
 
 export const step5Schema = yup.object().shape({
   "growth-rate": yup
@@ -229,9 +228,7 @@ export const step7Schema = yup
         "More than 1,000,000",
       ])
       .required("Average views is required"),
-    "favourite-brands": yup
-      .string()
-      .required("Favourite brands are required"),
+    "favourite-brands": yup.string().required("Favourite brands are required"),
     "worked-with-ai": yup
       .string()
       .oneOf(["Yes", "No"])

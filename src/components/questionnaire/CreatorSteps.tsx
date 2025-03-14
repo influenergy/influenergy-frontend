@@ -282,6 +282,10 @@ const StepComponent = ({ fields }: StepProps) => {
         const error = errors[fieldName];
         const required = isFieldRequired(field.slug);
 
+        const primaryAudience = fieldName.startsWith("primary-audience");
+        const secondaryAudience = fieldName.startsWith("secondary-audience");
+
+
         // Skip certain fields that are handled within other components
         if (
           fieldName === "primary-social-media-link" ||
@@ -316,10 +320,13 @@ const StepComponent = ({ fields }: StepProps) => {
         // Regular field rendering
         return (
           <div key={field.title} className="space-y-2 mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              {field.title}
-              {required && <span className="text-red-500 ml-1">*</span>}
-            </label>
+            {primaryAudience ||
+              (!secondaryAudience && (
+                <label className="block text-sm font-medium text-gray-700">
+                  {field.title}
+                  {required && <span className="text-red-500 ml-1">*</span>}
+                </label>
+              ))}
             <FormField field={field} />
             {error && (
               <p className="text-red-500 text-sm mt-1">
@@ -333,19 +340,51 @@ const StepComponent = ({ fields }: StepProps) => {
   );
 };
 
-export const Step = ({ fields }: StepProps) => (
-  <>
-    {fields[0].category === "textarea" ? (
-      <div className="w-full">
-        <StepComponent fields={fields} />
+export const Step = ({ fields }: StepProps) => {
+  const primaryAudienceFields = fields.filter((field) =>
+    field.slug.startsWith("primary-audience")
+  );
+  const secondaryAudienceFields = fields.filter((field) =>
+    field.slug.startsWith("secondary-audience")
+  );
+
+  if (primaryAudienceFields.length > 0 && secondaryAudienceFields.length > 0) {
+    return (
+      <div className="space-y-2">
+        {primaryAudienceFields.length > 0 && (
+          <div className="p-4 rounded-lg">
+            <h3 className="text-lg font-light mb-2 ">Primary Audience *</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-4">
+              <StepComponent fields={primaryAudienceFields} />
+            </div>
+          </div>
+        )}
+        {secondaryAudienceFields.length > 0 && (
+          <div className="p-4 rounded-lg">
+            <h3 className="text-lg font-light mb-2">Secondary Audience</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-4">
+              <StepComponent fields={secondaryAudienceFields} />
+            </div>
+          </div>
+        )}
       </div>
-    ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
-        <StepComponent fields={fields} />
-      </div>
-    )}
-  </>
-);
+    );
+  }
+
+  return (
+    <>
+      {fields[0].category === "textarea" ? (
+        <div className="w-full">
+          <StepComponent fields={fields} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
+          <StepComponent fields={fields} />
+        </div>
+      )}
+    </>
+  );
+};
 
 const DateInput = ({ field }: { field: Field }) => {
   const { setValue, watch } = useFormContext<CreatorQuestionnaireData>();

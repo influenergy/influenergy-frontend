@@ -43,7 +43,7 @@ const schemas: StepSchemas = {
 const CreatorQuestionnaire = (): JSX.Element => {
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
-  >("step1");
+  >("step4");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const dispatch = useDispatch();
