@@ -29,9 +29,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  
 } from "@/components/ui/dialog";
-import { Image } from "@radix-ui/react-avatar";
+import Image from "next/image";
 
 type StepSchemas = {
   [key in keyof typeof questions]: AnyObjectSchema;
@@ -48,7 +47,7 @@ const schemas: StepSchemas = {
 const PostQuestionnaire = (): JSX.Element => {
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
-  >("step5");
+  >("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { toast } = useToast();
@@ -201,18 +200,17 @@ const PostQuestionnaire = (): JSX.Element => {
     <>
       {/* Confirmation Dialog */}
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-           
+        <DialogContent className="w-[350px]">
+          <DialogHeader className="flex items-center justify-center">
             <DialogTitle className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
-            <Image
-              src="/images/UserProfile/bin.svg"
-              width={50}
-              height={50}
-              alt="logo"
-            />
-          </DialogTitle>
-            <DialogDescription>
+              <Image
+                src="/images/createpost/icon.png"
+                width={50}
+                height={50}
+                alt="logo"
+              />
+            </DialogTitle>
+            <DialogDescription className="text-lg text-black text-center">
               Once all details are submitted, edits will no longer be possible.
             </DialogDescription>
           </DialogHeader>
@@ -222,16 +220,17 @@ const PostQuestionnaire = (): JSX.Element => {
               variant="outline"
               onClick={() => setShowConfirmDialog(false)}
               disabled={isSubmitting}
+              className="border border-primary text-primary px-5 "
             >
-              Cancel
+              No
             </Button>
             <Button
               type="button"
               onClick={handleSubmitForm}
               disabled={isSubmitting}
-              className="bg-primary"
+              className="bg-primary px-5"
             >
-              {isSubmitting ? "Creating Campaign..." : "Create Campaign"}
+              {isSubmitting ? "Creating Campaign..." : "Yes"}
             </Button>
           </DialogFooter>
         </DialogContent>
