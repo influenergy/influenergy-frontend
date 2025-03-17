@@ -288,7 +288,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Sweden",
           "Switzerland",
         ],
-        placeholder: "Select primary audience location",
+        placeholder: "Location",
       },
       {
         title: "Primary Audience Gender",
@@ -301,13 +301,13 @@ export const CREATOR_QUESTIONS: Questions = {
           "Prefer not to say",
           "Others",
         ],
-        placeholder: "Select primary audience gender",
+        placeholder: "Gender",
       },
       {
         title: "Primary Audience Gender (Others)",
         slug: "primary-audience-gender-other",
         category: "text",
-        placeholder: "Specify primary audience gender",
+        placeholder: "Gender",
         dependsOn: "primary-audience-gender",
       },
       {
@@ -315,7 +315,7 @@ export const CREATOR_QUESTIONS: Questions = {
         slug: "primary-audience-age",
         category: "dropdown",
         options: ["<18", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
-        placeholder: "Select primary audience age group",
+        placeholder: "Age group",
       },
       {
         title: "Primary Audience Percentage",
@@ -333,7 +333,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "80-90%",
           "90-100%",
         ],
-        placeholder: "Select primary audience percentage",
+        placeholder: "Audience percentage",
       },
       {
         title: "Secondary Audience Location",
@@ -361,7 +361,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Sweden",
           "Switzerland",
         ],
-        placeholder: "Select secondary audience location",
+        placeholder: "Audience location",
       },
       {
         title: "Secondary Audience Gender",
@@ -374,13 +374,13 @@ export const CREATOR_QUESTIONS: Questions = {
           "Prefer not to say",
           "Others",
         ],
-        placeholder: "Select secondary audience gender",
+        placeholder: "Audience gender",
       },
       {
         title: "Secondary Audience Gender (Others)",
         slug: "secondary-audience-gender-other",
         category: "text",
-        placeholder: "Specify secondary audience gender",
+        placeholder: "Audience gender",
         dependsOn: "secondary-audience-gender",
       },
       {
@@ -388,7 +388,7 @@ export const CREATOR_QUESTIONS: Questions = {
         slug: "secondary-audience-age",
         category: "dropdown",
         options: ["<18", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
-        placeholder: "Select secondary audience age group",
+        placeholder: "Age group",
       },
       {
         title: "Secondary Audience Percentage",
@@ -406,7 +406,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "80-90%",
           "90-100%",
         ],
-        placeholder: "Select secondary audience percentage",
+        placeholder: "Audience percentage",
       },
     ],
   },
