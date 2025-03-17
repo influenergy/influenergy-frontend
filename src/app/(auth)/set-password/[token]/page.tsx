@@ -171,7 +171,7 @@ export default function ResetPassword() {
 
             <div className="space-y-2">
               <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                Confirm Password
+                Confirm New Password
               </Label>
               <div className="relative">
                 <Input
