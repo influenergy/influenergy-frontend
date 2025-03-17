@@ -28,7 +28,10 @@ export const step2Schema = yup.object().shape({
   "target-age-group": yup.string().required("Target age group is required"),
   "target-gender": yup
     .string()
-    .oneOf(["Male", "Female", "Others"], "Please select a valid gender")
+    .oneOf(
+      ["Male", "Female", "Non-binary","Prefer not to say", "Others"],
+      "Please select a valid gender"
+    )
     .required("Target gender is required"),
   "target-gender-other": yup.string().when("target-gender", {
     is: (value: string) => value === "Others",
