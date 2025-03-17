@@ -44,8 +44,8 @@ const catamaran = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Influenergy Demo",
-  description: "A modern authentication system built with Next.js",
+  title: "Influenergy",
+  description: "Influenergy is a platform for influencers to connect with brands and monetize their content. We help influencers to grow their audience and make money.",
 };
 
 export default function RootLayout({
