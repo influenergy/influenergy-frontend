@@ -109,7 +109,7 @@ export const CREATOR_QUESTIONS: Questions = {
     description: "Tell us a bit about your audience.",
     fields: [
       {
-        title: "Choose Gender",
+        title: "Choose Your Gender",
         slug: "gender",
         category: "dropdown",
         options: ["Male", "Female", "Non-binary", "Prefer not to say"],
@@ -259,7 +259,92 @@ export const CREATOR_QUESTIONS: Questions = {
       },
     ],
   },
+
   step4: {
+    title: "Your Social Media",
+    icon: Share2,
+    description: "Tell us a bit about your social media presence.",
+    fields: [
+      {
+        title: "What primary social media platform you operate from ?",
+        slug: "primary-social-media",
+        category: "dropdown",
+        options: [
+          "Facebook",
+          "Instagram",
+          "LinkedIn",
+          "Newsletter",
+          "Pinterest",
+          "TikTok",
+          "Twitch",
+          "Twitter / X",
+          "Youtube",
+          "Youtube Reel",
+        ],
+        placeholder: "Select primary platform",
+      },
+      {
+        title: "Enter your primary social media profile link",
+        slug: "primary-social-media-link",
+        category: "text",
+        dependsOn: "primary-social-media",
+        placeholder: "Enter your profile URL",
+      },
+      {
+        title: "How many followers do you have on your primary social media?",
+        slug: "primary-followers",
+        category: "dropdown",
+        options: [
+          "Less than 1,000",
+          "1,000 - 10,000",
+          "10,000 - 100,000",
+          "100,000 - 1,000,000",
+          "More than 1,000,000",
+        ],
+        placeholder: "Select follower count",
+      },
+      {
+        title: "What social media platforms do you operate from 2nd most?",
+        slug: "secondary-social-media",
+        category: "dropdown",
+        options: [
+          "Facebook",
+          "Instagram",
+          "LinkedIn",
+          "Newsletter",
+          "Pinterest",
+          "TikTok",
+          "Twitch",
+          "Twitter / X",
+          "Youtube",
+          "Youtube Reel",
+        ],
+        placeholder: "Select secondary platform (optional)",
+      },
+      {
+        title: "Enter your secondary social media profile link",
+        slug: "secondary-social-media-link",
+        category: "text",
+        dependsOn: "secondary-social-media",
+        placeholder: "Enter your profile URL",
+      },
+      {
+        title: "How many followers do you have on your secondary social media?",
+        slug: "secondary-followers",
+        category: "dropdown",
+        options: [
+          "Less than 1,000",
+          "1,000 - 10,000",
+          "10,000 - 100,000",
+          "100,000 - 1,000,000",
+          "More than 1,000,000",
+        ],
+        placeholder: "Select follower count",
+      },
+    ],
+  },
+
+  step5: {
     title: "Audience Details",
     icon: User,
     description: "",
@@ -412,7 +497,10 @@ export const CREATOR_QUESTIONS: Questions = {
       },
     ],
   },
-  step5: {
+
+ 
+
+  step6: {
     title: "Audience Insights",
     icon: ChartPie,
     description: "Tell us a bit about your audience.",
@@ -438,7 +526,7 @@ export const CREATOR_QUESTIONS: Questions = {
       },
       {
         title:
-          "What are the top three primary geographic locations of your audience?",
+          "What are the top three geographic locations of your audience?",
         slug: "primary-locations",
         category: "multiselect",
         options: [
@@ -487,89 +575,7 @@ export const CREATOR_QUESTIONS: Questions = {
     ],
   },
 
-  step6: {
-    title: "Your Social Media",
-    icon: Share2,
-    description: "Tell us a bit about your social media presence.",
-    fields: [
-      {
-        title: "What primary social media platform you operate from ?",
-        slug: "primary-social-media",
-        category: "dropdown",
-        options: [
-          "Facebook",
-          "Instagram",
-          "LinkedIn",
-          "Newsletter",
-          "Pinterest",
-          "TikTok",
-          "Twitch",
-          "Twitter / X",
-          "Youtube",
-          "Youtube Reel",
-        ],
-        placeholder: "Select primary platform",
-      },
-      {
-        title: "Enter your primary social media profile link",
-        slug: "primary-social-media-link",
-        category: "text",
-        dependsOn: "primary-social-media",
-        placeholder: "Enter your profile URL",
-      },
-      {
-        title: "How many followers do you have on your primary social media?",
-        slug: "primary-followers",
-        category: "dropdown",
-        options: [
-          "Less than 1,000",
-          "1,000 - 10,000",
-          "10,000 - 100,000",
-          "100,000 - 1,000,000",
-          "More than 1,000,000",
-        ],
-        placeholder: "Select follower count",
-      },
-      {
-        title: "What social media platforms do you operate from 2nd most?",
-        slug: "secondary-social-media",
-        category: "dropdown",
-        options: [
-          "Facebook",
-          "Instagram",
-          "LinkedIn",
-          "Newsletter",
-          "Pinterest",
-          "TikTok",
-          "Twitch",
-          "Twitter / X",
-          "Youtube",
-          "Youtube Reel",
-        ],
-        placeholder: "Select secondary platform (optional)",
-      },
-      {
-        title: "Enter your secondary social media profile link",
-        slug: "secondary-social-media-link",
-        category: "text",
-        dependsOn: "secondary-social-media",
-        placeholder: "Enter your profile URL",
-      },
-      {
-        title: "How many followers do you have on your secondary social media?",
-        slug: "secondary-followers",
-        category: "dropdown",
-        options: [
-          "Less than 1,000",
-          "1,000 - 10,000",
-          "10,000 - 100,000",
-          "100,000 - 1,000,000",
-          "More than 1,000,000",
-        ],
-        placeholder: "Select follower count",
-      },
-    ],
-  },
+  
 
   step7: {
     title: "Content and Engagement",
@@ -577,7 +583,7 @@ export const CREATOR_QUESTIONS: Questions = {
     description: "Tell us a bit about your content and engagement.",
     fields: [
       {
-        title: "What is the age bracket of your top two audiences?",
+        title: "What age bracket follows you the most?",
         slug: "top-two-audiences",
         category: "multiselect",
         options: ["< 18", "18-24", "25-34", "35-44", "45-54", "55+"],
@@ -613,7 +619,7 @@ export const CREATOR_QUESTIONS: Questions = {
         title: "Do you have any experience in paid campaigns?",
         slug: "paid-campaigns",
         category: "dropdown",
-        options: ["Yes", "No"],
+        options: ["Yes", "No","Gifted","Affiliate Marketing","Other"],
         placeholder: "Select",
       },
       {

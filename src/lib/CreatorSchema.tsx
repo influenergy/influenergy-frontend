@@ -82,6 +82,41 @@ export const step3Schema = yup.object().shape({
 }) as Schema;
 
 export const step4Schema = yup.object().shape({
+  "primary-social-media": yup
+    .string()
+    .oneOf([
+      "Facebook",
+      "Instagram",
+      "LinkedIn",
+      "Newsletter",
+      "Pinterest",
+      "TikTok",
+      "Twitch",
+      "Twitter / X",
+      "Youtube",
+      "Youtube Reel",
+    ])
+    .required("This Field is Required"),
+  "primary-social-media-link": yup
+    .string()
+    .url("Must be a valid URL")
+    .required("This Field is Required"),
+  "primary-followers": yup
+    .string()
+    .oneOf([
+      "Less than 1,000",
+      "1,000 - 10,000",
+      "10,000 - 100,000",
+      "100,000 - 1,000,000",
+      "More than 1,000,000",
+    ])
+    .required("This Field is Required"),
+  "secondary-social-media": yup.string(),
+  "secondary-social-media-link": yup.string(),
+  "secondary-followers": yup.string(),
+}) as Schema;
+
+export const step5Schema = yup.object().shape({
   "primary-audience-location": yup
     .string()
     .oneOf([
@@ -133,7 +168,7 @@ export const step4Schema = yup.object().shape({
   "secondary-audience-percentage": yup.string(),
 }) as Schema;
 
-export const step5Schema = yup.object().shape({
+export const step6Schema = yup.object().shape({
   "growth-rate": yup
     .string()
     .oneOf([
@@ -174,41 +209,6 @@ export const step5Schema = yup.object().shape({
     .required("US based audience percentage is required"),
 }) as Schema;
 
-export const step6Schema = yup.object().shape({
-  "primary-social-media": yup
-    .string()
-    .oneOf([
-      "Facebook",
-      "Instagram",
-      "LinkedIn",
-      "Newsletter",
-      "Pinterest",
-      "TikTok",
-      "Twitch",
-      "Twitter / X",
-      "Youtube",
-      "Youtube Reel",
-    ])
-    .required("This Field is Required"),
-  "primary-social-media-link": yup
-    .string()
-    .url("Must be a valid URL")
-    .required("This Field is Required"),
-  "primary-followers": yup
-    .string()
-    .oneOf([
-      "Less than 1,000",
-      "1,000 - 10,000",
-      "10,000 - 100,000",
-      "100,000 - 1,000,000",
-      "More than 1,000,000",
-    ])
-    .required("This Field is Required"),
-  "secondary-social-media": yup.string(),
-  "secondary-social-media-link": yup.string(),
-  "secondary-followers": yup.string(),
-}) as Schema;
-
 export const step7Schema = yup
   .object()
   .shape({
@@ -235,7 +235,7 @@ export const step7Schema = yup
       .required("This field is required"),
     "paid-campaigns": yup
       .string()
-      .oneOf(["Yes", "No"])
+      .oneOf(["Yes", "No","Gifted","Affiliate Marketing","Other"])
       .required("This field is required"),
     "budget-video": yup.string().required("Compensation per video is required"),
   })
