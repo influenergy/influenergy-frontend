@@ -75,11 +75,12 @@ export interface PostQuestionnaireData {
   "brand-name": string;
   "campaign-objective": string[];
   "campaign-description": string;
-  "campaign-post":string;
+  "campaign-post": string;
 
   // Step 2 - Target Audience & Demographics
   "target-age-group": string;
   "target-gender": string;
+  "target-gender-other"?: string;
   "target-location": string[];
   "target-interests": string[];
 

@@ -1,7 +1,6 @@
 import { api } from "./api";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 
-
 const transformPostData = (formData: PostQuestionnaireData) => {
   // Create FormData object to handle file upload
   const formDataToSend = new FormData();
@@ -13,7 +12,10 @@ const transformPostData = (formData: PostQuestionnaireData) => {
     campaignObjective: formData["campaign-objective"],
     campaignDescription: formData["campaign-description"],
     targetAgeGroup: formData["target-age-group"],
-    targetGender: formData["target-gender"],
+    targetGender:
+      formData["target-gender"] === "Others"
+        ? formData["target-gender-other"]
+        : formData["target-gender"],
     targetLocation: formData["target-location"],
     targetInterests: formData["target-interests"],
     contentType: formData["content-type"],
@@ -32,7 +34,7 @@ const transformPostData = (formData: PostQuestionnaireData) => {
     expectedDeliverables: formData["expected-deliverables"],
     noOfDaysForDelivery: formData["no-of-days-for-delivery"],
     additionalInstructions: formData["additional-instructions"] || "",
-    campaignPost :formData["campaign-post"]
+    campaignPost: formData["campaign-post"],
   };
 
   // Append regular data - handle arrays properly
@@ -67,7 +69,7 @@ export const postApi = {
   getCampaigns: async () => {
     try {
       const response = await api.get("/brand/get-campaigns");
-      console.log('response',response.data)
+      console.log("response", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching campaigns:", error);
@@ -85,5 +87,4 @@ export const postApi = {
       throw error;
     }
   },
-
 };

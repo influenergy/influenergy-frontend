@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { CreatorQuestionnaireData } from "@/types/Questionnaire";
+import { PostQuestionnaireData } from "@/types/Questionnaire";
 import { Button } from "@/components/ui/button";
 import { Edit2 } from "lucide-react";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
@@ -10,24 +10,55 @@ interface ReviewStepProps {
 }
 
 const PostReviewStep = ({ onEdit }: ReviewStepProps) => {
-  const { watch } = useFormContext<CreatorQuestionnaireData>();
+  const { watch } = useFormContext<PostQuestionnaireData>();
   const formData = watch();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const sections = Object.entries(questions).map(([_, step], index) => {
+  // Function to format field values for display
+  const formatFieldValue = (
+    field: string,
+    value: string | Date | string[] | undefined
+  ): string => {
+    // Handle gender field with "Others" option
+    if (field === "target-gender" && value === "Others") {
+      const customGender = formData["target-gender-other"];
+      return customGender ? `Others (${customGender})` : "Others";
+    }
+
+    // Handle arrays
+    if (Array.isArray(value)) {
+      return value.join(", ");
+    }
+
+    // Handle special case for campaign post (truncate if it's too long)
+    if (field === "campaign-post" && typeof value === "string") {
+      return value.length > 20 ? value.slice(0, 20) + "..." : value;
+    }
+
+    // Return the value as string or "Not provided" if empty
+    return String(value || "Not provided");
+  };
+
+  const sections = Object.entries(questions).map(([, step], index) => {
     return {
       title: step.title || `Step ${index + 1}`,
       icon: step.icon,
-      fields: step.fields.map((field) => ({
-        label: field.title,
-        value: Array.isArray(
-          formData[field.slug as keyof CreatorQuestionnaireData]
-        )
-          ? (
-              formData[field.slug as keyof CreatorQuestionnaireData] as string[]
-            )?.join(", ")
-          : formData[field.slug as keyof CreatorQuestionnaireData],
-      })),
+      fields: step.fields
+        .map((field) => {
+          // Skip the "other" gender field as it will be combined with the gender field
+          if (field.slug === "target-gender-other") {
+            return null;
+          }
+
+          return {
+            label: field.title,
+            value: formatFieldValue(
+              field.slug,
+              formData[field.slug as keyof PostQuestionnaireData]
+            ),
+            slug: field.slug,
+          };
+        })
+        .filter((field): field is NonNullable<typeof field> => field !== null), // Filter out null values
       step: index + 1,
     };
   });
@@ -67,7 +98,7 @@ const PostReviewStep = ({ onEdit }: ReviewStepProps) => {
                   </p>
                   <p className="text-base text-gray-900">
                     {field.label === "Campaign Post"
-                      ? typeof field.value === 'string'
+                      ? typeof field.value === "string"
                         ? field.value.slice(0, 20) + "..."
                         : String(field.value)
                       : String(field.value) || "Not provided"}

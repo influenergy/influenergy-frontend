@@ -30,6 +30,11 @@ export const step2Schema = yup.object().shape({
     .string()
     .oneOf(["Male", "Female", "Others"], "Please select a valid gender")
     .required("Target gender is required"),
+  "target-gender-other": yup.string().when("target-gender", {
+    is: (value: string) => value === "Others",
+    then: (schema) => schema.required("Please specify the gender"),
+    otherwise: (schema) => schema.optional(),
+  }),
   "target-location": yup
     .array()
     .of(yup.string())
