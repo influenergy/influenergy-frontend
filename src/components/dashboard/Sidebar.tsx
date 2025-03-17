@@ -65,7 +65,7 @@ export default function Sidebar({ type }: { type: string }) {
             />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
-          <p>{userProfile?.fullName}</p>
+          <p className="text-white">{userProfile?.fullName}</p>
         </div>
 
         <nav className="grid items-start gap-2 mt-2">
@@ -129,20 +129,9 @@ export default function Sidebar({ type }: { type: string }) {
         </nav>
 
         {/* Settings button */}
-        {/* <div className="mt-auto">
-          <Link href="/dashboard/settings">
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full justify-start gap-3",
-                pathname === "/dashboard/settings" && "bg-accent"
-              )}
-            >
-              <Settings className="h-4 w-4" />
-              <p className="text-sm md:block hidden">Settings</p>
-            </Button>
-          </Link>
-        </div> */}
+        <div className="mt-auto ">
+        <p className="text-sm text-center text-white md:block hidden">© influenergy</p>
+        </div>
       </div>
     </div>
   );
