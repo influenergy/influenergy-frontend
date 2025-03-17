@@ -204,7 +204,7 @@ export default function LoginForm() {
                   htmlFor="email"
                   className="text-sm sm:text-base mb-1 block"
                 >
-                  Enter Email
+                  Email
                 </Label>
                 <LoginFormInput
                   type="email"
