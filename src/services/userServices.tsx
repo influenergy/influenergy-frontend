@@ -109,11 +109,7 @@ export const userApi = {
     id: string,
     formData: CreatorQuestionnaireData
   ) => {
-   console.log('formData',formData)
     const transformedData = transformQuestionnaireData(formData, id);
-    console.log('transformedData',transformedData)
-    
-
     try {
       const response = await api.post(
         "/creator/add_profile_details",

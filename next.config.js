@@ -9,6 +9,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "placehold.co",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "influenergybucket.s3.us-west-1.amazonaws.com",
         pathname: "/creators/**",
       },
@@ -22,3 +27,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+

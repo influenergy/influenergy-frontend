@@ -5,7 +5,7 @@ import { CREATE_POST as questions } from "@/constants/CreatePost";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { setCredentials, User } from "@/store/features/authSlice";
+// import { setCredentials, User } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,7 +17,7 @@ import {
   step5Schema,
 } from "@/lib/PostSchema";
 import { Step } from "./PostSteps";
-import { CreatorQuestionnaireData } from "@/types/Questionnaire";
+import { PostQuestionnaireData } from "@/types/Questionnaire";
 import { AnyObjectSchema } from "yup";
 import { Field } from "@/constants/questions";
 import { selectUser, useAppSelector } from "@/store";
@@ -46,9 +46,7 @@ const PostQuestionnaire = (): JSX.Element => {
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const router = useRouter();
-  const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
-    {}
-  );
+  const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
@@ -75,7 +73,7 @@ const PostQuestionnaire = (): JSX.Element => {
       ? schemas[currentStep as keyof typeof questions]
       : schemas.step5;
 
-  const methods = useForm<CreatorQuestionnaireData>({
+  const methods = useForm<PostQuestionnaireData>({
     resolver: yupResolver(currentSchema),
     mode: "onBlur",
     defaultValues: formData,
@@ -95,7 +93,7 @@ const PostQuestionnaire = (): JSX.Element => {
 
     try {
       const stepFields = fields.map((field: Field) => field.slug) as Array<
-        keyof CreatorQuestionnaireData
+        keyof PostQuestionnaireData
       >;
 
       const isValid = await trigger(stepFields);
@@ -104,14 +102,10 @@ const PostQuestionnaire = (): JSX.Element => {
         return;
       }
 
-      const currentValues = getValues() as Partial<CreatorQuestionnaireData>;
+      const currentValues = getValues() as Partial<PostQuestionnaireData>;
       const updatedData = {
         ...prevData,
         ...currentValues,
-        // Convert string date to Date object
-        ...(currentValues.dob && {
-          dob: new Date(currentValues.dob),
-        }),
       };
       setFormData(updatedData);
 
@@ -121,42 +115,25 @@ const PostQuestionnaire = (): JSX.Element => {
         setCurrentStep(steps[currentStepIndex + 1]);
       } else {
         setIsSubmitting(true);
-        // Convert dateOfBirth to ISO string before sending to API
-        const submitData = {
-          ...updatedData,
-          dateOfBirth:
-            updatedData.dob instanceof Date
-              ? updatedData.dob.toISOString()
-              : updatedData.dob,
-        };
+
         if (user && user._id) {
-          const formData = new FormData();
-          Object.entries(submitData).forEach(([key, value]) => {
-            if (value !== undefined) {
-              formData.append(key, value.toString());
-            }
-          });
-          await postApi.createAdPost(user._id, formData);
-          dispatch(
-            setCredentials({
-              user: { ...user, isProfileCompleted: true } as User,
-            })
+          // Use the transformed data directly without FormData
+          await postApi.createAdPost(
+            updatedData as PostQuestionnaireData
           );
+
           toast({
             title: "Success!",
-            description: "Your profile has been updated successfully.",
+            description: "Your campaign has been created successfully.",
           });
           router.push("/dashboard/brand/posts");
         } else {
-          // handle the case where user._id is undefined
           toast({
             title: "Please login first",
-            description:
-              "You need to be logged in to complete the questionnaire.",
+            description: "You need to be logged in to create a campaign.",
             variant: "destructive",
           });
         }
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {
       console.error("Form validation/submission error:", error);

@@ -246,7 +246,7 @@ const FormField = ({ field }: { field: Field }) => {
           placeholder={field.placeholder}
           cols={30}
           rows={10}
-          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary focus:outline-none focus:ring-2"
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 focus:outline-none focus:ring-2"
         ></textarea>
       </div>
     );

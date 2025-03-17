@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "./features/authSlice";
+import postReducer from "./features/postSlice";
 
 // Persist Configuration
 const persistConfig = {
@@ -14,6 +15,7 @@ const persistConfig = {
 // Combine reducers (helps in adding more reducers later)
 const rootReducer = combineReducers({
   auth: authReducer,
+  post: postReducer,
 });
 
 // Apply persistReducer to rootReducer
@@ -42,3 +44,10 @@ export const selectIsAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated;
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectUserType = (state: RootState) => state.auth.userType;
+
+// Post selectors
+export const selectPosts = (state: RootState) => state.post.campaigns;
+export const selectCurrentPost = (state: RootState) =>
+  state.post.currentCampaign;
+export const selectPostLoading = (state: RootState) => state.post.loading;
+export const selectPostError = (state: RootState) => state.post.error;

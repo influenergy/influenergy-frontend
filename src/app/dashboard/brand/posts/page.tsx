@@ -1,21 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-// import Cards from "@/components/common/PostCard";
+import React, { useEffect } from "react";
 import CardSkeleton from "@/components/common/CardSkeleton";
-import { DESCRIPTION } from "@/constants/Description";
 import PostDescription from "@/components/dashboard/Post";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector, selectPosts, selectPostLoading } from "@/store";
+import { fetchCampaigns } from "@/store/features/postSlice";
 
 const Page = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const campaigns = useAppSelector(selectPosts);
+  const isLoading = useAppSelector(selectPostLoading);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
+    dispatch(fetchCampaigns());
+  }, [dispatch]);
 
   return (
     <div className="p-4">
@@ -28,11 +28,26 @@ const Page = () => {
         </Link>
       </div>
       <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-        {isLoading
-          ? [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
-          : DESCRIPTION.map((item, i) => (
-              <PostDescription key={i} data={item} />
-            ))}
+        {isLoading ? (
+          [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
+        ) : campaigns.length === 0 ? (
+          <div className="text-center w-full">
+            <p className="text-muted-foreground">
+              You have not created any posts yet.
+            </p>
+          </div>
+        ) : (
+          campaigns.map((campaign, i) => (
+            <div key={i} className="relative">
+              <PostDescription data={campaign} />
+              <div className="absolute top-2 right-2 flex gap-2">
+                <Link href={`/dashboard/brand/posts/edit/${campaign._id}`}>
+                  <Button size="sm" variant="secondary">Edit</Button>
+                </Link>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

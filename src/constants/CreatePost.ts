@@ -8,7 +8,8 @@ export interface Field {
     | "dropdown"
     | "email"
     | "text"
-    | "multiselect";
+    | "multiselect"
+    | "file";
   slug: string;
   options?: string[];
   dependsOn?: string;
@@ -62,6 +63,11 @@ export const CREATE_POST: Questions = {
         slug: "campaign-description",
         category: "text",
       },
+      {
+        title:"Campaign Post",
+        slug:"campaign-post",
+        category:"file",
+      }
     ],
   },
   step2: {

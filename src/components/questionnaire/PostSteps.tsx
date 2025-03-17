@@ -74,10 +74,9 @@ export const FormField = ({ field }: { field: Field }) => {
   const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
 
-
   if (fieldName === "target-interests") {
-      return <PrimaryNicheInput field={field} />;
-    }
+    return <PrimaryNicheInput field={field} />;
+  }
 
   if (field.category === "dropdown") {
     return (
@@ -135,7 +134,34 @@ export const FormField = ({ field }: { field: Field }) => {
   }
 
   if (field.category === "date") {
-    return <DateInput field={field} />
+    return <DateInput field={field} />;
+  }
+
+  if (field.category === "file") {
+    return (
+      <input
+        type="file"
+        accept="image/jpeg, image/png, image/jpg"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          console.log('file',file)
+          if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+              if (typeof reader.result === "string") {
+                setValue(fieldName, reader.result, { shouldValidate: true });
+              }
+            };
+          }
+        }}
+        className={`w-full p-3 border rounded-lg transition-all duration-200 ${
+          error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-primary"
+        } focus:outline-none focus:ring-2`}
+      />
+    );
   }
 
   return (
@@ -194,7 +220,7 @@ const DateInput = ({ field }: { field: Field }) => {
   const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
   const value = watch(fieldName);
-  
+
   // Register the field but don't use the ref
   register(fieldName);
 
@@ -203,7 +229,9 @@ const DateInput = ({ field }: { field: Field }) => {
       <DatePicker
         selected={value && !Array.isArray(value) ? new Date(value) : null}
         onChange={(date) => {
-          setValue(fieldName, date ? date.toISOString() : undefined, { shouldValidate: true });
+          setValue(fieldName, date ? date.toISOString() : undefined, {
+            shouldValidate: true,
+          });
         }}
         dateFormat="MM/dd/yyyy"
         className={`w-full p-3 border rounded-lg transition-all duration-200 ${

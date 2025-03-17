@@ -9,6 +9,11 @@ const nextConfig = {
             pathname: '/public/**',
           },
           {
+            protocol: "https",
+            hostname: "placehold.co",
+            pathname: "/public/**",
+          },
+          {
             protocol: 'https',
             hostname: 'influenergy.s3.ap-south-1.amazonaws.com',
             port: '',

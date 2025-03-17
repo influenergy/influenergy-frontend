@@ -10,7 +10,8 @@ export interface Field {
     | "email"
     | "text"
     | "multiselect"
-    | "textarea";
+    | "textarea"
+    | "file";
   slug: string;
   options?: string[];
   dependsOn?: string;

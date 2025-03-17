@@ -1,37 +1,79 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
-import { DESCRIPTION } from "@/constants/Description";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { useAppDispatch, useAppSelector, selectCurrentPost, selectPostLoading } from "@/store";
+import { fetchCampaignById, updateCampaign, clearCurrentCampaign } from "@/store/features/postSlice";
 
 export default function EditPost() {
   const { postId } = useParams();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState(
-    DESCRIPTION.find((item) => item.id === postId) || null
-  );
+  const dispatch = useAppDispatch();
+  const campaignData = useAppSelector(selectCurrentPost);
+  const isLoading = useAppSelector(selectPostLoading);
+  const [formData, setFormData] = useState(null);
+
+  useEffect(() => {
+    if (postId) {
+      dispatch(fetchCampaignById(postId as string));
+    }
+
+    return () => {
+      dispatch(clearCurrentCampaign());
+    };
+  }, [dispatch, postId]);
+
+  // Update local form data when Redux data changes
+  useEffect(() => {
+    if (campaignData) {
+      setFormData(campaignData);
+    }
+  }, [campaignData]);
+
+  if (isLoading && !formData) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="ml-2">Loading campaign data...</span>
+      </div>
+    );
+  }
 
   if (!formData) {
-    return <div>Post not found</div>;
+    return <div>Campaign not found</div>;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      // Add your API call here
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      router.push(`/dashboard/brand/posts/${postId}`);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(updateCampaign({ id: postId as string, data: formData }))
+      .unwrap()
+      .then(() => {
+        router.push(`/dashboard/brand/posts/${postId}`);
+      })
+      .catch((error) => {
+        console.error("Failed to update campaign:", error);
+      });
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
+
+  const handleRequirementChange = (field, value) => {
+    setFormData({
+      ...formData,
+      requirement: {
+        ...formData.requirement,
+        [field]: value,
+      },
+    });
   };
 
   return (
@@ -45,7 +87,7 @@ export default function EditPost() {
           <ArrowLeft className="h-4 w-4" />
           Back
         </Button>
-        <h1 className="text-2xl font-semibold">Edit Post</h1>
+        <h1 className="text-2xl font-semibold">Edit Campaign</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -53,21 +95,17 @@ export default function EditPost() {
           <div className="space-y-2">
             <Label>Title</Label>
             <Input
-              defaultValue={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
+              value={formData.title || ""}
+              onChange={(e) => handleInputChange("title", e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
             <Label>Categories</Label>
             <Input
-              defaultValue={formData.description}
+              value={formData.description || ""}
               placeholder="Travel | Lifestyle | Outdoors"
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
+              onChange={(e) => handleInputChange("description", e.target.value)}
             />
           </div>
 
@@ -75,45 +113,27 @@ export default function EditPost() {
             <div className="space-y-2">
               <Label>Location</Label>
               <Input
-                defaultValue={formData.requirement.location}
+                value={formData.requirement?.location || ""}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    requirement: {
-                      ...formData.requirement,
-                      location: e.target.value,
-                    },
-                  })
+                  handleRequirementChange("location", e.target.value)
                 }
               />
             </div>
             <div className="space-y-2">
               <Label>Min Followers</Label>
               <Input
-                defaultValue={formData.requirement.minFollowers}
+                value={formData.requirement?.minFollowers || ""}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    requirement: {
-                      ...formData.requirement,
-                      minFollowers: e.target.value,
-                    },
-                  })
+                  handleRequirementChange("minFollowers", e.target.value)
                 }
               />
             </div>
             <div className="space-y-2">
               <Label>Min Engagement</Label>
               <Input
-                defaultValue={formData.requirement.minEngagement}
+                value={formData.requirement?.minEngagement || ""}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    requirement: {
-                      ...formData.requirement,
-                      minEngagement: e.target.value,
-                    },
-                  })
+                  handleRequirementChange("minEngagement", e.target.value)
                 }
               />
             </div>
@@ -123,9 +143,9 @@ export default function EditPost() {
             <Label>Description</Label>
             <Textarea
               rows={15}
-              defaultValue={formData.offerDescription}
+              value={formData.offerDescription || ""}
               onChange={(e) =>
-                setFormData({ ...formData, offerDescription: e.target.value })
+                handleInputChange("offerDescription", e.target.value)
               }
               className="font-mono"
             />
