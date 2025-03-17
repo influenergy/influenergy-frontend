@@ -66,11 +66,10 @@ const PostReviewStep = ({ onEdit }: ReviewStepProps) => {
                     {field.label}
                   </p>
                   <p className="text-base text-gray-900">
-                    {field.label === "Campaign Post" &&
-                    field.value instanceof FileList
-                      ? Array.from(field.value)
-                          .map((file) => file.name)
-                          .join(", ")
+                    {field.label === "Campaign Post"
+                      ? typeof field.value === 'string'
+                        ? field.value.slice(0, 20) + "..."
+                        : String(field.value)
                       : String(field.value) || "Not provided"}
                   </p>
                 </div>

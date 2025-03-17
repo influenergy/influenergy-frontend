@@ -42,7 +42,6 @@ interface PostData {
     minFollowers: string;
     minEngagement: string;
   };
-  offerDescription: string;
 }
 
 interface PostDescriptionProps {

@@ -21,6 +21,7 @@ export const step1Schema = yup.object().shape({
     .string()
     .min(10, "Description must be at least 10 characters")
     .required("Campaign description is required"),
+  "campaign-post": yup.string().required("Campaign post is required"),
 }) as Schema;
 
 export const step2Schema = yup.object().shape({

@@ -1,6 +1,7 @@
 import { api } from "./api";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 
+
 const transformPostData = (formData: PostQuestionnaireData) => {
   // Create FormData object to handle file upload
   const formDataToSend = new FormData();
@@ -31,6 +32,7 @@ const transformPostData = (formData: PostQuestionnaireData) => {
     expectedDeliverables: formData["expected-deliverables"],
     noOfDaysForDelivery: formData["no-of-days-for-delivery"],
     additionalInstructions: formData["additional-instructions"] || "",
+    campaignPost :formData["campaign-post"]
   };
 
   // Append regular data - handle arrays properly
@@ -42,13 +44,6 @@ const transformPostData = (formData: PostQuestionnaireData) => {
       formDataToSend.append(key, value || "");
     }
   });
-
-  // Handle campaign post file
-  if (formData["campaign-post"] instanceof FileList) {
-    formDataToSend.append("campaignPost", formData["campaign-post"][0]);
-  } else if (formData["campaign-post"] instanceof File) {
-    formDataToSend.append("campaignPost", formData["campaign-post"]);
-  }
 
   return formDataToSend;
 };
@@ -68,13 +63,27 @@ export const postApi = {
       throw error;
     }
   },
+
   getCampaigns: async () => {
     try {
       const response = await api.get("/brand/get-campaigns");
+      console.log('response',response.data)
       return response.data;
     } catch (error) {
       console.error("Error fetching campaigns:", error);
       throw error;
     }
   },
+
+  // Get a single campaign by ID
+  getCampaignById: async (id: string) => {
+    try {
+      const response = await api.get(`/brand/campaign/${id}`);
+      return response.data.campaign;
+    } catch (error) {
+      console.error(`Error fetching campaign with ID ${id}:`, error);
+      throw error;
+    }
+  },
+
 };

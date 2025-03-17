@@ -1,35 +1,13 @@
 "use client";
 import PostDescription from "@/components/dashboard/PostDescription";
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import {
-  useAppDispatch,
-  useAppSelector,
-  selectCurrentPost,
-  selectPostLoading,
-} from "@/store";
-import {
-  fetchCampaignById,
-  clearCurrentCampaign,
-} from "@/store/features/postSlice";
+import { useCampaign } from "@/hooks/useQueryCampaigns";
 
 const Page = () => {
   const { postId } = useParams();
-  const dispatch = useAppDispatch();
-  const campaign = useAppSelector(selectCurrentPost);
-  const isLoading = useAppSelector(selectPostLoading);
-
-  useEffect(() => {
-    if (postId) {
-      dispatch(fetchCampaignById(postId as string));
-    }
-
-    // Clean up when unmounting
-    return () => {
-      dispatch(clearCurrentCampaign());
-    };
-  }, [dispatch, postId]);
+  const { data: campaign, isLoading, error } = useCampaign(postId as string);
 
   if (isLoading) {
     return (
@@ -40,11 +18,20 @@ const Page = () => {
     );
   }
 
+  if (error) {
+    return (
+      <div className="text-center text-red-500">
+        Not able to fetch campaigns data
+      </div>
+    );
+  }
+
   if (!campaign) {
     return <div>Campaign not found</div>;
   }
 
-  return <PostDescription data={campaign} />;
+
+  return <PostDescription {...campaign} />;
 };
 
 export default Page;

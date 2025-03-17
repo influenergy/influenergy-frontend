@@ -144,7 +144,6 @@ export const FormField = ({ field }: { field: Field }) => {
         accept="image/jpeg, image/png, image/jpg"
         onChange={(e) => {
           const file = e.target.files?.[0];
-          console.log('file',file)
           if (file) {
             const reader = new FileReader();
             reader.readAsDataURL(file);

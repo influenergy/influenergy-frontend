@@ -1,21 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import CardSkeleton from "@/components/common/CardSkeleton";
 import PostDescription from "@/components/dashboard/Post";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useAppDispatch, useAppSelector, selectPosts, selectPostLoading } from "@/store";
-import { fetchCampaigns } from "@/store/features/postSlice";
+import { useCampaigns } from "@/hooks/useQueryCampaigns";
+import { Campaign } from "@/types/PostQuestionnaire";
 
 const Page = () => {
-  const dispatch = useAppDispatch();
-  const campaigns = useAppSelector(selectPosts);
-  const isLoading = useAppSelector(selectPostLoading);
+  const { data, isLoading, error } = useCampaigns();
 
-  useEffect(() => {
-    dispatch(fetchCampaigns());
-  }, [dispatch]);
+  // Extract campaigns from the response and provide a default empty array
+  const campaigns: Campaign[] = data?.campaigns || [];
 
   return (
     <div className="p-4">
@@ -27,6 +24,13 @@ const Page = () => {
           </Button>
         </Link>
       </div>
+
+      {error && (
+        <div className="text-center w-full text-red-500 mb-4">
+          Not able to fetch campaigns data
+        </div>
+      )}
+
       <div className="flex flex-wrap justify-center sm:justify-start gap-4">
         {isLoading ? (
           [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
@@ -37,14 +41,9 @@ const Page = () => {
             </p>
           </div>
         ) : (
-          campaigns.map((campaign, i) => (
-            <div key={i} className="relative">
-              <PostDescription data={campaign} />
-              <div className="absolute top-2 right-2 flex gap-2">
-                <Link href={`/dashboard/brand/posts/edit/${campaign._id}`}>
-                  <Button size="sm" variant="secondary">Edit</Button>
-                </Link>
-              </div>
+          campaigns.map((campaign: Campaign) => (
+            <div key={campaign._id} className="relative">
+              <PostDescription {...campaign} />
             </div>
           ))
         )}
