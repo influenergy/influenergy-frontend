@@ -161,7 +161,7 @@ export default function WhyWeDoIt() {
             Why We Do It
           </h2>
           <p className="text-gray-600 text-lg font-light">
-            Finding the right creator for your brand shouldnot be a hassle.
+            Finding the right creator for your brand should not be a hassle.
           </p>
 
           <div className="mt-6">
