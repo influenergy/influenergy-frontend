@@ -28,6 +28,8 @@ const editProfileSchema = yup.object({
     .matches(/^[A-Za-z\s]+$/, "Name should only contain letters and spaces")
     .min(2, "Name must be at least 2 characters")
     .required("Name is required"),
+  companyName:yup.string().min(3).required("Company Name is required"),
+  companyWebsite:yup.string().url().required("Company Website is required")
 });
 
 type FormData = yup.InferType<typeof editProfileSchema>;
@@ -71,9 +73,8 @@ export function EditBrandProfileModal({
     try {
       await userApi.updateBrandProfile(user._id, {
         fullName: data.fullName,
-        email,
-        companyName: company,
-        companyWebsite: website,
+        companyName: data.companyName,
+        companyWebsite: data.companyWebsite,
       });
 
       dispatch(
@@ -81,6 +82,8 @@ export function EditBrandProfileModal({
           user: {
             ...user,
             fullName: data.fullName,
+            companyName: data.companyName,
+            companyWebsite: data.companyWebsite,
             isProfileCompleted: user?.isProfileCompleted ?? false,
             isEmailVerified: user?.isEmailVerified ?? false,
           } as User,
@@ -106,6 +109,8 @@ export function EditBrandProfileModal({
   const handleCancel = () => {
     reset({
       fullName: user?.fullName || "",
+      companyName: user?.companyName || "",
+      companyWebsite: user?.companyWebsite || "",
     });
     onClose();
   };
@@ -151,9 +156,9 @@ export function EditBrandProfileModal({
               </label>
               <Input
                 id="company"
-                value={company}
+                {...register("companyName")}
+                placeholder="Enter your company name"
                 className="w-full text-gray-800"
-                disabled
               />
             </div>
           )}
@@ -164,9 +169,9 @@ export function EditBrandProfileModal({
               </label>
               <Input
                 id="website"
-                value={website}
+                {...register("companyWebsite")}
+                placeholder="Enter your company website"
                 className="w-full text-gray-800"
-                disabled
               />
             </div>
           )}

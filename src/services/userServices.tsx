@@ -93,7 +93,6 @@ export const userApi = {
     id: string,
     data: {
       fullName: string;
-      email: string;
       companyName: string;
       companyWebsite: string;
     }
