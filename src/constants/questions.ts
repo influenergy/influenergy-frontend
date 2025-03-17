@@ -11,7 +11,8 @@ export interface Field {
     | "text"
     | "multiselect"
     | "textarea"
-    | "file";
+    | "file"
+    | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
