@@ -74,7 +74,6 @@ export const postApi = {
   getCampaigns: async () => {
     try {
       const response = await api.get("/brand/get-campaigns");
-      console.log("response", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching campaigns:", error);
@@ -86,7 +85,7 @@ export const postApi = {
   getCampaignById: async (id: string) => {
     try {
       const response = await api.get(`/brand/campaign/${id}`);
-      return response.data.campaign;
+      return response.data;
     } catch (error) {
       console.error(`Error fetching campaign with ID ${id}:`, error);
       throw error;
