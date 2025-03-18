@@ -99,16 +99,16 @@ export default function Footer() {
         >
           {/* Quick Contact */}
           <motion.div
-            className="space-y-4 text-center md:text-left w-full flex flex-col items-center justify-start"
+            className="space-y-4 text-center md:text-left w-full flex flex-col items-center justify-start gap-4"
             variants={item}
           >
-            <h3 className="text-xl font-semibold">Quick Contact</h3>
-            <hr className="border border-white w-full" />
+            <h3 className="text-xl font-semibold ">Quick Contact</h3>
+            <div className="border h-0.5 bg-gray-400 w-full" />
             <p className="text-gray-300 font-light">
             W 13TH Part Suite 559, California
             </p>
-            <p className="text-gray-300 font-light">+ (408) 1386-9334</p>
-            <p className="text-gray-300 font-light">contact@influenergy.co</p>
+            <p className="text-gray-300 font-light">(408) 386-9334</p>
+            <p className="text-gray-300 font-light">connect@influenergy.co</p>
           </motion.div>
 
           {/* Company Info */}
@@ -196,7 +196,7 @@ export default function Footer() {
           viewport={{ once: true }}
         >
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Influenergy. All rights reserved.
+            © All Rights Reserved 2024. Influenergy LLC.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
