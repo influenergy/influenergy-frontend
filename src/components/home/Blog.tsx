@@ -17,28 +17,28 @@ export default function Blog() {
   const blogPosts: BlogPost[] = [
     {
       id: 1,
-      image: "/landing/blog/blog1.png",
+      image: "/landing/blog/newblog1.png",
       author: "John Doe",
-      date: "June 20, 2023",
-      title: "Bill Walsh leadership lessons",
+      date: "23 Nov 24",
+      title: "We caught up with the brilliant and insightful Sandeep Asdhir a few weeks ago and have shared our conversation below.",
       description:
         "Like to know the secrets of transforming a 2-14 team into a 3x Super Bowl winning Dynasty?",
     },
     {
       id: 2,
-      image: "/landing/blog/blog2.png",
+      image: "/landing/blog/newblog2.jpeg",
       author: "Sarah Johnson",
-      date: "July 15, 2023",
-      title: "PM mental models",
+      date: "25 Oct 2024",
+      title: "A Introduction To Influencer Marketing Part One",
       description:
         "Mental models are simple expressions of complex processes or relationships.",
     },
     {
       id: 3,
-      image: "/landing/blog/blog3.png",
+      image: "/landing/blog/newblog3.jpeg",
       author: "Michael Chen",
-      date: "August 5, 2023",
-      title: "What is Wireframing?",
+      date: "25 Oct 2024",
+      title: "How Influencers Can Help Market Brands?",
       description:
         "Introduction to Wireframing and its Principles. Learn from the best in the industry.",
     },
@@ -124,14 +124,14 @@ export default function Blog() {
                 <div className="p-6">
                   {/* Author and date */}
                   <div className="flex items-center text-primary text-sm mb-3">
-                    <span>{post.author}</span>
-                    <span className="mx-2">•</span>
+                    {/* <span>{post.author}</span> */}
+                    {/* <span className="mx-2">•</span> */}
                     <span>{post.date}</span>
                   </div>
 
                   {/* Blog title with arrow icon */}
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold pr-4">{post.title}</h3>
+                    <h3 className="text-xl font-bold pr-4">{post.title.slice(0,55)+"..."}</h3>
                     <MoveUpRight
                       size={16}
                       className="text-black mt-1 flex-shrink-0"
@@ -139,7 +139,7 @@ export default function Blog() {
                   </div>
 
                   {/* Blog description */}
-                  <p className="text-gray-600">{post.description}</p>
+                  {/* <p className="text-gray-600">{post.description}</p> */}
                 </div>
               </motion.div>
             </Link>
