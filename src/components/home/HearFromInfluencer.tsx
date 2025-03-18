@@ -291,9 +291,3 @@ export default function HearFromInfluencer() {
   );
 }
 
-/**
- ffmpeg -i 5.MOV ^
- -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" ^
- -profile:v baseline -level 3.1 -start_number 0 ^
- -b:v 1500k -b:a 128k -hls_time 2 -hls_list_size 0 -f hls output.m3u8
- */
