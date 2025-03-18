@@ -123,46 +123,9 @@ export default function GetStarted() {
                 className="relative object-contain"
                 priority
               />
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="absolute -left-16 top-48 -translate-x-1/2 transform rounded-full bg-white p-4 shadow-lg"
-              >
-                <div className="h-28 w-28 flex flex-col justify-center items-center gap-2">
-                  <Image
-                    src="/images/Home/icon2.png"
-                    alt="Trust"
-                    width={50}
-                    height={50}
-                  />
-                  <p className="text-sm text-center text-gray-600 font-catamaran-regular">
-                    100% Trusted Influencers
-                  </p>
-                </div>
-              </motion.div>
             </div>
 
             <div className="flex flex-col justify-around items-center h-full w-full ml-10">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-                className="h-36 w-36 flex flex-col justify-center items-center gap-2 border border-white rounded-full p-2.5"
-              >
-                <div className="bg-white p-2.5 rounded-full">
-                  <Image
-                    src="/images/Home/heart.png"
-                    alt="Trust"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-                <p className="text-sm text-center text-white font-catamaran-medium">
-                  99% Satisfied Users
-                </p>
-              </motion.div>
               <Image
                 src="/images/Home/image2.png"
                 alt="Influencer"
