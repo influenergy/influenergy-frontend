@@ -1,8 +1,8 @@
 import Image from "next/image";
-import React, { useState } from "react";
-import { PenLine } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import EditPostModal from "./EditPostModal";
+import React from "react";
+// import { PenLine } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+// import EditPostModal from "./EditPostModal";
 
 interface PostData {
   id: string;
@@ -49,11 +49,11 @@ interface PostDescriptionProps {
 }
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   return (
     <div className="bg-white rounded-lg p-6 space-y-4">
-      <div className="flex justify-end mb-4">
+      {/* <div className="flex justify-end mb-4">
         <Button
           onClick={() => setOpen(true)}
           className="flex items-center gap-2 text-primary bg-secondary hover:bg-primary/50"
@@ -62,7 +62,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           Edit
         </Button>
         <EditPostModal open={open} onOpenChange={setOpen} />
-      </div>
+      </div> */}
 
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-fit relative rounded-lg overflow-hidden ">
