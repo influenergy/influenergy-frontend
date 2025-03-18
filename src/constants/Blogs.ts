@@ -10,7 +10,7 @@ export const blogs = [
   },
   {
     image: "/landing/blog/newblog2.jpeg",
-    date: "25 Ovt 2024",
+    date: "25 Oct 2024",
     title: "A Introduction To Influencer Marketing Part One",
     // description:
     //   "In today’s digital landscape, connecting with influencers is a powerful strategy for brands looking to enhance their visibility and engagement. However, reaching out to influencers effectively requires a thoughtful approach that prioritizes personalization, relationship-building, and clear communication. At Influenergy, we’ve developed a unique method for connecting brands with global content creators. Here’s how you can do the same, along with insights into our process.",
