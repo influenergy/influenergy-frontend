@@ -35,6 +35,8 @@ const transformPostData = (formData: PostQuestionnaireData) => {
     noOfDaysForDelivery: formData["no-of-days-for-delivery"],
     additionalInstructions: formData["additional-instructions"] || "",
     campaignPost: formData["campaign-post"],
+    campaignConcept: formData["compaign-concept"],
+    yourBrief: formData["your-brief"],
   };
 
   // Append regular data - handle arrays properly
@@ -53,6 +55,9 @@ const transformPostData = (formData: PostQuestionnaireData) => {
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
     const transformedData = transformPostData(formData);
+
+    // console.log("postApi", transformedData);
+
     try {
       const response = await api.post("/brand/add-campaign", transformedData, {
         headers: {

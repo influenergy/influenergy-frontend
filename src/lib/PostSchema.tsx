@@ -4,10 +4,6 @@ import { PostQuestionnaireData } from "@/types/Questionnaire";
 type Schema = yup.ObjectSchema<Partial<PostQuestionnaireData>>;
 
 export const step1Schema = yup.object().shape({
-  "compaign-name": yup
-    .string()
-    .min(2, "Campaign name must be at least 2 characters")
-    .required("Campaign name is required"),
   "brand-name": yup
     .string()
     .min(2, "Brand name must be at least 2 characters")
@@ -29,7 +25,7 @@ export const step2Schema = yup.object().shape({
   "target-gender": yup
     .string()
     .oneOf(
-      ["Male", "Female", "Non-binary","Prefer not to say", "Others"],
+      ["Male", "Female", "Non-binary", "Prefer not to say", "Others"],
       "Please select a valid gender"
     )
     .required("Target gender is required"),
@@ -51,24 +47,21 @@ export const step2Schema = yup.object().shape({
 }) as Schema;
 
 export const step3Schema = yup.object().shape({
+  "compaign-name": yup
+    .string()
+    .min(2, "Campaign name must be at least 2 characters")
+    .required("Campaign name is required"),
+  "your-brief": yup.string().required("Your brief is required"),
+  "compaign-concept": yup.string().required("Campaign concept is required"),
+}) as Schema;
+
+export const step4Schema = yup.object().shape({
   "content-type": yup
     .string()
-    .oneOf(
-      [
-        "Reels",
-        "Blogs",
-        "Videos",
-        "Podcasts",
-        "Live Streams",
-        "Photos",
-        "Stories",
-      ],
-      "Please select a valid content type"
-    )
+    .oneOf(["Reels", "Long form videos"], "Please select a valid content type")
     .required("Content type is required"),
   "video-duration": yup.string().when("content-type", {
-    is: (val: string) =>
-      ["Reels", "Videos", "Live Streams", "Podcasts"].includes(val),
+    is: (val: string) => ["Reels", "Long form videos"].includes(val),
     then: (schema) =>
       schema
         .oneOf(
@@ -91,13 +84,19 @@ export const step3Schema = yup.object().shape({
   "creator-type": yup
     .string()
     .oneOf(
-      ["Small", "Celebrity", "Influencer", "UGC", "Professional", "Amateur"],
+      [
+        "Nano (<1,000 followers)",
+        "Micro (1,000 - 100,000 followers)",
+        "Mid-Tier (100,000 - 500,000 followers)",
+        "Macro (500,000 - 1,000,000 followers)",
+        "Mega/Celebrity (1,000,000+ followers)",
+      ],
       "Please select a valid creator type"
     )
     .required("Creator type is required"),
 }) as Schema;
 
-export const step4Schema = yup.object().shape({
+export const step5Schema = yup.object().shape({
   "minimum-followers": yup
     .string()
     .oneOf(
@@ -113,26 +112,16 @@ export const step4Schema = yup.object().shape({
     .required("Minimum followers is required"),
   "creator-influencer": yup
     .string()
-    .oneOf(["UGC Creator", "Influencer"], "Please select a valid option")
+    .oneOf(
+      ["UGC Creator", "Influencer", "Both"],
+      "Please select a valid option"
+    )
     .required("This field is required"),
   "social-media-platform": yup
-    .string()
-    .oneOf(
-      [
-        "Instagram",
-        "Facebook",
-        "Twitter",
-        "TikTok",
-        "Snapchat",
-        "YouTube",
-        "Pinterest",
-        "LinkedIn",
-        "Reddit",
-        "Tumblr",
-      ],
-      "Please select a valid platform"
-    )
-    .required("Social media platform is required"),
+    .array()
+    .of(yup.string())
+    .min(1, "Select at least one platform")
+    .required("Social Media Platform are required"),
   "past-experience": yup
     .string()
     .oneOf(["Yes", "No"], "Please select a valid option")
@@ -146,43 +135,37 @@ export const step4Schema = yup.object().shape({
     .string()
     .oneOf(
       [
-        "United States",
+        "Australia",
+        "Brazil",
         "Canada",
-        "Mexico",
+        "China",
         "France",
         "Germany",
-        "Japan",
-        "China",
         "India",
-        "Australia",
+        "Italy",
+        "Japan",
+        "Mexico",
+        "Netherlands",
+        "Russia",
+        "Saudi Arabia",
+        "South Korea",
+        "Spain",
+        "Sweden",
+        "Switzerland",
+        "Turkey",
+        "United Kingdom",
+        "United States",
       ],
       "Please select a valid country"
     )
     .required("Preferred creator demographics is required"),
 }) as Schema;
 
-export const step5Schema = yup.object().shape({
+export const step6Schema = yup.object().shape({
   "budget-for-campaign": yup.string().required("Budget is required"),
   "expected-deliverables": yup
     .string()
-    .oneOf(
-      [
-        "Videos",
-        "Blog Posts",
-        "Social Media Posts",
-        "Product Reviews",
-        "Live Streams",
-        "Podcasts",
-        "Interviews",
-        "Webinars",
-        "E-books",
-        "Case Studies",
-        "Infographics",
-        "Newsletters",
-        "Press Releases",
-      ],
-      "Please select a valid deliverable"
-    )
+    .oneOf(["Reels", "Long form videos"], "Please select a valid deliverable")
     .required("Expected deliverables is required"),
   "no-of-days-for-delivery": yup
     .string()
@@ -200,4 +183,5 @@ export const PostSchema = yup.object().shape({
   ...step3Schema.fields,
   ...step4Schema.fields,
   ...step5Schema.fields,
+  ...step6Schema.fields,
 }) as Schema;

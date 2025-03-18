@@ -71,7 +71,6 @@ export interface QuestionnaireData {
 
 export interface PostQuestionnaireData {
   // Step 1 - Basic Information
-  "compaign-name": string;
   "brand-name": string;
   "campaign-objective": string[];
   "campaign-description": string;
@@ -84,6 +83,11 @@ export interface PostQuestionnaireData {
   "target-location": string[];
   "target-interests": string[];
 
+  // Step 4 - Brief
+  "compaign-name":string;
+  "your-brief":string;
+  "compaign-concept":string;
+
   // Step 3 - Content Vibe
   "content-type": string;
   "video-duration"?: string;
@@ -95,7 +99,7 @@ export interface PostQuestionnaireData {
   // Step 4 - Ideal Creator Checklist
   "minimum-followers": string;
   "creator-influencer": string;
-  "social-media-platform": string;
+  "social-media-platform": string[];
   "past-experience": string;
   "preferred-creator-niche": string[];
   "preferred-creator-demographics": string;

@@ -13,6 +13,7 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
+  step6Schema
 } from "@/lib/PostSchema";
 import { Step } from "./PostSteps";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
@@ -42,6 +43,7 @@ const schemas: StepSchemas = {
   step3: step3Schema,
   step4: step4Schema,
   step5: step5Schema,
+  step6: step6Schema,
 };
 
 const PostQuestionnaire = (): JSX.Element => {

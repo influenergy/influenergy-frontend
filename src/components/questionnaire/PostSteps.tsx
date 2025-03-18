@@ -13,8 +13,10 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
+  step6Schema,
 } from "@/lib/PostSchema";
 import PrimaryNicheInput from "../ui/PrimaryNicheInput";
+import { Slider } from "../ui/slider";
 
 interface StepProps {
   fields: Field[];
@@ -29,6 +31,7 @@ export const isFieldRequired = (fieldName: string): boolean => {
       ...step3Schema.fields,
       ...step4Schema.fields,
       ...step5Schema.fields,
+      ...step6Schema.fields,
     };
 
     const field = combinedFields[fieldName as keyof typeof combinedFields] as
@@ -247,6 +250,48 @@ export const FormField = ({ field }: { field: Field }) => {
             : "border-gray-300 focus:ring-primary"
         } focus:outline-none focus:ring-2`}
       />
+    );
+  }
+
+  if (field.category === "range") {
+    const value = watch(fieldName) || 0;
+
+    return (
+      <div className="w-full">
+        <div className="flex flex-col space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-500">Min: $1</span>
+            <span className="text-sm text-gray-500">Max: $3000</span>
+          </div>
+
+          <Slider
+            value={[Number(value)]}
+            onValueChange={(values) => {
+              setValue(fieldName, `${values[0]}`, { shouldValidate: true });
+            }}
+            min={1}
+            max={3000}
+            step={1}
+            className="w-full"
+          />
+
+          <div className="h-6 relative">
+            <div
+              className="absolute px-2 py-1 bg-primary text-white rounded-md text-xs transform -translate-x-1/2"
+              style={{
+                left: `${((Number(value) - 1) / (3000 - 1)) * 100}%`,
+                top: "4px",
+              }}
+            >
+              ${Number(value).toLocaleString()}
+            </div>
+          </div>
+        </div>
+
+        {/* {error && (
+          <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
+        )} */}
+      </div>
     );
   }
 

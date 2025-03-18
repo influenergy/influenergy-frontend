@@ -9,7 +9,8 @@ export interface Field {
     | "email"
     | "text"
     | "multiselect"
-    | "file";
+    | "file"
+    | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
@@ -33,11 +34,6 @@ export const CREATE_POST: Questions = {
     description: "Give us the basics so we can match you better 🎯",
     fields: [
       {
-        title: "Compaign Name",
-        slug: "compaign-name",
-        category: "text",
-      },
-      {
         title: "Brand Name",
         slug: "brand-name",
         category: "text",
@@ -47,15 +43,15 @@ export const CREATE_POST: Questions = {
         slug: "campaign-objective",
         category: "multiselect",
         options: [
-          "Awareness",
-          "Engagement",
-          "Sales",
-          "Traffic",
-          "Leads",
-          "Sign-ups",
           "App Installs",
-          "Video Views",
+          "Awareness",
           "Conversions",
+          "Engagement",
+          "Leads",
+          "Sales",
+          "Sign-ups",
+          "Traffic",
+          "Video Views",
         ],
       },
       {
@@ -77,13 +73,13 @@ export const CREATE_POST: Questions = {
       " Tell us about your ideal audience. Help us connect you with the right people.🚀",
     fields: [
       {
-        title: "Target Age Group",
+        title: "Target Audience Age Group",
         slug: "target-age-group",
         category: "dropdown",
         options: ["<18", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
       },
       {
-        title: "Target Gender",
+        title: "Target Audience Gender",
         slug: "target-gender",
         category: "dropdown",
         options: [
@@ -95,34 +91,34 @@ export const CREATE_POST: Questions = {
         ],
       },
       {
-        title: "Target Location",
+        title: "Target Audience Location",
         slug: "target-location",
         category: "multiselect",
         options: [
-          "United States",
-          "Canada",
-          "Mexico",
-          "United Kingdom",
-          "France",
-          "Germany",
-          "Japan",
-          "China",
-          "India",
           "Australia",
           "Brazil",
-          "Russia",
+          "Canada",
+          "China",
+          "France",
+          "Germany",
+          "India",
           "Italy",
-          "Spain",
-          "South Korea",
+          "Japan",
+          "Mexico",
           "Netherlands",
-          "Turkey",
+          "Russia",
           "Saudi Arabia",
+          "South Korea",
+          "Spain",
           "Sweden",
           "Switzerland",
+          "Turkey",
+          "United Kingdom",
+          "United States",
         ],
       },
       {
-        title: "Target Interests & Niche",
+        title: "Target Audience Interests & Niche",
         slug: "target-interests",
         category: "multiselect",
         options: [
@@ -158,15 +154,39 @@ export const CREATE_POST: Questions = {
     ],
   },
   step3: {
+    title: "What's Your Brief",
+    icon: Users,
+    description:
+      "Tell us about your ideal audience. Help us connect you with the right people.🚀",
+    fields: [
+      {
+        title: "Compaign Name",
+        slug: "compaign-name",
+        category: "text",
+      },
+      {
+        title: "Write Your Brief",
+        slug: "your-brief",
+        category: "text",
+      },
+      {
+        title: "Compaign Concept",
+        slug: "compaign-concept",
+        category: "text",
+      },
+    ],
+  },
+
+  step4: {
     title: "What’s the Content Vibe?",
     icon: Share2,
     description: "From reels to blogs, what’s your flavor?. 🎥",
     fields: [
       {
-        title: "Content Type?",
+        title: "What's Your Content Type?",
         slug: "content-type",
         category: "dropdown",
-        options: ["Reels"],
+        options: ["Reels", "Long form videos"],
       },
       {
         title: "Duration Of Video?",
@@ -241,17 +261,16 @@ export const CREATE_POST: Questions = {
         slug: "creator-type",
         category: "dropdown",
         options: [
-          "Small",
-          "Celebrity",
-          "Influencer",
-          "UGC",
-          "Professional",
-          "Amateur",
+          "Nano (<1,000 followers)",
+          "Micro (1,000 - 100,000 followers)",
+          "Mid-Tier (100,000 - 500,000 followers)",
+          "Macro (500,000 - 1,000,000 followers)",
+          "Mega/Celebrity (1,000,000+ followers)",
         ],
       },
     ],
   },
-  step4: {
+  step5: {
     title: "Your Ideal Creator Checklist!",
     icon: ChartPie,
     description: "Define your ideal creator, and we’ll do the rest.📢",
@@ -272,23 +291,23 @@ export const CREATE_POST: Questions = {
         title: "UGC Creator or Influencer? ",
         slug: "creator-influencer",
         category: "dropdown",
-        options: ["UGC Creator", "Influencer"],
+        options: ["UGC Creator", "Influencer", "Both"],
       },
       {
         title: "Preferred Social Media Plaform",
         slug: "social-media-platform",
-        category: "dropdown",
+        category: "multiselect",
         options: [
-          "Instagram",
           "Facebook",
-          "Twitter",
-          "TikTok",
-          "Snapchat",
-          "YouTube",
-          "Pinterest",
+          "Instagram",
           "LinkedIn",
-          "Reddit",
-          "Tumblr",
+          "Newsletter",
+          "Pinterest",
+          "TikTok",
+          "Twitch",
+          "Twitter / X",
+          "Youtube",
+          "Youtube Reel",
         ],
       },
       {
@@ -332,35 +351,35 @@ export const CREATE_POST: Questions = {
         ],
       },
       {
-        title: "Preferred Creator Demographics ",
+        title: "Preferred country of the creator",
         slug: "preferred-creator-demographics",
         category: "dropdown",
         options: [
-          "United States",
-          "Canada",
-          "Mexico",
-          "United Kingdom",
-          "France",
-          "Germany",
-          "Japan",
-          "China",
-          "India",
           "Australia",
           "Brazil",
-          "Russia",
+          "Canada",
+          "China",
+          "France",
+          "Germany",
+          "India",
           "Italy",
-          "Spain",
-          "South Korea",
+          "Japan",
+          "Mexico",
           "Netherlands",
-          "Turkey",
+          "Russia",
           "Saudi Arabia",
+          "South Korea",
+          "Spain",
           "Sweden",
           "Switzerland",
+          "Turkey",
+          "United Kingdom",
+          "United States",
         ],
       },
     ],
   },
-  step5: {
+  step6: {
     title: "Compensation & Deliverables!",
     icon: Book,
     description:
@@ -369,27 +388,13 @@ export const CREATE_POST: Questions = {
       {
         title: "Budget for Campaign",
         slug: "budget-for-campaign",
-        category: "text",
+        category: "range",
       },
       {
         title: "Expected Deliverables ",
         slug: "expected-deliverables",
         category: "dropdown",
-        options: [
-          "Videos",
-          "Blog Posts",
-          "Social Media Posts",
-          "Product Reviews",
-          "Live Streams",
-          "Podcasts",
-          "Interviews",
-          "Webinars",
-          "E-books",
-          "Case Studies",
-          "Infographics",
-          "Newsletters",
-          "Press Releases",
-        ],
+        options: ["Reels", "Long form videos"],
       },
       {
         title: "No. Of Days for Delivery",
