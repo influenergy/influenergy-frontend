@@ -48,35 +48,33 @@ interface PostData {
 interface CampaignResponse {
   status: boolean;
   message: string;
-  data: {
-    _id: string;
-    campaignName: string;
-    campaignPost: string;
-    brandId: string;
-    brandName: string;
-    campaignObjective: string[];
-    campaignDescription: string;
-    targetAgeGroup: string;
-    targetGender: string;
-    targetLocation: string[];
-    targetInterests: string[];
-    contentType: string;
-    videoDuration: string;
-    catchPhrase: string;
-    keyMessage: string;
-    toneStyle: string;
-    creatorType: string;
-    minimumFollowers: string;
-    creatorInfluencer: string;
-    socialMediaPlatform: string;
-    pastExperience: string;
-    preferredCreatorNiche: string[];
-    preferredCreatorDemographics: string;
-    budgetForCampaign: string;
-    expectedDeliverables: string;
-    noOfDaysForDelivery: string;
-    additionalInstructions: string;
-  };
+  _id: string;
+  campaignName: string;
+  campaignPost: string;
+  brandId: string;
+  brandName: string;
+  campaignObjective: string[];
+  campaignDescription: string;
+  targetAgeGroup: string;
+  targetGender: string;
+  targetLocation: string[];
+  targetInterests: string[];
+  contentType: string;
+  videoDuration: string;
+  catchPhrase: string;
+  keyMessage: string;
+  toneStyle: string;
+  creatorType: string;
+  minimumFollowers: string;
+  creatorInfluencer: string;
+  socialMediaPlatform: string;
+  pastExperience: string;
+  preferredCreatorNiche: string[];
+  preferredCreatorDemographics: string;
+  budgetForCampaign: string;
+  expectedDeliverables: string;
+  noOfDaysForDelivery: string;
+  additionalInstructions: string;
 }
 
 interface PostDescriptionProps {
@@ -94,7 +92,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
     }
 
     // Otherwise, it's the campaign response, so map it
-    const campaignData = (data as CampaignResponse);
+    const campaignData = data as CampaignResponse;
 
     // Try to parse JSON strings
     const parseJsonArray = (jsonStr: string | string[]): string => {
