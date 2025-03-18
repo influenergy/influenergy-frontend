@@ -40,7 +40,7 @@ export default function WhoAreWe() {
         <div className="relative">
           <VideoPlayer
             ref={videoRef}
-            videoUrl="https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/2/output.m3u8"
+            videoUrl="https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/1/output.m3u8"
             muted={isMuted}
             isPlaying={isPlaying}
             onEnded={handleVideoEnd}
