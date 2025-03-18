@@ -29,9 +29,21 @@ export default function WeEmpowerBrand() {
               className="w-full object-contain"
             />
           </motion.div>
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-white p-4 text-center rounded-b-xl w-[350px] rounded-2xl shadow-lg">
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-white p-4 text-center rounded-b-xl w-[350px] rounded-2xl shadow-lg ">
             <h3 className="text-2xl font-bold text-gray-900">Sandeep Asdhir</h3>
             <p className="text-gray-600 mt-1">Founder, CEO</p>
+            <motion.div
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className=" w-fit absolute bottom-3 right-3 -translate-x-1/2 flex space-x-4"
+            >
+              <Link
+                href="https://www.linkedin.com/company/influenergy-marketing/"
+                className={`bg-primary w-fit text-white border border-primary hover:bg-white hover:text-primary  transition-colors p-1 rounded-full hover:scale-105 flex items-center justify-center`}
+              >
+                <Linkedin className="h-4 w-4" fill="#fff" />
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -54,18 +66,6 @@ export default function WeEmpowerBrand() {
             passionate entrepreneur with a knack for content creation, a keen
             eye for trends, and a sharp financial mind.
           </p>
-
-          <motion.div
-            whileHover={{ y: -5 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Link
-              href="https://www.linkedin.com/company/influenergy-marketing/"
-              className={`bg-primary w-fit text-white border border-primary hover:bg-white hover:text-primary  transition-colors p-2.5 rounded-full hover:scale-105 flex items-center justify-center`}
-            >
-              <Linkedin className="h-5 w-5" />
-            </Link>
-          </motion.div>
         </motion.div>
       </div>
     </div>
