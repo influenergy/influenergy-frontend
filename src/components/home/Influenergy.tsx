@@ -29,7 +29,7 @@ export default function InfluEnergySection() {
             />
           </motion.span>
           CONNECTS GLOBAL <br className="hidden md:block" />
-          CREATORS WITH BRANDS,{" "}
+          CREATORS WITH BRANDS{" "}
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
