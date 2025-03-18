@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { motion } from "framer-motion";
+import VideoPlayer from "./VideoPlayer";
 
 type Influencer = {
   name: string;
@@ -16,123 +17,102 @@ export default function HearFromInfluencer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
-  // const [duration, setDuration] = useState(0);
-  // const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  // const progressRef = useRef<HTMLDivElement>(null);
 
-  // Influencer data with video URLs
   const influencers: Influencer[] = [
     {
       name: "MIKE",
       role: "CONTENT CREATOR",
-      color: "#1B1F3B", // Deep Navy Blue for content creator (professional and creative)
+      color: "#1B1F3B",
       hasVideo: true,
-      videoUrl: "/landing/hearfromus/1.mov",
+      videoUrl:
+        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/1/output.m3u8",
     },
     {
       name: "SAMITE",
       role: "LIFESTYLE BLOGGER",
-      color: "#2F4858", // Rich Teal Blue for lifestyle (sophisticated yet modern)
+      color: "#2F4858",
       hasVideo: true,
-      videoUrl: "/landing/hearfromus/2.mov",
+      videoUrl:
+        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/2/output.m3u8",
     },
     {
       name: "KAITY",
       role: "FASHION CREATOR",
-      color: "#5C5470", // Elegant Deep Mauve for fashion (stylish and refined)
+      color: "#5C5470",
       hasVideo: true,
-      videoUrl: "/landing/hearfromus/3.mov",
+      videoUrl:
+        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/3/output.m3u8",
     },
     {
       name: "OAKES",
       role: "BEAUTY EXPERT",
-      color: "#4B0082", // Royal Indigo for beauty expert (luxurious and high-end)
+      color: "#4B0082",
       hasVideo: true,
-      videoUrl: "/landing/hearfromus/4.mov",
+      videoUrl:
+        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/4/output.m3u8",
     },
     {
-      name: "OAKES",
+      name: "OAKES1",
       role: "BEAUTY & FASHION",
-      color: "#1F3A93", // Rich Royal Blue for beauty & fashion (bold and sophisticated)
+      color: "#1F3A93",
       hasVideo: true,
-      videoUrl: "/landing/hearfromus/5.mov",
+      videoUrl:
+        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/5/output.m3u8",
     },
     {
-      name: "OAKES",
+      name: "OAKES2",
       role: "AI & TECH",
-      color: "#0B5345", // Deep Emerald Green for AI & Tech (futuristic and professional)
+      color: "#0B5345",
       hasVideo: true,
-      videoUrl: "/landing/hearfromus/6.mp4",
+      videoUrl:
+        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/6/output.m3u8",
     },
   ];
-  
 
-  // Reset video and playing state when active card changes
   useEffect(() => {
     setIsPlaying(false);
-    // setCurrentTime(0);
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
       videoRef.current.pause();
     }
   }, [activeCard]);
 
-  // Update current time while video is playing
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    // const updateProgress = () => {
-    //   setCurrentTime(video.currentTime);
-    //   setDuration(video.duration);
-    // };
-
-    // video.addEventListener("timeupdate", updateProgress);
-    // video.addEventListener("loadedmetadata", () => {
-    //   setDuration(video.duration);
-    // });
-
-    // return () => {
-    //   video.removeEventListener("timeupdate", updateProgress);
-    // };
   }, [activeCard]);
 
-  // Calculate height and scale based on distance from active card
   const getCardStyle = (index: number) => {
     const distance = Math.abs(index - activeCard);
 
     if (distance === 0) {
-      // Active card - largest
       return {
-        height: "h-[450px] md:h-[550px]", // Increased from h-96 md:h-[450px]
+        height: "h-[450px] md:h-[550px]",
         width: "w-72 md:w-96",
         zIndex: "z-30",
         opacity: "opacity-100",
         scale: "scale-100",
       };
     } else if (distance === 1) {
-      // First closest cards - tall but thinner
       return {
-        height: "h-96 md:h-[450px]", // Increased from h-80 md:h-96
+        height: "h-96 md:h-[450px]",
         width: "w-20 md:w-24",
         zIndex: "z-20",
         opacity: "opacity-90",
         scale: "scale-95",
       };
     } else if (distance === 2) {
-      // Furthest cards - shortest
       return {
-        height: "h-80 md:h-96", // Increased from h-64 md:h-80
+        height: "h-80 md:h-96",
         width: "w-16 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-70",
         scale: "scale-90",
       };
     } else if (distance == 3) {
-      // Furthest cards - shortest
       return {
-        height: "h-64 md:h-80", // Increased from h-56 md:h-64
+        height: "h-64 md:h-80",
         width: "w-16 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-70",
@@ -140,7 +120,7 @@ export default function HearFromInfluencer() {
       };
     } else if (distance == 4) {
       return {
-        height: "h-60 md:h-72", // Modified height for distance 4
+        height: "h-60 md:h-72",
         width: "w-16 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-60",
@@ -148,7 +128,7 @@ export default function HearFromInfluencer() {
       };
     } else {
       return {
-        height: "h-56 md:h-64", // Modified height for else condition
+        height: "h-56 md:h-64",
         width: "w-16 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-50",
@@ -179,37 +159,10 @@ export default function HearFromInfluencer() {
     setIsMuted(!isMuted);
   };
 
-  // const handleVideoProgress = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   const progressBar = progressRef.current;
-  //   const video = videoRef.current;
-
-  //   if (!progressBar || !video) return;
-
-  //   const rect = progressBar.getBoundingClientRect();
-  //   const clickPosition = e.clientX - rect.left;
-  //   const clickPercentage = clickPosition / rect.width;
-
-  //   const newTime = clickPercentage * video.duration;
-  //   video.currentTime = newTime;
-  //   setCurrentTime(newTime);
-  // };
-
-  // const formatTime = (seconds: number): string => {
-  //   const mins = Math.floor(seconds / 60);
-  //   const secs = Math.floor(seconds % 60);
-  //   return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-  // };
-
   const handleVideoEnd = () => {
     setIsPlaying(false);
-    // if (videoRef.current) {
-    //   videoRef.current.currentTime = 0;
-    //   setCurrentTime(0);
-    // }
   };
 
-  // Determine if controls should be visible
   const shouldShowControls = !isPlaying || isHovering;
 
   return (
@@ -249,17 +202,15 @@ export default function HearFromInfluencer() {
                 onMouseLeave={() => isActive && setIsHovering(false)}
                 whileHover={{ scale: isActive ? 1.03 : 1.05 }}
               >
-                {/* Background color or video */}
                 {isActive && influencer.hasVideo && influencer.videoUrl ? (
                   <div className="absolute inset-0 w-full h-full">
-                    <video
+                    <VideoPlayer
                       ref={videoRef}
-                      className="w-full h-full object-cover"
-                      src={influencer.videoUrl}
-                      onEnded={handleVideoEnd}
-                      playsInline
+                      videoUrl={influencer.videoUrl}
                       muted={isMuted}
-                      loop={false}
+                      isPlaying={isPlaying}
+                      onEnded={handleVideoEnd}
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 ) : (
@@ -267,21 +218,18 @@ export default function HearFromInfluencer() {
                     className="absolute inset-0 backdrop-blur-lg bg-opacity-40"
                     style={{
                       backgroundColor: influencer.color,
-                      boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Soft shadow
-                      border: "1px solid rgba(255, 255, 255, 0.3)", // Light border for glass effect
-                      backdropFilter: "blur(10px)", // Glass blur effect
-                      WebkitBackdropFilter: "blur(10px)", // Safari support
+                      boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
                     }}
                   />
                 )}
 
-                {/* Content */}
                 {isActive ? (
                   <div className="absolute inset-0 flex flex-col justify-end p-6 overflow-hidden">
-                    {/* Video controls with conditional visibility */}
                     {influencer.hasVideo && (
                       <>
-                        {/* Main play/pause button - visible only when not playing or on hover */}
                         <motion.div
                           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
                             shouldShowControls ? "opacity-100" : "opacity-0"
@@ -304,13 +252,11 @@ export default function HearFromInfluencer() {
                           </motion.button>
                         </motion.div>
 
-                        {/* Video controls bar - visible only when not playing or on hover */}
                         <div
                           className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3 transition-opacity duration-300 ${
                             shouldShowControls ? "opacity-100" : "opacity-0"
                           }`}
                         >
-                          {/* Time display and mute button */}
                           <div className="flex justify-between items-center">
                             <motion.button
                               className="p-2 text-white hover:bg-white/20 rounded-full"
@@ -344,3 +290,10 @@ export default function HearFromInfluencer() {
     </motion.div>
   );
 }
+
+/**
+ ffmpeg -i 5.MOV ^
+ -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" ^
+ -profile:v baseline -level 3.1 -start_number 0 ^
+ -b:v 1500k -b:a 128k -hls_time 2 -hls_list_size 0 -f hls output.m3u8
+ */
