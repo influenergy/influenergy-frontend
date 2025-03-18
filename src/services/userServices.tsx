@@ -37,10 +37,10 @@ const transformQuestionnaireData = (
     aboutYourself: formData["tell-us-about-yourself"],
     audienceInfo: {
       primaryAge: formData["primary-audience-age"],
-      primaryGender: formData["primary-audience-gender"] == "Others" ? formData["primary-audience-gender-other"] : "",
+      primaryGender: formData["primary-audience-gender"] == "Others" ? formData["primary-audience-gender-other"] : formData["primary-audience-gender"],
       primaryLocation: formData["primary-audience-location"],
       secondaryAge: formData["secondary-audience-age"],
-      secondaryGender: formData["secondary-audience-gender"] == "Others" ? formData["secondary-audience-gender-other"] : "",
+      secondaryGender: formData["secondary-audience-gender"] == "Others" ? formData["secondary-audience-gender-other"] : formData["secondary-audience-gender"],
       secondaryLocation: formData["secondary-audience-location"],
     },
 
@@ -110,6 +110,7 @@ export const userApi = {
     formData: CreatorQuestionnaireData
   ) => {
     const transformedData = transformQuestionnaireData(formData, id);
+    console.log('transformedData',transformedData)
     try {
       const response = await api.post(
         "/creator/add_profile_details",

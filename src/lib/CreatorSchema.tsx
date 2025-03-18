@@ -38,26 +38,26 @@ export const step2Schema = yup.object().shape({
     .string()
     .oneOf(
       [
-        "United States",
-        "Canada",
-        "Mexico",
-        "United Kingdom",
-        "France",
-        "Germany",
-        "Japan",
-        "China",
-        "India",
         "Australia",
         "Brazil",
-        "Russia",
+        "Canada",
+        "China",
+        "France",
+        "Germany",
+        "India",
         "Italy",
-        "Spain",
-        "South Korea",
+        "Japan",
+        "Mexico",
         "Netherlands",
-        "Turkey",
+        "Russia",
         "Saudi Arabia",
+        "South Korea",
+        "Spain",
         "Sweden",
         "Switzerland",
+        "Turkey",
+        "United Kingdom",
+        "United States",
       ],
       "Please select a valid country"
     )
@@ -120,26 +120,26 @@ export const step5Schema = yup.object().shape({
   "primary-audience-location": yup
     .string()
     .oneOf([
-      "United States",
-      "Canada",
-      "Mexico",
-      "United Kingdom",
-      "France",
-      "Germany",
-      "Japan",
-      "China",
-      "India",
       "Australia",
       "Brazil",
-      "Russia",
+      "Canada",
+      "China",
+      "France",
+      "Germany",
+      "India",
       "Italy",
-      "Spain",
-      "South Korea",
+      "Japan",
+      "Mexico",
       "Netherlands",
-      "Turkey",
+      "Russia",
       "Saudi Arabia",
+      "South Korea",
+      "Spain",
       "Sweden",
       "Switzerland",
+      "Turkey",
+      "United Kingdom",
+      "United States",
     ])
     .required("This field is required"),
   "primary-audience-gender": yup.string().required("This field is required"),
@@ -235,7 +235,7 @@ export const step7Schema = yup
       .required("This field is required"),
     "paid-campaigns": yup
       .string()
-      .oneOf(["Yes", "No","Gifted","Affiliate Marketing","Other"])
+      .oneOf(["Yes", "No", "Gifted", "Affiliate Marketing", "Other"])
       .required("This field is required"),
     "budget-video": yup.string().required("Compensation per video is required"),
   })

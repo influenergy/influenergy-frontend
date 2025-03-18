@@ -21,6 +21,7 @@ import {
   step7Schema,
 } from "@/lib/CreatorSchema";
 import PrimaryNicheInput from "../ui/PrimaryNicheInput";
+import { Slider } from "../ui/slider";
 // import { Input } from "@/components/ui/input";
 
 interface StepProps {
@@ -71,8 +72,6 @@ const isFieldRequired = (fieldName: string): boolean => {
     return false;
   }
 };
-
-
 
 const FormField = ({ field }: { field: Field }) => {
   const {
@@ -181,6 +180,47 @@ const FormField = ({ field }: { field: Field }) => {
   if (field.category === "date") {
     return <DateInput field={field} />;
   }
+  if (field.category === "range") {
+    const value = watch(fieldName) || 0;
+
+    return (
+      <div className="w-full">
+        <div className="flex flex-col space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-500">Min: $1</span>
+            <span className="text-sm text-gray-500">Max: $3000</span>
+          </div>
+
+          <Slider
+            value={[Number(value)]}
+            onValueChange={(values) => {
+              setValue(fieldName, `${values[0]}`, { shouldValidate: true });
+            }}
+            min={1}
+            max={3000}
+            step={1}
+            className="w-full"
+          />
+
+          <div className="h-6 relative">
+            <div
+              className="absolute px-2 py-1 bg-primary text-white rounded-md text-xs transform -translate-x-[10%]"
+              style={{
+                left: `${((Number(value) - 1) / (3000 - 1)) * 100}%`,
+                top: "4px",
+              }}
+            >
+              ${Number(value).toLocaleString()}
+            </div>
+          </div>
+        </div>
+
+        {/* {error && (
+          <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
+        )} */}
+      </div>
+    );
+  }
 
   return (
     <input
@@ -211,7 +251,6 @@ const StepComponent = ({ fields }: StepProps) => {
         const primaryAudience = fieldName.startsWith("primary-audience");
         const secondaryAudience = fieldName.startsWith("secondary-audience");
 
-
         // Skip certain fields that are handled within other components
         if (
           fieldName === "primary-social-media-link" ||
@@ -221,7 +260,7 @@ const StepComponent = ({ fields }: StepProps) => {
         ) {
           return null;
         }
- 
+
         // Special handling for social media fields
         if (
           fieldName === "primary-social-media" ||
