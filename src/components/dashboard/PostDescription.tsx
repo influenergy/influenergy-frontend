@@ -1,3 +1,4 @@
+import { CampaignResponse, PostData, PostDescriptionProps } from "@/types/PostTypes";
 import Image from "next/image";
 import React from "react";
 // import { PenLine } from "lucide-react";

@@ -2,7 +2,7 @@
 
 import React from "react";
 import CardSkeleton from "@/components/common/CardSkeleton";
-import PostDescription from "@/components/dashboard/Post";
+import Post from "@/components/dashboard/Post";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useCampaigns } from "@/hooks/useQueryCampaigns";
@@ -43,7 +43,7 @@ const Page = () => {
         ) : (
           campaigns.map((campaign: Campaign) => (
             <div key={campaign._id} className="relative">
-              <PostDescription {...campaign} />
+              <Post {...campaign} />
             </div>
           ))
         )}

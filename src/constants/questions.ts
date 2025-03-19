@@ -580,7 +580,7 @@ export const CREATOR_QUESTIONS: Questions = {
         slug: "top-two-audiences",
         category: "multiselect",
         options: ["< 18", "18-24", "25-34", "35-44", "45-54", "55+"],
-        placeholder: "Select top two age brackets",
+        placeholder: "Select top age brackets",
       },
       {
         title: "What are the average views of your last 8 videos?",

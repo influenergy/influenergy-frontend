@@ -1,19 +1,12 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { navLinks } from "@/constants/NavLinks";
 import Image from "next/image";
 import { selectUser, useAppSelector } from "@/store";
 import { LucideIcon } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface NavItem {
@@ -37,7 +30,6 @@ export default function Sidebar({ type }: { type: string }) {
   const user = useAppSelector((state) => state.auth.userType);
   const userProfile = useAppSelector(selectUser);
   const pathname = usePathname();
-  const [openItem, setOpenItem] = useState<string | null>(null);
 
   if (!user) return null;
   const navItems = (navLinks as NavLinks)[user][type];

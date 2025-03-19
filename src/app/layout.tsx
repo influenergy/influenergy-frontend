@@ -29,15 +29,14 @@ const catamaran = localFont({
   src: [
     {
       path: "../../public/fonts/Catamaran-Regular.ttf",
-      weight: "400", 
+      weight: "400",
       style: "normal",
     },
     {
       path: "../../public/fonts/Catamaran-Medium.ttf",
-      weight: "500", 
+      weight: "500",
       style: "normal",
-    }
-    
+    },
   ],
   variable: "--font-catamaran",
   display: "swap",
@@ -45,7 +44,8 @@ const catamaran = localFont({
 
 export const metadata: Metadata = {
   title: "Influenergy",
-  description: "Influenergy is a platform for influencers to connect with brands and monetize their content. We help influencers to grow their audience and make money.",
+  description:
+    "Influenergy is a platform for influencers to connect with brands and monetize their content. We help influencers to grow their audience and make money.",
 };
 
 export default function RootLayout({

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Campaign } from "@/types/PostQuestionnaire";
 
 const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
-
   return (
     <Link href={`/dashboard/brand/posts/${encodeURIComponent(_id)}`}>
       <div className="w-[300px] rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2 ">

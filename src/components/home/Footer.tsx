@@ -107,7 +107,7 @@ export default function Footer() {
             <p className="text-gray-300 font-light">
             W 13TH Part Suite 559, California
             </p>
-            <p className="text-gray-300 font-light">(408) 386-9334</p>
+            <p className="text-gray-300 font-light">+1 (408) 386-9334</p>
             <p className="text-gray-300 font-light">connect@influenergy.co</p>
           </motion.div>
 

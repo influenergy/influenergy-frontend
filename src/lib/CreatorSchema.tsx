@@ -188,7 +188,7 @@ export const step6Schema = yup.object().shape({
   "primary-locations": yup
     .array()
     .of(yup.string())
-    .min(3, "Select three location")
+    .min(1, "Select at least one location")
     .max(3, "Cannot select more than three locations")
     .required("Primary locations are required"),
   "us-based-audience": yup
@@ -215,8 +215,7 @@ export const step7Schema = yup
     "top-two-audiences": yup
       .array()
       .of(yup.string())
-      .min(2, "Select at least two age brackets")
-      .max(2, "Select only two age brackets")
+      .min(1, "Select at least one age brackets")
       .required("Age bracket is required"),
     "average-views": yup
       .string()
