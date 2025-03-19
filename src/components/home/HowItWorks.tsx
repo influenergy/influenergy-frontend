@@ -130,105 +130,19 @@ export default function HowItWorks() {
         transition={{ duration: 0.7, delay: 0.3 }}
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div className="flex justify-center md:justify-end gap-10">
-          <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
-            initial={{
-              rotate: 6,
-            }}
-            whileHover={{
-              y: -10,
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
-              <Image
-                src="/landing/howitworks/brand1.webp"
-                alt="Nike"
-                fill
-                className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 40vw, 160px"
-              />
-            </div>
-            <p className="font-medium text-base text-gray-800 mt-3 ml-1 truncate">
-              Nike
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
-            initial={{
-              rotate: 6,
-              boxShadow: "-15px -15px 0px rgba(213, 213, 250)",
-            }}
-            whileHover={{
-              y: -10,
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
-              <Image
-                src="/landing/howitworks/brand2.webp"
-                alt="Louis Vuitton"
-                fill
-                className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 40vw, 160px"
-              />
-            </div>
-            <p className="font-medium text-base text-gray-800 mt-3 ml-1 truncate">
-              Louis Vuitton
-            </p>
-          </motion.div>
-        </div>
-
         <div className="flex justify-center md:justify-end gap-6 mt-4">
           <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
-            initial={{
-              rotate: 6,
-              boxShadow: "-15px -15px 0px rgba(213, 213, 250)",
-            }}
-            whileHover={{
-              y: -10,
-            }}
+            className="bg-white rounded-xl"
             transition={{ duration: 0.3 }}
           >
-            <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
+            <div className="relative w-full overflow-hidden rounded-lg">
               <Image
-                src="/landing/howitworks/brand3.webp"
-                alt="Samsung"
-                fill
-                className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 40vw, 160px"
-              />
-            </div>
-            <p className="font-medium text-base text-gray-800 mt-3 ml-1 truncate">
-              Samsung
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="bg-white rounded-xl rotate-6 shadow-md p-3 relative w-[45%] md:w-[40%] max-w-[200px] border"
-            initial={{
-              rotate: 6,
-            }}
-            whileHover={{
-              y: -10,
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="aspect-[3/4] relative w-full overflow-hidden rounded-lg">
-              <Image
-                src="/landing/howitworks/brand4.webp"
+                src="/landing/howitworks/updateImage.png"
                 alt="L'Oreal Paris"
-                fill
-                className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 40vw, 160px"
+                height={550}
+                width={550}
               />
             </div>
-            <p className="font-medium text-base text-gray-800 mt-3 ml-1 truncate">
-              LOreal Paris
-            </p>
           </motion.div>
         </div>
       </motion.div>
