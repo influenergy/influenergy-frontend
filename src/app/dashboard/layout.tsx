@@ -14,11 +14,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen overflow-hidden">
       <Sidebar type="dashboard" />
       <main className="ml-16 md:ml-[240px] w-full">
         <Header />
-        <div className="p-2">{children}</div>
+        <div className="">{children}</div>
       </main>
     </div>
   );
