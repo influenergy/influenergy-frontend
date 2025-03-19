@@ -21,6 +21,8 @@ interface EditProfileModalProps {
 
 export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
   const user = useAppSelector(selectUser);
+  const userType = useAppSelector((state) => state.auth.userType);
+
   const [name, setName] = useState(user?.fullName || "");
   const [email, setEmail] = useState(user?.email || "test");
   const [isLoading, setIsLoading] = useState(false);
@@ -64,13 +66,19 @@ export function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
     if (!validateName(name)) {
       return;
     }
+    if (!userType) {
+      return;
+    }
 
     setIsLoading(true);
 
     try {
-      await userApi.updateProfile({
-        fullName: name,
-      });
+      await userApi.updateProfile(
+        {
+          fullName: name,
+        },
+        userType
+      );
 
       dispatch(
         setCredentials({
