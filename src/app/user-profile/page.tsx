@@ -54,8 +54,11 @@ export default function Page() {
       setIsUploading(true);
       const formData = new FormData();
       formData.append("photo", file);
+      if (!userType) {
+        return;
+      }
 
-      const response = await userApi.updateProfile(formData);
+      const response = await userApi.updateProfile(formData, userType);
       // console.log("response", response);
       // Update Redux state with new image URL
       dispatch(
