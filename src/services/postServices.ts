@@ -91,4 +91,55 @@ export const postApi = {
       throw error;
     }
   },
+  getActiveCollaboration: async (id: string) => {
+    try {
+      const response = await api.get(`/brand/active-collaboration/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching campaigns:", error);
+      throw error;
+    }
+  },
+  getPendingCollaboration: async (id: string) => {
+    try {
+      const response = await api.get(`/brand/pending-collaboration/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching campaigns:", error);
+      throw error;
+    }
+  },
+  getCompletedCollaboration: async (id: string) => {
+    try {
+      const response = await api.get(`/brand/completed-collaboration/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching campaigns:", error);
+      throw error;
+    }
+  },
+  findAIMatch: async (vectorId: string) => {
+    try {
+      const response = await api.get(`/brand/ai-find/${vectorId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching campaigns:", error);
+      throw error;
+    }
+  },
+  profileCardDetails: async (id: string) => {
+    try {
+      const response = await api.get(`/creator/details/${id}`);
+
+      // Check if data exists and has the expected structure
+      if (!response.data || !response.data.data) {
+        throw new Error("Invalid response format from API");
+      }
+
+      return response.data.data;
+    } catch (error) {
+      console.error("Error fetching creator details:", error);
+      throw error;
+    }
+  },
 };
