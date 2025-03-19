@@ -4,6 +4,8 @@ import { useToast } from "@/hooks/use-toast";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+// import { setCredentials, User } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +15,6 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
-  step6Schema
 } from "@/lib/PostSchema";
 import { Step } from "./PostSteps";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
@@ -23,15 +24,6 @@ import { selectUser, useAppSelector } from "@/store";
 import { MoveLeft, MoveRight } from "lucide-react";
 import PostReviewStep from "./PostReviewStep";
 import { postApi } from "@/services/postServices";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import Image from "next/image";
 
 type StepSchemas = {
   [key in keyof typeof questions]: AnyObjectSchema;
@@ -43,7 +35,6 @@ const schemas: StepSchemas = {
   step3: step3Schema,
   step4: step4Schema,
   step5: step5Schema,
-  step6: step6Schema,
 };
 
 const PostQuestionnaire = (): JSX.Element => {
@@ -51,8 +42,8 @@ const PostQuestionnaire = (): JSX.Element => {
     keyof typeof questions | "review"
   >("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { toast } = useToast();
+  const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
@@ -123,11 +114,29 @@ const PostQuestionnaire = (): JSX.Element => {
       } else if (currentStep !== "review") {
         setCurrentStep(steps[currentStepIndex + 1]);
       } else {
-        // Instead of immediately submitting, show the confirmation dialog
-        setShowConfirmDialog(true);
+        setIsSubmitting(true);
+
+        if (user && user._id) {
+          // Use the transformed data directly without FormData
+          await postApi.createAdPost(
+            updatedData as PostQuestionnaireData
+          );
+
+          toast({
+            title: "Success!",
+            description: "Your campaign has been created successfully.",
+          });
+          router.push("/dashboard/brand/posts");
+        } else {
+          toast({
+            title: "Please login first",
+            description: "You need to be logged in to create a campaign.",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
-      console.error("Form validation error:", error);
+      console.error("Form validation/submission error:", error);
       if (error instanceof Error) {
         toast({
           variant: "destructive",
@@ -138,55 +147,22 @@ const PostQuestionnaire = (): JSX.Element => {
             "Please check all required fields.",
         });
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }, [
     currentFields,
     formData,
     currentStepIndex,
     steps,
+    router,
     toast,
     trigger,
     getValues,
+    dispatch,
     currentStep,
+    user,
   ]);
-
-  const handleSubmitForm = async () => {
-    try {
-      setIsSubmitting(true);
-
-      if (user && user._id) {
-        // Use the transformed data directly without FormData
-        await postApi.createAdPost(formData as PostQuestionnaireData);
-
-        toast({
-          title: "Success!",
-          description: "Your campaign has been created successfully.",
-        });
-        router.push("/dashboard/brand/posts");
-      } else {
-        toast({
-          title: "Please login first",
-          description: "You need to be logged in to create a campaign.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Form submission error:", error);
-      if (error instanceof Error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description:
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (error as any).response?.data?.message ||
-            "Failed to create campaign. Please try again.",
-        });
-      }
-    } finally {
-      setIsSubmitting(false);
-      setShowConfirmDialog(false);
-    }
-  };
 
   const handlePrevious = useCallback(() => {
     if (currentStepIndex > 0) {
@@ -200,44 +176,6 @@ const PostQuestionnaire = (): JSX.Element => {
 
   return (
     <>
-      {/* Confirmation Dialog */}
-      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent className="w-[350px]">
-          <DialogHeader className="flex items-center justify-center">
-            <DialogTitle className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
-              <Image
-                src="/images/createpost/icon.png"
-                width={50}
-                height={50}
-                alt="logo"
-              />
-            </DialogTitle>
-            <DialogDescription className="text-lg text-black text-center">
-              Once all details are submitted, edits will no longer be possible.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex flex-row justify-end gap-3 sm:justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowConfirmDialog(false)}
-              disabled={isSubmitting}
-              className="border border-primary text-primary px-5 "
-            >
-              No
-            </Button>
-            <Button
-              type="button"
-              onClick={handleSubmitForm}
-              disabled={isSubmitting}
-              className="bg-primary px-5"
-            >
-              {isSubmitting ? "Creating Campaign..." : "Yes"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       {currentStep === "review" ? (
         <div className="flex flex-col w-full">
           <FormProvider {...methods}>
@@ -249,7 +187,7 @@ const PostQuestionnaire = (): JSX.Element => {
               <Button
                 variant="outline"
                 onClick={() => setCurrentStep(steps[steps.length - 1])}
-                className="p-6 rounded-lg border-primary text-primary"
+                className="p-6  rounded-lg border-primary text-primary"
                 type="button"
                 disabled={isSubmitting}
               >
@@ -257,8 +195,8 @@ const PostQuestionnaire = (): JSX.Element => {
               </Button>
 
               <Button
-                className="ml-auto p-6 bg-primary text-white rounded-lg"
-                type="button" // Changed to type="button" since we handle submission through dialog
+                className="ml-auto p-6   bg-primary text-white rounded-lg"
+                type="submit"
                 disabled={isSubmitting}
                 onClick={handleSubmit(handleNext)}
               >
@@ -275,10 +213,11 @@ const PostQuestionnaire = (): JSX.Element => {
           >
             <div className="mb-8 flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2">
-                {questions[currentStep].title}
+                Lets Create Your Profile
               </h2>
               <p className="text-gray-600">
-                {questions[currentStep].description}
+                In order to match you with the right brands, we need a few more
+                details
               </p>
               <div className="mt-4 text-sm text-gray-500">
                 Step {currentStepIndex + 1} of {steps.length}
@@ -300,7 +239,7 @@ const PostQuestionnaire = (): JSX.Element => {
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
-                  className="p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
+                  className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
                   type="button"
                 >
                   <MoveLeft size={20} />
@@ -309,7 +248,7 @@ const PostQuestionnaire = (): JSX.Element => {
               ) : (
                 <Button
                   variant="outline"
-                  className="p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
+                  className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
                   type="button"
                   onClick={() => router.push("/dashboard")}
                 >
@@ -317,14 +256,14 @@ const PostQuestionnaire = (): JSX.Element => {
                 </Button>
               )}
               <Button
-                className="p-6 bg-primary text-lg rounded-lg flex items-center justify-center gap-2"
+                className="p-6  bg-primary text-lg  rounded-lg flex items-center justify-center gap-2"
                 type="submit"
                 disabled={isSubmitting}
               >
                 {isLastStep
                   ? isSubmitting
                     ? "Submitting..."
-                    : "Next"
+                    : "Submit"
                   : "Next"}
                 <MoveRight size={20} />
               </Button>

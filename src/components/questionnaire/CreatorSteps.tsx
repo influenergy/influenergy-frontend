@@ -214,10 +214,6 @@ const FormField = ({ field }: { field: Field }) => {
             </div>
           </div>
         </div>
-
-        {/* {error && (
-          <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
-        )} */}
       </div>
     );
   }
@@ -381,5 +377,3 @@ const DateInput = ({ field }: { field: Field }) => {
     </div>
   );
 };
-
-export default DateInput;
