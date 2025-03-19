@@ -29,18 +29,25 @@ const transformQuestionnaireData = (
     type: formData["are-you-ugc-creator"] === "UGC" ? "UGC" : "Creator",
     dob: formData.dob,
     gender: gender,
-    city: formData.country, // Using country as city for now
-    languages: formData.language || ["English"], // Use selected languages or default
+    city: formData.country, 
+    languages: formData.language || ["English"],
     category: primaryNicheRaw,
-
-    // New fields from step 3
+    
     aboutYourself: formData["tell-us-about-yourself"],
     audienceInfo: {
+      primaryPercentage:formData["primary-audience-percentage"] || "",
       primaryAge: formData["primary-audience-age"],
-      primaryGender: formData["primary-audience-gender"] == "Others" ? formData["primary-audience-gender-other"] : formData["primary-audience-gender"],
+      primaryGender:
+        formData["primary-audience-gender"] == "Others"
+          ? formData["primary-audience-gender-other"]
+          : formData["primary-audience-gender"],
       primaryLocation: formData["primary-audience-location"],
+      secondaryPercentage:formData["secondary-audience-percentage"],
       secondaryAge: formData["secondary-audience-age"],
-      secondaryGender: formData["secondary-audience-gender"] == "Others" ? formData["secondary-audience-gender-other"] : formData["secondary-audience-gender"],
+      secondaryGender:
+        formData["secondary-audience-gender"] == "Others"
+          ? formData["secondary-audience-gender-other"]
+          : formData["secondary-audience-gender"],
       secondaryLocation: formData["secondary-audience-location"],
     },
 
@@ -68,7 +75,7 @@ const transformQuestionnaireData = (
     averageView: formData["average-views"],
     favouriteBrands: formData["favourite-brands"],
     workedWithAIConsumerApps: formData["worked-with-ai"] === "Yes",
-    hasPaidCampaignExperience: formData["paid-campaigns"] === "Yes", // Updated to match new field format
+    hasPaidCampaignExperience: formData["paid-campaigns"] === "Yes",
     budgetVideo: formData["budget-video"],
   };
 
@@ -80,9 +87,12 @@ export const userApi = {
     const response = await api.get(`/creator/details/${id}`);
     return response.data;
   },
-  updateProfile: async (data: UpdateProfileData | FormData) => {
+  updateProfile: async (
+    data: UpdateProfileData | FormData,
+    userType: string
+  ) => {
     const isFormData = data instanceof FormData;
-    const response = await api.put(`/creator/update`, data, {
+    const response = await api.put(`/${userType}/update`, data, {
       headers: {
         "Content-Type": isFormData ? "multipart/form-data" : "application/json",
       },
@@ -110,7 +120,7 @@ export const userApi = {
     formData: CreatorQuestionnaireData
   ) => {
     const transformedData = transformQuestionnaireData(formData, id);
-    console.log('transformedData',transformedData)
+    // console.log("transformedData", transformedData);
     try {
       const response = await api.post(
         "/creator/add_profile_details",
