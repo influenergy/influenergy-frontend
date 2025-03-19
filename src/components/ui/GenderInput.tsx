@@ -18,7 +18,8 @@ const GenderInput = ({ field }: { field: Field }) => {
     `${fieldName}-other` as keyof CreatorQuestionnaireData;
   const otherGenderError = errors[otherGenderFieldName];
 
-  const selectedGender = watch(fieldName); // Watch selected gender
+  const selectedGender = watch(fieldName);
+  
 
   return (
     <div>

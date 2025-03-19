@@ -9,7 +9,6 @@ const Page = () => {
   const { postId } = useParams();
   const { data: campaign, isLoading, error } = useCampaign(postId as string);
 
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -30,7 +29,6 @@ const Page = () => {
   if (!campaign) {
     return <div>Campaign not found</div>;
   }
-
 
   return <PostDescription {...campaign} />;
 };
