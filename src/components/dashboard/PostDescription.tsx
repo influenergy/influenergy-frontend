@@ -206,7 +206,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                     className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
                   />
                 </div>
-                Your Ideal Creator Checklist
+                Ideal Creator Checklist
               </h4>
               <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                 <div>
