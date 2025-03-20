@@ -56,8 +56,6 @@ export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
     const transformedData = transformPostData(formData);
 
-    // console.log("postApi", transformedData);
-
     try {
       const response = await api.post("/brand/add-campaign", transformedData, {
         headers: {
@@ -139,6 +137,28 @@ export const postApi = {
       return response.data.data;
     } catch (error) {
       console.error("Error fetching creator details:", error);
+      throw error;
+    }
+  },
+  getVideoPost: async () => {
+    try {
+      const response = await api.get(`/creator/social-videos`);
+      return response.data.data;
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      throw error;
+    }
+  },
+  uploadVideoPost: async (data: FormData) => {
+    try {
+      const response = await api.post(`/creator/add_social_video`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading post:", error);
       throw error;
     }
   },
