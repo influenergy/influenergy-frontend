@@ -266,8 +266,8 @@ export const FormField = ({ field }: { field: Field }) => {
 
           <Slider
             value={[Number(value)]}
-            onValueChange={(values) => {
-              setValue(fieldName, `${values[0]}`, { shouldValidate: true });
+            onValueChange={([value]) => {
+              setValue(fieldName, value.toString(), { shouldValidate: true });
             }}
             min={1}
             max={3000}

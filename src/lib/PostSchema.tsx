@@ -185,3 +185,4 @@ export const PostSchema = yup.object().shape({
   ...step5Schema.fields,
   ...step6Schema.fields,
 }) as Schema;
+ 
