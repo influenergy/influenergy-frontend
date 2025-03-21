@@ -6,6 +6,7 @@ import CardSkeleton from "@/components/common/CardSkeleton";
 import PostCard from "@/components/common/PostCard";
 import UploadVideoModal from "@/components/dashboard/UploadVideoModal";
 import Image from "next/image";
+import { selectUser, useAppSelector } from "@/store";
 
 interface VideoData {
   _id: string;
@@ -20,6 +21,7 @@ interface VideoData {
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: posts, isLoading, isError, refetch } = useGetPost();
+  const user = useAppSelector(selectUser);
 
   if (isLoading) {
     return (
@@ -31,7 +33,20 @@ const Page = () => {
     );
   }
   if (isError) {
-    return <div>Error fetching data</div>;
+    return (
+      <div className="w-full flex flex-col items-center justify-center h-full gap-5">
+        <Image
+          src="/images/MyPost/error.png"
+          width={400}
+          height={400}
+          alt="Error"
+          className="object-cover"
+        />
+        <p className="text-4xl font-semibold text-center mt-4">
+          Something went wrong while fetching data
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -49,12 +64,25 @@ const Page = () => {
             Welcome to Brief section <br /> Here you can create brief for your
             campaign
           </p>
-          <Button
-            className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
-            onClick={() => setIsOpen(true)}
-          >
-            + Create brief
-          </Button>
+          {user?.isAccountVerified ? (
+            <Button
+              className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
+              onClick={() => setIsOpen(true)}
+            >
+              + Create brief
+            </Button>
+          ) : (
+            <p className="text-lg font-medium text-destructive">
+              You account is not verified yet. Please verify your account to
+              start creating briefs.
+            </p>
+          )}
+
+          <UploadVideoModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            onSuccess={() => refetch()}
+          />
         </div>
       ) : (
         <>
