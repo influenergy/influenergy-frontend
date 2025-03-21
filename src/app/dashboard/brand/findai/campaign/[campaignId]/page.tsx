@@ -8,7 +8,6 @@ import { Loader2 } from "lucide-react";
 import { CreatorAPIResponse } from "@/types/Creator";
 import { useParams } from "next/navigation";
 
-
 export default function ProfileMatch() {
   const { campaignId } = useParams();
   const {
@@ -17,7 +16,6 @@ export default function ProfileMatch() {
     isError,
   } = useFindAiCampaign(campaignId as string);
   const creators: CreatorAPIResponse[] = creatorsData?.data || [];
-  console.log("creatorsData", creators);
 
   if (isLoading) {
     return (
@@ -64,7 +62,6 @@ export default function ProfileMatch() {
             />
             <div className="p-4">
               <div className="flex items-start justify-between mb-2">
-
                 <div className="flex flex-col justify-start items-start  w-full">
                   <p className="text-lg font-semibold flex items-center gap-3">
                     {data?.creator?.fullName}{" "}
@@ -82,12 +79,14 @@ export default function ProfileMatch() {
                   <p>Followers</p>
                 </div>
               </div>
-              <div className="h-0.5 bg-gray-200 w-full"/>
+              <div className="h-0.5 bg-gray-200 w-full" />
               <div className="flex items-center mt-2 space-x-4">
                 {data?.creator?.profile?.socialLinks?.primary?.platform && (
                   <Link
                     className="text-xs text-primary"
-                    href={data?.creator?.profile?.socialLinks?.primary?.link || "#"}
+                    href={
+                      data?.creator?.profile?.socialLinks?.primary?.link || "#"
+                    }
                   >
                     {data?.creator?.profile?.socialLinks?.primary?.platform}
                   </Link>
@@ -95,7 +94,10 @@ export default function ProfileMatch() {
                 {data?.creator?.profile?.socialLinks?.secondary?.platform && (
                   <Link
                     className="text-xs text-primary"
-                    href={data?.creator?.profile?.socialLinks?.secondary?.link || '#'}
+                    href={
+                      data?.creator?.profile?.socialLinks?.secondary?.link ||
+                      "#"
+                    }
                   >
                     {data?.creator?.profile?.socialLinks?.secondary?.platform}
                   </Link>
@@ -104,11 +106,14 @@ export default function ProfileMatch() {
               <div className="mt-4 flex justify-between items-center">
                 <p className="text-sm text-gray-700">Price Per Video</p>
                 <p className="text-lg font-bold">
-                 $ {data?.creator.profile?.budgetVideo}
+                  $ {data?.creator.profile?.budgetVideo}
                 </p>
               </div>
+
               <Link
-                href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${data.creatorId}`}
+                href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${
+                  data.creatorId
+                }?similarity=${(data.similarity * 100).toFixed(2) || 10}`}
               >
                 <Button
                   variant="outline"

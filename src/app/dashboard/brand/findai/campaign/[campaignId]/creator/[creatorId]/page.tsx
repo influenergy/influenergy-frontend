@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCampaignProfileDetails } from "@/hooks/useFindAi";
+import MatchReason from "@/components/creator/MatchReason";
 
 // interface Creator {
 //   id: string;
@@ -52,6 +53,8 @@ const CreatorDetailsPage = () => {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [failedModalOpen, setFailedModalOpen] = useState(false);
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const similarity = searchParams.get('similarity');
   // Use React Query hook to fetch creator data
   const {
     data: creator,
@@ -163,9 +166,10 @@ const CreatorDetailsPage = () => {
         <TrendingVideos creator={creator} />
       </Suspense>
 
+      */}
       <Suspense fallback={<SectionLoader />}>
-        <MatchReason creator={creator} />
-      </Suspense> */}
+        <MatchReason value={similarity || ''} />
+      </Suspense>
 
       {/* Collaborate Button - Fixed to bottom on mobile */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg md:static md:shadow-none md:border-0 md:bg-transparent md:p-0 md:mt-8 z-10">
