@@ -43,7 +43,7 @@ const creatorNav: NavItem[] = [
   {
     href: "/dashboard/creator/content",
     icon: Film,
-    label: "My Brief",
+    label: "My Video",
   },
   {
     href: "/dashboard/creator/inbox",
