@@ -10,7 +10,9 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
         {/* Content */}
         <div className="mb-3">
           <h3 className="text-sm text-gray-900 line-clamp-2 text-left">
-            {campaignName}
+            {campaignName.length > 50
+              ? campaignName.slice(0, 50)+"..."
+              : campaignName}
           </h3>
         </div>
 
