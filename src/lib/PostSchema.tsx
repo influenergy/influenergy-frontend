@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 
 type Schema = yup.ObjectSchema<Partial<PostQuestionnaireData>>;
-
+const SUPPORTED_FORMATS = ["image/jpeg", "image/png", "image/jpg"];
 export const step1Schema = yup.object().shape({
   "brand-name": yup
     .string()
@@ -17,7 +17,34 @@ export const step1Schema = yup.object().shape({
     .string()
     .min(10, "Description must be at least 10 characters")
     .required("Campaign description is required"),
-  "campaign-post": yup.string().required("Campaign post is required"),
+  "campaign-post": yup
+    .mixed()
+    .required("Campaign post image is required")
+    .test(
+      "is-valid-file-type",
+      "Only JPG, JPEG, and PNG formats are allowed",
+      (value) => {
+        if (typeof value !== "string") return false;
+        const mimeMatch = value.match(/^data:(image\/\w+);base64,/);
+        if (!mimeMatch) return false;
+        const mimeType = mimeMatch[1];
+        return SUPPORTED_FORMATS.includes(mimeType);
+      }
+    )
+    .test("fileSize", "File size must be less than 2MB", (value) => {
+      if (typeof value === "string") {
+        const base64Str = value.split(",")[1]; // strip "data:image/...;base64,"
+        if (!base64Str) return false;
+
+        // Calculate base64 size in bytes
+        const sizeInBytes =
+          (base64Str.length * 3) / 4 -
+          (base64Str.endsWith("==") ? 2 : base64Str.endsWith("=") ? 1 : 0);
+
+        return sizeInBytes <= 2 * 1024 * 1024; // 2MB
+      }
+      return false;
+    }),
 }) as Schema;
 
 export const step2Schema = yup.object().shape({
