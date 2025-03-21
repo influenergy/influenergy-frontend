@@ -58,6 +58,8 @@ export const useFindAiCampaign = (id: string) => {
     queryKey: ["findaiCampaign", id],
     queryFn: async () => {
       try {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
         return await postApi.findAIMatch(id);
       } catch (error) {
         console.error(`Error fetching AI match for ID ${id}:`, error);
