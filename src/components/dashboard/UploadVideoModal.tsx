@@ -79,11 +79,7 @@ const UploadVideoModal: React.FC<UploadVideoModalProps> = ({
 
     if (!formData.url) {
       newErrors.url = "Video URL is required";
-    } else if (
-      !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
-        formData.url
-      )
-    ) {
+    } else if (!/^https?:\/\/[^\s/$.?#].[^\s]*$/.test(formData.url)) {
       newErrors.url = "Please enter a valid URL";
     }
 
@@ -237,7 +233,6 @@ const UploadVideoModal: React.FC<UploadVideoModalProps> = ({
               {errors.image && (
                 <p className="text-red-500 text-xs mt-1">{errors.image}</p>
               )}
-              
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2">
