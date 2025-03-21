@@ -154,19 +154,19 @@ export const FormField = ({ field }: { field: Field }) => {
   const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
 
-  if (fieldName === "target-interests") {
+  if (fieldName === "target-interests" || fieldName === "target-gender") {
     return <PrimaryNicheInput field={field} />;
   }
 
   // Handle gender fields
-  if (fieldName === "target-gender") {
-    return <GenderInput field={field} />;
-  }
+  // if (fieldName === "target-gender") {
+  //   return <GenderInput field={field} />;
+  // }
 
   // Skip the "other" field as it's handled in GenderInput
-  if (fieldName === "target-gender-other") {
-    return null;
-  }
+  // if (fieldName === "target-gender-other") {
+  //   return null;
+  // }
 
   if (field.category === "dropdown") {
     return (

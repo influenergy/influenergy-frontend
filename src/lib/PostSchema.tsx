@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { PostQuestionnaireData } from "@/types/Questionnaire";
+import { PostQuestionnaireData } from "@/types/PostQuestionnaire";
 
 type Schema = yup.ObjectSchema<Partial<PostQuestionnaireData>>;
 const SUPPORTED_FORMATS = ["image/jpeg", "image/png", "image/jpg"];
@@ -55,15 +55,13 @@ export const step2Schema = yup.object().shape({
     .required("Target age group is required"),
 
   "target-gender": yup
-    .string()
-    .oneOf(
-      ["Male", "Female", "Non-binary", "Prefer not to say", "Others"],
-      "Please select a valid gender"
-    )
+    .array()
+    .of(yup.string())
+    .min(1, "Select at least one gender group")
     .required("Target gender is required"),
 
   "target-gender-other": yup.string().when("target-gender", {
-    is: (value: string) => value === "Others",
+    is: (value: string[]) => value?.includes("Others"),
     then: (schema) => schema.required("Please specify the gender"),
     otherwise: (schema) => schema.optional(),
   }),

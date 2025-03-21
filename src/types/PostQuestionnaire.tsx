@@ -4,6 +4,39 @@ export interface Requirement {
   minEngagement: string;
 }
 
+export interface PostQuestionnaireData {
+  "brand-name": string;
+  "campaign-objective": string[];
+  "campaign-description": string;
+  "campaign-post": string;
+  "target-age-group": string[];
+  "target-gender": string[];
+  "target-gender-other"?: string;
+  "target-location": string[];
+  "target-interests": string[];
+  "target-interests-other"?: string;
+  "compaign-name": string;
+  "your-brief": string;
+  "compaign-concept": string;
+  "content-type": string;
+  "video-duration"?: string;
+  "catch-phrase": string;
+  "key-message": string;
+  "tone-style": string;
+  "creator-type": string;
+  "minimum-followers": string;
+  "creator-influencer": string;
+  "social-media-platform": string[];
+  "past-experience": string;
+  "preferred-creator-niche": string[];
+  "preferred-creator-demographics": string;
+  "budget-for-campaign": string;
+  "expected-deliverables": string;
+  "no-of-days-for-delivery": string;
+  "additional-instructions"?: string;
+  "requirement-documents"?: string;
+}
+
 export interface Campaign {
   _id: string;
   campaignName: string;
@@ -12,8 +45,8 @@ export interface Campaign {
   brandName: string;
   campaignObjective: string[];
   campaignDescription: string;
-  targetAgeGroup: string;
-  targetGender: string;
+  targetAgeGroup: string[];
+  targetGender: string[];
   targetLocation: string[];
   targetInterests: string[];
   contentType: string;
@@ -24,7 +57,7 @@ export interface Campaign {
   creatorType: string;
   minimumFollowers: string;
   creatorInfluencer: string;
-  socialMediaPlatform: string;
+  socialMediaPlatform: string[];
   pastExperience: string;
   preferredCreatorNiche: string[];
   preferredCreatorDemographics: string;
@@ -32,7 +65,6 @@ export interface Campaign {
   expectedDeliverables: string;
   noOfDaysForDelivery: string;
   additionalInstructions: string;
-  __v?: number;
-
   campaignPost: string;
+  __v?: number;
 }

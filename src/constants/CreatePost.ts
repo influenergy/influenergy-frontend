@@ -82,7 +82,7 @@ export const CREATE_POST: Questions = {
       {
         title: "Target Audience Gender",
         slug: "target-gender",
-        category: "dropdown",
+        category: "multiselect",
         options: [
           "Male",
           "Female",

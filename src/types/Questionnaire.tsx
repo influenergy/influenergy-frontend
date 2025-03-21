@@ -78,7 +78,7 @@ export interface PostQuestionnaireData {
 
   // Step 2 - Target Audience & Demographics
   "target-age-group": string[];
-  "target-gender": string;
+  "target-gender": string[];
   "target-gender-other"?: string;
   "target-location": string[];
   "target-interests": string[];
