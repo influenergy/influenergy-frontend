@@ -120,7 +120,6 @@ export const userApi = {
     formData: CreatorQuestionnaireData
   ) => {
     const transformedData = transformQuestionnaireData(formData, id);
-    console.log("transformedData", transformedData);
     try {
       const response = await api.post(
         "/creator/add_profile_details",
@@ -134,6 +133,10 @@ export const userApi = {
   },
   getProfileDetails: async () => {
     const response = await api.get(`/creator/account_details`);
+    return response.data;
+  },
+  deleteAccount: async (userType: string) => {
+    const response = await api.delete(`/request-delete-account/${userType}`);
     return response.data;
   },
 };

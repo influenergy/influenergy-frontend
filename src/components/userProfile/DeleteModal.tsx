@@ -11,11 +11,44 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { userApi } from "@/services/userServices";
+import { toast } from "@/hooks/use-toast";
+import { useAppSelector } from "@/store";
 
 export default function DeleteModal() {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+  const userType = useAppSelector((state) => state.auth.userType);
+
+  useEffect(() => {
+    if (!userType) {
+      setShow(false);
+    }
+  }, [userType]);
+
+  const handleDelete = async () => {
+    if(!userType){
+      return;
+    }
+    try {
+      await userApi.deleteAccount(userType);
+      toast({
+        title: "Success",
+        description: "Account delete Request Sent successfully",
+      });
+
+      setShow(true);
+    } catch (error) {
+      console.log("error", error);
+      toast({
+        variant: "destructive",
+        title: "Account Delete Request Failed",
+        description: "Please try after sometimes",
+      });
+      setOpen(false);
+    }
+  };
 
   const ModelContent = () => {
     return (
@@ -46,7 +79,7 @@ export default function DeleteModal() {
           <Button
             className="bg-primary text-white"
             size="lg"
-            onClick={() => setShow(true)}
+            onClick={handleDelete}
           >
             Delete
           </Button>
