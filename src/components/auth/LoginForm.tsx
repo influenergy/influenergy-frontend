@@ -67,7 +67,12 @@ export default function LoginForm() {
             // token: data?.data?.token,
           })
         );
-        router.push(`/dashboard`);
+        if (userType == "creator") {
+          router.push(`/dashboard`);
+        }
+        if (userType == "brand") {
+          router.push(`/dashboard`);
+        }
       }
     },
     onError: (error: Error) => {
@@ -129,6 +134,11 @@ export default function LoginForm() {
     }
   };
 
+  const image =
+    userType === "creator"
+      ? "https://d20cf3kfv1a9jn.cloudfront.net/images/login_creator.webp"
+      : "https://d20cf3kfv1a9jn.cloudfront.net/images/brand_login.webp";
+
   return (
     <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
       <motion.div
@@ -145,7 +155,7 @@ export default function LoginForm() {
         >
           <Image
             src="/images/line1.png"
-            alt="Decorative line"
+            alt=""
             width={400}
             height={100}
             className="w-full h-auto"
@@ -161,7 +171,7 @@ export default function LoginForm() {
         >
           <Image
             src="/images/line2.png"
-            alt="Decorative line"
+            alt=""
             width={400}
             height={100}
             className="w-full h-auto"
@@ -181,12 +191,12 @@ export default function LoginForm() {
             </motion.button>
           </Link>
           <motion.h3
-            className="text-black font-bold text-2xl sm:text-3xl text-left"
+            className="text-black font-bold text-2xl sm:text-3xl text-left capitalize"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Login To Your Account
+            Login To Your {userType} Account
           </motion.h3>
 
           <form
@@ -334,14 +344,7 @@ export default function LoginForm() {
         transition={{ duration: 0.5 }}
       >
         <div className="relative w-full">
-          <Image
-            src="/images/login.webp"
-            alt="Login illustration"
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 40vw"
-            priority
-          />
+          <Image src={image} alt="" fill className="object-cover " priority />
         </div>
       </motion.div>
     </div>

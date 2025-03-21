@@ -147,12 +147,12 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                 </motion.button>
               </Link>
               <motion.h3
-                className="text-primary font-bold text-2xl sm:text-3xl text-left"
+                className="text-primary font-bold text-2xl sm:text-3xl text-left capitalize"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                Create Account
+                Create To Your {userType} Account
               </motion.h3>
 
               <form
@@ -285,11 +285,11 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
           >
             <div className="relative w-full">
               <Image
-                src="/images/register.webp"
-                alt="Register illustration"
+                src={`https://d20cf3kfv1a9jn.cloudfront.net/images/brand_register.webp`}
+                alt=""
                 fill
                 className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 40vw"
+                // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 40vw"
                 priority
               />
             </div>

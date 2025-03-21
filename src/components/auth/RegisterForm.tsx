@@ -125,12 +125,12 @@ export default function RegisterForm({ userType }: { userType: string }) {
             </motion.button>
           </Link>
           <motion.h3
-            className="text-primary font-bold text-2xl sm:text-3xl text-left"
+            className="text-primary font-bold text-2xl sm:text-3xl text-left capitalize"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Create Account
+            Create your {userType} account
           </motion.h3>
 
           <form
