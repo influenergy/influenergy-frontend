@@ -44,7 +44,7 @@ export default function WhatWeDo() {
                 AI Powered Solution
               </h2>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                AI-powered platform that connects brands, UGC creators, and
+                AI-powered CRM platform that connects brands, UGC creators, and
                 influencers
               </p>
             </div>
@@ -67,14 +67,14 @@ export default function WhatWeDo() {
             </div>
             <div className="flex flex-col">
               <h2 className="text-xl font-semibold mb-2">
-              Time Saving Influencer Marketing
+                Time Saving Influencer Marketing
               </h2>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-              Saves time on creator search, find best creator, custom briefs & pitches for creators.
+                Saves time on creator search, find best creator, custom briefs &
+                pitches for creators.
               </p>
             </div>
           </motion.div>
-
 
           <motion.div
             className="flex items-start gap-4 sm:gap-6"
@@ -93,16 +93,14 @@ export default function WhatWeDo() {
             </div>
             <div className="flex flex-col">
               <h2 className="text-xl font-semibold mb-2">
-              Free Reporting & Analytics
+                Free Reporting & Analytics
               </h2>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-              Our Analytics ensure that you are getting the best reports and analytics
+                Our Analytics ensure that you are getting the best reports and
+                data to improve your campaign.
               </p>
             </div>
           </motion.div>
-
-
-
         </div>
       </motion.div>
 

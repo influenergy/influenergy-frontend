@@ -20,14 +20,14 @@ export default function HearFromInfluencer() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const influencers: Influencer[] = [
-    {
-      name: "MIKE",
-      role: "CONTENT CREATOR",
-      color: "#1B1F3B",
-      hasVideo: true,
-      videoUrl:
-        "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/1/output.m3u8",
-    },
+    // {
+    //   name: "MIKE",
+    //   role: "CONTENT CREATOR",
+    //   color: "#1B1F3B",
+    //   hasVideo: true,
+    //   videoUrl:
+    //     "https://d20cf3kfv1a9jn.cloudfront.net/hearfromus/1/output.m3u8",
+    // },
     {
       name: "SAMITE",
       role: "LIFESTYLE BLOGGER",
@@ -38,7 +38,7 @@ export default function HearFromInfluencer() {
     },
     {
       name: "KAITY",
-      role: "FASHION CREATOR",
+      role: "PERSONAL HYGIENE",
       color: "#5C5470",
       hasVideo: true,
       videoUrl:
@@ -46,7 +46,7 @@ export default function HearFromInfluencer() {
     },
     {
       name: "OAKES",
-      role: "BEAUTY EXPERT",
+      role: "HEALTH & NUTRITION",
       color: "#4B0082",
       hasVideo: true,
       videoUrl:
@@ -62,7 +62,7 @@ export default function HearFromInfluencer() {
     },
     {
       name: "OAKES2",
-      role: "AI & TECH",
+      role: "AI & TECH APPS",
       color: "#0B5345",
       hasVideo: true,
       videoUrl:
@@ -88,48 +88,48 @@ export default function HearFromInfluencer() {
 
     if (distance === 0) {
       return {
-        height: "h-[450px] md:h-[550px]",
-        width: "w-72 md:w-96",
+        height: "h-[350px] sm:h-[400px] md:h-[550px]",
+        width: "w-56 sm:w-64 md:w-96",
         zIndex: "z-30",
         opacity: "opacity-100",
         scale: "scale-100",
       };
     } else if (distance === 1) {
       return {
-        height: "h-96 md:h-[450px]",
-        width: "w-20 md:w-24",
+        height: "h-72 sm:h-80 md:h-[450px]",
+        width: "w-14 sm:w-16 md:w-24",
         zIndex: "z-20",
         opacity: "opacity-90",
         scale: "scale-95",
       };
     } else if (distance === 2) {
       return {
-        height: "h-80 md:h-96",
-        width: "w-16 md:w-20",
+        height: "h-64 sm:h-72 md:h-96",
+        width: "w-12 sm:w-14 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-70",
         scale: "scale-90",
       };
     } else if (distance == 3) {
       return {
-        height: "h-64 md:h-80",
-        width: "w-16 md:w-20",
+        height: "h-52 sm:h-60 md:h-80",
+        width: "w-10 sm:w-12 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-70",
         scale: "scale-90",
       };
     } else if (distance == 4) {
       return {
-        height: "h-60 md:h-72",
-        width: "w-16 md:w-20",
+        height: "h-48 sm:h-56 md:h-72",
+        width: "w-10 sm:w-12 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-60",
         scale: "scale-90",
       };
     } else {
       return {
-        height: "h-56 md:h-64",
-        width: "w-16 md:w-20",
+        height: "h-44 sm:h-52 md:h-64",
+        width: "w-10 sm:w-12 md:w-20",
         zIndex: "z-10",
         opacity: "opacity-50",
         scale: "scale-85",
@@ -167,7 +167,7 @@ export default function HearFromInfluencer() {
 
   return (
     <motion.div
-      className="w-full py-10 px-4 bg-white relative"
+      className="w-full py-6 sm:py-8 md:py-10 px-2 sm:px-4 bg-white relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
@@ -175,7 +175,7 @@ export default function HearFromInfluencer() {
       id="influencers"
     >
       <motion.h1
-        className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 sm:mb-6 md:mb-8"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
@@ -185,7 +185,7 @@ export default function HearFromInfluencer() {
       </motion.h1>
 
       <div className="relative flex justify-center items-center overflow-hidden py-2">
-        <div className="flex items-center justify-center gap-1 md:gap-3">
+        <div className="flex items-center justify-center gap-0.5 sm:gap-1 md:gap-3">
           {influencers.map((influencer, index) => {
             const styles = getCardStyle(index);
             const isActive = index === activeCard;
@@ -227,7 +227,7 @@ export default function HearFromInfluencer() {
                 )}
 
                 {isActive ? (
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 overflow-hidden">
+                  <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4 md:p-6 overflow-hidden">
                     {influencer.hasVideo && (
                       <>
                         <motion.div
@@ -239,35 +239,41 @@ export default function HearFromInfluencer() {
                           transition={{ duration: 0.3 }}
                         >
                           <motion.button
-                            className="w-16 h-16 bg-white/70 rounded-full flex items-center justify-center backdrop-blur-sm"
+                            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-white/70 rounded-full flex items-center justify-center backdrop-blur-sm"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={togglePlayPause}
                           >
                             {isPlaying ? (
-                              <Pause className="text-black" size={30} />
+                              <Pause className="text-black" size={24} />
                             ) : (
-                              <Play className="text-black ml-1" size={30} />
+                              <Play className="text-black ml-1" size={24} />
                             )}
                           </motion.button>
                         </motion.div>
 
                         <div
-                          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3 transition-opacity duration-300 ${
+                          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 sm:px-3 md:px-4 py-2 sm:py-3 transition-opacity duration-300 ${
                             shouldShowControls ? "opacity-100" : "opacity-0"
                           }`}
                         >
                           <div className="flex justify-between items-center">
                             <motion.button
-                              className="p-2 text-white hover:bg-white/20 rounded-full"
+                              className="p-1 sm:p-2 text-white hover:bg-white/20 rounded-full"
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={toggleMute}
                             >
                               {isMuted ? (
-                                <VolumeX size={18} />
+                                <VolumeX
+                                  size={16}
+                                  className="sm:h-4 sm:w-4 md:h-[18px] md:w-[18px]"
+                                />
                               ) : (
-                                <Volume2 size={18} />
+                                <Volume2
+                                  size={16}
+                                  className="sm:h-4 sm:w-4 md:h-[18px] md:w-[18px]"
+                                />
                               )}
                             </motion.button>
                           </div>
@@ -277,7 +283,7 @@ export default function HearFromInfluencer() {
                   </div>
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="transform rotate-90 whitespace-nowrap text-white/80 font-bold tracking-wider text-sm md:text-base">
+                    <div className="transform rotate-90 whitespace-nowrap text-white/80 font-bold tracking-wider text-xs sm:text-sm md:text-base">
                       {influencer.role}
                     </div>
                   </div>
@@ -290,4 +296,3 @@ export default function HearFromInfluencer() {
     </motion.div>
   );
 }
-
