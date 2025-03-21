@@ -15,7 +15,7 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
-  step6Schema
+  step6Schema,
 } from "@/lib/PostSchema";
 import { Step } from "./PostSteps";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
@@ -120,9 +120,7 @@ const PostQuestionnaire = (): JSX.Element => {
 
         if (user && user._id) {
           // Use the transformed data directly without FormData
-          await postApi.createAdPost(
-            updatedData as PostQuestionnaireData
-          );
+          await postApi.createAdPost(updatedData as PostQuestionnaireData);
 
           toast({
             title: "Success!",
@@ -165,7 +163,7 @@ const PostQuestionnaire = (): JSX.Element => {
     currentStep,
     user,
   ]);
- 
+
   const handlePrevious = useCallback(() => {
     if (currentStepIndex > 0) {
       setCurrentStep(steps[currentStepIndex - 1]);
@@ -231,7 +229,7 @@ const PostQuestionnaire = (): JSX.Element => {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
-              className="w-full"
+              className="w-full p-4"
             >
               {renderStepComponent()}
             </motion.div>

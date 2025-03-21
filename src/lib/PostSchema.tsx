@@ -21,7 +21,12 @@ export const step1Schema = yup.object().shape({
 }) as Schema;
 
 export const step2Schema = yup.object().shape({
-  "target-age-group": yup.string().required("Target age group is required"),
+  "target-age-group": yup
+    .array()
+    .of(yup.string())
+    .min(1, "Select at least one age group")
+    .required("Target age group is required"),
+
   "target-gender": yup
     .string()
     .oneOf(
@@ -29,21 +34,30 @@ export const step2Schema = yup.object().shape({
       "Please select a valid gender"
     )
     .required("Target gender is required"),
+
   "target-gender-other": yup.string().when("target-gender", {
     is: (value: string) => value === "Others",
     then: (schema) => schema.required("Please specify the gender"),
     otherwise: (schema) => schema.optional(),
   }),
+
   "target-location": yup
     .array()
     .of(yup.string())
     .min(1, "Select at least one location")
     .required("Target location is required"),
+
   "target-interests": yup
     .array()
     .of(yup.string())
     .min(1, "Select at least one interest")
     .required("Target interests are required"),
+
+  "target-interests-other": yup.string().when("target-interests", {
+    is: (value: string[]) => value?.includes("Others"),
+    then: (schema) => schema.required("Please specify the interests"),
+    otherwise: (schema) => schema.optional(),
+  }),
 }) as Schema;
 
 export const step3Schema = yup.object().shape({
@@ -175,6 +189,7 @@ export const step6Schema = yup.object().shape({
     )
     .required("Delivery timeframe is required"),
   "additional-instructions": yup.string().nullable().optional(),
+  "requirement-documents": yup.string().nullable().optional(),
 }) as Schema;
 
 export const PostSchema = yup.object().shape({
@@ -185,4 +200,3 @@ export const PostSchema = yup.object().shape({
   ...step5Schema.fields,
   ...step6Schema.fields,
 }) as Schema;
- 

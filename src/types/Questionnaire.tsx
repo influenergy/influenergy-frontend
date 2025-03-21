@@ -77,16 +77,17 @@ export interface PostQuestionnaireData {
   "campaign-post": string;
 
   // Step 2 - Target Audience & Demographics
-  "target-age-group": string;
+  "target-age-group": string[];
   "target-gender": string;
   "target-gender-other"?: string;
   "target-location": string[];
   "target-interests": string[];
+  "target-interests-other"?: string;
 
   // Step 4 - Brief
-  "compaign-name":string;
-  "your-brief":string;
-  "compaign-concept":string;
+  "compaign-name": string;
+  "your-brief": string;
+  "compaign-concept": string;
 
   // Step 3 - Content Vibe
   "content-type": string;
@@ -109,4 +110,5 @@ export interface PostQuestionnaireData {
   "expected-deliverables": string;
   "no-of-days-for-delivery": string;
   "additional-instructions"?: string;
+  "requirement-documents": string;
 }

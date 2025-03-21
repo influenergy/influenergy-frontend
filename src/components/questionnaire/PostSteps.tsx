@@ -200,7 +200,6 @@ export const FormField = ({ field }: { field: Field }) => {
   }
   if (field.category === "multiselect") {
     const selectedOptions = watch(fieldName) || [];
-
     return (
       <div>
         <Select
@@ -227,11 +226,25 @@ export const FormField = ({ field }: { field: Field }) => {
     return <DateInput field={field} />;
   }
 
+  if (field.category === "textarea") {
+    return (
+      <div>
+        <textarea
+          {...register(fieldName)}
+          placeholder={field.placeholder}
+          cols={3}
+          rows={3}
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 focus:outline-none focus:ring-2"
+        ></textarea>
+      </div>
+    );
+  }
+
   if (field.category === "file") {
     return (
       <input
         type="file"
-        accept="image/jpeg, image/png, image/jpg"
+        accept="image/jpeg, image/png, image/jpg, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) {
@@ -322,7 +335,7 @@ export const StepComponent = ({ fields }: StepProps) => {
 
         return (
           <div key={field.title} className="space-y-2 mt-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-light text-black">
               {field.title}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
@@ -377,7 +390,7 @@ const DateInput = ({ field }: { field: Field }) => {
 };
 
 export const Step = ({ fields }: StepProps) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
+  <div className="grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-4">
     <StepComponent fields={fields} />
   </div>
 );

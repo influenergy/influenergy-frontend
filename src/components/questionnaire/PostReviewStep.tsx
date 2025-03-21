@@ -30,12 +30,15 @@ const PostReviewStep = ({ onEdit }: ReviewStepProps) => {
     }
 
     // Handle special case for campaign post (truncate if it's too long)
-    if (field === "campaign-post" && typeof value === "string") {
+    if (
+      (field === "campaign-post" || field === "requirement-documents") &&
+      typeof value === "string"
+    ) {
       return value.length > 20 ? value.slice(0, 20) + "..." : value;
     }
 
     // Return the value as string or "Not provided" if empty
-    return String(value || "Not provided");
+    return typeof value === "string" && value.length > 50 ? value.slice(0, 50) + "..." : String(value || "Not provided");
   };
 
   const sections = Object.entries(questions).map(([, step], index) => {

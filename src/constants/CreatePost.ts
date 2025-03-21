@@ -8,6 +8,7 @@ export interface Field {
     | "dropdown"
     | "email"
     | "text"
+    | "textarea"
     | "multiselect"
     | "file"
     | "range";
@@ -57,7 +58,7 @@ export const CREATE_POST: Questions = {
       {
         title: "Campaign Description",
         slug: "campaign-description",
-        category: "text",
+        category: "textarea",
       },
       {
         title: "Campaign Post",
@@ -75,7 +76,7 @@ export const CREATE_POST: Questions = {
       {
         title: "Target Audience Age Group",
         slug: "target-age-group",
-        category: "dropdown",
+        category: "multiselect",
         options: ["<18", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
       },
       {
@@ -167,12 +168,12 @@ export const CREATE_POST: Questions = {
       {
         title: "Write Your Brief",
         slug: "your-brief",
-        category: "text",
+        category: "textarea",
       },
       {
         title: "Compaign Concept",
         slug: "compaign-concept",
-        category: "text",
+        category: "textarea",
       },
     ],
   },
@@ -204,12 +205,12 @@ export const CREATE_POST: Questions = {
       {
         title: "Catch Phrase",
         slug: "catch-phrase",
-        category: "text",
+        category: "textarea",
       },
       {
         title: "Key Message & Hashtags",
         slug: "key-message",
-        category: "text",
+        category: "textarea",
       },
       {
         title: "Tone & Style?",
@@ -405,7 +406,12 @@ export const CREATE_POST: Questions = {
       {
         title: "Additional Instructions",
         slug: "additional-instructions",
-        category: "text",
+        category: "textarea",
+      },
+      {
+        title: "Requirement Documents",
+        slug: "requirement-documents",
+        category: "file",
       },
     ],
   },
