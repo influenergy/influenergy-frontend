@@ -232,7 +232,8 @@ export default function Page() {
           <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 text-center sm:text-left">
               <p className="text-gray-700 font-medium">
-                Please wait, profile under verification
+                Your profile is under verification, please wait for our team to
+                review it.
               </p>
             </div>
             <Info size={24} className="text-red-600 shrink-0" />
