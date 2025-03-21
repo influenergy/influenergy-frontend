@@ -5,6 +5,7 @@ import { useGetPost } from "@/hooks/usePost";
 import CardSkeleton from "@/components/common/CardSkeleton";
 import PostCard from "@/components/common/PostCard";
 import UploadVideoModal from "@/components/dashboard/UploadVideoModal";
+import Image from "next/image";
 
 interface VideoData {
   _id: string;
@@ -34,41 +35,65 @@ const Page = () => {
   }
 
   return (
-    <div className="p-4">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:space-x-4">
-        <p className="text-2xl font-semibold md:text-3xl font-poppins md:w-1/2">
-          Upload your best performing videos to showcase your performance to
-          brand!
-        </p>
-        <div className="flex items-center justify-end w-full md:w-auto">
+    <div className="p-4 h-screen">
+      {posts.videos.length === 0 ? (
+        <div className="w-full flex flex-col items-center justify-center h-full gap-5">
+          <Image
+            src="/images/MyPost/empty.png"
+            width={400}
+            height={400}
+            alt="Empty"
+            className="object-cover"
+          />
+          <p className="text-4xl font-semibold text-center mt-4">
+            Welcome to Brief section <br /> Here you can create brief for your
+            campaign
+          </p>
           <Button
             className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
             onClick={() => setIsOpen(true)}
           >
-            + Post Video
+            + Create brief
           </Button>
-
-          <UploadVideoModal
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            onSuccess={() => refetch()}
-          />
         </div>
-      </div>
-      <div className="flex flex-wrap gap-4 mt-4">
-        {posts.videos.map((data: VideoData, index: number) => (
-          <PostCard
-            key={index}
-            data={{
-              image: data.image,
-              title: data.title,
-              isPublic: data.isPublic,
-              videoLink: data.videoLink,
-              _id: data._id,
-            }}
-          />
-        ))}
-      </div>
+      ) : (
+        <>
+          <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:space-x-4">
+            <p className="text-2xl font-semibold md:text-3xl font-poppins md:w-1/2">
+              Upload your best performing videos to showcase your performance to
+              brand!
+            </p>
+            <div className="flex items-center justify-end w-full md:w-auto">
+              <Button
+                className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
+                onClick={() => setIsOpen(true)}
+              >
+                + Post Video
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-4 mt-4">
+            {posts.videos.map((data: VideoData, index: number) => (
+              <PostCard
+                key={index}
+                data={{
+                  image: data.image,
+                  title: data.title,
+                  isPublic: data.isPublic,
+                  videoLink: data.videoLink,
+                  _id: data._id,
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+      <UploadVideoModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onSuccess={() => refetch()}
+      />
     </div>
   );
 };

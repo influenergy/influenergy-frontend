@@ -5,13 +5,6 @@ import Link from "next/link";
 import { useAppDispatch } from "@/store";
 import { useRouter } from "next/navigation";
 import { setUserType } from "@/store/features/authSlice";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
 
 export default function GetStarted() {
   const dispatch = useAppDispatch();
@@ -74,41 +67,27 @@ export default function GetStarted() {
                   </div>
                 </div>
               </Link>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex flex-col w-52 justify-between rounded-2xl bg-[#F4F3FF] p-4 text-gray-800 hover:bg-[#7C3AED] hover:text-white">
+              <Link
+                href="/login"
+                className="group"
+                onClick={() => handleUserTypeSelection("creator", "/login")}
+              >
+                <div className="flex cursor-pointer h-48 w-52 flex-col justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
-                    src="/images/Home/icon1.png"
-                    alt="Creator Icon"
+                    src="/images/Home/icon.png"
+                    alt="Brand Icon"
                     width={50}
                     height={50}
                     className="mb-2"
                   />
-                  <div className="flex justify-between items-center w-full">
-                    <div>
-                      <p className="text-sm text-left font-poppins">I am a</p>
-                      <p className="font-semibold tracking-wide text-left font-poppins">
-                        Creator
-                      </p>
-                    </div>
-                    <ChevronDown />
+                  <div>
+                    <p className="text-sm font-poppins">I am a</p>
+                    <p className="font-semibold tracking-wide font-poppins">
+                      Creator
+                    </p>
                   </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-52 bg-white shadow-lg">
-                  <DropdownMenuItem
-                    onClick={() => handleUserTypeSelection("creator", "/login")}
-                    className="text-gray-800 hover:bg-gray-200 cursor-pointer font-poppins"
-                  >
-                    Influencer
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleUserTypeSelection("creator", "/login")}
-                    className="text-gray-800 hover:bg-gray-200 cursor-pointer font-poppins"
-                  >
-                    UGC Creator
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </div>
+              </Link>
             </motion.div>
           </div>
 

@@ -29,20 +29,20 @@ const transformQuestionnaireData = (
     type: formData["are-you-ugc-creator"] === "UGC" ? "UGC" : "Creator",
     dob: formData.dob,
     gender: gender,
-    city: formData.country, 
+    city: formData.country,
     languages: formData.language || ["English"],
     category: primaryNicheRaw,
-    
+
     aboutYourself: formData["tell-us-about-yourself"],
     audienceInfo: {
-      primaryPercentage:formData["primary-audience-percentage"] || "",
+      primaryPercentage: formData["primary-audience-percentage"] || "",
       primaryAge: formData["primary-audience-age"],
       primaryGender:
         formData["primary-audience-gender"] == "Others"
           ? formData["primary-audience-gender-other"]
           : formData["primary-audience-gender"],
       primaryLocation: formData["primary-audience-location"],
-      secondaryPercentage:formData["secondary-audience-percentage"],
+      secondaryPercentage: formData["secondary-audience-percentage"],
       secondaryAge: formData["secondary-audience-age"],
       secondaryGender:
         formData["secondary-audience-gender"] == "Others"
@@ -131,5 +131,9 @@ export const userApi = {
       console.error("API error:", error);
       throw error;
     }
+  },
+  getProfileDetails: async () => {
+    const response = await api.get(`/creator/account_details`);
+    return response.data;
   },
 };

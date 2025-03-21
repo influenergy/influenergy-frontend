@@ -32,7 +32,7 @@ interface Profile {
   workedWithAIConsumerApps: boolean;
   hasPaidCampaignExperience: boolean;
   budgetVideo: string;
-  socialVideos: any[]; // You can define a more specific type if needed
+  socialVideos: string[];
   createdAt: string;
   updatedAt: string;
   __v: number;

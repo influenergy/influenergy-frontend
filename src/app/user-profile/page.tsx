@@ -7,7 +7,7 @@ import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
 import { Info, PenLine } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { selectUser, useAppSelector } from "@/store";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
@@ -24,6 +24,24 @@ export default function Page() {
   const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const fetchAccountDetails = async () => {
+    const response = await userApi.getProfileDetails();
+    // console.log("response", response.data);
+    dispatch(
+      setCredentials({
+        user: {
+          ...user,
+          profileIcon: response.data.profileIcon,
+          isProfileCompleted: user?.isProfileCompleted ?? false,
+          isEmailVerified: user?.isEmailVerified ?? false,
+          isAccountVerified: response.data.isAccountVerified ?? false,
+        },
+      })
+    );
+  };
+  useEffect(() => {
+    fetchAccountDetails();
+  }, []);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,8 +77,7 @@ export default function Page() {
       }
 
       const response = await userApi.updateProfile(formData, userType);
-      // console.log("response", response);
-      // Update Redux state with new image URL
+      
       dispatch(
         setCredentials({
           user: {
@@ -68,6 +85,7 @@ export default function Page() {
             profileIcon: response.data.profileIcon,
             isProfileCompleted: user?.isProfileCompleted ?? false,
             isEmailVerified: user?.isEmailVerified ?? false,
+            isAccountVerified: response.data.isAccountVerified ?? false,
           },
         })
       );

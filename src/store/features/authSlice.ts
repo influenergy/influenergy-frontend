@@ -8,6 +8,7 @@ export interface User {
   profileIcon?: string;
   isProfileCompleted: boolean;
   isEmailVerified: boolean;
+  isAccountVerified: boolean;
   companyName?: string;
   companyWebsite?: string;
 }
