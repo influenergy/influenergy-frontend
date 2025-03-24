@@ -14,14 +14,8 @@ import { setCredentials } from "@/store/features/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { userApi } from "@/services/userServices";
 import { Loader2 } from "lucide-react";
-import dynamic from "next/dynamic";
-
-// Dynamically import ProfileInfo to improve page load performance
-const ProfileInfo = dynamic(() => import("@/components/profile/ProfileInfo"), {
-  loading: () => (
-    <div className="w-full min-h-[64px] rounded-xl mt-4 animate-pulse bg-gray-200"></div>
-  ),
-});
+import ProfileInfo from "@/components/profile/ProfileInfo";
+// import Link from "next/link";
 
 export default function Page() {
   const user = useAppSelector(selectUser);
@@ -209,15 +203,13 @@ export default function Page() {
                 </div>
               </>
             )}
-            {/* <div className="w-full sm:w-auto">
-              <p className="text-sm font-light">Phone</p>
-              <p className="text-lg">911234567890</p>
-            </div> */}
           </div>
         </div>
 
         {/* Complete Profile Section */}
-        <ProfileInfo user={user || {}} userType={userType || ""} />
+        {user && userType !== null && (
+          <ProfileInfo user={user} userType={userType} />
+        )}
       </div>
       {userType == "brand" ? (
         <EditBrandProfileModal
