@@ -25,7 +25,9 @@ export default function Page() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fetchAccountDetails = async () => {
-    const response = await userApi.getProfileDetails();
+    if (!userType) return;
+    
+    const response = await userApi.getProfileDetails(userType);
     dispatch(
       setCredentials({
         user: {

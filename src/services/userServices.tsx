@@ -56,8 +56,8 @@ export const userApi = {
       throw error;
     }
   },
-  getProfileDetails: async () => {
-    const response = await api.get(`/creator/account_details`);
+  getProfileDetails: async (userType: string) => {
+    const response = await api.get(`/${userType}/account_details`);
     return response.data;
   },
   deleteAccount: async (userType: string) => {
