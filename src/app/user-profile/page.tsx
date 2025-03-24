@@ -5,7 +5,7 @@ import DeleteModal from "@/components/userProfile/DeleteModal";
 import ProfileActions from "@/components/userProfile/ProfileActions";
 import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
-import { Info, PenLine } from "lucide-react";
+import { PenLine } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { selectUser, useAppSelector } from "@/store";
@@ -14,7 +14,14 @@ import { setCredentials } from "@/store/features/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { userApi } from "@/services/userServices";
 import { Loader2 } from "lucide-react";
-// import Link from "next/link";
+import dynamic from "next/dynamic";
+
+// Dynamically import ProfileInfo to improve page load performance
+const ProfileInfo = dynamic(() => import("@/components/profile/ProfileInfo"), {
+  loading: () => (
+    <div className="w-full min-h-[64px] rounded-xl mt-4 animate-pulse bg-gray-200"></div>
+  ),
+});
 
 export default function Page() {
   const user = useAppSelector(selectUser);
@@ -26,7 +33,7 @@ export default function Page() {
   const [isUploading, setIsUploading] = useState(false);
   const fetchAccountDetails = async () => {
     if (!userType) return;
-    
+
     const response = await userApi.getProfileDetails(userType);
     dispatch(
       setCredentials({
@@ -210,37 +217,7 @@ export default function Page() {
         </div>
 
         {/* Complete Profile Section */}
-
-        {user?.isAccountVerified ? (
-          <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-green-100 border border-green-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <p className="text-gray-700 font-medium">
-                Your profile is verified
-              </p>
-            </div>
-            <Info size={24} className="text-green-600 shrink-0" />
-          </div>
-        ) : !user?.isProfileCompleted || !user?.profileIcon ? (
-          <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <p className="text-gray-700 font-medium">
-                Please fill the questionnaire and upload profile image to get
-                verified
-              </p>
-            </div>
-            <Info size={24} className="text-red-600 shrink-0" />
-          </div>
-        ) : (
-          <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <p className="text-gray-700 font-medium">
-                Your profile is under verification, please wait for our team to
-                review it.
-              </p>
-            </div>
-            <Info size={24} className="text-red-600 shrink-0" />
-          </div>
-        )}
+        <ProfileInfo user={user || {}} userType={userType || ""} />
       </div>
       {userType == "brand" ? (
         <EditBrandProfileModal
