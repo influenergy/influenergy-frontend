@@ -21,7 +21,7 @@ const MatchReason: React.FC<MatchReasonProps> = ({ value }) => {
             resonates with your target audience and seamlessly fits your
             advertising style. Their engagement, tone, and creativity align with
             your brand’s messaging, ensuring an authentic and effective
-            collaboration."
+            collaboration.
           </p>
         </div>
       </div>
