@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { Card } from "../ui/card";
-import { Eye, Play } from "lucide-react";
+import { Eye, Play, X } from "lucide-react";
 
 interface PostCardProps {
   data: {
@@ -33,11 +33,11 @@ const PostCard: React.FC<PostCardProps> = ({ data }) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
         />
         {data.isPublic === "pending" ? (
-          <div className="absolute w-2/3 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-md flex items-center z-10">
+          <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-md flex justify-center items-center z-10">
             <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 text-white" />
             <p className="text-xs sm:text-sm text-white">Under Review</p>
           </div>
-        ) : data.isPublic === "public" ? (
+        ) : data.isPublic === "approved" ? (
           <div className="absolute inset-0 flex justify-center items-center">
             <div className="bg-white rounded-full p-1.5 sm:p-2 bg-opacity-70 backdrop-blur-sm cursor-pointer">
               <Play className="h-4 w-4 sm:h-6 sm:w-6" />
@@ -45,8 +45,9 @@ const PostCard: React.FC<PostCardProps> = ({ data }) => {
           </div>
         ) : (
           <div className="absolute inset-0 flex justify-center items-center">
-            <div className="bg-white rounded-full p-1.5 sm:p-2 bg-opacity-70 backdrop-blur-sm cursor-pointer">
-              <Play className="h-4 w-4 sm:h-6 sm:w-6" />
+            <div className="w-full flex items-center justify-center rounded-full p-1.5 sm:p-2  backdrop-blur-sm cursor-pointer">
+              <X className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+              <p className="text-xs sm:text-sm text-white">Rejected</p>
             </div>
           </div>
         )}
