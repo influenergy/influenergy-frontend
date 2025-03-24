@@ -18,11 +18,11 @@ import { useState } from "react";
 
 type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
 
-interface BrandRegister{
-  fullName:string;
-  companyEmail:string;
-  companyName?:string;
-  companyWebsite?:string;
+interface BrandRegister {
+  fullName: string;
+  companyEmail: string;
+  companyName?: string;
+  companyWebsite?: string;
 }
 
 export default function BrandRegisterForm({ userType }: { userType: string }) {
@@ -49,7 +49,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       if (!authApi?.brandRegister) {
         throw new Error("Registration service is not available");
       }
-      const obj:BrandRegister = {
+      const obj: BrandRegister = {
         fullName: data.fullName,
         companyEmail: data.companyEmail,
       };
@@ -285,7 +285,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
           >
             <div className="relative w-full">
               <Image
-                src={`https://d20cf3kfv1a9jn.cloudfront.net/images/brand_register.webp`}
+                src={`https://d20cf3kfv1a9jn.cloudfront.net/images/register_brand1.webp`}
                 alt=""
                 fill
                 className="object-cover object-center"
