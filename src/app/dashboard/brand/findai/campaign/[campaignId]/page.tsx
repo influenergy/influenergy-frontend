@@ -45,12 +45,12 @@ export default function ProfileMatch() {
   }
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto mt-8 px-5">
       <h2 className="text-2xl font-bold mb-4">Creators</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {creators?.map((data: CreatorAPIResponse) => (
           <div
-            key={data.creatorId}
+            key={data?.creatorId}
             className="bg-white rounded-lg shadow-md overflow-hidden"
           >
             <Image
@@ -74,7 +74,7 @@ export default function ProfileMatch() {
 
                 <div className="flex flex-col items-end  w-full ">
                   <p className="text-gray-800 font-semibold text-right text-xs">
-                    {data?.creator.profile?.socialLinks?.primary?.followers}
+                    {data?.creator?.profile?.socialLinks?.primary?.followers}
                   </p>
                   <p>Followers</p>
                 </div>
@@ -106,14 +106,14 @@ export default function ProfileMatch() {
               <div className="mt-4 flex justify-between items-center">
                 <p className="text-sm text-gray-700">Price Per Video</p>
                 <p className="text-lg font-bold">
-                  $ {data?.creator.profile?.budgetVideo}
+                  $ {data?.creator?.profile?.budgetVideo}
                 </p>
               </div>
 
               <Link
                 href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${
-                  data.creatorId
-                }?similarity=${(data.similarity * 100).toFixed(2) || 10}`}
+                  data?.creatorId
+                }?similarity=${(data?.similarity * 100).toFixed(2) || 10}`}
               >
                 <Button
                   variant="outline"
