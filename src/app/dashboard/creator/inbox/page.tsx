@@ -1,159 +1,135 @@
 "use client";
-
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Bell, Star, Trash2, InboxIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AnimatePresence } from "framer-motion";
+import { useState, Suspense } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
+import { TabLoading } from "@/components/inbox/TabLoading";
 
-interface Message {
-  id: string;
-  author: string;
-  avatar: string;
-  content: string;
-  timestamp: string;
-  isStarred: boolean;
-  isRead: boolean;
-  type: "system" | "message";
-}
-
-const EmptyState = () => (
-  <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-center p-4">
-    <InboxIcon className="w-16 h-16 text-muted-foreground/50 mb-4" />
-    <h3 className="text-xl font-semibold mb-2">No messages yet</h3>
-    <p className="text-muted-foreground">
-      When you receive messages, they will appear here
-    </p>
-  </div>
-);
+const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full min-h-[64px] rounded-xl mt-4 animate-pulse bg-gray-200" />
+  ),
+});
 
 const Page = () => {
-  const [messages, setMessages] = React.useState<Message[]>([
-    // {
-    //   id: "1",
-    //   author: "Alex Morgan",
-    //   avatar: "https://avatar.iran.liara.run/public/boy",
-    //   content:
-    //     "System Update: Scheduled Maintenance\nOur servers will undergo maintenance on October 31, 2024, from 1 AM to 3...",
-    //   timestamp: "08:43 PM",
-    //   isStarred: true,
-    //   isRead: false,
-    //   type: "system",
-    // },
-    // {
-    //   id: "2",
-    //   author: "Jamie Nguyen",
-    //   avatar: "https://avatar.iran.liara.run/public/boy",
-    //   content:
-    //     "Weekly Dev Team Meeting:\n Reminder: Join our weekly dev team meeting to discuss progress and blockers.",
-    //   timestamp: "08:43 PM",
-    //   isStarred: true,
-    //   isRead: false,
-    //   type: "message",
-    // },
-  ]);
+  const [activeTab, setActiveTab] = useState("");
+  // const { data: campaigns, isLoading, isError } = useFindAiCampaignsList();
 
-  const toggleStar = (id: string) => {
-    setMessages(
-      messages.map((msg) =>
-        msg.id === id ? { ...msg, isStarred: !msg.isStarred } : msg
-      )
-    );
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
   };
-
-  const deleteMessage = (id: string) => {
-    setMessages(messages.filter((msg) => msg.id !== id));
-  };
-
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Inbox</h1>
-        <div className="flex gap-2">
-          <Badge variant="secondary" className="px-2 py-1">
-            {messages.filter((m) => !m.isRead).length} Unread
-          </Badge>
+    <AnimatePresence mode="wait">
+      <Tabs defaultValue="" onValueChange={handleTabChange}>
+        <div className="overflow-auto sticky top-0 z-10 bg-background">
+          <TabsList className="w-full bg-secondary">
+            <TabsTrigger
+              value="ongoing"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+            >
+              Ongoing Collaboration
+            </TabsTrigger>
+            <TabsTrigger
+              value="pending"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+            >
+              Pending Opportunities
+            </TabsTrigger>
+            <TabsTrigger
+              value="completed"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+            >
+              Completed Collaboration
+            </TabsTrigger>
+            <TabsTrigger
+              value="payment"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+            >
+              Payment
+            </TabsTrigger>
+          </TabsList>
         </div>
-      </div>
 
-      {messages.length === 0 ? (
-        <EmptyState />
-      ) : (
-        <ScrollArea className="h-[calc(100vh-200px)]">
-          <div className="space-y-4">
-            {messages.map((message) => (
-              <Card
-                key={message.id}
-                className={`transition-all hover:shadow-md ${
-                  !message.isRead ? "bg-muted/30" : ""
-                }`}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0">
-                      {message.type === "system" && (
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Bell className="w-5 h-5 text-primary" />
-                        </div>
-                      )}
-                      {message.type === "message" && (
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Image
-                            src={message.avatar}
-                            alt={message.author}
-                            width={40}
-                            height={40}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-grow">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-semibold">{message.author}</h3>
-                          <p className="text-sm text-muted-foreground whitespace-pre-line">
-                            {message.content}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">
-                            {message.timestamp}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-2 mt-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleStar(message.id)}
-                    >
-                      <Star
-                        className={`w-4 h-4 ${
-                          message.isStarred
-                            ? "fill-yellow-400 text-yellow-400"
-                            : ""
-                        }`}
-                      />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => deleteMessage(message.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        {/* Use Suspense with lazy loaded components */}
+        <TabsContent value="ongoing" className="w-full mt-5 sm:mt-8 px-5">
+          <Suspense fallback={<TabLoading />}>
+            {activeTab === "ongoing" && (
+              <InboxCard
+                status={"ongoing"}
+                title={
+                  "We are seeking a passionate Fitness Black Female Influencer"
+                }
+                image={"https://avatar.iran.liara.run/public/boy"}
+              />
+            )}
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="pending" className="w-full mt-5 sm:mt-8 px-5">
+          <Suspense fallback={<TabLoading />}>
+            {activeTab === "pending" && (
+              <InboxCard
+                status={"pending"}
+                title={
+                  "We are seeking a passionate Fitness Black Female Influencer"
+                }
+                image={"https://avatar.iran.liara.run/public/boy"}
+              />
+            )}
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="completed" className="w-full mt-5 sm:mt-8 px-5">
+          <Suspense fallback={<TabLoading />}>
+            {activeTab === "completed" && (
+              <InboxCard
+                status={"completed"}
+                title={
+                  "We are seeking a passionate Fitness Black Female Influencer"
+                }
+                image={"https://avatar.iran.liara.run/public/boy"}
+              />
+            )}
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="payment" className="w-full mt-5 sm:mt-8 px-5">
+          <Suspense fallback={<TabLoading />}>
+            {activeTab === "payment" && (
+              <InboxCard
+                status={"payment"}
+                title={
+                  "We are seeking a passionate Fitness Black Female Influencer"
+                }
+                image={"https://avatar.iran.liara.run/public/boy"}
+              />
+            )}
+          </Suspense>
+        </TabsContent>
+      </Tabs>
+
+      {activeTab == "" && (
+        <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
+          <Image
+            src="/images/Inbox/intro.png"
+            alt=""
+            width={280}
+            height={280}
+            className="mx-auto"
+            priority
+          />
+          <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
+            <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900">
+              Welcome to the inbox. <br /> Collaboration opportunities from
+              brands will appear here.
+            </h3>
           </div>
-        </ScrollArea>
+        </div>
       )}
-    </div>
+    </AnimatePresence>
   );
 };
 
