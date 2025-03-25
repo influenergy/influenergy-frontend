@@ -5,7 +5,7 @@ import DeleteModal from "@/components/userProfile/DeleteModal";
 import ProfileActions from "@/components/userProfile/ProfileActions";
 import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
-import { PenLine } from "lucide-react";
+import { ChevronsLeft, PenLine } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { selectUser, useAppSelector } from "@/store";
@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { userApi } from "@/services/userServices";
 import { Loader2 } from "lucide-react";
 import ProfileInfo from "@/components/profile/ProfileInfo";
+import Link from "next/link";
 // import Link from "next/link";
 
 export default function Page() {
@@ -111,7 +112,13 @@ export default function Page() {
     <div className="min-h-[calc(100vh-80px)] flex flex-col items-center px-4 sm:px-8 py-5 overflow-y-auto">
       <div className="w-full max-w-7xl">
         {/* first section */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4">
+        <div className="flex justify-start">
+          <Link href="/dashboard" className="flex items-center gap-2 text-gray-400 underline">
+          <ChevronsLeft />
+            Back
+          </Link>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 mt-3">
           <p>Edit Profile</p>
           <div className="relative w-[100px] h-[100px]">
             <Image
