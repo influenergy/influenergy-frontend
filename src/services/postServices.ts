@@ -2,12 +2,11 @@ import { transformPostData } from "@/utils/transformQuestionnaire";
 import { api } from "./api";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 
-
-
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
-    
     const transformedData = transformPostData(formData);
+
+    // console.log("postApi", transformedData);
 
     try {
       const response = await api.post("/brand/add-campaign", transformedData, {
@@ -96,9 +95,9 @@ export const postApi = {
   getVideoPost: async () => {
     try {
       const response = await api.get(`/creator/social-videos`);
-      return response.data.data;
+      return response.data;
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      console.error("Error uploading post:", error);
       throw error;
     }
   },

@@ -26,7 +26,8 @@ const Page = () => {
   const { data: posts, isLoading, isError, refetch } = useGetPost();
 
   // Use the API data only if the user's profile is completed
-  const shouldShowContent = user?.isProfileCompleted && posts?.videos;
+  const shouldShowContent = user?.isProfileCompleted && posts?.data?.videos;
+  // console.log('shouldShowContent', shouldShowContent);
 
   return (
     <div className="p-4 h-screen">
@@ -66,7 +67,7 @@ const Page = () => {
             Something went wrong while fetching data
           </p>
         </div>
-      ) : shouldShowContent && posts.videos.length === 0 ? (
+      ) : shouldShowContent && posts?.data?.videos.length === 0 ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
             src="/images/MyPost/empty.png"
@@ -117,7 +118,7 @@ const Page = () => {
           </div>
 
           <div className="flex flex-wrap gap-4 mt-4">
-            {posts.videos.map((data: VideoData, index: number) => (
+            {posts?.data?.videos.map((data: VideoData, index: number) => (
               <PostCard
                 key={index}
                 data={{

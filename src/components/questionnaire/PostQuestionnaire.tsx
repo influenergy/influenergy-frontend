@@ -159,7 +159,6 @@ const PostQuestionnaire = (): JSX.Element => {
     toast,
     trigger,
     getValues,
-    dispatch,
     currentStep,
     user,
   ]);
