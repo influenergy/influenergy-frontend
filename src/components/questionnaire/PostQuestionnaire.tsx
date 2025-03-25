@@ -4,8 +4,6 @@ import { useToast } from "@/hooks/use-toast";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useDispatch } from "react-redux";
-// import { setCredentials, User } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,7 +43,6 @@ const PostQuestionnaire = (): JSX.Element => {
   >("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
