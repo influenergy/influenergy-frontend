@@ -27,17 +27,18 @@ const Page = () => {
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full bg-secondary">
             <TabsTrigger
-              value="ongoing"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
-            >
-              Ongoing Collaboration
-            </TabsTrigger>
-            <TabsTrigger
               value="pending"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
               Pending Opportunities
             </TabsTrigger>
+            <TabsTrigger
+              value="ongoing"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+            >
+              Ongoing Collaboration
+            </TabsTrigger>
+
             <TabsTrigger
               value="completed"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
