@@ -7,27 +7,23 @@ export const queryKeys = {
   profileDetails: (id: string) => ["profileDetails", id],
 };
 
-export const useFindAiCampaignsList = () => {
+export const useFindAiCampaignsList = (status: string) => {
   return useQuery({
-    queryKey: [queryKeys.finddaiCampaignsList],
+    queryKey: [queryKeys.finddaiCampaignsList, status],
     queryFn: async () => {
       try {
-        return await postApi.getCampaigns();
+        return await postApi.getCampaignByStatus(status);
       } catch (error) {
         console.error("Error fetching AI campaigns list:", error);
         throw error;
       }
     },
-    staleTime: 3 * 60 * 1000,
     gcTime: 8 * 60 * 1000,
-    retry: (failureCount, error) => {
-      const err = error as AxiosError;
-      // Don't retry on 404 or 401 errors
-      if (err.response?.status === 404 || err.response?.status === 401) {
-        return false;
-      }
-      return failureCount < 3;
-    },
+    retry: false,
+    // Add staleTime to prevent frequent refetches
+    staleTime: Infinity,
+    // Disable refetching on window focus
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -58,11 +54,27 @@ export const useFindAiCampaign = (id: string) => {
     queryKey: ["findaiCampaign", id],
     queryFn: async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
 
         return await postApi.findAIMatch(id);
       } catch (error) {
         console.error(`Error fetching AI match for ID ${id}:`, error);
+        throw error;
+      }
+    },
+    enabled: !!id,
+    retry: 2,
+  });
+};
+
+export const useGetCreatorVideos = (id: string) => {
+  return useQuery({
+    queryKey: ["creatorVideos", id],
+    queryFn: async () => {
+      try {
+        return await postApi.getCreatorVideos(id);
+      } catch (error) {
+        console.error(`Error fetching creator videos for ID ${id}:`, error);
         throw error;
       }
     },

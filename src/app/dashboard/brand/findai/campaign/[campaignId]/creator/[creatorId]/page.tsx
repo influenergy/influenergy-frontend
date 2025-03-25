@@ -7,13 +7,8 @@ import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCampaignProfileDetails } from "@/hooks/useFindAi";
-import MatchReason from "@/components/creator/MatchReason";
 
-// interface Creator {
-//   id: string;
-//   name: string;
-//   matchPercentage: number;
-// }
+
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -34,10 +29,10 @@ const AudienceInsights = lazy(
 const ContentEngagement = lazy(
   () => import("@/components/creator/ContentEngagement")
 );
-// const TrendingVideos = lazy(
-//   () => import("@/components/creator/TrendingVideos")
-// );
-// const MatchReason = lazy(() => import("@/components/creator/MatchReason"));
+const TrendingVideos = lazy(
+  () => import("@/components/creator/TrendingVideos")
+);
+const MatchReason = lazy(() => import("@/components/creator/MatchReason"));
 
 // Loading component
 const SectionLoader = () => (
@@ -54,7 +49,7 @@ const CreatorDetailsPage = () => {
   const [failedModalOpen, setFailedModalOpen] = useState(false);
 
   const searchParams = new URLSearchParams(window.location.search);
-  const similarity = searchParams.get('similarity');
+  const similarity = searchParams.get("similarity");
   // Use React Query hook to fetch creator data
   const {
     data: creator,
@@ -162,13 +157,12 @@ const CreatorDetailsPage = () => {
         <ContentEngagement creator={creator} />
       </Suspense>
 
-      {/* <Suspense fallback={<SectionLoader />}>
-        <TrendingVideos creator={creator} />
+      <Suspense fallback={<SectionLoader />}>
+        <TrendingVideos creatorId={Array.isArray(creatorId) ? creatorId[0] : creatorId} />
       </Suspense>
 
-      */}
       <Suspense fallback={<SectionLoader />}>
-        <MatchReason value={similarity || ''} />
+        <MatchReason value={similarity || ""} />
       </Suspense>
 
       {/* Collaborate Button - Fixed to bottom on mobile */}

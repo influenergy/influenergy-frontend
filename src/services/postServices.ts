@@ -2,11 +2,23 @@ import { transformPostData } from "@/utils/transformQuestionnaire";
 import { api } from "./api";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 
+interface Video {
+  title: string;
+  image: string;
+  url: string;
+}
+
+interface VideoListProps {
+  videos: Video[];
+}
+
+
+
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
     const transformedData = transformPostData(formData);
 
-    // console.log("postApi", transformedData);
+    console.log("postApi", transformedData);
 
     try {
       const response = await api.post("/brand/add-campaign", transformedData, {
@@ -41,39 +53,30 @@ export const postApi = {
       throw error;
     }
   },
-  getActiveCollaboration: async (id: string) => {
+  getCampaignByStatus: async (status: string) => {
     try {
-      const response = await api.get(`/brand/active-collaboration/${id}`);
+      const response = await api.get(`/brand/campaigns/${status}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCampaignByStatus :", error);
+      throw error;
+    }
+  },
+  findAIMatch: async (campaignId: string) => {
+    try {
+      const response = await api.get(`/brand/ai-find/${campaignId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching campaigns:", error);
       throw error;
     }
   },
-  getPendingCollaboration: async (id: string) => {
+  getCreatorVideos: async (id: string) => {
     try {
-      const response = await api.get(`/brand/pending-collaboration/${id}`);
+      const response = await api.get(`/brand/social-videos/${id}`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching campaigns:", error);
-      throw error;
-    }
-  },
-  getCompletedCollaboration: async (id: string) => {
-    try {
-      const response = await api.get(`/brand/completed-collaboration/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching campaigns:", error);
-      throw error;
-    }
-  },
-  findAIMatch: async (vectorId: string) => {
-    try {
-      const response = await api.get(`/brand/ai-find/${vectorId}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching campaigns:", error);
+      console.error("Error fetching creator videos:", error);
       throw error;
     }
   },
@@ -94,20 +97,16 @@ export const postApi = {
   },
   getVideoPost: async () => {
     try {
-      const response = await api.get(`/creator/social-videos`);
+      const response = await api.post(`/creator/add_social_video`);
       return response.data;
     } catch (error) {
       console.error("Error uploading post:", error);
       throw error;
     }
   },
-  uploadVideoPost: async (data: FormData) => {
+  uploadVideoPost: async (data: VideoListProps) => {
     try {
-      const response = await api.post(`/creator/add_social_video`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await api.post(`/creator/add_social_video`, data);
       return response.data;
     } catch (error) {
       console.error("Error uploading post:", error);
