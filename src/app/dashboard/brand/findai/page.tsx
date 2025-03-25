@@ -97,10 +97,3 @@ export default function Page() {
   );
 }
 
-/**
-  - ai find , pending collaboration, active collaboration, completed collaboration
-  - profile card
-  - profile card details
-  - send collaboaration request
-  - wallet api
- * */

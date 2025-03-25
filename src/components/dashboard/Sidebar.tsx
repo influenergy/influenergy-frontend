@@ -37,10 +37,7 @@ export default function Sidebar({ type }: { type: string }) {
   return (
     <div className="border-r bg-primary fixed left-0 top-0 h-screen w-16 sm:w-20 md:w-[240px] z-10 transition-all duration-300">
       <div className="flex h-full flex-col gap-2 p-2 md:p-4">
-        <Link
-          href="/dashboard"
-          className="flex justify-center md:justify-start"
-        >
+        <Link href="/dashboard" className="flex justify-center items-center">
           <Image
             src="/images/logo-white.svg"
             width={180}

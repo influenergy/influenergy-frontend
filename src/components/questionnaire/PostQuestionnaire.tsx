@@ -15,6 +15,7 @@ import {
   step3Schema,
   step4Schema,
   step5Schema,
+  step6Schema,
 } from "@/lib/PostSchema";
 import { Step } from "./PostSteps";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
@@ -35,6 +36,7 @@ const schemas: StepSchemas = {
   step3: step3Schema,
   step4: step4Schema,
   step5: step5Schema,
+  step6: step6Schema,
 };
 
 const PostQuestionnaire = (): JSX.Element => {
@@ -118,9 +120,7 @@ const PostQuestionnaire = (): JSX.Element => {
 
         if (user && user._id) {
           // Use the transformed data directly without FormData
-          await postApi.createAdPost(
-            updatedData as PostQuestionnaireData
-          );
+          await postApi.createAdPost(updatedData as PostQuestionnaireData);
 
           toast({
             title: "Success!",
@@ -159,7 +159,6 @@ const PostQuestionnaire = (): JSX.Element => {
     toast,
     trigger,
     getValues,
-    dispatch,
     currentStep,
     user,
   ]);

@@ -20,38 +20,54 @@ interface VideoData {
 
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: posts, isLoading, isError, refetch } = useGetPost();
   const user = useAppSelector(selectUser);
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-wrap">
-        {[...Array(3)].map((_, i) => (
-          <CardSkeleton key={i} />
-        ))}
-      </div>
-    );
-  }
-  if (isError) {
-    return (
-      <div className="w-full flex flex-col items-center justify-center h-full gap-5">
-        <Image
-          src="/images/MyPost/error.png"
-          width={400}
-          height={400}
-          alt="Error"
-          className="object-cover"
-        />
-        <p className="text-4xl font-semibold text-center mt-4">
-          Something went wrong while fetching data
-        </p>
-      </div>
-    );
-  }
+  // Use the enabled option to conditionally fetch data only when profile is completed
+  const { data: posts, isLoading, isError, refetch } = useGetPost();
+
+  // Use the API data only if the user's profile is completed
+  const shouldShowContent = user?.isProfileCompleted && posts?.data?.videos;
+  // console.log('shouldShowContent', shouldShowContent);
 
   return (
     <div className="p-4 h-screen">
-      {posts.videos.length === 0 ? (
+      {!user?.isAccountVerified ? (
+        <div className="w-full flex flex-col items-center justify-center h-[calc(100vh-16rem)] gap-5">
+          <Image
+            src="/images/MyPost/empty.png"
+            width={400}
+            height={400}
+            alt="Profile Incomplete"
+            className="object-cover"
+          />
+          <p className="text-4xl font-semibold text-center mt-4">
+            Please complete your profile
+          </p>
+          <p className="text-lg font-medium text-center">
+            You need to complete your profile before you can access this
+            feature.
+          </p>
+        </div>
+      ) : isLoading ? (
+        <div className="flex flex-wrap">
+          {[...Array(3)].map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="w-full flex flex-col items-center justify-center h-[calc(100vh-16rem)] gap-5">
+          <Image
+            src="/images/MyPost/empty.png"
+            width={400}
+            height={400}
+            alt="Error"
+            className="object-cover"
+          />
+          <p className="text-4xl font-semibold text-center mt-4">
+            Something went wrong while fetching data
+          </p>
+        </div>
+      ) : shouldShowContent && posts?.data?.videos.length === 0 ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
             src="/images/MyPost/empty.png"
@@ -84,7 +100,7 @@ const Page = () => {
             onSuccess={() => refetch()}
           />
         </div>
-      ) : (
+      ) : shouldShowContent ? (
         <>
           <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:space-x-4">
             <p className="text-2xl font-semibold md:text-3xl font-poppins md:w-1/2">
@@ -102,7 +118,7 @@ const Page = () => {
           </div>
 
           <div className="flex flex-wrap gap-4 mt-4">
-            {posts.videos.map((data: VideoData, index: number) => (
+            {posts?.data?.videos.map((data: VideoData, index: number) => (
               <PostCard
                 key={index}
                 data={{
@@ -116,11 +132,11 @@ const Page = () => {
             ))}
           </div>
         </>
-      )}
+      ) : null}
       <UploadVideoModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        onSuccess={() => refetch()}
+        onSuccess={() => user?.isProfileCompleted && refetch()}
       />
     </div>
   );
