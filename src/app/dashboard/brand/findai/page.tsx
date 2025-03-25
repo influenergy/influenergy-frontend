@@ -48,16 +48,16 @@ export default function Page() {
               </span>
             </TabsTrigger>
             <TabsTrigger
-              value="active"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
-            >
-              Active Collaboration
-            </TabsTrigger>
-            <TabsTrigger
               value="pending"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
               Pending Collaboration
+            </TabsTrigger>
+            <TabsTrigger
+              value="active"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+            >
+              Active Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="completed"
@@ -96,4 +96,3 @@ export default function Page() {
     </AnimatePresence>
   );
 }
-
