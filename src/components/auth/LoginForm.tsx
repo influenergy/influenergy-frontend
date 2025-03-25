@@ -134,7 +134,7 @@ export default function LoginForm() {
     }
   };
 
-  const image =
+  const imageUrl =
     userType === "creator"
       ? "https://d20cf3kfv1a9jn.cloudfront.net/images/login_creator.webp"
       : "https://d20cf3kfv1a9jn.cloudfront.net/images/brand_login.webp";
@@ -157,9 +157,11 @@ export default function LoginForm() {
             src="/images/line1.png"
             alt=""
             width={400}
-            height={100}
+            height={150}
             className="w-full h-auto"
-            priority
+            loading="lazy"
+           
+           
           />
         </motion.div>
 
@@ -173,8 +175,11 @@ export default function LoginForm() {
             src="/images/line2.png"
             alt=""
             width={400}
-            height={100}
+            height={150}
             className="w-full h-auto"
+            loading="lazy"
+            
+          
           />
         </motion.div>
 
@@ -343,8 +348,16 @@ export default function LoginForm() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="relative w-full">
-          <Image src={image} alt="" fill className="object-cover " priority />
+        <div className="relative w-full h-screen">
+          <Image
+            src={imageUrl}
+            alt={`${userType} login background`}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 40vw"
+            quality={80}
+            loading="lazy"
+          />
         </div>
       </motion.div>
     </div>
