@@ -68,11 +68,11 @@ const brandNav: NavItem[] = [
     icon: WandSparkles,
     label: "AI Find",
   },
-  {
-    href: "/dashboard/brand/inbox",
-    icon: Mail,
-    label: "Inbox",
-  },
+  // {
+  //   href: "/dashboard/brand/inbox",
+  //   icon: Mail,
+  //   label: "Inbox",
+  // },
 ];
 
 const creatorProfileNav: NavItem[] = [

@@ -34,7 +34,7 @@ const Page = () => {
               value="Pending"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
-              Pending Opportunities
+              Pending Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="Active"

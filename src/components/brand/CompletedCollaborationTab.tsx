@@ -16,7 +16,7 @@ export default function CompletedCollaborationTab() {
       </div>
     );
   }
-
+ 
   if (isError) {
     return (
       <div className="text-center py-10">

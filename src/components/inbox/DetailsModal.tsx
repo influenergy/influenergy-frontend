@@ -118,19 +118,21 @@ export default function DetailsModal({
                     Age:{" "}
                     {campaign.targetAgeGroup
                       ? Array.isArray(campaign.targetAgeGroup)
-                        ? campaign.targetAgeGroup
+                        ? (campaign.targetAgeGroup as string[])
                             .map((age) =>
                               age.toString().replace(/[\[\]"]/g, "")
                             )
                             .join(", ")
-                        : campaign.targetAgeGroup
+                        : (campaign.targetAgeGroup as string)
                             .toString()
                             .replace(/[\[\]"]/g, "")
-                      : "18 to 35 Years"}
+                      : ""}
                   </p>
                   <p className="text-gray-600">
                     {" "}
-                    Gender: {campaign.targetGender || "Not specified"}
+                    Gender:{" "}
+                    {campaign.targetGender.toString().replace(/[\[\]"]/g, "") ||
+                      "Not specified"}
                   </p>
                   <p className="text-gray-600">
                     Location:{" "}

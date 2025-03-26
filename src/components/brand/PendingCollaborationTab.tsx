@@ -4,11 +4,7 @@ import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import CampaignCard from "./CampaignCard";
 
 export default function PendingCollaborationTab() {
-  const {
-    data,
-    isLoading,
-    isError,
-  } = useFindAiCampaignsList("Pending");
+  const { data, isLoading, isError } = useFindAiCampaignsList("Pending");
   if (isLoading) {
     return (
       <div className="h-[75vh] flex items-center justify-center">
@@ -28,7 +24,6 @@ export default function PendingCollaborationTab() {
     );
   }
 
-  
 
   return (
     <div className="w-full px-2 sm:px-4">

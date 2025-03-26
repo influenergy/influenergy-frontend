@@ -71,3 +71,38 @@ export const useAcceptOrDeclineCollaboration = (
     },
   });
 };
+
+interface AcceptOrDeclineVideoParams {
+  collaborationId: string;
+  videoId: string;
+  status: string;
+  message: string;
+  onSuccess?: () => void;
+}
+
+export const useAcceptOrDeclineVideo = ({
+  collaborationId,
+  videoId,
+  status,
+  message,
+  onSuccess,
+}: AcceptOrDeclineVideoParams) => {
+  return useMutation({
+    mutationKey: ["acceptOrDeclineVideo", collaborationId, status],
+    mutationFn: async () => {
+      try {
+        const response = await postApi.acceptOrDeclineVideo(
+          collaborationId,
+          videoId,
+          status,
+          message || ""
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching getCollaborationByStatus :", error);
+        throw error;
+      }
+    },
+    onSuccess,
+  });
+};

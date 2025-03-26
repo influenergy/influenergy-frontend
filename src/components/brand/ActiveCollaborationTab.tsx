@@ -4,11 +4,7 @@ import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import CampaignCard from "./CampaignCard";
 
 export default function ActiveCollaborationTab() {
-  const {
-    data,
-    isLoading,
-    isError,
-  } = useFindAiCampaignsList("Active");
+  const { data, isLoading, isError } = useFindAiCampaignsList("Active");
 
   if (isLoading) {
     return (
@@ -28,6 +24,7 @@ export default function ActiveCollaborationTab() {
       </div>
     );
   }
+  console.log("pending collaboaration", data);
 
   return (
     <div className="w-full px-2 sm:px-4">

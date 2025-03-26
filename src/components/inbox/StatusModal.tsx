@@ -9,15 +9,24 @@ import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useAddVideoUrl } from "@/hooks/usePost";
+interface Video {
+  link: string;
+  timestamp: string;
+  status: string;
+  _id: string;
+  reason?:string;
+}
 
 export default function StatusModal({
   open,
   onOpenChange,
   collaborationId,
+  data,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   collaborationId: string;
+  data: Video[] | [];
 }) {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
@@ -34,6 +43,8 @@ export default function StatusModal({
       console.error("Error submitting video:", error);
     }
   };
+
+  console.log('data',data)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -78,6 +89,7 @@ export default function StatusModal({
             </div>
             <div>
               <p className="font-medium mb-2">Upload Video</p>
+
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2">
                 <input
                   type="text"
@@ -85,14 +97,35 @@ export default function StatusModal({
                   className="w-full px-3 py-2 border rounded-md text-sm"
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
+                  disabled={data[0]?.status == "Pending"}
                 />
                 <button
                   onClick={() => setIsConfirmationOpen(true)}
+                  disabled={data[0]?.status == "Pending"}
                   className="w-full p-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition"
                 >
                   Send Video Link to Brand
                 </button>
               </div>
+              {data.length > 0 && (
+                <div className="mt-2">
+                  <p
+                    className={`text-xs italic ${
+                      data[0].status == "Pending"
+                        ? "text-yellow-500"
+                        : data[0].status == "Declined"
+                        ? "text-red-500"
+                        : "text-green-500"
+                    }`}
+                  >
+                    {data[0].status == "Pending"
+                      ? "Pending Approval"
+                      : data[0].status == "Declined"
+                      ? data[0]?.reason || " Video Rejected . Please Check Your Email for More Details"
+                      : "Approved"}{" "}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 

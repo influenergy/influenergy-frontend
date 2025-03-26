@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -10,17 +11,68 @@ import {
 import { CircleCheck, Info } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
+
+interface Video {
+  link: string;
+  timestamp: string;
+  status: string;
+  _id: string;
+}
+
+interface CollaborationDetails {
+  videos: Video[];
+}
+
+interface CampaignCollaboration {
+  brandId: string;
+  brandName: string;
+  campaignName: string;
+  campaignPost: string;
+  collaborationId: string;
+  collaborationData: CollaborationDetails;
+  campaignCollaborationStatus: string;
+}
 
 export default function StatusDialog({
   isOpen,
   onClose,
+  campaign,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  campaign: CampaignCollaboration;
 }) {
+  const queryClient = useQueryClient();
   const [isApproveDialogOpen, setApproveDialogOpen] = useState(false);
   const [isRequestChangesDialogOpen, setRequestChangesDialogOpen] =
     useState(false);
+  const [requestMessage, setRequestMessage] = useState("");
+
+  const { mutate: handleApproveVideo, isPending: isApproving } =
+    useAcceptOrDeclineVideo({
+      collaborationId: campaign?.collaborationId,
+      videoId: campaign?.collaborationData?.videos[0]?._id,
+      status: "Approved",
+      message: "test",
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        onClose();
+      },
+    });
+
+  const { mutate: handleDeclineVideo, isPending: isDeclining } =
+    useAcceptOrDeclineVideo({
+      collaborationId: campaign?.collaborationId,
+      videoId: campaign?.collaborationData?.videos[0]?._id,
+      status: "Declined",
+      message: requestMessage,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        onClose();
+      },
+    });
 
   return (
     <>
@@ -59,7 +111,16 @@ export default function StatusDialog({
               </div>
               <div className="flex items-center justify-between w-full">
                 <p className="font-medium">Uploaded Video</p>
-                <Button className="bg-primary text-white">View Video</Button>
+                {campaign?.collaborationData?.videos?.length > 0 && (
+                  <Button className="bg-primary text-white">
+                    <Link
+                      href={campaign?.collaborationData?.videos[0]?.link}
+                      target="_blank"
+                    >
+                      View Video
+                    </Link>
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -72,15 +133,23 @@ export default function StatusDialog({
                 <div className="flex gap-2 mt-2 sm:mt-0 w-full">
                   <Button
                     className="bg-primary text-white"
+                    disabled={
+                      campaign?.collaborationData?.videos?.length == 0 ||
+                      isApproving
+                    }
                     onClick={() => setApproveDialogOpen(true)}
                   >
-                    Approve
+                    {isApproving ? "Approving..." : "Approve"}
                   </Button>
                   <Button
                     className="border border-primary text-primary bg-white hover:bg-primary hover:text-white"
                     onClick={() => setRequestChangesDialogOpen(true)}
+                    disabled={
+                      campaign?.collaborationData?.videos?.length == 0 ||
+                      isDeclining
+                    }
                   >
-                    Request Changes
+                    {isDeclining ? "Requesting Changes..." : "Request Changes"}
                   </Button>
                 </div>
               </div>
@@ -114,21 +183,24 @@ export default function StatusDialog({
               />
             </DialogTitle>
             <DialogDescription className="text-lg text-center text-black">
-            Are you sure you want to <br/> approve the video?
+              Are you sure you want to <br /> approve the video?
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end gap-4 mt-4 w-full">
             <Button
               className="bg-primary text-white w-full"
               onClick={() => {
+                handleApproveVideo();
                 setApproveDialogOpen(false);
               }}
+              disabled={isApproving}
             >
-              Yes
+              {isApproving ? "Approving..." : "Yes"}
             </Button>
             <Button
               className="border border-primary text-primary bg-white hover:bg-primary hover:text-white w-full"
               onClick={() => setApproveDialogOpen(false)}
+              disabled={isApproving}
             >
               No
             </Button>
@@ -149,22 +221,29 @@ export default function StatusDialog({
             className="w-full border border-gray-300 rounded-md p-2 mt-2"
             rows={4}
             placeholder="Enter your message here..."
+            value={requestMessage}
+            onChange={(e) => setRequestMessage(e.target.value)}
           ></textarea>
           <div className="flex justify-end gap-4 mt-4 w-full">
             <Button
               className="border border-primary text-primary bg-white hover:bg-primary hover:text-white w-full"
-              onClick={() => setRequestChangesDialogOpen(false)}
+              onClick={() => {
+                setRequestChangesDialogOpen(false);
+                setRequestMessage("");
+              }}
+              disabled={isDeclining}
             >
               Cancel
             </Button>
             <Button
               className="bg-primary text-white w-full"
               onClick={() => {
+                handleDeclineVideo();
                 setRequestChangesDialogOpen(false);
-                // Add request changes logic here
               }}
+              disabled={isDeclining}
             >
-              Send
+              {isDeclining ? "Sending..." : "Send"}
             </Button>
           </div>
         </DialogContent>

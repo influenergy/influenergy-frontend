@@ -5,17 +5,38 @@ import { Campaign } from "@/types/PostQuestionnaire";
 import { memo, useState } from "react";
 import StatusDialog from "./StatusDialog";
 
+export interface CampaignVideo {
+  link: string;
+  timestamp: string;
+  status: "Pending" | "Approved" | "Declined";
+  _id: string;
+}
+
+export interface CampaignData {
+  _id: string;
+  brandId: string;
+  brandName: string;
+  campaignName: string;
+  campaignPost: string;
+  collaborationId: string | null;
+  campaignCollaborationStatus?: "Active" | "Inactive" | string;
+  collaborationData?: {
+    videos: CampaignVideo[];
+  };
+}
+
 const CampaignCard = memo(
   ({
     campaign,
     onFindClick,
     status,
   }: {
-    campaign: Campaign;
+    campaign: CampaignData;
     onFindClick?: (id: string) => void;
     status: string;
   }) => {
     const [isOpen, setIsOpen] = useState(false);
+    console.log("campaign", campaign);
 
     return (
       <>
@@ -69,8 +90,12 @@ const CampaignCard = memo(
             </Button>
           )}
         </div>
-        {isOpen && (
-          <StatusDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        {isOpen && campaign.collaborationId && (
+          <StatusDialog
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            campaign={campaign as any}
+          />
         )}
       </>
     );

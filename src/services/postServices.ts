@@ -157,4 +157,24 @@ export const postApi = {
       throw error;
     }
   },
+  acceptOrDeclineVideo: async (
+    collaborationId: string,
+    videoId: string,
+    status: string,
+    message?: string
+  ) => {
+    try {
+      const response = await api.put(
+        `/brand/collaboration-video/status/${collaborationId}/${videoId}`,
+        {
+          status,
+          message: message || "",
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching acceptOrDeclineVideo :", error);
+      throw error;
+    }
+  },
 };
