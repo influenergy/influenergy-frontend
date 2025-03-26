@@ -115,7 +115,7 @@ export default function DetailsModal({
                   </p>
                   <hr />
                   <p className="text-gray-600">
-                    Age:{" "}
+                     Age:{" "}
                     {campaign.targetAgeGroup
                       ? Array.isArray(campaign.targetAgeGroup)
                         ? (campaign.targetAgeGroup as string[])
@@ -246,12 +246,6 @@ export default function DetailsModal({
                       <p className="text-gray-600">Expected Deliverables</p>
                       <p>{campaign.expectedDeliverables || "Not specified"}</p>
                     </div>
-                    {data?.amount && (
-                      <div>
-                        <p className="text-gray-600">Budget</p>
-                        <p>${data.amount}</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
