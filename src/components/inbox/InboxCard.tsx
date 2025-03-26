@@ -3,6 +3,7 @@ import { useState } from "react";
 import StatusModal from "./StatusModal";
 import DetailsModal from "./DetailsModal";
 import { Collaboration } from "@/types/Collaboration";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface InboxCardProps {
   status: string;
@@ -19,6 +20,22 @@ const InboxCard: React.FC<InboxCardProps> = ({
 }) => {
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const handleModalClose = (wasUpdated: boolean = false) => {
+    if (wasUpdated) {
+      // Refetch data when modal closes after changes
+      queryClient.invalidateQueries({
+        queryKey: ["collaborationStatusDetails"],
+      });
+      if (data._id) {
+        queryClient.invalidateQueries({
+          queryKey: ["creatorVideos", data._id],
+        });
+      }
+    }
+    setIsStatusModalOpen(false);
+  };
 
   return (
     <div className="w-[300px] border rounded-lg shadow-md p-4 flex flex-col items-center">
@@ -94,7 +111,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
       {status !== "Payment" && (
         <StatusModal
           open={isStatusModalOpen}
-          onOpenChange={setIsStatusModalOpen}
+          onOpenChange={handleModalClose}
           collaborationId={data._id}
           data={data.videos || []}
         />

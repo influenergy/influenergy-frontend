@@ -12,11 +12,13 @@ interface CollaborationConfirmationModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
+  budget: string;
+  isPending?: boolean;
 }
 
 export const CollaborationConfirmationModal: React.FC<
   CollaborationConfirmationModalProps
-> = ({ isOpen, onOpenChange, onConfirm }) => {
+> = ({ isOpen, onOpenChange, onConfirm, budget, isPending }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
@@ -30,8 +32,8 @@ export const CollaborationConfirmationModal: React.FC<
             />
           </DialogTitle>
           <DialogDescription className="text-black text-center text-lg ">
-            By confirming, $100 will be deducted from your wallet. Are you sure
-            you want to continue?
+            By confirming, ${budget} will be deducted from your wallet. Are you
+            sure you want to continue?
           </DialogDescription>
         </DialogHeader>
 
@@ -41,11 +43,17 @@ export const CollaborationConfirmationModal: React.FC<
             variant="secondary"
             onClick={() => onOpenChange(false)}
             className="w-full"
+            disabled={isPending}
           >
             No
           </Button>
-          <Button type="button" onClick={onConfirm} className="w-full">
-            Yes
+          <Button
+            type="button"
+            onClick={onConfirm}
+            className="w-full"
+            disabled={isPending}
+          >
+            {isPending ? " Submitting..." : "Yes"}
           </Button>
         </div>
       </DialogContent>

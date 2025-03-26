@@ -9,12 +9,14 @@ import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useAddVideoUrl } from "@/hooks/usePost";
+import { useQueryClient } from "@tanstack/react-query";
+
 interface Video {
   link: string;
   timestamp: string;
   status: string;
   _id: string;
-  reason?:string;
+  reason?: string;
 }
 
 export default function StatusModal({
@@ -30,12 +32,20 @@ export default function StatusModal({
 }) {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
+  const queryClient = useQueryClient();
 
   const addVideoMutation = useAddVideoUrl(videoUrl, collaborationId);
 
   const handleSubmitVideo = async () => {
     try {
       await addVideoMutation.mutateAsync();
+      // Force refetch of relevant data
+      queryClient.invalidateQueries({
+        queryKey: ["collaborationStatusDetails"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["creatorVideos", collaborationId],
+      });
       setIsConfirmationOpen(false);
       setVideoUrl("");
       onOpenChange(false);
@@ -43,7 +53,6 @@ export default function StatusModal({
       console.error("Error submitting video:", error);
     }
   };
-
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -120,7 +129,8 @@ export default function StatusModal({
                     {data[0].status == "Pending"
                       ? "Pending Approval"
                       : data[0].status == "Declined"
-                      ? data[0]?.reason || " Video Rejected . Please Check Your Email for More Details"
+                      ? data[0]?.reason ||
+                        " Video Rejected . Please Check Your Email for More Details"
                       : "Approved"}{" "}
                   </p>
                 </div>

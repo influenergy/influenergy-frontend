@@ -130,28 +130,36 @@ export default function StatusDialog({
                 <Info className="text-primary" />
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
-                <div className="flex gap-2 mt-2 sm:mt-0 w-full">
-                  <Button
-                    className="bg-primary text-white"
-                    disabled={
-                      campaign?.collaborationData?.videos?.length == 0 ||
-                      isApproving
-                    }
-                    onClick={() => setApproveDialogOpen(true)}
-                  >
-                    {isApproving ? "Approving..." : "Approve"}
-                  </Button>
-                  <Button
-                    className="border border-primary text-primary bg-white hover:bg-primary hover:text-white"
-                    onClick={() => setRequestChangesDialogOpen(true)}
-                    disabled={
-                      campaign?.collaborationData?.videos?.length == 0 ||
-                      isDeclining
-                    }
-                  >
-                    {isDeclining ? "Requesting Changes..." : "Request Changes"}
-                  </Button>
-                </div>
+                {campaign?.collaborationData?.videos[0].status != "Declined" ? (
+                  <div className="flex gap-2 mt-2 sm:mt-0 w-full">
+                    <Button
+                      className="bg-primary text-white"
+                      disabled={
+                        campaign?.collaborationData?.videos?.length == 0 ||
+                        isApproving ||
+                        isDeclining
+                      }
+                      onClick={() => setApproveDialogOpen(true)}
+                    >
+                      {isApproving ? "Approving..." : "Approve"}
+                    </Button>
+                    <Button
+                      className="border border-primary text-primary bg-white hover:bg-primary hover:text-white"
+                      onClick={() => setRequestChangesDialogOpen(true)}
+                      disabled={
+                        campaign?.collaborationData?.videos?.length == 0 ||
+                        isDeclining ||
+                        isApproving
+                      }
+                    >
+                      {isDeclining
+                        ? "Requesting Changes..."
+                        : "Request Changes"}
+                    </Button>
+                  </div>
+                ) : (
+                  <p>You have requested for new changes</p>
+                )}
               </div>
             </div>
 

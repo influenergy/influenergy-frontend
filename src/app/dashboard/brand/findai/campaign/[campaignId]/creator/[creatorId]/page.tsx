@@ -75,7 +75,7 @@ const CreatorDetailsPage = () => {
     } catch (err) {
       console.error("Error sending collaboration request:", err);
       setConfirmationModalOpen(false); // Ensure confirmation modal is closed on error
-    } 
+    }
   };
 
   if (isLoading) {
@@ -185,6 +185,8 @@ const CreatorDetailsPage = () => {
         isOpen={confirmationModalOpen}
         onOpenChange={setConfirmationModalOpen}
         onConfirm={confirmCollaboration}
+        budget={creator?.profile?.budgetVideo || 0}
+        isPending={isPending}
       />
 
       {/* Success Modal */}

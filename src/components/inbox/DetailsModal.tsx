@@ -25,9 +25,13 @@ export default function DetailsModal({
   const collaborationId = data?._id;
 
   const { mutate: acceptCollaboration, isPending: isAccepting } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Active");
+    useAcceptOrDeclineCollaboration(collaborationId, "Active", {
+      onSuccess: () => onOpenChange(false),
+    });
   const { mutate: declineCollaboration, isPending: declineLoading } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
+    useAcceptOrDeclineCollaboration(collaborationId, "Cancelled", {
+      onSuccess: () => onOpenChange(false),
+    });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -77,7 +81,7 @@ export default function DetailsModal({
                       ? campaign.campaignObjective
                           .toString()
                           .replace(/[\[\]"]/g, "")
-                      : "Awareness l Engagement Sales"}
+                      : "Awareness  Engagement Sales"}
                   </p>
                 </div>
 
@@ -115,7 +119,7 @@ export default function DetailsModal({
                   </p>
                   <hr />
                   <p className="text-gray-600">
-                     Age:{" "}
+                    Age:{" "}
                     {campaign.targetAgeGroup
                       ? Array.isArray(campaign.targetAgeGroup)
                         ? (campaign.targetAgeGroup as string[])
@@ -258,20 +262,14 @@ export default function DetailsModal({
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
             <button
               className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
-              onClick={() => {
-                acceptCollaboration();
-                onOpenChange(false);
-              }}
+              onClick={() => acceptCollaboration()}
               disabled={isAccepting || declineLoading}
             >
               {isAccepting ? "Accepting..." : "Accept"}
             </button>
             <button
               className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:text-white hover:bg-primary transition"
-              onClick={() => {
-                declineCollaboration();
-                if (!declineLoading) onOpenChange(false);
-              }}
+              onClick={() => declineCollaboration()}
               disabled={declineLoading || isAccepting}
             >
               {declineLoading ? "Rejecting..." : "Reject"}

@@ -41,7 +41,7 @@ export default function Page() {
           <TabsList className="w-full bg-secondary">
             <TabsTrigger
               value="ai"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               <span className="flex items-center gap-1">
                 <span>AI Find</span>
@@ -49,19 +49,19 @@ export default function Page() {
             </TabsTrigger>
             <TabsTrigger
               value="pending"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Pending Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="active"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Active Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="completed"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Completed Collaboration
             </TabsTrigger>

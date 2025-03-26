@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
 import { useAppSelector } from "@/store";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const queryKeys = {
   uploadPost: "uploadPost",
@@ -27,17 +28,27 @@ export const useGetPost = () => {
     // Disable automatic retries
     retry: false,
     // Add staleTime to prevent frequent refetches
-    staleTime: Infinity,
+    staleTime: 5000,
     // Disable refetching on window focus
     refetchOnWindowFocus: false,
   });
 };
 
-export const useAddVideoUrl = (data: string, collaborationId: string) => {
+export const useAddVideoUrl = (videoUrl: string, collaborationId: string) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationKey: [queryKeys.addVideo, collaborationId],
     mutationFn: async () => {
-      return await postApi.addVideoUrl(data, collaborationId);
+      return await postApi.addVideoUrl(videoUrl, collaborationId);
+    },
+    onSuccess: () => {
+      // Invalidate relevant queries to force a refetch
+      queryClient.invalidateQueries({
+        queryKey: ["collaborationStatusDetails"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["creatorVideos", collaborationId],
+      });
     },
   });
 };
@@ -53,20 +64,27 @@ export const useUploadPost = () => {
 
 export const useAcceptOrDeclineCollaboration = (
   collaborationId: string,
-  status: string
+  status: string,
+  options?: { onSuccess?: () => void }
 ) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationKey: ["acceptOrDeclineCollaboration", collaborationId, status],
     mutationFn: async () => {
-      try {
-        const response = await postApi.acceptOrDeclineCollaboration(
-          collaborationId,
-          status
-        );
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching getCollaborationByStatus :", error);
-        throw error;
+      return await postApi.acceptOrDeclineCollaboration(
+        collaborationId,
+        status
+      );
+    },
+    onSuccess: () => {
+      // Invalidate relevant queries to force a refetch
+      queryClient.invalidateQueries({
+        queryKey: ["collaborationStatusDetails"],
+      });
+
+      // Call the onSuccess callback if provided
+      if (options?.onSuccess) {
+        options.onSuccess();
       }
     },
   });

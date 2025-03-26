@@ -15,6 +15,8 @@ export const useCampaigns = () => {
     queryFn: async () => {
       return await postApi.getCampaigns();
     },
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
   });
 };
 
@@ -26,6 +28,8 @@ export const useCampaign = (id: string) => {
       return await postApi.getCampaignById(id);
     },
     enabled: !!id, // Only run query if id is provided
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
   });
 };
 
@@ -53,8 +57,8 @@ export const useCollaborationStatusDetails = (status: string) => {
         throw error;
       }
     },
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
     enabled: !!status,
   });
 };

@@ -19,10 +19,8 @@ export const useFindAiCampaignsList = (status: string) => {
       }
     },
     retry: false,
-    // Add staleTime to prevent frequent refetches
-    staleTime: Infinity,
-    // Disable refetching on window focus
-    refetchOnWindowFocus: false,
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
   });
 };
 
@@ -38,6 +36,8 @@ export const useCampaignProfileDetails = (id: string) => {
       }
     },
     enabled: !!id,
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
     retry: (failureCount, error) => {
       const err = error as AxiosError;
       if (err.response?.status === 404) return false;
@@ -60,7 +60,9 @@ export const useFindAiCampaign = (id: string) => {
       }
     },
     enabled: !!id,
-    retry: 2,
+    retry: false,
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
   });
 };
 
@@ -77,5 +79,7 @@ export const useGetCreatorVideos = (id: string) => {
     },
     enabled: !!id,
     retry: 2,
+    // Set staleTime to 5 seconds
+    staleTime: 5000,
   });
 };

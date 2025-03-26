@@ -19,12 +19,12 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 const Page = () => {
   const [activeTab, setActiveTab] = useState("");
 
-  const { data: campaignsData } = useCollaborationStatusDetails(activeTab);
+  const { data: campaignsData, isLoading } =
+    useCollaborationStatusDetails(activeTab);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
-
   return (
     <AnimatePresence mode="wait">
       <Tabs defaultValue="" onValueChange={handleTabChange}>
@@ -32,25 +32,25 @@ const Page = () => {
           <TabsList className="w-full bg-secondary">
             <TabsTrigger
               value="Pending"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Pending Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="Active"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Ongoing Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="Completed"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Completed Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="Payment"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Payment
             </TabsTrigger>
@@ -83,7 +83,7 @@ const Page = () => {
               )}
             {activeTab === "Active" &&
               (!campaignsData?.collaborations ||
-                campaignsData.collaborations.length === 0) && (
+                (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   No active collaborations found.
                 </div>
@@ -116,7 +116,7 @@ const Page = () => {
               )}
             {activeTab === "Pending" &&
               (!campaignsData?.collaborations ||
-                campaignsData.collaborations.length === 0) && (
+                (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   No pending collaborations found.
                 </div>
@@ -149,7 +149,7 @@ const Page = () => {
               )}
             {activeTab === "Completed" &&
               (!campaignsData?.collaborations ||
-                campaignsData.collaborations.length === 0) && (
+                (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   No completed collaborations found.
                 </div>
@@ -182,7 +182,7 @@ const Page = () => {
               )}
             {activeTab === "Payment" &&
               (!campaignsData?.collaborations ||
-                campaignsData.collaborations.length === 0) && (
+                (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   No payment collaborations found.
                 </div>

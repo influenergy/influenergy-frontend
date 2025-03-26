@@ -36,7 +36,6 @@ const CampaignCard = memo(
     status: string;
   }) => {
     const [isOpen, setIsOpen] = useState(false);
-    console.log("campaign", campaign);
 
     return (
       <>
@@ -63,7 +62,7 @@ const CampaignCard = memo(
 
           {status === "Initial" && (
             <Button
-              className="bg-primary w-full text-base p-5 md:text-lg flex items-center justify-center gap-2"
+              className="bg-primary w-full text-sm p-5 flex items-center justify-center gap-2"
               onClick={() => onFindClick && onFindClick(campaign._id)}
             >
               AI Find <Sparkles className="h-5 w-5 sm:h-7 sm:w-7" />
@@ -71,19 +70,19 @@ const CampaignCard = memo(
           )}
 
           {status === "Pending" && (
-            <Button className="bg-primary w-full text-base p-5 md:text-lg flex items-center justify-center gap-2">
+            <Button className="bg-primary w-full text-sm p-5 flex items-center justify-center gap-2">
               Pending Collaboration
             </Button>
           )}
 
           {status === "Completed" && (
-            <Button className="bg-primary w-full text-base p-5 md:text-lg flex items-center justify-center gap-2">
+            <Button className="bg-primary w-full text-sm p-5 flex items-center justify-center gap-2">
               Completed Collaboration
             </Button>
           )}
           {status === "Active" && (
             <Button
-              className="bg-primary w-full text-base p-5 md:text-lg flex items-center justify-center gap-2"
+              className="bg-primary w-full text-sm p-5 flex items-center justify-center gap-2"
               onClick={() => setIsOpen(true)}
             >
               Check Status
