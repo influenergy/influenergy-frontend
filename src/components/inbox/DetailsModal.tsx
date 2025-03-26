@@ -5,16 +5,28 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
+import { Collaboration } from "@/types/Collaboration";
 
 interface DetailsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  data: Collaboration;
 }
 
 export default function DetailsModal({
   open,
   onOpenChange,
+  data,
 }: DetailsModalProps) {
+  const campaign = data?.campaignId || {};
+  const collaborationId = data?._id;
+
+  const { mutate: acceptCollaboration, isPending: isAccepting } =
+    useAcceptOrDeclineCollaboration(collaborationId, "Active");
+  const { mutate: declineCollaboration, isPending: declineLoading } =
+    useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-screen flex flex-col p-0">
@@ -27,12 +39,15 @@ export default function DetailsModal({
           <div className="bg-white rounded-lg space-y-4">
             <div className="flex flex-col md:flex-row gap-6">
               {/* Image Section */}
-              <div className="w-fit relative rounded-lg overflow-hidden">
+              <div className=" relative rounded-lg overflow-hidden">
                 <Image
-                  src="https://avatar.iran.liara.run/public/boy"
+                  src={
+                    campaign.campaignPost ||
+                    "https://avatar.iran.liara.run/public/boy"
+                  }
                   alt="Campaign Image"
-                  width={400}
-                  height={400}
+                  width={350}
+                  height={350}
                   className="object-cover"
                 />
               </div>
@@ -42,18 +57,26 @@ export default function DetailsModal({
                 {/* Title and Brand */}
                 <div className="flex items-center gap-2">
                   <h3 className="text-2xl text-gray-900 line-clamp-2">
-                    We are seeking a passionate Fitness Black Female Influencer
+                    {campaign.campaignName || "Campaign Name"}
                   </h3>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <p className="text-black text-lg">Nike</p>
+                  <p className="text-black text-lg">
+                    {campaign.brandName || "Brand"}
+                  </p>
                 </div>
 
                 {/* Campaign Objective */}
                 <div className="mt-4 flex flex-col gap-4">
                   <h4 className="text-lg font-semibold">Campaign Objective</h4>
-                  <p className="text-gray-600">Awareness l Engagement Sales</p>
+                  <p className="text-gray-600">
+                    {campaign.campaignObjective
+                      ? campaign.campaignObjective
+                          .toString()
+                          .replace(/[\[\]"]/g, "")
+                      : "Awareness l Engagement Sales"}
+                  </p>
                 </div>
 
                 {/* Campaign Description */}
@@ -62,9 +85,7 @@ export default function DetailsModal({
                     Campaign Description
                   </h4>
                   <p className="text-gray-600">
-                    Someone who shares our values of promoting health, fitness,
-                    and inclusivity. An individual with a strong social media
-                    presence and engaged audience.
+                    {campaign.campaignDescription || "No description available"}
                   </p>
                 </div>
 
@@ -74,9 +95,7 @@ export default function DetailsModal({
                 <div className="mt-4 flex flex-col gap-4">
                   <h4 className="text-lg font-semibold">Your Brief</h4>
                   <p className="text-gray-600">
-                    Someone who shares our values of promoting health, fitness,
-                    and inclusivity. An individual with a strong social media
-                    presence and engaged audience.
+                    {campaign.yourBrief || "No brief provided"}
                   </p>
                 </div>
 
@@ -86,14 +105,46 @@ export default function DetailsModal({
                 <div className="mt-4 flex flex-col gap-4">
                   <h4 className="text-lg font-semibold">Campaign Concept</h4>
                   <p className="text-gray-600">
-                    Someone who shares our values of promoting health, fitness,
-                    and inclusivity. An individual with a strong social media
-                    presence and engaged audience.
+                    {campaign.campaignConcept || "No campaign concept provided"}
                   </p>
                   <hr />
                   <p className="text-gray-600">
-                    Age: 18 to 35 Years, Gender: Male - 40%, Women - 60%,
-                    Location: USA, Interests: Fitness, Beauty
+                    {campaign.campaignConcept || "No campaign concept provided"}
+                  </p>
+                  <hr />
+                  <p className="text-gray-600">
+                    Age:{" "}
+                    {campaign.targetAgeGroup
+                      ? Array.isArray(campaign.targetAgeGroup)
+                        ? campaign.targetAgeGroup
+                            .map((age) =>
+                              age.toString().replace(/[\[\]"]/g, "")
+                            )
+                            .join(", ")
+                        : campaign.targetAgeGroup
+                            .toString()
+                            .replace(/[\[\]"]/g, "")
+                      : "18 to 35 Years"}
+                  </p>
+                  <p className="text-gray-600">
+                    {" "}
+                    Gender: {campaign.targetGender || "Not specified"}
+                  </p>
+                  <p className="text-gray-600">
+                    Location:{" "}
+                    {campaign.targetLocation
+                      ? campaign.targetLocation
+                          .map((loc) => loc.replace(/[\[\]"]/g, ""))
+                          .join(", ")
+                      : "Not specified"}
+                  </p>
+                  <p className="text-gray-600">
+                    Interests:{" "}
+                    {campaign.targetInterests
+                      ? campaign.targetInterests
+                          .map((int) => int.replace(/[\[\]"]/g, ""))
+                          .join(", ")
+                      : "Not specified"}
                   </p>
                   <hr />
                 </div>
@@ -116,15 +167,15 @@ export default function DetailsModal({
                   <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                     <div>
                       <p className="text-gray-600">Content Type</p>
-                      <p>Good</p>
+                      <p>{campaign.contentType || "Not specified"}</p>
                     </div>
                     <div>
                       <p className="text-gray-600">Duration of Video</p>
-                      <p>2 mins</p>
+                      <p>{campaign.videoDuration || "Not specified"}</p>
                     </div>
                     <div>
                       <p className="text-gray-600">Catch Phrase</p>
-                      <p>Catch Phrase will come here</p>
+                      <p>{campaign.catchPhrase || "Not specified"}</p>
                     </div>
                   </div>
                 </div>
@@ -147,13 +198,22 @@ export default function DetailsModal({
                   <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                     <div>
                       <p className="text-gray-600">Preferred Creator Niche</p>
-                      <p>Fitness, Beauty</p>
+                      <p>
+                        {campaign.preferredCreatorNiche
+                          ? campaign.preferredCreatorNiche
+                              .map((niche) => niche.replace(/[\[\]"]/g, ""))
+                              .join(", ")
+                          : "Not specified"}
+                      </p>
                     </div>
                     <div>
                       <p className="text-gray-600">
                         Preferred Creator Demographics
                       </p>
-                      <p>India</p>
+                      <p>
+                        {campaign.preferredCreatorDemographics ||
+                          "Not specified"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -176,12 +236,18 @@ export default function DetailsModal({
                   <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                     <div>
                       <p className="text-gray-600">No. Of Days for Delivery</p>
-                      <p>10 Days</p>
+                      <p>{campaign.noOfDaysForDelivery || "Not specified"}</p>
                     </div>
                     <div>
                       <p className="text-gray-600">Expected Deliverables</p>
-                      <p>Videos, Assets</p>
+                      <p>{campaign.expectedDeliverables || "Not specified"}</p>
                     </div>
+                    {data?.amount && (
+                      <div>
+                        <p className="text-gray-600">Budget</p>
+                        <p>${data.amount}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -191,11 +257,25 @@ export default function DetailsModal({
 
         {/* Fixed Footer with Action Buttons */}
         <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
-          <button className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition">
-            Accept
+          <button
+            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
+            onClick={() => {
+              acceptCollaboration();
+              onOpenChange(false);
+            }}
+            disabled={isAccepting || declineLoading}
+          >
+            {isAccepting ? "Accepting..." : "Accept"}
           </button>
-          <button className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:text-white hover:bg-primary transition">
-            Reject
+          <button
+            className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:text-white hover:bg-primary transition"
+            onClick={() => {
+              declineCollaboration();
+              if (!declineLoading) onOpenChange(false);
+            }}
+            disabled={declineLoading || isAccepting}
+          >
+            {declineLoading ? "Rejecting..." : "Reject"}
           </button>
         </div>
       </DialogContent>

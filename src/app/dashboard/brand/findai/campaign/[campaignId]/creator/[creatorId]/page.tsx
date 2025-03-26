@@ -1,14 +1,12 @@
 "use client";
 import React, { Suspense, lazy, useState } from "react";
 import { CollaborationConfirmationModal } from "@/components/ui/CollaborationConfirmationModal";
-import { CollaborationFailedModal } from "@/components/ui/CollaborationFailedModal";
 import { CollaborationSuccessModal } from "@/components/ui/CollaborationSuccessModal";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCampaignProfileDetails } from "@/hooks/useFindAi";
-
-
+import { useCreateCollaboration } from "@/hooks/useQueryCampaigns";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -42,14 +40,13 @@ const SectionLoader = () => (
 );
 
 const CreatorDetailsPage = () => {
-  const { creatorId } = useParams();
-  const [collaborating, setCollaborating] = useState(false);
+  const { campaignId, creatorId } = useParams();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [failedModalOpen, setFailedModalOpen] = useState(false);
 
   const searchParams = new URLSearchParams(window.location.search);
   const similarity = searchParams.get("similarity");
+
   // Use React Query hook to fetch creator data
   const {
     data: creator,
@@ -57,32 +54,28 @@ const CreatorDetailsPage = () => {
     error,
   } = useCampaignProfileDetails(creatorId as string);
 
+  // Setup collaboration mutation
+  const { mutateAsync: createCollaboration, isPending } =
+    useCreateCollaboration(
+      campaignId as string,
+      creatorId as string,
+      creator?.profile?.budgetVideo
+    );
+
   const handleCollaborate = async () => {
     setConfirmationModalOpen(true);
   };
 
   const confirmCollaboration = async () => {
     try {
-      setCollaborating(true);
-      // Mock API call with timeout
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // For now, just randomly determine success or failure
-      const success = Math.random() < 0.5; // 50% chance of failure
+      // Call the mutation
+      await createCollaboration();
       setConfirmationModalOpen(false); // Close confirmation modal immediately after confirm
-
-      if (success) {
-        setSuccessModalOpen(true); // Open success modal after confirmation
-      } else {
-        setFailedModalOpen(true); // Open failed modal after confirmation
-      }
+      setSuccessModalOpen(true); // Open success modal after confirmation
     } catch (err) {
       console.error("Error sending collaboration request:", err);
       setConfirmationModalOpen(false); // Ensure confirmation modal is closed on error
-      setFailedModalOpen(true); // Open failed modal on error
-    } finally {
-      setCollaborating(false);
-    }
+    } 
   };
 
   if (isLoading) {
@@ -158,7 +151,9 @@ const CreatorDetailsPage = () => {
       </Suspense>
 
       <Suspense fallback={<SectionLoader />}>
-        <TrendingVideos creatorId={Array.isArray(creatorId) ? creatorId[0] : creatorId} />
+        <TrendingVideos
+          creatorId={Array.isArray(creatorId) ? creatorId[0] : creatorId}
+        />
       </Suspense>
 
       <Suspense fallback={<SectionLoader />}>
@@ -169,10 +164,10 @@ const CreatorDetailsPage = () => {
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg md:static md:shadow-none md:border-0 md:bg-transparent md:p-0 md:mt-8 z-10">
         <Button
           className="w-full bg-primary hover:bg-primary/90 text-white py-6"
-          disabled={collaborating}
+          disabled={isPending}
           onClick={handleCollaborate}
         >
-          {collaborating ? (
+          {isPending ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Processing...
@@ -199,10 +194,10 @@ const CreatorDetailsPage = () => {
       />
 
       {/* Failed Modal */}
-      <CollaborationFailedModal
+      {/* <CollaborationFailedModal
         isOpen={failedModalOpen}
         onOpenChange={setFailedModalOpen}
-      />
+      /> */}
 
       {/* Spacer for fixed button on mobile */}
       <div className="h-16 md:hidden"></div>

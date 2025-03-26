@@ -40,3 +40,24 @@ export const useUploadPost = () => {
     },
   });
 };
+
+export const useAcceptOrDeclineCollaboration = (
+  collaborationId: string,
+  status: string
+) => {
+  return useMutation({
+    mutationKey: ["acceptOrDeclineCollaboration", collaborationId, status],
+    mutationFn: async () => {
+      try {
+        const response = await postApi.acceptOrDeclineCollaboration(
+          collaborationId,
+          status
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching getCollaborationByStatus :", error);
+        throw error;
+      }
+    }
+  });
+};

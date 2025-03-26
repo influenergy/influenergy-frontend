@@ -2,23 +2,9 @@ import { transformPostData } from "@/utils/transformQuestionnaire";
 import { api } from "./api";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 
-interface Video {
-  title: string;
-  image: string;
-  url: string;
-}
-
-interface VideoListProps {
-  videos: Video[];
-}
-
-
-
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
     const transformedData = transformPostData(formData);
-
-    console.log("postApi", transformedData);
 
     try {
       const response = await api.post("/brand/add-campaign", transformedData, {
@@ -97,19 +83,65 @@ export const postApi = {
   },
   getVideoPost: async () => {
     try {
-      const response = await api.post(`/creator/add_social_video`);
+      const response = await api.get(`/creator/social-videos`);
       return response.data;
     } catch (error) {
       console.error("Error uploading post:", error);
       throw error;
     }
   },
-  uploadVideoPost: async (data: VideoListProps) => {
+  uploadVideoPost: async (data: FormData) => {
     try {
-      const response = await api.post(`/creator/add_social_video`, data);
+      const response = await api.post(`/creator/add_social_video`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
     } catch (error) {
       console.error("Error uploading post:", error);
+      throw error;
+    }
+  },
+  createCollaboration: async (
+    campaignId: string,
+    creatorId: string,
+    amount: string
+  ) => {
+    try {
+      const response = await api.post(
+        `/brand/create-collaboration/${campaignId}`,
+        {
+          creatorId,
+          amount,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching campaign with ID ${campaignId}:`, error);
+      throw error;
+    }
+  },
+  getCollaborationByStatus: async (status: string) => {
+    try {
+      const response = await api.get(`/creator/collaboration/${status}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCollaborationByStatus :", error);
+      throw error;
+    }
+  },
+  acceptOrDeclineCollaboration: async (
+    collaborationId: string,
+    status: string
+  ) => {
+    try {
+      const response = await api.put(
+        `/creator/collaboration-status/${collaborationId}/${status}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCollaborationByStatus :", error);
       throw error;
     }
   },

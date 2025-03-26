@@ -1,11 +1,11 @@
-import { useQuery} from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
-
 
 // Query keys
 export const queryKeys = {
   campaigns: "campaigns",
   campaign: (id: string) => ["campaign", id],
+  createCollaboration: (id: string) => ["createCollaboration", id],
 };
 
 // Hook for fetching all campaigns
@@ -29,3 +29,32 @@ export const useCampaign = (id: string) => {
   });
 };
 
+export const useCreateCollaboration = (
+  id: string,
+  creatorId: string,
+  amount: string
+) => {
+  return useMutation({
+    mutationKey: queryKeys.createCollaboration(id),
+    mutationFn: async () => {
+      return await postApi.createCollaboration(id, creatorId, amount);
+    },
+  });
+};
+
+export const useCollaborationStatusDetails = (status: string) => {
+  return useQuery({
+    queryKey: ["collaborationStatusDetails", status],
+    queryFn: async () => {
+      try {
+        return await postApi.getCollaborationByStatus(status);
+      } catch (error) {
+        console.error("Error fetching collaboration status details:", error);
+        throw error;
+      }
+    },
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    enabled: !!status,
+  });
+};

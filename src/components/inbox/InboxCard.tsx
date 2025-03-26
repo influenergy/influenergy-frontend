@@ -2,19 +2,22 @@ import Image from "next/image";
 import { useState } from "react";
 import StatusModal from "./StatusModal";
 import DetailsModal from "./DetailsModal";
+import { Collaboration } from "@/types/Collaboration";
 
 interface InboxCardProps {
   status: string;
   title: string;
   image: string;
+  data: Collaboration;
 }
 
-const InboxCard: React.FC<InboxCardProps> = ({ status, title, image }) => {
+
+const InboxCard: React.FC<InboxCardProps> = ({ status, title, image, data }) => {
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
   return (
-    <div className="max-w-[300px] border rounded-lg shadow-md p-4 flex flex-col items-center">
+    <div className="w-[300px] border rounded-lg shadow-md p-4 flex flex-col items-center">
       {/* Image Section */}
       <div className="w-full h-[150px] relative rounded-lg overflow-hidden">
         <Image src={image} alt="Card Image" fill className="object-cover" />
@@ -27,7 +30,7 @@ const InboxCard: React.FC<InboxCardProps> = ({ status, title, image }) => {
 
       {/* Buttons Section */}
       <div className="mt-4 flex gap-2 w-full">
-        {status === "pending" && (
+        {status === "Pending" && (
           <button
             onClick={() => setIsDetailsModalOpen(true)}
             className="w-full px-2 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary transition"
@@ -36,7 +39,7 @@ const InboxCard: React.FC<InboxCardProps> = ({ status, title, image }) => {
           </button>
         )}
 
-        {status === "ongoing" && (
+        {status === "Active" && (
           <>
             <button
               onClick={() => setIsDetailsModalOpen(true)}
@@ -53,7 +56,7 @@ const InboxCard: React.FC<InboxCardProps> = ({ status, title, image }) => {
           </>
         )}
 
-        {status === "completed" && (
+        {status === "Completed" && (
           <>
             <button
               onClick={() => setIsDetailsModalOpen(true)}
@@ -70,7 +73,7 @@ const InboxCard: React.FC<InboxCardProps> = ({ status, title, image }) => {
           </>
         )}
 
-        {status === "payment" && (
+        {status === "Payment" && (
           <button className="w-full px-2 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary transition">
             Collaboration Under Process
           </button>
@@ -81,8 +84,9 @@ const InboxCard: React.FC<InboxCardProps> = ({ status, title, image }) => {
       <DetailsModal
         open={isDetailsModalOpen}
         onOpenChange={setIsDetailsModalOpen}
+        data={data}
       />
-      {status !== "payment" && (
+      {status !== "Payment" && (
         <StatusModal
           open={isStatusModalOpen}
           onOpenChange={setIsStatusModalOpen}

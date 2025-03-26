@@ -1,4 +1,12 @@
-import { motion } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { CircleCheck, Info } from "lucide-react";
+import Image from "next/image";
 import { Button } from "../ui/button";
 
 export default function StatusDialog({
@@ -8,56 +16,74 @@ export default function StatusDialog({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  if (!isOpen) return null; // Ensure the dialog is only rendered when open
-
   return (
-    <div
-      className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
-      role="dialog"
-      aria-modal="true"
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative"
-      >
-        <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-          onClick={onClose}
-          aria-label="Close dialog"
-        >
-          ✕
-        </button>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Check Status
-        </h2>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="w-6 h-6 rounded-full bg-green-500 flex-shrink-0"></div>
-            <p className="text-gray-700">Collaboration Request accepted</p>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between my-4">
+            <p className="font-semibold">Check Status</p>
+            <p className="font-semibold text-primary">Get Help?</p>
+          </DialogTitle>
+          <DialogClose />
+        </DialogHeader>
+
+        {/* Status Steps - Vertical Progressive */}
+        <div className="relative pb-4">
+          {/* Vertical line */}
+          <div className="absolute left-4 top-0 bottom-0 border-2 border-dashed"></div>
+
+          {/* Step 1 - Completed */}
+          <div className="relative mb-8 pl-12">
+            <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
+              <CircleCheck className="text-primary" />
+            </div>
+            <p className="font-medium mb-1">Collaboration Request accepted</p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="w-6 h-6 rounded-full bg-purple-500 flex-shrink-0"></div>
-            <p className="text-gray-700">Uploaded Video</p>
-            <Button className="ml-auto bg-purple-500 text-white">
-              View Video
-            </Button>
+
+          {/* Step 2 - Current */}
+          <div className="relative mb-8 pl-12">
+            <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
+              <Image
+                src={"/images/Inbox/videos.svg"}
+                alt={""}
+                width={20}
+                height={20}
+              />
+            </div>
+            <div className="flex items-center justify-between w-full">
+              <p className="font-medium">Uploaded Video</p>
+              <Button className="bg-primary text-white">View Video</Button>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="w-6 h-6 rounded-full bg-yellow-500 flex-shrink-0"></div>
-            <p className="text-gray-700">Approve or Request Changes</p>
-            <Button className="bg-purple-500 text-white">Approve</Button>
-            <Button className="bg-gray-200 text-gray-700">
-              Request Changes
-            </Button>
+
+          {/* Step 3 - Current */}
+          <div className="relative mb-8 pl-12">
+            <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
+              <Info className="text-primary" />
+            </div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
+              <div className="flex gap-2 mt-2 sm:mt-0">
+                <Button className="bg-primary text-white">Approve</Button>
+                <Button className="border border-primary text-primary bg-white">
+                  Request Changes
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="w-6 h-6 rounded-full bg-green-500 flex-shrink-0"></div>
-            <p className="text-gray-700">Collaboration Completed</p>
+
+          {/* Step 4 - Inactive */}
+          <div className="relative pl-12">
+            <div className="absolute left-0 w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center z-10">
+              <CircleCheck />
+            </div>
+            <div className="">
+              <p className="font-medium text-gray-500">
+                Collaboration Completed
+              </p>
+            </div>
           </div>
         </div>
-      </motion.div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

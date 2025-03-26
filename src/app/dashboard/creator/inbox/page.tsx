@@ -6,6 +6,8 @@ import { useState, Suspense } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { TabLoading } from "@/components/inbox/TabLoading";
+import { useCollaborationStatusDetails } from "@/hooks/useQueryCampaigns";
+import { Collaboration } from "@/types/Collaboration";
 
 const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
   ssr: false,
@@ -16,37 +18,38 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState("");
-  // const { data: campaigns, isLoading, isError } = useFindAiCampaignsList();
+
+  const { data: campaignsData } = useCollaborationStatusDetails(activeTab);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
+
   return (
     <AnimatePresence mode="wait">
       <Tabs defaultValue="" onValueChange={handleTabChange}>
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full bg-secondary">
             <TabsTrigger
-              value="pending"
+              value="Pending"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
               Pending Opportunities
             </TabsTrigger>
             <TabsTrigger
-              value="ongoing"
+              value="Active"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
               Ongoing Collaboration
             </TabsTrigger>
-
             <TabsTrigger
-              value="completed"
+              value="Completed"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
               Completed Collaboration
             </TabsTrigger>
             <TabsTrigger
-              value="payment"
+              value="Payment"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs sm:text-sm md:text-base"
             >
               Payment
@@ -55,59 +58,135 @@ const Page = () => {
         </div>
 
         {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="ongoing" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Active" className="w-full mt-5 sm:mt-8 px-5">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "ongoing" && (
-              <InboxCard
-                status={"ongoing"}
-                title={
-                  "We are seeking a passionate Fitness Black Female Influencer"
-                }
-                image={"https://avatar.iran.liara.run/public/boy"}
-              />
-            )}
+            {activeTab === "Active" &&
+              campaignsData?.collaborations?.length > 0 && (
+                <div className="flex flex-wrap gap-4">
+                  {campaignsData.collaborations.map(
+                    (collaboration: Collaboration, index: number) => (
+                      <InboxCard
+                        key={collaboration._id || index}
+                        status={"Active"}
+                        title={
+                          collaboration?.campaignId?.campaignName || "No Title"
+                        }
+                        image={
+                          collaboration?.campaignId?.campaignPost ||
+                          "https://avatar.iran.liara.run/public/boy"
+                        }
+                        data={collaboration}
+                      />
+                    )
+                  )}
+                </div>
+              )}
+            {activeTab === "Active" &&
+              (!campaignsData?.collaborations ||
+                campaignsData.collaborations.length === 0) && (
+                <div className="text-center p-10">
+                  No active collaborations found.
+                </div>
+              )}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="pending" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Pending" className="w-full mt-5 sm:mt-8 px-5">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "pending" && (
-              <InboxCard
-                status={"pending"}
-                title={
-                  "We are seeking a passionate Fitness Black Female Influencer"
-                }
-                image={"https://avatar.iran.liara.run/public/boy"}
-              />
-            )}
+            {activeTab === "Pending" &&
+              campaignsData?.collaborations?.length > 0 && (
+                <div className="flex flex-wrap gap-4">
+                  {campaignsData.collaborations.map(
+                    (collaboration: Collaboration, index: number) => (
+                      <InboxCard
+                        key={collaboration._id || index}
+                        status={"Pending"}
+                        title={
+                          collaboration?.campaignId?.campaignName || "No Title"
+                        }
+                        image={
+                          collaboration?.campaignId?.campaignPost ||
+                          "https://avatar.iran.liara.run/public/boy"
+                        }
+                        data={collaboration}
+                      />
+                    )
+                  )}
+                </div>
+              )}
+            {activeTab === "Pending" &&
+              (!campaignsData?.collaborations ||
+                campaignsData.collaborations.length === 0) && (
+                <div className="text-center p-10">
+                  No pending collaborations found.
+                </div>
+              )}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="completed" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Completed" className="w-full mt-5 sm:mt-8 px-5">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "completed" && (
-              <InboxCard
-                status={"completed"}
-                title={
-                  "We are seeking a passionate Fitness Black Female Influencer"
-                }
-                image={"https://avatar.iran.liara.run/public/boy"}
-              />
-            )}
+            {activeTab === "Completed" &&
+              campaignsData?.collaborations?.length > 0 && (
+                <div className="flex flex-wrap gap-4">
+                  {campaignsData.collaborations.map(
+                    (collaboration: Collaboration, index: number) => (
+                      <InboxCard
+                        key={collaboration._id || index}
+                        status={"Completed"}
+                        title={
+                          collaboration?.campaignId?.campaignName || "No Title"
+                        }
+                        image={
+                          collaboration?.campaignId?.campaignPost ||
+                          "https://avatar.iran.liara.run/public/boy"
+                        }
+                        data={collaboration}
+                      />
+                    )
+                  )}
+                </div>
+              )}
+            {activeTab === "Completed" &&
+              (!campaignsData?.collaborations ||
+                campaignsData.collaborations.length === 0) && (
+                <div className="text-center p-10">
+                  No completed collaborations found.
+                </div>
+              )}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="payment" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Payment" className="w-full mt-5 sm:mt-8 px-5">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "payment" && (
-              <InboxCard
-                status={"payment"}
-                title={
-                  "We are seeking a passionate Fitness Black Female Influencer"
-                }
-                image={"https://avatar.iran.liara.run/public/boy"}
-              />
-            )}
+            {activeTab === "Payment" &&
+              campaignsData?.collaborations?.length > 0 && (
+                <div className="flex flex-wrap gap-4">
+                  {campaignsData.collaborations.map(
+                    (collaboration: Collaboration, index: number) => (
+                      <InboxCard
+                        key={collaboration._id || index}
+                        status={"Payment"}
+                        title={
+                          collaboration?.campaignId?.campaignName || "No Title"
+                        }
+                        image={
+                          collaboration?.campaignId?.campaignPost ||
+                          "https://avatar.iran.liara.run/public/boy"
+                        }
+                        data={collaboration}
+                      />
+                    )
+                  )}
+                </div>
+              )}
+            {activeTab === "Payment" &&
+              (!campaignsData?.collaborations ||
+                campaignsData.collaborations.length === 0) && (
+                <div className="text-center p-10">
+                  No payment collaborations found.
+                </div>
+              )}
           </Suspense>
         </TabsContent>
       </Tabs>
