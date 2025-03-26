@@ -18,7 +18,6 @@ export const useFindAiCampaignsList = (status: string) => {
         throw error;
       }
     },
-    gcTime: 8 * 60 * 1000,
     retry: false,
     // Add staleTime to prevent frequent refetches
     staleTime: Infinity,
@@ -39,8 +38,6 @@ export const useCampaignProfileDetails = (id: string) => {
       }
     },
     enabled: !!id,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 8 * 60 * 1000,
     retry: (failureCount, error) => {
       const err = error as AxiosError;
       if (err.response?.status === 404) return false;
