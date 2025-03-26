@@ -26,8 +26,8 @@ interface CollaborationDetails {
 }
 
 interface CampaignCollaboration {
-  brandId: string;
-  brandName: string;
+  brandId?: string;
+  brandName?: string;
   campaignName: string;
   campaignPost: string;
   collaborationId: string;

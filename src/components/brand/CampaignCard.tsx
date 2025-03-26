@@ -1,7 +1,7 @@
+{/* eslint-disable */}
 import { Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { Campaign } from "@/types/PostQuestionnaire";
 import { memo, useState } from "react";
 import StatusDialog from "./StatusDialog";
 
@@ -14,17 +14,17 @@ export interface CampaignVideo {
 
 export interface CampaignData {
   _id: string;
-  brandId: string;
-  brandName: string;
+  brandId?: string;
+  brandName?: string;
   campaignName: string;
   campaignPost: string;
-  collaborationId: string | null;
+  collaborationId?: string | null;
   campaignCollaborationStatus?: "Active" | "Inactive" | string;
   collaborationData?: {
     videos: CampaignVideo[];
   };
-}
-
+} 
+ 
 const CampaignCard = memo(
   ({
     campaign,

@@ -24,7 +24,6 @@ const monaSans = localFont({
   display: "swap",
 });
 
-// Update catamaran font configuration to properly support multiple weights
 const catamaran = localFont({
   src: [
     {

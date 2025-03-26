@@ -24,7 +24,6 @@ export default function ActiveCollaborationTab() {
       </div>
     );
   }
-  console.log("pending collaboaration", data);
 
   return (
     <div className="w-full px-2 sm:px-4">

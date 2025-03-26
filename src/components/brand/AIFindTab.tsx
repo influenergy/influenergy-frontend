@@ -48,7 +48,7 @@ export default function AIFindTab() {
               height={180}
               className="mx-auto"
               priority
-            />
+            /> 
             <div className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
               <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900">
                 Welcome to AI Find.

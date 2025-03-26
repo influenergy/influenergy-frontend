@@ -44,7 +44,6 @@ export default function StatusModal({
     }
   };
 
-  console.log('data',data)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

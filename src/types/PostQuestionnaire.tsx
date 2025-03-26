@@ -43,6 +43,7 @@ export interface Campaign {
   brandId: string;
   vectorId: string;
   brandName: string;
+  collaborationId:string;
   campaignObjective: string[];
   campaignDescription: string;
   targetAgeGroup: string[];
