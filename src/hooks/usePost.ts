@@ -5,6 +5,7 @@ import { useAppSelector } from "@/store";
 export const queryKeys = {
   uploadPost: "uploadPost",
   getPost: "getPost",
+  addVideo: "addVideo",
 };
 
 export const useGetPost = () => {
@@ -29,6 +30,15 @@ export const useGetPost = () => {
     staleTime: Infinity,
     // Disable refetching on window focus
     refetchOnWindowFocus: false,
+  });
+};
+
+export const useAddVideoUrl = (data: string, collaborationId: string) => {
+  return useMutation({
+    mutationKey: [queryKeys.addVideo, collaborationId],
+    mutationFn: async () => {
+      return await postApi.addVideoUrl(data, collaborationId);
+    },
   });
 };
 
@@ -58,6 +68,6 @@ export const useAcceptOrDeclineCollaboration = (
         console.error("Error fetching getCollaborationByStatus :", error);
         throw error;
       }
-    }
+    },
   });
 };

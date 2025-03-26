@@ -103,6 +103,18 @@ export const postApi = {
       throw error;
     }
   },
+  addVideoUrl: async (data: string, collaborationId: string) => {
+    try {
+      const response = await api.put(
+        `/creator/collaboration/add-video/${collaborationId}`,
+        { videoUrl: data }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading post:", error);
+      throw error;
+    }
+  },
   createCollaboration: async (
     campaignId: string,
     creatorId: string,

@@ -11,12 +11,14 @@ import { Collaboration } from "@/types/Collaboration";
 interface DetailsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  status: string;
   data: Collaboration;
 }
 
 export default function DetailsModal({
   open,
   onOpenChange,
+  status,
   data,
 }: DetailsModalProps) {
   const campaign = data?.campaignId || {};
@@ -256,28 +258,30 @@ export default function DetailsModal({
         </div>
 
         {/* Fixed Footer with Action Buttons */}
-        <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
-          <button
-            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
-            onClick={() => {
-              acceptCollaboration();
-              onOpenChange(false);
-            }}
-            disabled={isAccepting || declineLoading}
-          >
-            {isAccepting ? "Accepting..." : "Accept"}
-          </button>
-          <button
-            className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:text-white hover:bg-primary transition"
-            onClick={() => {
-              declineCollaboration();
-              if (!declineLoading) onOpenChange(false);
-            }}
-            disabled={declineLoading || isAccepting}
-          >
-            {declineLoading ? "Rejecting..." : "Reject"}
-          </button>
-        </div>
+        {status !== "Active" && (
+          <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
+            <button
+              className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
+              onClick={() => {
+                acceptCollaboration();
+                onOpenChange(false);
+              }}
+              disabled={isAccepting || declineLoading}
+            >
+              {isAccepting ? "Accepting..." : "Accept"}
+            </button>
+            <button
+              className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:text-white hover:bg-primary transition"
+              onClick={() => {
+                declineCollaboration();
+                if (!declineLoading) onOpenChange(false);
+              }}
+              disabled={declineLoading || isAccepting}
+            >
+              {declineLoading ? "Rejecting..." : "Reject"}
+            </button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

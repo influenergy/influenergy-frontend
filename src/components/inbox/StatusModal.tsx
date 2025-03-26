@@ -8,15 +8,32 @@ import {
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useAddVideoUrl } from "@/hooks/usePost";
 
 export default function StatusModal({
   open,
   onOpenChange,
+  collaborationId,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  collaborationId: string;
 }) {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
+
+  const addVideoMutation = useAddVideoUrl(videoUrl, collaborationId);
+
+  const handleSubmitVideo = async () => {
+    try {
+      await addVideoMutation.mutateAsync();
+      setIsConfirmationOpen(false);
+      setVideoUrl("");
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Error submitting video:", error);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -66,6 +83,8 @@ export default function StatusModal({
                   type="text"
                   placeholder="Paste your Google drive link here"
                   className="w-full px-3 py-2 border rounded-md text-sm"
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
                 />
                 <button
                   onClick={() => setIsConfirmationOpen(true)}
@@ -114,23 +133,24 @@ export default function StatusModal({
           <div className="flex flex-col items-center">
             <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
               <Image
-                src="/images/UserProfile/bin.svg"
+                src="/images/AIFind/film.png"
                 width={50}
                 height={50}
                 alt="logo"
               />
             </div>
-            <p className="mt-4 text-sm">
+            <p className="mt-4 text-md">
               Are you sure you want to submit this video link? After submitting,
               brands will be able to view the video and either approve or ask
               for a redo.
             </p>
             <div className="mt-6 flex gap-4 w-full">
               <button
-                onClick={() => setIsConfirmationOpen(false)}
+                onClick={handleSubmitVideo}
+                disabled={addVideoMutation.isPending}
                 className="w-full px-2 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition"
               >
-                Yes
+                {addVideoMutation.isPending ? "Submitting..." : "Yes"}
               </button>
               <button
                 onClick={() => setIsConfirmationOpen(false)}

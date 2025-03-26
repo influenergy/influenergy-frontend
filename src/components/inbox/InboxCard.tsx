@@ -11,8 +11,12 @@ interface InboxCardProps {
   data: Collaboration;
 }
 
-
-const InboxCard: React.FC<InboxCardProps> = ({ status, title, image, data }) => {
+const InboxCard: React.FC<InboxCardProps> = ({
+  status,
+  title,
+  image,
+  data,
+}) => {
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
@@ -84,12 +88,14 @@ const InboxCard: React.FC<InboxCardProps> = ({ status, title, image, data }) => 
       <DetailsModal
         open={isDetailsModalOpen}
         onOpenChange={setIsDetailsModalOpen}
+        status={status}
         data={data}
       />
       {status !== "Payment" && (
         <StatusModal
           open={isStatusModalOpen}
           onOpenChange={setIsStatusModalOpen}
+          collaborationId={data._id}
         />
       )}
     </div>
