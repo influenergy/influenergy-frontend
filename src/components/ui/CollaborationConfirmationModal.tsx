@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface CollaborationConfirmationModalProps {
   isOpen: boolean;
@@ -20,21 +21,34 @@ export const CollaborationConfirmationModal: React.FC<
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Confirm Collaboration</DialogTitle>
-          <DialogDescription>
+        <DialogHeader className="flex flex-col items-center gap-4">
+          <DialogTitle className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
+            <Image
+              src="/images/AIFind/message.png"
+              width={50}
+              height={50}
+              alt="logo"
+            />
+          </DialogTitle>
+          <DialogDescription className="text-black text-center text-lg ">
             By confirming, $100 will be deducted from your wallet. Are you sure
             you want to continue?
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+
+        <div className="w-full flex justify-center items-center gap-4">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => onOpenChange(false)}
+            className="w-full"
+          >
             No
           </Button>
-          <Button type="button" onClick={onConfirm}>
+          <Button type="button" onClick={onConfirm} className="w-full">
             Yes
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
