@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function WhatWeDo() {
   return (
     <div className="w-full  flex items-center justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full px-6 sm:px-6 md:px-12 lg:px-16 py-2 md:py-2 gap-8 md:gap-12 items-start max-w-[1280px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full px-6 sm:px-12  py-2 md:py-2 gap-8 md:gap-12 items-start max-w-7xl">
         {/* Left column - Text content */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -114,7 +114,7 @@ export default function WhatWeDo() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.div
-            className="relative  aspect-square rounded-tl-3xl overflow-hidden shadow-md"
+            className="relative aspect-square rounded-tl-3xl overflow-hidden shadow-md"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >

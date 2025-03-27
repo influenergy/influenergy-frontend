@@ -140,7 +140,7 @@ export default function HowItWorks() {
         transition={{ duration: 0.7, delay: 0.3 }}
         viewport={{ once: true, amount: 0.3 }}
       >
-        <div className="flex h-full justify-center md:justify-end gap-6 mt-4">
+        <div className="flex h-full justify-center  gap-6 mt-4">
           <motion.div
             className="h-full rounded-2xl"
             transition={{ duration: 0.3 }}
