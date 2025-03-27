@@ -51,7 +51,7 @@ export default function ProfileMatch() {
         {creators?.map((data: CreatorAPIResponse) => (
           <div
             key={data?.creatorId}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
           >
             <Image
               src={data?.profileIcon || "/images/login.webp"}
@@ -60,7 +60,7 @@ export default function ProfileMatch() {
               height={500}
               className="w-full h-48 object-cover"
             />
-            <div className="p-4">
+            <div className="flex flex-col p-4 flex-grow">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex flex-col justify-start items-start  w-full">
                   <p className="text-lg font-semibold flex items-center gap-3">
@@ -109,7 +109,9 @@ export default function ProfileMatch() {
                   $ {data?.creator?.profile?.budgetVideo}
                 </p>
               </div>
+            </div>
 
+            <div className="p-4 pt-0 mt-auto">
               <Link
                 href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${
                   data?.creatorId
@@ -117,7 +119,7 @@ export default function ProfileMatch() {
               >
                 <Button
                   variant="outline"
-                  className="w-full mt-4 bg-primary text-white hover:text-primary hover:bg-white"
+                  className="w-full bg-primary text-white hover:text-primary hover:bg-white"
                 >
                   View Details
                 </Button>
