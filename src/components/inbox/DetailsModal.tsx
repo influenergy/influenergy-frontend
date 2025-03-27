@@ -7,6 +7,7 @@ import {
 import Image from "next/image";
 import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
 import { Collaboration } from "@/types/Collaboration";
+import { Button } from "../ui/button";
 
 interface DetailsModalProps {
   open: boolean;
@@ -260,20 +261,20 @@ export default function DetailsModal({
         {/* Fixed Footer with Action Buttons */}
         {status !== "Active" && (
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
-            <button
+            <Button
               className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
               onClick={() => acceptCollaboration()}
               disabled={isAccepting || declineLoading}
             >
               {isAccepting ? "Accepting..." : "Accept"}
-            </button>
-            <button
-              className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:text-white hover:bg-primary transition"
+            </Button>
+            <Button
+              className="px-4 py-2 text-sm font-medium text-white border border-primary rounded-lg hover:text-primary hover:bg-white transition"
               onClick={() => declineCollaboration()}
               disabled={declineLoading || isAccepting}
             >
               {declineLoading ? "Rejecting..." : "Reject"}
-            </button>
+            </Button>
           </div>
         )}
       </DialogContent>

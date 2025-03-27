@@ -94,6 +94,7 @@ const CampaignCard = memo(
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             campaign={campaign as any}
+            status={status}
           />
         )}
       </>
