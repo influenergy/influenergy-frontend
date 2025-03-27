@@ -27,9 +27,9 @@ export default function WhoAreWe() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-around w-full px-6 md:px-16 lg:px-24 py-10 md:py-10 gap-10 items-center max-w-[1440px] mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-between w-full px-6 md:px-16 lg:px-24 py-10 md:py-10 gap-10 items-center max-w-[1440px] mx-auto font-poppins">
       <motion.div
-        className="flex justify-center h-full relative"
+        className="flex justify-start h-full relative"
         initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7 }}
@@ -105,8 +105,8 @@ export default function WhoAreWe() {
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6  flex items-center">
-            <Link href="/get-started">Explore Now</Link>
+          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl px-6 py-4  flex items-center">
+            <Link href="/get-started">Get Started</Link>
           </Button>
         </motion.div>
       </motion.div>

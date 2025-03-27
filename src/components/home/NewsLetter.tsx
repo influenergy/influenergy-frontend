@@ -87,7 +87,7 @@ const NewsLetter = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               disabled={isSubmitting || isSubscribed || !email}
-              className={`px-6 py-4 sm:py-4 rounded-xl sm:rounded-l-none font-semibold 
+              className={`px-6 py-4 sm:py-4 mt-4 sm:mt-0 rounded-xl sm:rounded-l-none font-semibold 
                 flex items-center justify-center gap-2 transition-all duration-300 
                 ${
                   isSubscribed

@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function WeEmpowerBrand() {
   return (
     <div className="bg-[#fefaf6] w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 md:gap-16 items-center max-w-[1440px] mx-auto ">
+      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 md:gap-16 items-start max-w-[1440px] mx-auto ">
         {/* Left Column - Profile Card */}
         <motion.div
           className="flex justify-center items-center relative"
@@ -17,7 +17,7 @@ export default function WeEmpowerBrand() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.div
-            className=" w-full max-w-[500px] max-h-[500px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            className=" w-full max-w-[500px] max-h-[300px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
             whileHover={{ y: -5 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
@@ -25,8 +25,8 @@ export default function WeEmpowerBrand() {
               src="/landing/sandy.jpg"
               alt="Sandeep Ashdir"
               width={500}
-              height={400}
-              className="w-full object-contain"
+              height={300}
+              className="object-cover aspect-video"
             />
           </motion.div>
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-white p-4 text-center rounded-b-xl w-[350px] rounded-2xl shadow-lg ">
@@ -49,7 +49,7 @@ export default function WeEmpowerBrand() {
 
         {/* Right Column - Content */}
         <motion.div
-          className="flex flex-col space-y-6 sm:mt-5"
+          className="flex flex-col space-y-6 mt-5 sm:mt-0"
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}

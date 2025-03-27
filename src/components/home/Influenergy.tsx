@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function InfluEnergySection() {
   return (
-    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] sm:h-[550px] md:h-[600px] lg:h-[650px] mt-10 font-sans">
+    <div className="w-full flex justify-center items-center flex-col text-center px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-[#EAE6FA] h-[500px] sm:h-[550px] md:h-[600px] lg:h-[650px] mt-10 font-nirmala">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -12,7 +12,7 @@ export default function InfluEnergySection() {
         viewport={{ once: true, amount: 0.3 }}
         className="max-w-9xl mx-auto"
       >
-        <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight">
+        <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black leading-tight">
           <span className="text-[#6C63FF]">INFLUENERGY</span>
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
@@ -25,7 +25,7 @@ export default function InfluEnergySection() {
               alt="Icon"
               width={70}
               height={70}
-              className="rounded-full object-cover inline-block align-middle mx-2 shadow-md"
+              className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
           CONNECTS GLOBAL <br className="hidden md:block" />
@@ -41,7 +41,7 @@ export default function InfluEnergySection() {
               alt="Icon"
               width={70}
               height={70}
-              className="rounded-full object-cover inline-block align-middle mx-2 shadow-md"
+              className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
           <br className="hidden md:block" />
@@ -57,7 +57,7 @@ export default function InfluEnergySection() {
               alt="Icon"
               width={70}
               height={70}
-              className="rounded-full object-cover inline-block align-middle mx-2 shadow-md"
+              className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
           CROSS-CULTURAL PARTNERSHIPS.

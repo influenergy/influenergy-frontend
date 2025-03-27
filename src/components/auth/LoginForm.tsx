@@ -206,7 +206,7 @@ export default function LoginForm() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-8 sm:space-y-10"
+            className="space-y-5 sm:space-y-5"
           >
             <motion.div
               className="space-y-4 sm:space-y-5"

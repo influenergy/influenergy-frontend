@@ -17,7 +17,7 @@ export default function HeroSection() {
     { logo: "/landing/marquee/company6.png" },
     { logo: "/landing/marquee/company7.png" },
     { logo: "/landing/marquee/company8.png" },
-    { logo: "/landing/marquee/company9.png" }
+    { logo: "/landing/marquee/company9.png" },
   ];
 
   return (
@@ -34,19 +34,22 @@ export default function HeroSection() {
 
       {/* Centered Content */}
       <motion.div
-        className="relative z-10 text-white max-w-7xl px-6 md:px-8"
+        className="relative z-10 text-white px-6 md:px-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[5rem]
-         font-bold leading-tight md:leading-[3.5rem] lg:leading-[4.5rem] font-mona-sans">
-        WHERE CREATORS & BRANDS  <br className="hidden sm:block" /> CONNECT TO MAKE MONEY
+        <h1
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-[5rem]
+         font-bold leading-tight md:leading-[4.5rem] lg:leading-[6rem] font-mona"
+        >
+          WHERE CREATORS & BRANDS <br className="hidden sm:block" /> CONNECT TO
+          MAKE MONEY
         </h1>
-        <p className="mt-6 text-lg sm:text-xl md:text-3xl mx-auto max-w-4xl">
+        <p className="mt-6 text-lg sm:text-xl md:text-3xl mx-auto max-w-4xl font-poppins">
           Lets create AI & Tech Influencer campaigns that connect, inspire, and
           perform to empower brands.
-        </p> 
+        </p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +72,6 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >
-
           {/* Replace static logos with Marquee component */}
           <div className="w-full overflow-hidden">
             <MarqueeLogos images={imageList} />

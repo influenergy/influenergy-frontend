@@ -30,7 +30,7 @@ export default function GetStarted() {
               <div className="space-y-5 pl-10">
                 <h1 className="text-2xl font-medium md:text-4xl lg:text-5xl ml-10 font-poppins">
                   Join{" "}
-                  <span className="text-primary font-bold font-mona-sans">
+                  <span className="text-primary font-bold font-mona">
                     Influenergy
                   </span>
                 </h1>

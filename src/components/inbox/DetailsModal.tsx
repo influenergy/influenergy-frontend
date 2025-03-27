@@ -116,10 +116,6 @@ export default function DetailsModal({
                   </p>
                   <hr />
                   <p className="text-gray-600">
-                    {campaign.campaignConcept || "No campaign concept provided"}
-                  </p>
-                  <hr />
-                  <p className="text-gray-600">
                     Age:{" "}
                     {campaign.targetAgeGroup
                       ? Array.isArray(campaign.targetAgeGroup)

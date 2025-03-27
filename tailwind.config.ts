@@ -50,11 +50,12 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
-        fontFamily: {
-          poppins: "var(--font-poppins)",
-          "mona-sans": "var(--font-mona-sans)",
-          catamaran: "var(--font-catamaran)",
-        },
+      },
+      fontFamily: {
+        poppins: ["var(--font-poppins)"],
+        mona: ["var(--font-mona-sans)"],
+        catamaran: ["var(--font-catamaran)"],
+        nirmala: ["var(--font-nirmala)"],
       },
       borderRadius: {
         lg: "var(--radius)",

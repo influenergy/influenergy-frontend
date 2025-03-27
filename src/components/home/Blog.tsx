@@ -126,7 +126,7 @@ export default function Blog() {
                   <div className="flex items-center text-primary text-sm mb-3">
                     {/* <span>{post.author}</span> */}
                     {/* <span className="mx-2">•</span> */}
-                    <span>{post.date}</span>
+                    {/* <span>{post.date}</span> */}
                   </div>
 
                   {/* Blog title with arrow icon */}
@@ -149,3 +149,4 @@ export default function Blog() {
     </motion.div>
   );
 }
+   

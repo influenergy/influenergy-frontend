@@ -59,8 +59,8 @@ export default function WhyWeDoIt() {
               <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
                 <Image
                   src="/landing/whywedo/sparkle.png"
-                  width={32}
-                  height={32}
+                  width={35}
+                  height={35}
                   alt="AI Recommendations Icon"
                 />
               </div>
@@ -89,8 +89,8 @@ export default function WhyWeDoIt() {
               <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
                 <Image
                   src="/landing/whywedo/user.png"
-                  width={32}
-                  height={32}
+                  width={35}
+                  height={35}
                   alt="Brand-Creator Icon"
                 />
               </div>
@@ -160,7 +160,7 @@ export default function WhyWeDoIt() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
             Why We Do It
           </h2>
-          <p className="text-gray-600 text-lg font-light">
+          <p className="text-gray-600 text-base font-light">
             Finding the right creator for your brand should not be a hassle.
           </p>
 
