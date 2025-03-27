@@ -114,6 +114,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
           onOpenChange={handleModalClose}
           collaborationId={data._id}
           data={data.videos || []}
+          status={status}
         />
       )}
     </div>

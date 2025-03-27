@@ -5,11 +5,15 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { CircleCheck } from "lucide-react";
+// import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useAddVideoUrl } from "@/hooks/usePost";
 import { useQueryClient } from "@tanstack/react-query";
+import { UploadCloud } from "lucide-react";
+import { Award } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface Video {
   link: string;
@@ -24,11 +28,13 @@ export default function StatusModal({
   onOpenChange,
   collaborationId,
   data,
+  status,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   collaborationId: string;
   data: Video[] | [];
+  status: string;
 }) {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
@@ -87,13 +93,14 @@ export default function StatusModal({
 
           {/* Step 2 - Current */}
           <div className="relative mb-8 pl-12">
-            <div className="absolute left-0 w-8 h-8 text-gray-400 bg-gray-100 rounded-full flex items-center justify-center z-10">
-              <Image
+            <div className="absolute left-0 w-8 h-8 text-gray-400 bg-secondary rounded-full flex items-center justify-center z-10">
+              {/* <Image
                 src={"/images/Inbox/videos.svg"}
                 alt={""}
                 width={20}
                 height={20}
-              />
+              /> */}
+              <UploadCloud className="text-primary" />
             </div>
             <div>
               <p className="font-medium mb-2">Upload Video</p>
@@ -140,12 +147,21 @@ export default function StatusModal({
 
           {/* Step 3 - Inactive */}
           <div className="relative mb-8 pl-12">
-            <div className="absolute left-0 w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center z-10">
-              <Image
+            <div
+              className={`absolute left-0 w-8 h-8 ${
+                status == "Completed" ? "bg-secondary" : "bg-gray-100"
+              } text-gray-400 rounded-full flex items-center justify-center z-10`}
+            >
+              {/* <Image
                 src={"/images/Inbox/video.svg"}
                 alt={""}
                 width={20}
                 height={20}
+              /> */}
+              <Award
+                className={`${
+                  status == "Completed" ? "text-secondary" : "text-gray-400"
+                }`}
               />
             </div>
             <div className="">
@@ -156,9 +172,17 @@ export default function StatusModal({
           </div>
 
           {/* Step 4 - Inactive */}
-          <div className="relative pl-12">
-            <div className="absolute left-0 w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center z-10">
-              <CircleCheck />
+          <div className="relative pl-12 mt-10">
+            <div
+              className={`absolute left-0  w-8 h-8 ${
+                status == "Completed" ? "bg-secondary" : "bg-gray-100"
+              } text-gray-400 rounded-full flex items-center justify-center z-10`}
+            >
+              <CheckCircle
+                className={`${
+                  status == "Completed" ? "text-secondary" : "text-gray-400"
+                }`}
+              />
             </div>
             <div className="">
               <p className="font-medium text-gray-500">
@@ -187,19 +211,20 @@ export default function StatusModal({
               for a redo.
             </p>
             <div className="mt-6 flex gap-4 w-full">
-              <button
+              <Button
                 onClick={handleSubmitVideo}
                 disabled={addVideoMutation.isPending}
-                className="w-full px-2 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition"
+                className="w-full px-2 py-2 text-sm font-medium text-white bg-primary rounded-md border border-primary hover:bg-white hover:text-primary transition"
               >
                 {addVideoMutation.isPending ? "Submitting..." : "Yes"}
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setIsConfirmationOpen(false)}
-                className="w-full px-2 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100 transition"
+                className="w-full px-2 py-2 text-sm font-medium text-white border border-primary rounded-md hover:bg-white hover:text-primary transition"
+                disabled={addVideoMutation.isPending}
               >
                 No
-              </button>
+              </Button>
             </div>
           </div>
         </DialogContent>

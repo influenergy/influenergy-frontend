@@ -13,6 +13,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
+import { Clapperboard } from "lucide-react";
 
 interface Video {
   link: string;
@@ -39,10 +40,12 @@ export default function StatusDialog({
   isOpen,
   onClose,
   campaign,
+  status,
 }: {
   isOpen: boolean;
   onClose: () => void;
   campaign: CampaignCollaboration;
+  status: string;
 }) {
   const queryClient = useQueryClient();
   const [isApproveDialogOpen, setApproveDialogOpen] = useState(false);
@@ -93,7 +96,11 @@ export default function StatusDialog({
 
             {/* Step 1 - Completed */}
             <div className="relative mb-8 pl-12">
-              <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
+              <div
+                className={`absolute left-0  w-8 h-8 ${
+                  status == "Active" ? "bg-secondary" : "bg-gray-100"
+                } text-gray-400 rounded-full flex items-center justify-center z-10`}
+              >
                 <CircleCheck className="text-primary" />
               </div>
               <p className="font-medium mb-1">Collaboration Request accepted</p>
@@ -101,12 +108,21 @@ export default function StatusDialog({
 
             {/* Step 2 - Current */}
             <div className="relative mb-8 pl-12">
-              <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
-                <Image
+              <div
+                className={`absolute left-0  w-8 h-8 ${
+                  status == "Active" ? "bg-secondary" : "bg-gray-100"
+                } text-gray-400 rounded-full flex items-center justify-center z-10`}
+              >
+                {/* <Image
                   src={"/images/Inbox/videos.svg"}
                   alt={""}
                   width={20}
                   height={20}
+                /> */}
+                <Clapperboard
+                  className={`${
+                    status == "Active" ? "text-primary" : "text-gray-400"
+                  }`}
                 />
               </div>
               <div className="flex items-center justify-between w-full">
@@ -130,7 +146,7 @@ export default function StatusDialog({
                 <Info className="text-primary" />
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
-                {campaign?.collaborationData?.videos[0].status != "Declined" ? (
+                {campaign?.collaborationData?.videos[0]?.status != "Declined" ? (
                   <div className="flex gap-2 mt-2 sm:mt-0 w-full">
                     <Button
                       className="bg-primary text-white"
@@ -166,7 +182,11 @@ export default function StatusDialog({
             {/* Step 4 - Inactive */}
             <div className="relative pl-12">
               <div className="absolute left-0 w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center z-10">
-                <CircleCheck />
+                <CircleCheck
+                  className={`${
+                    status == "Completed" ? "text-primary" : "text-gray-400"
+                  }`}
+                />
               </div>
               <div className="">
                 <p className="font-medium text-gray-500">
