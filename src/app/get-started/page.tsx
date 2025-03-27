@@ -74,7 +74,7 @@ export default function GetStarted() {
               >
                 <div className="flex cursor-pointer h-48 w-52 flex-col justify-between rounded-2xl bg-[#F4F3FF] p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
-                    src="/images/Home/icon.png"
+                    src="/images/Home/icon1.png"
                     alt="Brand Icon"
                     width={50}
                     height={50}
