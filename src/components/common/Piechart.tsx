@@ -82,7 +82,7 @@ export function PieCharts({ value }: { value: string | number }) {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground text-sm"
                         >
-                          Completed
+                          Match
                         </tspan>
                       </text>
                     );
