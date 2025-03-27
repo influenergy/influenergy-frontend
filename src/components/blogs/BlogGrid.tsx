@@ -99,10 +99,6 @@ export default function BlogGrid({ blogs }: BlogGridProps) {
               </motion.div>
             </div>
             <div className="p-4 sm:p-6">
-              <div className="flex items-center text-gray-500 text-sm mb-2">
-                <p className="mr-2">•</p>
-                <p>{blog.date}</p>
-              </div>
               <h2 className="font-bold text-xl sm:text-2xl mb-2 line-clamp-2">
                 {blog.title}
               </h2>
