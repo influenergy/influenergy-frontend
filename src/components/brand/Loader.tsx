@@ -3,17 +3,17 @@ import React from "react";
 
 const Loader = () => {
   return (
-    <div className="h-[75vh] flex flex-col items-center justify-center gap-5">
+    <div className="h-[75vh] flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
       <Image
         src="/images/AIFind/loader.webp"
         alt=""
-        width={200}
-        height={200}
-        className="object-cover"
+        width={300}
+        height={300}
+        className="object-cover w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3"
       />
-      <p className="text-gray-500 text-center">
+      <p className="text-black text-center text-xl sm:text-2xl font-semibold">
         AI magic is happening. We are matching your requirements with the
-        desired creators!{" "}
+        desired creators!
       </p>
     </div>
   );
