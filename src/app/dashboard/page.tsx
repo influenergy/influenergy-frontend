@@ -3,17 +3,36 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { useRouteProtection } from "@/hooks/useRouteProtection";
-import { selectUser, useAppSelector } from "@/store";
+import { useAppSelector } from "@/store";
+import { useUserDetails } from "@/hooks/useUser";
+import { Loader } from "@/components/common/Loader";
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
-  const user = useAppSelector(selectUser);
   const userType = useAppSelector((state) => state.auth.userType);
+  const { data: userDetails, isLoading, error } = useUserDetails();
+  // console.log("userDetails", userDetails?.data);
 
   if (!isAuthenticated || !userType) {
     return null;
   }
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen p-2">
+        <Card className="p-6 bg-red-100 border border-red-400 text-black">
+          <h2 className="text-xl font-semibold mb-2">Error</h2>
+          <p className="text-muted-foreground">
+            Failed to load user details. Please try again later.
+          </p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-2">
@@ -21,7 +40,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
 
-      {userType === "creator" && !user?.isProfileCompleted ? (
+      {userType === "creator" && !userDetails?.data?.isProfileCompleted ? (
         <Card className="p-6 bg-violet-100 border border-violet-400 text-black">
           <h2 className="text-xl font-semibold mb-2">
             Complete Your Preferences
@@ -38,7 +57,10 @@ export default function DashboardPage() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-2">
-              Welcome Back, {userType === "creator" ? "Creator" : "Brand"}!
+              Welcome Back,{" "}
+              {userDetails?.name ||
+                (userType === "creator" ? "Creator" : "Brand")}
+              !
             </h2>
             <p className="text-muted-foreground">
               {userType === "creator"
