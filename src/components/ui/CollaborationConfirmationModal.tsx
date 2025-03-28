@@ -53,7 +53,7 @@ export const CollaborationConfirmationModal: React.FC<
             className="w-full"
             disabled={isPending}
           >
-            {isPending ? " Submitting..." : "Yes"}
+            {isPending ? " Processing..." : "Yes"}
           </Button>
         </div>
       </DialogContent>
