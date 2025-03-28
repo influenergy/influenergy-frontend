@@ -10,7 +10,7 @@ const MatchReason: React.FC<MatchReasonProps> = ({ value }) => {
       <h2 className="text-lg md:text-xl font-bold mb-4">Match Assessment</h2>
       <div className="flex flex-col md:flex-row items-center gap-6">
         <div className="md:w-1/4 flex-shrink-0">
-          <PieCharts value={value || "70"} />
+          <PieCharts value={value || "0"} />
         </div>
         <div className="md:w-3/4">
           <h3 className="text-base md:text-lg font-semibold mb-2">
