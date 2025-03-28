@@ -61,18 +61,16 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       if (userType !== null) {
+        // Store authentication state
         dispatch(
           setCredentials({
             user: data?.data,
-            // token: data?.data?.token,
           })
         );
-        if (userType == "creator") {
-          router.push(`/dashboard`);
-        }
-        if (userType == "brand") {
-          router.push(`/dashboard`);
-        }
+
+        // Clear browser history and replace current URL with dashboard
+        // This prevents going back to login page
+        router.replace("/dashboard");
       }
     },
     onError: (error: Error) => {
@@ -86,6 +84,8 @@ export default function LoginForm() {
       });
     },
   });
+
+
 
   const onSubmit = (data: LoginFormData) => {
     loginMutation.mutate(data);
@@ -160,8 +160,6 @@ export default function LoginForm() {
             height={150}
             className="w-full h-auto"
             loading="lazy"
-           
-           
           />
         </motion.div>
 
@@ -178,12 +176,10 @@ export default function LoginForm() {
             height={150}
             className="w-full h-auto"
             loading="lazy"
-            
-          
           />
         </motion.div>
 
-        <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
+        <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg ">
           <Link href="/get-started">
             <motion.button
               className="text-sm flex items-center space-x-2 mb-4 text-muted-foreground"
@@ -196,7 +192,7 @@ export default function LoginForm() {
             </motion.button>
           </Link>
           <motion.h3
-            className="text-black font-bold text-2xl sm:text-3xl text-left capitalize"
+            className="text-black font-bold text-2xl sm:text-3xl text-left capitalize mb-10"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -330,7 +326,7 @@ export default function LoginForm() {
             </DialogContent>
           </Dialog>
 
-          <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
+          <p className="text-center text-sm sm:text-base text-muted-foreground font-light mt-10">
             Don&apos;t have an account?{" "}
             <Link
               href={`/register?role=${userType}`}
