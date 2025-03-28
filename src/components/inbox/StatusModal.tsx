@@ -112,11 +112,11 @@ export default function StatusModal({
                   className="w-full px-3 py-2 border rounded-md text-sm"
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
-                  disabled={data[0]?.status == "Pending"}
+                  disabled={data[0]?.status == "Pending" || data[0]?.status == "Approved"}
                 />
                 <button
                   onClick={() => setIsConfirmationOpen(true)}
-                  disabled={data[0]?.status == "Pending"}
+                  disabled={data[0]?.status == "Pending" || data[0]?.status == "Approved"}
                   className="w-full p-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition"
                 >
                   Send Video Link to Brand
@@ -137,7 +137,7 @@ export default function StatusModal({
                       ? "Pending Approval"
                       : data[0].status == "Declined"
                       ? data[0]?.reason ||
-                        " Video Rejected . Please Check Your Email for More Details"
+                        "Video modification requested . Please Check Your Email for More Details"
                       : "Approved"}{" "}
                   </p>
                 </div>
@@ -160,12 +160,16 @@ export default function StatusModal({
               /> */}
               <Award
                 className={`${
-                  status == "Completed" ? "text-secondary" : "text-gray-400"
+                  status == "Completed" ? "text-primary" : "text-gray-400"
                 }`}
               />
             </div>
             <div className="">
-              <p className="font-medium text-gray-500">
+              <p
+                className={`${
+                  status == "Completed" ? "text-primary" : "text-gray-400"
+                }`}
+              >
                 Video accepted by Brand
               </p>
             </div>
@@ -180,12 +184,16 @@ export default function StatusModal({
             >
               <CheckCircle
                 className={`${
-                  status == "Completed" ? "text-secondary" : "text-gray-400"
+                  status == "Completed" ? "text-primary" : "text-gray-400"
                 }`}
               />
             </div>
             <div className="">
-              <p className="font-medium text-gray-500">
+              <p
+                className={`${
+                  status == "Completed" ? "text-primary" : "text-gray-400"
+                }`}
+              >
                 Collaboration Completed
               </p>
             </div>
