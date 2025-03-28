@@ -35,6 +35,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
     setValue,
     watch,
     reset,
+    trigger,
     formState: { errors },
   } = useForm<BrandRegisterFormData>({
     resolver: yupResolver(brandRegisterSchema),
@@ -210,10 +211,11 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                     <Checkbox
                       className="mt-1 sm:mt-0 text-primary bg-white border-primary 
                   data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                      checked={watch("terms") ?? false} // Ensure default value is boolean
-                      onCheckedChange={(checked) =>
-                        setValue("terms", Boolean(checked))
-                      } // Explicitly cast to boolean
+                      checked={watch("terms") ?? false}
+                      onCheckedChange={async (checked) => {
+                        setValue("terms", Boolean(checked));
+                        await trigger("terms"); // Trigger validation for 'terms' field
+                      }}
                     />
 
                     <p className="text-xs sm:text-sm font-light">
