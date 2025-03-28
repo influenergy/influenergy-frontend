@@ -1,20 +1,13 @@
 import { Campaign } from "@/types/PostQuestionnaire";
-import { Loader2 } from "lucide-react";
 import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import CampaignCard from "./CampaignCard";
+import Loader from "./Loader";
 
 export default function ActiveCollaborationTab() {
   const { data, isLoading, isError } = useFindAiCampaignsList("Active");
 
   if (isLoading) {
-    return (
-      <div className="h-[75vh] flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-          <p className="text-gray-600">Loading active collaborations...</p>
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {

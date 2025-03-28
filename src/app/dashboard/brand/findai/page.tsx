@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, lazy, Suspense } from "react";
 // import { useFindAiCampaignsList } from "@/hooks/useFindAi";
-import { Loader2 } from "lucide-react";
+import Loader from "@/components/brand/Loader";
 
 const AIFindTab = lazy(() => import("@/components/brand/AIFindTab"));
 const ActiveCollaborationTab = lazy(
@@ -17,14 +17,7 @@ const CompletedCollaborationTab = lazy(
 );
 
 // Loading component for Suspense fallback
-const TabLoading = () => (
-  <div className="h-[50vh] w-full flex items-center justify-center">
-    <div className="text-center space-y-4">
-      <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-      <p className="text-gray-600">Loading content...</p>
-    </div>
-  </div>
-);
+const TabLoading = () => <Loader />;
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState("ai");

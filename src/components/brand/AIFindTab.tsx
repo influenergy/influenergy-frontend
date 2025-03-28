@@ -1,9 +1,9 @@
 import { Campaign } from "@/types/PostQuestionnaire";
 import Image from "next/image";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import CampaignCard from "./CampaignCard";
+import Loader from "./Loader";
 
 export default function AIFindTab() {
   const router = useRouter();
@@ -18,14 +18,7 @@ export default function AIFindTab() {
   };
 
   if (isLoading) {
-    return (
-      <div className="h-[50vh] flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-          <p className="text-gray-600">Loading campaigns...</p>
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError) {
@@ -48,7 +41,7 @@ export default function AIFindTab() {
               height={180}
               className="mx-auto"
               priority
-            /> 
+            />
             <div className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
               <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900">
                 Welcome to AI Find.
