@@ -45,7 +45,7 @@ export default function ProfileMatch() {
     );
   }
   return (
-    <div className="container mx-auto mt-8 px-5">
+    <div className="container mx-auto mt-8 px-4 sm:px-5">
       <button
         type="button"
         onClick={() => router.back()}
@@ -56,52 +56,52 @@ export default function ProfileMatch() {
       </button>
 
       <h2 className="text-2xl font-bold mb-4">Creators</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 w-full">
         {creators?.map((data: CreatorAPIResponse) => (
           <div
             key={data?.creatorId}
-            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+            className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full"
           >
-            <Image
-              src={data?.creator?.profileIcon || "/images/login.webp"}
-              alt={data?.creator?.fullName}
-              width={500}
-              height={500}
-              className="w-full h-48 object-cover"
-            />
-            <div className="flex flex-col p-4 flex-grow">
+            <div className="relative w-full pt-[60%]">
+              <Image
+                src={data?.creator?.profileIcon || "/images/login.webp"}
+                alt={data?.creator?.fullName}
+                fill
+                className="absolute top-0 left-0 object-cover"
+              />
+            </div>
+            <div className="flex flex-col p-3 sm:p-4 flex-grow">
               <div className="flex items-start justify-between mb-2">
-                <div className="flex flex-col justify-start items-start  w-full">
-                  <p className="text-lg font-semibold flex items-center gap-1">
-                    {data?.creator?.fullName?.length > 10
-                      ? `${data.creator.fullName.slice(0, 10)}...`
-                      : data.creator.fullName}
-                    <MdVerified className=" text-blue-500 h-5 w-5" />
+                <div className="flex flex-col justify-start items-start w-1/2">
+                  <div className="flex items-center gap-1 w-full">
+                    <p className="text-sm sm:text-base font-semibold truncate max-w-[90%]">
+                      {data?.creator?.fullName}
+                    </p>
+                    <MdVerified className="text-blue-500 h-4 w-4 flex-shrink-0" />
+                  </div>
+                  <p className="text-gray-600 text-xs sm:text-sm truncate w-full">
+                    {data?.creator?.profile?.category?.[0] || "No category"}
                   </p>
-                  <p className="text-gray-600 text-sm text-start ">
-                    {`${data?.creator?.profile?.category?.[0]?.slice(0, 20)}${
-                      data?.creator?.profile?.category?.[0] &&
-                      data?.creator?.profile?.category?.[0].length > 10
-                        ? "..."
-                        : ""
-                    }`}
-                  </p>{" "}
                 </div>
 
-                <div className="flex flex-col items-end  w-full ">
-                  <p className="text-gray-800 font-semibold text-right text-sm">
-                    {data?.creator?.profile?.socialLinks?.primary?.followers}
+                <div className="flex flex-col items-end w-1/2">
+                  <p className="text-gray-800 font-semibold text-right text-xs sm:text-sm">
+                    {data?.creator?.profile?.socialLinks?.primary?.followers ||
+                      "0"}
                   </p>
-                  <p className="text-sm">Followers</p>
+                  <p className="text-xs sm:text-sm">Followers</p>
                 </div>
               </div>
               <div className="h-0.5 bg-gray-200 w-full" />
-              <div className="flex items-center mt-2 space-x-2">
+              <div className="flex items-center mt-2 space-x-2 min-h-[1.5rem]">
                 {data?.creator?.profile?.socialLinks?.primary?.platform && (
                   <Link
-                    className="text-xs text-primary"
+                    className="text-xs text-primary truncate max-w-[45%]"
                     href={
                       data?.creator?.profile?.socialLinks?.primary?.link || "#"
+                    }
+                    title={
+                      data?.creator?.profile?.socialLinks?.primary?.platform
                     }
                   >
                     {data?.creator?.profile?.socialLinks?.primary?.platform}
@@ -113,10 +113,13 @@ export default function ProfileMatch() {
                   )}
                 {data?.creator?.profile?.socialLinks?.secondary?.platform && (
                   <Link
-                    className="text-xs text-primary"
+                    className="text-xs text-primary truncate max-w-[45%]"
                     href={
                       data?.creator?.profile?.socialLinks?.secondary?.link ||
                       "#"
+                    }
+                    title={
+                      data?.creator?.profile?.socialLinks?.secondary?.platform
                     }
                   >
                     {data?.creator?.profile?.socialLinks?.secondary?.platform}
@@ -125,21 +128,24 @@ export default function ProfileMatch() {
               </div>
             </div>
 
-            <div className="p-4 pt-0 mt-auto">
-              <div className="mt-4 flex justify-between items-center">
-                <p className="text-sm text-gray-700">Price Per Video</p>
-                <p className="text-lg font-bold">
-                  $ {data?.creator?.profile?.budgetVideo}
+            <div className="p-3 sm:p-4 pt-0 mt-auto">
+              <div className="mt-3 sm:mt-4 flex justify-between items-center">
+                <p className="text-xs sm:text-sm text-gray-700">
+                  Price Per Video
+                </p>
+                <p className="text-sm sm:text-lg font-bold">
+                  $ {data?.creator?.profile?.budgetVideo || "N/A"}
                 </p>
               </div>
               <Link
                 href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${
                   data?.creatorId
                 }?similarity=${(data?.similarity * 100).toFixed(2) || 10}`}
+                className="block mt-2 sm:mt-3"
               >
                 <Button
                   variant="outline"
-                  className="w-full bg-primary text-white border border-primary hover:text-primary hover:bg-white "
+                  className="w-full bg-primary text-white border border-primary hover:text-primary hover:bg-white text-xs sm:text-sm py-1 sm:py-2"
                 >
                   View Details
                 </Button>
