@@ -22,8 +22,7 @@ export const CollaborationSuccessModal: React.FC<
         <DialogHeader>
           <DialogTitle>Collaboration Request Sent</DialogTitle>
           <DialogDescription>
-            100$ from your wallet has been successfully deducted! Your
-            collaboration request has been sent to the creator. Kindly wait up
+            Your collaboration request has been sent to the creator. Kindly wait up
             to 48 hours. Check status under active collaboration.
           </DialogDescription>
         </DialogHeader>
