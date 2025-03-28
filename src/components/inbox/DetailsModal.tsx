@@ -36,7 +36,7 @@ export default function DetailsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-screen flex flex-col p-0">
+      <DialogContent className="max-w-6xl max-h-screen flex flex-col p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogClose />
         </DialogHeader>
@@ -53,9 +53,9 @@ export default function DetailsModal({
                     "https://avatar.iran.liara.run/public/boy"
                   }
                   alt="Campaign Image"
-                  width={350}
-                  height={350}
-                  className="object-cover"
+                  width={550}
+                  height={550}
+                  className="object-cover aspect-video"
                 />
               </div>
 
@@ -100,7 +100,7 @@ export default function DetailsModal({
 
                 {/* Campaign Description */}
                 <div className="mt-4 flex flex-col gap-4">
-                  <h4 className="text-lg font-semibold">Your Brief</h4>
+                  <h4 className="text-lg font-semibold">Campaign Brief</h4>
                   <p className="text-gray-600">
                     {campaign.yourBrief || "No brief provided"}
                   </p>
@@ -179,7 +179,7 @@ export default function DetailsModal({
                       <p>{campaign.videoDuration || "Not specified"}</p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Catch Phrase</p>
+                      <p className="text-gray-600">Call to Action</p>
                       <p>{campaign.catchPhrase || "Not specified"}</p>
                     </div>
                   </div>
@@ -255,7 +255,7 @@ export default function DetailsModal({
         </div>
 
         {/* Fixed Footer with Action Buttons */}
-        {status !== "Active" && (
+        {status == "Pending" && (
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
             <Button
               className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
@@ -265,7 +265,7 @@ export default function DetailsModal({
               {isAccepting ? "Accepting..." : "Accept"}
             </Button>
             <Button
-              className="px-4 py-2 text-sm font-medium text-white border border-primary rounded-lg hover:text-primary hover:bg-white transition"
+              className="px-4 py-2 text-sm font-medium text-white border border-primary rounded-lg transition"
               onClick={() => declineCollaboration()}
               disabled={declineLoading || isAccepting}
             >
