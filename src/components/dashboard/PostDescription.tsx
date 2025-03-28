@@ -1,4 +1,8 @@
-import { CampaignResponse, PostData, PostDescriptionProps } from "@/types/PostTypes";
+import {
+  CampaignResponse,
+  PostData,
+  PostDescriptionProps,
+} from "@/types/PostTypes";
 import Image from "next/image";
 import React from "react";
 
@@ -7,40 +11,37 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
 
   // Function to process the data into the expected format
   const processData = (): PostData => {
-    // If data is already in PostData format
+    // If already in correct format
     if ("image" in data && "title" in data) {
       return data as PostData;
     }
 
-    // Otherwise, it's the campaign response, so map it
     const campaignData = data as CampaignResponse;
 
-    // Try to parse JSON strings
-    const parseJsonArray = (jsonStr: string | string[]): string => {
-      if (Array.isArray(jsonStr)) {
-        try {
-          // If it's an array of JSON strings, parse the first one
-          if (jsonStr.length > 0) {
-            const parsed = JSON.parse(jsonStr[0]);
-            return Array.isArray(parsed) ? parsed.join(", ") : jsonStr[0];
-          }
-          return "";
-        } catch {
-          // If parsing fails, it might not be a JSON string, so return the original array joined
-          return jsonStr.join(", ");
+    // General parser to handle weird array-wrapped JSON strings or plain strings
+    const parseJsonArray = (input: string | string[]): string => {
+      try {
+        if (Array.isArray(input)) {
+          const value = input[0];
+          const parsed = JSON.parse(value);
+          return Array.isArray(parsed) ? parsed.join(", ") : value;
+        } else {
+          const parsed = JSON.parse(input);
+          return Array.isArray(parsed) ? parsed.join(", ") : input;
         }
+      } catch {
+        // Fallback: if not JSON, treat as CSV or return raw
+        if (Array.isArray(input)) return input.join(", ");
+        return input;
       }
-      // Return the original string if it's not an array
-      return jsonStr || "";
     };
 
-    // Create target group text
-    const targetGroup = [
-      `Age: ${campaignData?.targetAgeGroup || "Not specified"}`,
-      `Gender: ${campaignData.targetGender || "Not specified"}`,
-      `Location: ${parseJsonArray(campaignData.targetLocation)}`,
-      `Interests: ${parseJsonArray(campaignData.targetInterests)}`,
-    ].join(", ");
+    const targetGroup = {
+      age: parseJsonArray(campaignData.targetAgeGroup) || "Not specified",
+      gender: parseJsonArray(campaignData.targetGender) || "Not specified",
+      location: parseJsonArray(campaignData.targetLocation),
+      interest: parseJsonArray(campaignData.targetInterests),
+    };
 
     return {
       id: campaignData._id,
@@ -61,7 +62,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
       idealCreatorChecklist: {
         minFollowerCount: campaignData.minimumFollowers,
         ugcCreatorOrInfluencer: campaignData.creatorInfluencer,
-        preferredSocialMedia: campaignData.socialMediaPlatform,
+        preferredSocialMedia: parseJsonArray(campaignData.socialMediaPlatform),
         pastExperience: campaignData.pastExperience,
         preferredCreatorNiche: parseJsonArray(
           campaignData.preferredCreatorNiche
@@ -75,11 +76,11 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
         additionalInstructions: campaignData.additionalInstructions,
       },
       description: campaignData.campaignDescription,
-      createdAt: "", // You might want to add a createdAt field to CampaignResponse
+      createdAt: "", // Optionally set this from backend if needed
       requirement: {
         location: parseJsonArray(campaignData.targetLocation),
         minFollowers: campaignData.minimumFollowers,
-        minEngagement: "", // You might want to add a minEngagement field to CampaignResponse
+        minEngagement: "", // Add this in CampaignResponse if needed
       },
     };
   };
@@ -106,9 +107,9 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
             </h3>
           </div>
           {processedData.companyLogo && (
-            <div className=" relative rounded-full overflow-hidden flex items-center gap-4">
+            <div className=" relative rounded-full overflow-hidden flex items-center gap-4 md:pl-8">
               <Image
-                src={processedData.companyLogo}
+                src={processedData.image}
                 alt="Company Logo"
                 height={30}
                 width={30}
@@ -120,19 +121,19 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
             </div>
           )}
           {!processedData.companyLogo && processedData.companyName && (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 md:pl-8">
               <p className="text-black text-lg">{processedData.companyName}</p>
             </div>
           )}
           {processedData.campaignObjective && (
-            <div className="mt-4">
+            <div className="mt-4 md:pl-8">
               <h4 className="text-lg font-semibold">Campaign Objective</h4>
               <p className="text-gray-600">{processedData.campaignObjective}</p>
             </div>
           )}
 
           {processedData.campaignDescription && (
-            <div className="mt-4">
+            <div className="mt-4 md:pl-8">
               <h4 className="text-lg font-semibold">Campaign Description</h4>
               <p className="text-gray-600">
                 {processedData.campaignDescription}
@@ -141,9 +142,36 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           )}
 
           {processedData.targetGroup && (
-            <div className="mt-4">
+            <div className="mt-4 md:pl-8 space-y-1">
               <h4 className="text-lg font-semibold">Target Group</h4>
-              <p className="text-gray-600">{processedData.targetGroup}</p>
+
+              <p className="text-gray-600">
+                <strong>Age:</strong>{" "}
+                {Array.isArray(processedData.targetGroup.age)
+                  ? processedData.targetGroup.age.join(", ")
+                  : processedData.targetGroup.age}
+              </p>
+
+              <p className="text-gray-600">
+                <strong>Gender:</strong>{" "}
+                {Array.isArray(processedData.targetGroup.gender)
+                  ? processedData.targetGroup.gender.join(", ")
+                  : processedData.targetGroup.gender}
+              </p>
+
+              <p className="text-gray-600">
+                <strong>Location:</strong>{" "}
+                {Array.isArray(processedData.targetGroup.location)
+                  ? processedData.targetGroup.location.join(", ")
+                  : processedData.targetGroup.location || "Not specified"}
+              </p>
+
+              <p className="text-gray-600">
+                <strong>Interests:</strong>{" "}
+                {Array.isArray(processedData.targetGroup.interest)
+                  ? processedData.targetGroup.interest.join(", ")
+                  : processedData.targetGroup.interest || "Not specified"}
+              </p>
             </div>
           )}
 
@@ -162,7 +190,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                 </div>
                 What is the Content Vibe?
               </h4>
-              <div className="grid grid-cols-2 gap-4 mt-2 px-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 px-6">
                 <div>
                   <p className="text-gray-600">Content Type</p>
                   <p>{processedData.contentVibe.contentType}</p>
@@ -208,7 +236,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                 </div>
                 Ideal Creator Checklist
               </h4>
-              <div className="grid grid-cols-2 gap-4 mt-2 px-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 px-6">
                 <div>
                   <p className="text-gray-600">Minimum Follower Count</p>
                   <p>{processedData.idealCreatorChecklist.minFollowerCount}</p>
@@ -265,7 +293,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                 </div>
                 Compensation & Deliverables
               </h4>
-              <div className="grid grid-cols-2 gap-4 mt-2 px-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 px-6">
                 <div>
                   <p className="text-gray-600">Budget for Campaign</p>
                   <p>${processedData.compensation.budget}</p>
