@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const AUTH_PAGES = ["/", "/login", "/register", "/get-started"];
 export function middleware(request: NextRequest) {
   const authCookie = request.cookies.get("access_token");
   let authToken = null;
@@ -9,20 +10,24 @@ export function middleware(request: NextRequest) {
     try {
       // Parse the JWT token from cookie
       authToken = authCookie.value;
-      // localStorage.setItem("token", authToken);
     } catch (error) {
       console.error("Error parsing auth token:", error);
     }
   }
 
-  const isAuthPage =
-    request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/register");
-  const isHomePage = request.nextUrl.pathname === "/";
-  const isProtectedRoute = request.nextUrl.pathname.startsWith("/dashboard");
+  const { pathname } = request.nextUrl;
+
+  // Check if the current path is in the AUTH_PAGES array
+  const isAuthPage = AUTH_PAGES.includes(pathname);
+  const isProtectedRoute = pathname.startsWith("/dashboard");
+
+  // // For debugging
+  // console.log("pathname:", pathname);
+  // console.log("isAuthPage:", isAuthPage);
+  // console.log("hasAuthToken:", !!authToken);
 
   // If user is authenticated and trying to access login, register, or home page
-  if (authToken && (isAuthPage || isHomePage)) {
+  if (authToken && isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -34,6 +39,13 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Update the matcher to include /get-started explicitly
 export const config = {
-  matcher: ["/", "/login", "/register", "/dashboard/:path*"],
+  matcher: [
+    "/",
+    "/login",
+    "/register",
+    "/get-started", // Added this line
+    "/dashboard/:path*",
+  ],
 };
