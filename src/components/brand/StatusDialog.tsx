@@ -77,6 +77,9 @@ export default function StatusDialog({
       },
     });
 
+  const videoUploadStatus = campaign?.collaborationData?.videos?.length > 0;
+  const isVideoDeclined =
+    campaign?.collaborationData?.videos[0]?.status != "Declined";
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
@@ -110,7 +113,7 @@ export default function StatusDialog({
             <div className="relative mb-8 pl-12">
               <div
                 className={`absolute left-0  w-8 h-8 ${
-                  status == "Active" ? "bg-secondary" : "bg-gray-100"
+                  videoUploadStatus ? "bg-secondary" : "bg-gray-100"
                 } text-gray-400 rounded-full flex items-center justify-center z-10`}
               >
                 {/* <Image
@@ -121,32 +124,46 @@ export default function StatusDialog({
                 /> */}
                 <Clapperboard
                   className={`${
-                    status == "Active" ? "text-primary" : "text-gray-400"
+                    videoUploadStatus ? "text-primary" : "text-gray-400"
                   }`}
                 />
               </div>
               <div className="flex items-center justify-between w-full">
                 <p className="font-medium">Uploaded Video</p>
-                {campaign?.collaborationData?.videos?.length > 0 && (
-                  <Button className="bg-primary text-white">
-                    <Link
-                      href={campaign?.collaborationData?.videos[0]?.link}
-                      target="_blank"
-                    >
-                      View Video
-                    </Link>
-                  </Button>
+                {videoUploadStatus && (
+                  <>
+                    <Button className="bg-primary text-white">
+                      <Link
+                        href={campaign?.collaborationData?.videos[0]?.link}
+                        target="_blank"
+                      >
+                        View Video
+                      </Link>
+                    </Button>
+                  </>
                 )}
               </div>
             </div>
 
             {/* Step 3 - Current */}
             <div className="relative mb-8 pl-12">
-              <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
-                <Info className="text-primary" />
+              <div
+                className={`absolute left-0 w-8 h-8 ${
+                  isVideoDeclined && videoUploadStatus
+                    ? "bg-secondary"
+                    : "bg-gray-100"
+                } rounded-full flex items-center justify-center z-10`}
+              >
+                <Info
+                  className={`${
+                    isVideoDeclined && videoUploadStatus
+                      ? "text-primary"
+                      : "text-gray-400"
+                  } `}
+                />
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
-                {campaign?.collaborationData?.videos[0]?.status != "Declined" ? (
+                {isVideoDeclined ? (
                   <div className="flex gap-2 mt-2 sm:mt-0 w-full">
                     <Button
                       className="bg-primary text-white"
