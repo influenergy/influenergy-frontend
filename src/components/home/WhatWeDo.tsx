@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function WhatWeDo() {
   return (
-    <div className="w-full  flex items-center justify-center">
+    <div className="w-full  flex items-center justify-center my-4">
       <div className="grid grid-cols-1 md:grid-cols-2 w-full px-6 sm:px-12  py-2 md:py-2 gap-8 md:gap-12 items-start max-w-7xl">
         {/* Left column - Text content */}
         <motion.div
