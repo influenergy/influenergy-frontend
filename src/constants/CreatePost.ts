@@ -203,7 +203,7 @@ export const CREATE_POST: Questions = {
         ],
       },
       {
-        title: "Catch Phrase",
+        title: "Call to Action",
         slug: "catch-phrase",
         category: "textarea",
       },

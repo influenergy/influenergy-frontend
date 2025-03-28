@@ -42,10 +42,11 @@ export const isFieldRequired = (fieldName: string): boolean => {
 
     const fieldDescription = field.describe();
 
+
     // Check if explicitly required
-    const isExplicitlyRequired = fieldDescription.tests.some(
-      (test) => test.name === "required"
-    );
+    const isExplicitlyRequired =
+      fieldDescription.tests.some((test) => test.name === "required") ||
+      fieldDescription.nullable == false;
 
     // Handle date fields separately (if not nullable)
     const isDateRequired =

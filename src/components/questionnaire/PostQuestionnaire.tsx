@@ -1,10 +1,21 @@
 "use client";
 import { useState, useCallback, useEffect, useMemo } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription, // Re-import
+  // DialogFooter, // Still unused
+  DialogHeader, // Re-import
+  DialogTitle, // Re-import
+  DialogTrigger,
+  // DialogClose, // Still unused
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
 import { motion } from "framer-motion";
+import Image from "next/image"; // Import next/image
 import { Button } from "@/components/ui/button";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux"; // Removed unused import
 // import { setCredentials, User } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
@@ -44,8 +55,12 @@ const PostQuestionnaire = (): JSX.Element => {
     keyof typeof questions | "review"
   >("step1");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Renamed state
+  const [dialogStep, setDialogStep] = useState<"confirm" | "success" | null>(
+    null
+  ); // Added state for dialog step
   const { toast } = useToast();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch(); // Removed unused variable
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
@@ -122,11 +137,17 @@ const PostQuestionnaire = (): JSX.Element => {
           // Use the transformed data directly without FormData
           await postApi.createAdPost(updatedData as PostQuestionnaireData);
 
-          toast({
-            title: "Success!",
-            description: "Your campaign has been created successfully.",
-          });
-          router.push("/dashboard/brand/posts");
+          // Don't show toast or navigate immediately
+          // toast({
+          //   title: "Success!",
+          //   description: "Your campaign has been created successfully.",
+          // });
+          // router.push("/dashboard/brand/posts");
+
+          // Set dialog step to success
+          setDialogStep("success");
+          // Keep the dialog open
+          setIsDialogOpen(true);
         } else {
           toast({
             title: "Please login first",
@@ -155,13 +176,13 @@ const PostQuestionnaire = (): JSX.Element => {
     formData,
     currentStepIndex,
     steps,
-    router,
     toast,
     trigger,
     getValues,
-    dispatch,
     currentStep,
     user,
+    setDialogStep, // Add setDialogStep dependency
+    setIsDialogOpen, // Add setIsDialogOpen dependency
   ]);
 
   const handlePrevious = useCallback(() => {
@@ -194,14 +215,88 @@ const PostQuestionnaire = (): JSX.Element => {
                 Previous
               </Button>
 
-              <Button
-                className="ml-auto p-6   bg-primary text-white rounded-lg"
-                type="submit"
-                disabled={isSubmitting}
-                onClick={handleSubmit(handleNext)}
-              >
-                {!isSubmitting ? "Complete Campaign" : "Submitting..."}
-              </Button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    className="ml-auto p-6 bg-primary text-white rounded-lg"
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => setDialogStep("confirm")} // Set step on trigger click
+                  >
+                    {!isSubmitting ? "Complete Campaign" : "Submitting..."}
+                  </Button>
+                </DialogTrigger>
+                {/* Apply styling similar to DeleteModal */}
+                <DialogContent className="sm:max-w-sm bg-white rounded-lg p-6">
+                  {dialogStep === "confirm" && (
+                    <>
+                      <DialogHeader className="flex flex-col items-center gap-4 text-center">
+                        <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
+                          <Image
+                            src="/images/icons/message.png" // Confirmation Icon
+                            width={40}
+                            height={40}
+                            alt="Confirmation"
+                          />
+                        </DialogTitle>
+                        <DialogDescription className="text-base text-black">
+                          Once all details are submitted, edits will no longer be possible.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex items-center justify-center gap-4 mt-6">
+                        <Button
+                          variant={"outline"}
+                          className="border-primary border text-primary px-6" // Adjusted styling
+                          size="lg"
+                          onClick={() => setIsDialogOpen(false)}
+                          type="button"
+                        >
+                          No
+                        </Button>
+                        <Button
+                          className="bg-primary text-white px-6" // Adjusted styling
+                          size="lg"
+                          onClick={handleSubmit(handleNext)}
+                          disabled={isSubmitting}
+                          type="button"
+                        >
+                          {isSubmitting ? "Submitting..." : "Yes"}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                  {dialogStep === "success" && (
+                    <>
+                      <DialogHeader className="flex flex-col items-center gap-4 text-center">
+                         <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
+                           <Image
+                            src="/images/icons/window.png" // Success Icon
+                            width={40}
+                            height={40}
+                            alt="Success"
+                          />
+                        </DialogTitle>
+                        <DialogDescription className="text-base text-black">
+                          Your post is successfully created. Go to AI find tab to match your post with creators.
+                        </DialogDescription>
+                      </DialogHeader>
+                       <div className="flex items-center justify-center gap-4 mt-6">
+                         <Button
+                          className="bg-primary text-white px-6 w-full" // Adjusted styling
+                          size="lg"
+                          onClick={() => {
+                            setIsDialogOpen(false);
+                            router.push("/dashboard/brand/ai-find"); // Navigate on click
+                          }}
+                          type="button"
+                        >
+                          Take me to AI Find
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </DialogContent>
+              </Dialog>
             </div>
           </FormProvider>
         </div>

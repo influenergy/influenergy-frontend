@@ -200,7 +200,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                   <p>{processedData.contentVibe.durationOfVideo}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Catch Phrase</p>
+                  <p className="text-gray-600">Call to Action</p>
                   <p>{processedData.contentVibe.catchPhrase}</p>
                 </div>
                 <div>
