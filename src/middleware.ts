@@ -21,11 +21,6 @@ export function middleware(request: NextRequest) {
   const isAuthPage = AUTH_PAGES.includes(pathname);
   const isProtectedRoute = pathname.startsWith("/dashboard");
 
-  // // For debugging
-  // console.log("pathname:", pathname);
-  // console.log("isAuthPage:", isAuthPage);
-  // console.log("hasAuthToken:", !!authToken);
-
   // If user is authenticated and trying to access login, register, or home page
   if (authToken && isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -45,7 +40,7 @@ export const config = {
     "/",
     "/login",
     "/register",
-    "/get-started", // Added this line
+    "/get-started",
     "/dashboard/:path*",
   ],
 };
