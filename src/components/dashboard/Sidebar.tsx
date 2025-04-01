@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { navLinks } from "@/constants/NavLinks";
 import Image from "next/image";
 import { selectUser, useAppSelector } from "@/store";
@@ -32,7 +32,7 @@ interface NavLinks {
 export default function Sidebar({ type }: { type: string }) {
   const user = useAppSelector((state) => state.auth.userType);
   const userProfile = useAppSelector(selectUser);
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const [active,setActive]=useState("dashboard")
 
   if (!user) return null;
