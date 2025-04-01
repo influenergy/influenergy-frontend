@@ -2,13 +2,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-// import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { navLinks } from "@/constants/NavLinks";
 import Image from "next/image";
 import { selectUser, useAppSelector } from "@/store";
 import { LucideIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useState } from "react";
+// import { useState } from "react";
 
 interface NavItem {
   href?: string;
@@ -32,8 +32,8 @@ interface NavLinks {
 export default function Sidebar({ type }: { type: string }) {
   const user = useAppSelector((state) => state.auth.userType);
   const userProfile = useAppSelector(selectUser);
-  // const pathname = usePathname();
-  const [active,setActive]=useState("dashboard")
+  const pathname = usePathname();
+  // const [active,setActive]=useState("dashboard")
 
   if (!user) return null;
   const navItems = (navLinks as NavLinks)[user][type];
@@ -78,11 +78,11 @@ export default function Sidebar({ type }: { type: string }) {
                 variant="ghost"
                 className={cn(
                   "w-full justify-center md:justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
-                  active === item.slug
+                  pathname === item.href
                     ? "bg-white text-primary"
                     : "text-white"
                 )}  
-                onClick={()=>setActive(item.slug)}
+                // onClick={()=>setActive(item.slug)}
               >
                 {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
                 <p className="text-sm hidden md:block">{item.label}</p>
