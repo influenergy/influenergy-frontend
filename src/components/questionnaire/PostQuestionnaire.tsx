@@ -286,7 +286,7 @@ const PostQuestionnaire = (): JSX.Element => {
                           size="lg"
                           onClick={() => {
                             setIsDialogOpen(false);
-                            router.push("/dashboard/brand/ai-find"); // Navigate on click
+                            router.push("/dashboard/brand/findai"); // Navigate on click
                           }}
                           type="button"
                         >

@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface CollaborationFailedModalProps {
   isOpen: boolean;
@@ -15,27 +16,26 @@ interface CollaborationFailedModalProps {
 
 export const CollaborationFailedModal: React.FC<
   CollaborationFailedModalProps
-> = ({ isOpen, onOpenChange }) => {
+> = ({ isOpen }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Collaboration Failed</DialogTitle>
           <DialogDescription>
-            Your collaboration request failed. Kindly recharge your wallet.
+            Your collaboration request failed. Kindly retry after some time.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
-            I will do it later
-          </Button>
-          <Button type="button" onClick={() => {
-              // Implement recharge wallet logic here
-            //   alert("Recharge Wallet Clicked");
-              onOpenChange(false);
-            }}>
-            Recharge My Wallet
-          </Button>
+          <Link href="/dashboard/brand/findai">
+            <Button
+              type="button"
+              variant="secondary"
+             
+            >
+              Close
+            </Button>
+          </Link>
         </DialogFooter>
       </DialogContent>
     </Dialog>

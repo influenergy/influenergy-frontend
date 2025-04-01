@@ -20,7 +20,7 @@ export const CollaborationConfirmationModal: React.FC<
   CollaborationConfirmationModalProps
 > = ({ isOpen, onOpenChange, onConfirm, budget, isPending }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="flex flex-col items-center gap-4">
           <DialogTitle className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
@@ -32,7 +32,7 @@ export const CollaborationConfirmationModal: React.FC<
             />
           </DialogTitle>
           <DialogDescription className="text-black text-center text-lg ">
-            By confirming, ${budget} will be deducted from your wallet. Are you
+            By confirming, ${budget} will be deducted from your account. Are you
             sure you want to continue?
           </DialogDescription>
         </DialogHeader>

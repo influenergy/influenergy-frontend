@@ -1,12 +1,13 @@
 "use client";
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState, useEffect } from "react";
 import { CollaborationConfirmationModal } from "@/components/ui/CollaborationConfirmationModal";
 import { CollaborationSuccessModal } from "@/components/ui/CollaborationSuccessModal";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCampaignProfileDetails } from "@/hooks/useFindAi";
-import { useCreateCollaboration } from "@/hooks/useQueryCampaigns";
+import { CollaborationFailedModal } from "@/components/ui/CollaborationFailedModal";
+import { useInitiatePayment } from "@/hooks/usePayment";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -43,8 +44,11 @@ const CreatorDetailsPage = () => {
   const { campaignId, creatorId } = useParams();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [failedModalOpen, setFailedModalOpen] = useState(false);
+  const [alreadyPaid, setAlreadyPaid] = useState(false);
+  const router = useRouter();
 
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = useSearchParams();
   const similarity = searchParams.get("similarity");
 
   // Use React Query hook to fetch creator data
@@ -54,29 +58,39 @@ const CreatorDetailsPage = () => {
     error,
   } = useCampaignProfileDetails(creatorId as string);
 
-  // Setup collaboration mutation
-  const { mutateAsync: createCollaboration, isPending } =
-    useCreateCollaboration(
-      campaignId as string,
-      creatorId as string,
-      creator?.profile?.budgetVideo
-    );
+  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
 
   const handleCollaborate = async () => {
-    setConfirmationModalOpen(true);
-  };
-
-  const confirmCollaboration = async () => {
     try {
-      // Call the mutation
-      await createCollaboration();
-      setConfirmationModalOpen(false); // Close confirmation modal immediately after confirm
-      setSuccessModalOpen(true); // Open success modal after confirmation
-    } catch (err) {
-      console.error("Error sending collaboration request:", err);
-      setConfirmationModalOpen(false); // Ensure confirmation modal is closed on error
+      const response = await initiatePayment({
+        campaignId: campaignId as string,
+        amount: creator?.profile?.budgetVideo || "0",
+        creatorId: creatorId as string,
+        similarity: similarity || "",
+      });
+
+      // Redirect to Stripe checkout
+      if (response?.url) {
+        window.location.href = response.url;
+        router.replace(response.url);
+      }
+    } catch (error) {
+      console.error("Payment initiation failed:", error);
+      setFailedModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    const paymentStatus = window.location.search?.split("?payment=")[1];
+
+    if (paymentStatus === "done") {
+      setSuccessModalOpen(true);
+      setAlreadyPaid(true);
+    } else if (paymentStatus === "failed") {
+      setFailedModalOpen(true);
+      // window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   if (isLoading) {
     return (
@@ -161,30 +175,32 @@ const CreatorDetailsPage = () => {
       </Suspense>
 
       {/* Collaborate Button - Fixed to bottom on mobile */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg md:static md:shadow-none md:border-0 md:bg-transparent md:p-0 md:mt-8 z-10">
-        <Button
-          className="w-full bg-primary hover:bg-primary/90 text-white py-6"
-          disabled={isPending}
-          onClick={handleCollaborate}
-        >
-          {isPending ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            `Collaborate With This Creator For $${
-              creator?.profile?.budgetVideo || 0
-            }`
-          )}
-        </Button>
-      </div>
+      {!alreadyPaid && (
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg md:static md:shadow-none md:border-0 md:bg-transparent md:p-0 md:mt-8 z-10">
+          <Button
+            className="w-full bg-primary hover:bg-primary/90 text-white py-6"
+            disabled={isPending}
+            onClick={handleCollaborate}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              `Collaborate With This Creator For $${
+                creator?.profile?.budgetVideo || 0
+              }`
+            )}
+          </Button>
+        </div>
+      )}
 
       {/* Confirmation Modal */}
       <CollaborationConfirmationModal
         isOpen={confirmationModalOpen}
         onOpenChange={setConfirmationModalOpen}
-        onConfirm={confirmCollaboration}
+        onConfirm={handleCollaborate}
         budget={creator?.profile?.budgetVideo || 0}
         isPending={isPending}
       />
@@ -196,10 +212,10 @@ const CreatorDetailsPage = () => {
       />
 
       {/* Failed Modal */}
-      {/* <CollaborationFailedModal
+      <CollaborationFailedModal
         isOpen={failedModalOpen}
         onOpenChange={setFailedModalOpen}
-      /> */}
+      />
 
       {/* Spacer for fixed button on mobile */}
       <div className="h-16 md:hidden"></div>
