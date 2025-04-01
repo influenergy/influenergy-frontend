@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useCampaignProfileDetails } from "@/hooks/useFindAi";
 import { CollaborationFailedModal } from "@/components/ui/CollaborationFailedModal";
 import { useInitiatePayment } from "@/hooks/usePayment";
+import { toast } from "@/hooks/use-toast";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -68,6 +69,7 @@ const CreatorDetailsPage = () => {
         creatorId: creatorId as string,
         similarity: similarity || "",
       });
+      // console.log("Payment response:", response);
 
       // Redirect to Stripe checkout
       if (response?.url) {
@@ -86,9 +88,17 @@ const CreatorDetailsPage = () => {
     if (paymentStatus === "done") {
       setSuccessModalOpen(true);
       setAlreadyPaid(true);
+      toast({
+        title: "Payment Successful",
+        description: "You have successfully paid for the collaboration.",
+      });
     } else if (paymentStatus === "failed") {
       setFailedModalOpen(true);
       // window.history.replaceState({}, document.title, window.location.pathname);
+      toast({
+        title: "Payment Failed",
+        description: "Your payment for the collaboration has failed.",
+      });
     }
   }, []);
 
