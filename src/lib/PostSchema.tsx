@@ -214,7 +214,7 @@ export const step6Schema = yup.object().shape({
     )
     .required("Delivery timeframe is required"),
   "additional-instructions": yup.string().nullable().optional(),
-  "requirement-documents": yup.string().required(),
+  "requirement-documents": yup.string().nullable().optional(),
 }) as Schema;
 
 export const PostSchema = yup.object().shape({

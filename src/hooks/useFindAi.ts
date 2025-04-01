@@ -20,7 +20,7 @@ export const useFindAiCampaignsList = (status: string) => {
     },
     retry: false,
     // Set staleTime to 5 seconds
-    staleTime: 5000,
+    // staleTime: 5000,
   });
 };
 
