@@ -52,6 +52,7 @@ const TrendingVideos: React.FC<{ creatorId: string }> = ({ creatorId }) => {
               href={video?.videoLink || "#"}
               key={index}
               className="rounded-lg overflow-hidden shadow-sm border"
+              target="_blank"
             >
               <div className="relative h-48 w-full">
                 <Image
