@@ -63,7 +63,7 @@ export default function DetailsModal({
               <div className="w-full space-y-4">
                 {/* Title and Brand */}
                 <div className="flex items-center gap-2">
-                  <h3 className="text-2xl text-gray-900 line-clamp-2">
+                  <h3 className="text-2xl text-gray-900 line-clamp-2 font-bold">
                     {campaign.campaignName || "Campaign Name"}
                   </h3>
                 </div>
@@ -72,6 +72,18 @@ export default function DetailsModal({
                   <p className="text-black text-lg">
                     {campaign.brandName || "Brand"}
                   </p>
+                  <div className=" relative rounded-lg overflow-hidden">
+                    <Image
+                      src={
+                        campaign.campaignPost ||
+                        "https://avatar.iran.liara.run/public/boy"
+                      }
+                      alt="Campaign Image"
+                      width={50}
+                      height={50}
+                      className="object-cover aspect-video"
+                    />
+                  </div>
                 </div>
 
                 {/* Campaign Objective */}
@@ -115,42 +127,47 @@ export default function DetailsModal({
                     {campaign.campaignConcept || "No campaign concept provided"}
                   </p>
                   <hr />
-                  <p className="text-gray-600">
-                    Age:{" "}
-                    {campaign.targetAgeGroup
-                      ? Array.isArray(campaign.targetAgeGroup)
-                        ? (campaign.targetAgeGroup as string[])
-                            .map((age) =>
-                              age.toString().replace(/[\[\]"]/g, "")
-                            )
+                  <div className="flex items-center gap-5">
+                    <p className="text-gray-600">
+                      Target Audience Age:{" "}
+                      {campaign.targetAgeGroup
+                        ? Array.isArray(campaign.targetAgeGroup)
+                          ? (campaign.targetAgeGroup as string[])
+                              .map((age) =>
+                                age.toString().replace(/[\[\]"]/g, "")
+                              )
+                              .join(", ")
+                          : (campaign.targetAgeGroup as string)
+                              .toString()
+                              .replace(/[\[\]"]/g, "")
+                        : ""}
+                    </p>
+                    <p className="text-gray-600">
+                      {" "}
+                      Target Audience Gender:{" "}
+                      {campaign.targetGender
+                        .toString()
+                        .replace(/[\[\]"]/g, "") || "Not specified"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-5">
+                    <p className="text-gray-600">
+                      Target Location:{" "}
+                      {campaign.targetLocation
+                        ? campaign.targetLocation
+                            .map((loc) => loc.replace(/[\[\]"]/g, ""))
                             .join(", ")
-                        : (campaign.targetAgeGroup as string)
-                            .toString()
-                            .replace(/[\[\]"]/g, "")
-                      : ""}
-                  </p>
-                  <p className="text-gray-600">
-                    {" "}
-                    Gender:{" "}
-                    {campaign.targetGender.toString().replace(/[\[\]"]/g, "") ||
-                      "Not specified"}
-                  </p>
-                  <p className="text-gray-600">
-                    Location:{" "}
-                    {campaign.targetLocation
-                      ? campaign.targetLocation
-                          .map((loc) => loc.replace(/[\[\]"]/g, ""))
-                          .join(", ")
-                      : "Not specified"}
-                  </p>
-                  <p className="text-gray-600">
-                    Interests:{" "}
-                    {campaign.targetInterests
-                      ? campaign.targetInterests
-                          .map((int) => int.replace(/[\[\]"]/g, ""))
-                          .join(", ")
-                      : "Not specified"}
-                  </p>
+                        : "Not specified"}
+                    </p>
+                    <p className="text-gray-600">
+                      Target Audience Interests:{" "}
+                      {campaign.targetInterests
+                        ? campaign.targetInterests
+                            .map((int) => int.replace(/[\[\]"]/g, ""))
+                            .join(", ")
+                        : "Not specified"}
+                    </p>
+                  </div>
                   <hr />
                 </div>
 
