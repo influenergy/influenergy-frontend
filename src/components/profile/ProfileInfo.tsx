@@ -68,7 +68,8 @@ export default function ProfileInfo({ user, userType }: ProfileInfoProps) {
   return (
     <>
       {userType === "brand" ? (
-        <BrandMessage user={user} />
+        // <BrandMessage user={user} />
+        <></>
       ) : (
         <UserProfileStatus user={user} />
       )}
