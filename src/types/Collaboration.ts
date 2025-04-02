@@ -36,4 +36,5 @@ export interface Collaboration {
   createdAt: string;
   updatedAt: string;
   paymentStatus: string;
+  budget:string;
 }

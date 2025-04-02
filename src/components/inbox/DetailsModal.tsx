@@ -274,6 +274,12 @@ export default function DetailsModal({
                         {campaign.expectedDeliverables || "Not specified"}
                       </p>
                     </div>
+                    <div>
+                      <p>Budget</p>
+                      <p className="text-gray-600">
+                        ${data?.budget || "Not specified"}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
