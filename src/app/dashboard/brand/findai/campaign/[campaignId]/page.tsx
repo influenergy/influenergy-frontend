@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { MdVerified } from "react-icons/md";
 import Link from "next/link";
 import { useFindAiCampaign } from "@/hooks/useFindAi";
-import { ChevronsLeft, Loader2 } from "lucide-react";
+import { ChevronsLeft} from "lucide-react";
 import { CreatorAPIResponse } from "@/types/Creator";
 import { useParams, useRouter } from "next/navigation";
+import Loader from "@/components/brand/Loader";
 
 export default function ProfileMatch() {
   const { campaignId } = useParams();
@@ -22,8 +23,9 @@ export default function ProfileMatch() {
     return (
       <div className="h-[50vh] flex items-center justify-center">
         <div className="text-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-          <p className="text-gray-600">Loading creators...</p>
+          {/* <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+          <p className="text-gray-600">Loading creators...</p> */}
+          <Loader />
         </div>
       </div>
     );
