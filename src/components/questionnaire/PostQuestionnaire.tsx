@@ -240,7 +240,8 @@ const PostQuestionnaire = (): JSX.Element => {
                           />
                         </DialogTitle>
                         <DialogDescription className="text-base text-black">
-                          Once all details are submitted, edits will no longer be possible.
+                          Once all details are submitted, edits will no longer
+                          be possible.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="flex items-center justify-center gap-4 mt-6">
@@ -268,8 +269,8 @@ const PostQuestionnaire = (): JSX.Element => {
                   {dialogStep === "success" && (
                     <>
                       <DialogHeader className="flex flex-col items-center gap-4 text-center">
-                         <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
-                           <Image
+                        <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
+                          <Image
                             src="/images/icons/window.png" // Success Icon
                             width={40}
                             height={40}
@@ -277,11 +278,12 @@ const PostQuestionnaire = (): JSX.Element => {
                           />
                         </DialogTitle>
                         <DialogDescription className="text-base text-black">
-                          Your post is successfully created. Go to AI find tab to match your post with creators.
+                          Your post is successfully created. Go to AI find tab
+                          to match your post with creators.
                         </DialogDescription>
                       </DialogHeader>
-                       <div className="flex items-center justify-center gap-4 mt-6">
-                         <Button
+                      <div className="flex items-center justify-center gap-4 mt-6">
+                        <Button
                           className="bg-primary text-white px-6 w-full" // Adjusted styling
                           size="lg"
                           onClick={() => {
@@ -308,11 +310,10 @@ const PostQuestionnaire = (): JSX.Element => {
           >
             <div className="mb-8 flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2">
-                Lets Create Your Profile
+                {questions[currentStep as keyof typeof questions]?.title}
               </h2>
               <p className="text-gray-600">
-                In order to match you with the right brands, we need a few more
-                details
+                {questions[currentStep as keyof typeof questions]?.description}
               </p>
               <div className="mt-4 text-sm text-gray-500">
                 Step {currentStepIndex + 1} of {steps.length}
