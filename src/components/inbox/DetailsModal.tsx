@@ -277,7 +277,7 @@ export default function DetailsModal({
                     <div>
                       <p>Budget</p>
                       <p className="text-gray-600">
-                        ${data?.budget || "Not specified"}
+                        {data?.amount ? `$ ${data.amount}` : "Not specified"}
                       </p>
                     </div>
                   </div>
