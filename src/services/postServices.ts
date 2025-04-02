@@ -179,7 +179,7 @@ export const postApi = {
   },
   paymentCollect: async (collaborationId: string) => {
     try {
-      const response = await api.get(
+      const response = await api.put(
         `/creator/collaboration/get-payment/${collaborationId}`
       );
       return response.data;

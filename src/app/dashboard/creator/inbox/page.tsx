@@ -19,8 +19,11 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 const Page = () => {
   const [activeTab, setActiveTab] = useState("");
 
-  const { data: campaignsData, isLoading } =
-    useCollaborationStatusDetails(activeTab);
+  const {
+    data: campaignsData,
+    isLoading,
+    refetch,
+  } = useCollaborationStatusDetails(activeTab);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -76,6 +79,7 @@ const Page = () => {
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
+                        refetch={refetch}
                       />
                     )
                   )}
@@ -109,6 +113,7 @@ const Page = () => {
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
+                        refetch={refetch}
                       />
                     )
                   )}
@@ -142,6 +147,7 @@ const Page = () => {
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
+                        refetch={refetch}
                       />
                     )
                   )}
@@ -175,6 +181,7 @@ const Page = () => {
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
+                        refetch={refetch}
                       />
                     )
                   )}

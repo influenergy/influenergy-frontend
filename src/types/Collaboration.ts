@@ -35,4 +35,5 @@ export interface Collaboration {
   videos: Video[];
   createdAt: string;
   updatedAt: string;
+  paymentStatus: string;
 }
