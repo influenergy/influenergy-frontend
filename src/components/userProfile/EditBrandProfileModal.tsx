@@ -28,8 +28,8 @@ const editProfileSchema = yup.object({
     .matches(/^[A-Za-z\s]+$/, "Name should only contain letters and spaces")
     .min(2, "Name must be at least 2 characters")
     .required("Name is required"),
-  companyName: yup.string().min(3).required("Company Name is required"),
-  companyWebsite: yup.string().url().required("Company Website is required"),
+  companyName: yup.string().min(0).nullable().optional(),
+  companyWebsite: yup.string().url().min(0).nullable().optional(),
 });
 
 type FormData = yup.InferType<typeof editProfileSchema>;
@@ -71,8 +71,8 @@ export function EditBrandProfileModal({
     try {
       await userApi.updateBrandProfile({
         fullName: data.fullName,
-        companyName: data.companyName,
-        companyWebsite: data.companyWebsite,
+        companyName: data.companyName || "",
+        companyWebsite: data.companyWebsite || "",
       });
 
       dispatch(
@@ -158,6 +158,11 @@ export function EditBrandProfileModal({
               placeholder="Enter your company name"
               className="w-full text-gray-800"
             />
+            {errors.companyName && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.companyName.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -170,6 +175,11 @@ export function EditBrandProfileModal({
               placeholder="Enter your company website"
               className="w-full text-gray-800"
             />
+            {errors.companyWebsite && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.companyWebsite.message}
+              </p>
+            )}
           </div>
 
           <div className="flex justify-between space-x-2">
