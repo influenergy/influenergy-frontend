@@ -55,7 +55,7 @@ export default function DetailsModal({
                   alt="Campaign Image"
                   width={550}
                   height={550}
-                  className="object-cover aspect-video"
+                  className="object-cover aspect-[16/9] rounded-lg"
                 />
               </div>
 
@@ -69,21 +69,19 @@ export default function DetailsModal({
                 </div>
 
                 <div className="flex items-center gap-4">
+                  <Image
+                    src={
+                      campaign.campaignPost ||
+                      "https://avatar.iran.liara.run/public/boy"
+                    }
+                    alt="Campaign Image"
+                    width={40}
+                    height={40} // Make height equal to width for a perfect circle
+                    className="object-cover rounded-full h-10 w-10"
+                  />
                   <p className="text-black text-lg">
                     {campaign.brandName || "Brand"}
                   </p>
-                  <div className=" relative rounded-lg overflow-hidden">
-                    <Image
-                      src={
-                        campaign.campaignPost ||
-                        "https://avatar.iran.liara.run/public/boy"
-                      }
-                      alt="Campaign Image"
-                      width={50}
-                      height={50}
-                      className="object-cover aspect-video"
-                    />
-                  </div>
                 </div>
 
                 {/* Campaign Objective */}
@@ -142,6 +140,7 @@ export default function DetailsModal({
                               .replace(/[\[\]"]/g, "")
                         : ""}
                     </p>
+                    {"•"}
                     <p className="text-gray-600">
                       {" "}
                       Target Audience Gender:{" "}
@@ -159,6 +158,7 @@ export default function DetailsModal({
                             .join(", ")
                         : "Not specified"}
                     </p>
+                    {"•"}
                     <p className="text-gray-600">
                       Target Audience Interests:{" "}
                       {campaign.targetInterests
@@ -188,16 +188,22 @@ export default function DetailsModal({
                   </h4>
                   <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                     <div>
-                      <p className="text-gray-600">Content Type</p>
-                      <p>{campaign.contentType || "Not specified"}</p>
+                      <p>Content Type</p>
+                      <p className="text-gray-600">
+                        {campaign.contentType || "Not specified"}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Duration of Video</p>
-                      <p>{campaign.videoDuration || "Not specified"}</p>
+                      <p>Duration of Video</p>
+                      <p className="text-gray-600">
+                        {campaign.videoDuration || "Not specified"}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Call to Action</p>
-                      <p>{campaign.catchPhrase || "Not specified"}</p>
+                      <p>Call to Action</p>
+                      <p className="text-gray-600">
+                        {campaign.catchPhrase || "Not specified"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -219,8 +225,8 @@ export default function DetailsModal({
                   </h4>
                   <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                     <div>
-                      <p className="text-gray-600">Preferred Creator Niche</p>
-                      <p>
+                      <p>Preferred Creator Niche</p>
+                      <p className="text-gray-600">
                         {campaign.preferredCreatorNiche
                           ? campaign.preferredCreatorNiche
                               .map((niche) => niche.replace(/[\[\]"]/g, ""))
@@ -229,10 +235,8 @@ export default function DetailsModal({
                       </p>
                     </div>
                     <div>
+                      <p>Preferred Creator Demographics</p>
                       <p className="text-gray-600">
-                        Preferred Creator Demographics
-                      </p>
-                      <p>
                         {campaign.preferredCreatorDemographics ||
                           "Not specified"}
                       </p>
@@ -257,12 +261,16 @@ export default function DetailsModal({
                   </h4>
                   <div className="grid grid-cols-2 gap-4 mt-2 px-6">
                     <div>
-                      <p className="text-gray-600">No. Of Days for Delivery</p>
-                      <p>{campaign.noOfDaysForDelivery || "Not specified"}</p>
+                      <p>No. Of Days for Delivery</p>
+                      <p className="text-gray-600">
+                        {campaign.noOfDaysForDelivery || "Not specified"}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-gray-600">Expected Deliverables</p>
-                      <p>{campaign.expectedDeliverables || "Not specified"}</p>
+                      <p>Expected Deliverables</p>
+                      <p className="text-gray-600">
+                        {campaign.expectedDeliverables || "Not specified"}
+                      </p>
                     </div>
                   </div>
                 </div>
