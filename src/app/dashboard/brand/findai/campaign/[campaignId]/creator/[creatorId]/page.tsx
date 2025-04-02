@@ -9,6 +9,7 @@ import { useCampaignProfileDetails } from "@/hooks/useFindAi";
 import { CollaborationFailedModal } from "@/components/ui/CollaborationFailedModal";
 import { useInitiatePayment } from "@/hooks/usePayment";
 import { toast } from "@/hooks/use-toast";
+import { useGetAISummary } from "@/hooks/useQueryCampaigns";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -59,6 +60,16 @@ const CreatorDetailsPage = () => {
     error,
   } = useCampaignProfileDetails(creatorId as string);
 
+  const {
+    data: summary,
+    isLoading: isSummaryLoading,
+    error: summaryError,
+    refetch,
+  } = useGetAISummary(
+    Array.isArray(creatorId) ? creatorId[0] : (creatorId as string),
+    Array.isArray(campaignId) ? campaignId[0] : (campaignId as string)
+  );
+
   const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
 
   const handleCollaborate = async () => {
@@ -69,7 +80,6 @@ const CreatorDetailsPage = () => {
         creatorId: creatorId as string,
         similarity: similarity || "",
       });
-      // console.log("Payment response:", response);
 
       // Redirect to Stripe checkout
       if (response?.url) {
@@ -181,7 +191,13 @@ const CreatorDetailsPage = () => {
       </Suspense>
 
       <Suspense fallback={<SectionLoader />}>
-        <MatchReason value={similarity || ""} />
+        <MatchReason
+          value={similarity || ""}
+          summary={summary?.data}
+          isSummaryLoading={isSummaryLoading}
+          summaryError={summaryError}
+          refetch={refetch}
+        />
       </Suspense>
 
       {/* Collaborate Button - Fixed to bottom on mobile */}
@@ -218,13 +234,12 @@ const CreatorDetailsPage = () => {
       {/* Success Modal */}
       <CollaborationSuccessModal
         isOpen={successModalOpen}
-        onOpenChange={setSuccessModalOpen}
       />
 
       {/* Failed Modal */}
       <CollaborationFailedModal
         isOpen={failedModalOpen}
-        onOpenChange={setFailedModalOpen}
+       
       />
 
       {/* Spacer for fixed button on mobile */}

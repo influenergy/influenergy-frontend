@@ -7,6 +7,7 @@ export const queryKeys = {
   uploadPost: "uploadPost",
   getPost: "getPost",
   addVideo: "addVideo",
+  paymentCollect: "paymentCollect",
 };
 
 export const useGetPost = () => {
@@ -122,5 +123,36 @@ export const useAcceptOrDeclineVideo = ({
       }
     },
     onSuccess,
+  });
+};
+
+interface PaymentCollect {
+  collaborationId: string;
+  videoId: string;
+  status: string;
+  message: string;
+  onSuccess?: () => void;
+}
+
+export const usePaymentCollect = ({ collaborationId }: PaymentCollect) => {
+  return useQuery({
+    queryKey: [queryKeys.paymentCollect],
+    queryFn: async () => {
+      try {
+        return await postApi.paymentCollect(collaborationId);
+      } catch (error) {
+        // Log the error but don't retry
+        console.error("Error fetching posts:", error);
+        throw error;
+      }
+    },
+    // Only enable the query when user's profile is completed
+    enabled: !!collaborationId,
+    // Disable automatic retries
+    retry: false,
+    // Add staleTime to prevent frequent refetches
+    staleTime: 5000,
+    // Disable refetching on window focus
+    refetchOnWindowFocus: false,
   });
 };

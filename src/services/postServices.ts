@@ -177,4 +177,24 @@ export const postApi = {
       throw error;
     }
   },
+  paymentCollect: async (collaborationId: string) => {
+    try {
+      const response = await api.get(
+        `/creator/collaboration/get-payment/${collaborationId}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      throw error;
+    }
+  },
+  getAISummary: async (creatorId:string,campaignId: string) => {
+    try {
+      const response = await api.get(`/ai/create-text/${creatorId}/${campaignId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      throw error;
+    }
+  },
 };

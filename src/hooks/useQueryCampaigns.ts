@@ -6,6 +6,7 @@ export const queryKeys = {
   campaigns: "campaigns",
   campaign: (id: string) => ["campaign", id],
   createCollaboration: (id: string) => ["createCollaboration", id],
+  getAISummary: (campaignId: string) => ["getAISummary", campaignId],
 };
 
 // Hook for fetching all campaigns
@@ -60,5 +61,28 @@ export const useCollaborationStatusDetails = (status: string) => {
     // Set staleTime to 5 seconds
     staleTime: 5000,
     enabled: !!status,
+  });
+};
+
+export const useGetAISummary = (creatorId:string,campaignId: string) => {
+  return useQuery({
+    queryKey: [queryKeys.getAISummary],
+    queryFn: async () => {
+      try {
+        return await postApi.getAISummary(creatorId,campaignId);
+      } catch (error) {
+        // Log the error but don't retry
+        console.error("Error fetching posts:", error);
+        throw error;
+      }
+    },
+    // Only enable the query when user's profile is completed
+    enabled: !!campaignId,
+    // Disable automatic retries
+    retry: false,
+    // Add staleTime to prevent frequent refetches
+    staleTime: 5000,
+    // Disable refetching on window focus
+    refetchOnWindowFocus: false,
   });
 };
