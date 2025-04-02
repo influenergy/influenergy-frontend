@@ -15,6 +15,7 @@ interface NavItem {
   icon: LucideIcon;
   label: string;
   slug: string;
+  matchPaths?: string[];
   children?: Array<{
     href: string;
     label: string;
@@ -73,16 +74,17 @@ export default function Sidebar({ type }: { type: string }) {
 
         <nav className="grid items-start gap-1 md:gap-2 mt-2">
           {navItems.map((item: NavItem) => (
-            <Link key={item.href} href={item.href!}>
+            <Link key={item.slug} href={item.href || "#"}>
               <Button
                 variant="ghost"
                 className={cn(
                   "w-full justify-center md:justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
-                  pathname === item.href
+                  item.matchPaths?.some((matchPath) =>
+                    pathname.startsWith(matchPath)
+                  ) || pathname === item.href
                     ? "bg-white text-primary"
                     : "text-white"
-                )}  
-                // onClick={()=>setActive(item.slug)}
+                )}
               >
                 {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
                 <p className="text-sm hidden md:block">{item.label}</p>

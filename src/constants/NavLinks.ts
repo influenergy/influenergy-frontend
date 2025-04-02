@@ -16,12 +16,7 @@ interface NavItem {
   icon: LucideIcon;
   label: string;
   slug: string;
-  children?: Array<{
-    href: string;
-    label: string;
-    icon: LucideIcon;
-    slug: string;
-  }>;
+  matchPaths?: string[];
 }
 
 interface NavLinks {
@@ -38,11 +33,6 @@ const creatorNav: NavItem[] = [
     label: "Dashboard",
     slug: "dashboard",
   },
-  // {
-  //   href: "/dashboard/creator/analytics",
-  //   icon: ChartNoAxesCombined,
-  //   label: "My Analytics",
-  // },
   {
     href: "/dashboard/creator/content",
     icon: Film,
@@ -69,18 +59,19 @@ const brandNav: NavItem[] = [
     href: "/dashboard/brand/posts",
     icon: ClipboardList,
     slug: "posts",
+    matchPaths: ["/dashboard/brand/posts", "/dashboard/brand/create-post"],
   },
   {
     href: "/dashboard/brand/findai",
     icon: WandSparkles,
     label: "AI Find",
     slug: "findai",
+    matchPaths: [
+      "/dashboard/brand/findai",
+      "/dashboard/brand/findai/campaign",
+      "/dashboard/brand/findai/campaign/[campaignId]/creator",
+    ],
   },
-  // {
-  //   href: "/dashboard/brand/inbox",
-  //   icon: Mail,
-  //   label: "Inbox",
-  // },
 ];
 
 const creatorProfileNav: NavItem[] = [
@@ -90,11 +81,6 @@ const creatorProfileNav: NavItem[] = [
     label: "Account Settings",
     slug: "account",
   },
-  // {
-  //   href: "/user-profile/profile",
-  //   icon: PenLine,
-  //   label: "Complete Profile",
-  // },
   {
     href: "/user-profile/socials",
     icon: Link,
