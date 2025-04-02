@@ -12,7 +12,7 @@ export default function InfluEnergySection() {
         viewport={{ once: true, amount: 0.3 }}
         className="max-w-9xl mx-auto"
       >
-        <p className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black leading-tight">
+        <p className="font-black text-black leading-tight text-[clamp(2rem,5vw,4.5rem)]">
           <span className="text-[#6C63FF]">INFLUENERGY</span>
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
@@ -29,7 +29,7 @@ export default function InfluEnergySection() {
             />
           </motion.span>
           CONNECTS GLOBAL <br className="hidden md:block" />
-          CREATORS WITH GLOBAL BRANDS{" "}
+          USES AI TO CONNECT CREATORS TO BRANDS, BUILDING{" "}
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -60,7 +60,7 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          CROSS-CULTURAL PARTNERSHIPS.
+          CROSS-CULTURAL PARTNERSHIPS THAT DELIVER RESULTS
         </p>
       </motion.div>
     </div>

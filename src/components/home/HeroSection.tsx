@@ -39,15 +39,12 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-[5rem]
-         font-bold leading-tight md:leading-[4.5rem] lg:leading-[6rem] font-mona"
-        >
-          WHERE CREATORS & BRANDS <br className="hidden sm:block" /> CONNECT TO
-          MAKE MONEY
+        <h1 className="text-[clamp(1.875rem,1rem+5vw,5rem)] font-bold leading-tight font-mona">
+          WHERE AI CONNECTS CREATORS &<br className="hidden lg:block" /> BRANDS
+          CONNECT TO MAKE MONEY
         </h1>
-        <p className="mt-6 text-lg sm:text-xl md:text-3xl mx-auto max-w-4xl font-poppins">
-          Lets create AI & Tech Influencer campaigns that connect, inspire, and
+        <p className="mt-6 text-[clamp(1.125rem,0.9rem+1vw,1.875rem)] mx-auto max-w-4xl font-poppins">
+          Let’s create Influencer & UGC campaigns that connect, inspire, and
           perform to empower brands.
         </p>
         <motion.div

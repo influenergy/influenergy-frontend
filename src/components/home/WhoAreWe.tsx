@@ -95,10 +95,10 @@ export default function WhoAreWe() {
           Who We Are
         </h1>
         <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
-          We are Influenergy. An AI-powered CRM that connects
-          between brands and creators, streamlining influencer collaboration
-          with smart automation to maximize campaign success, time-efficiencey
-          and ultimately yield the best ROI.
+          We’re Influenergy — an AI-powered platform that bridges the gap
+          between brands and creators. Our platform streamlines influencer
+          collaborations through smart automation, saving time, maximizing
+          campaign success, and ultimately delivering the best ROI.
         </p>
         <motion.div
           className="flex items-center relative"
