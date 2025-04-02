@@ -110,7 +110,7 @@ export default function DetailsModal({
 
                 {/* Campaign Description */}
                 <div className="mt-4 flex flex-col gap-4">
-                  <h4 className="text-lg font-semibold">Campaign Brief</h4>
+                  <h4 className="text-lg font-semibold">Brand Brief</h4>
                   <p className="text-gray-600">
                     {campaign.yourBrief || "No brief provided"}
                   </p>
@@ -153,7 +153,7 @@ export default function DetailsModal({
                   </div>
                   <div className="flex items-center gap-5">
                     <p className="text-gray-600">
-                      Target Location:{" "}
+                      Target Audience Location:{" "}
                       {campaign.targetLocation
                         ? campaign.targetLocation
                             .map((loc) => loc.replace(/[\[\]"]/g, ""))
