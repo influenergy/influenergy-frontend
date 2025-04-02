@@ -91,7 +91,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
 
   return (
     <div className="bg-white rounded-lg p-6 space-y-4">
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-fit relative rounded-lg overflow-hidden ">
           <Image
             src={processedData.image}

@@ -44,7 +44,7 @@ export default function DetailsModal({
         {/* Scrollable Content Area */}
         <div className="flex-1 overflow-y-auto px-6 pb-20">
           <div className="bg-white rounded-lg space-y-4">
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col lg:flex-row gap-6">
               {/* Image Section */}
               <div className=" relative rounded-lg overflow-hidden">
                 <Image
@@ -128,7 +128,7 @@ export default function DetailsModal({
                   <div className="flex items-center gap-5">
                     <p className="text-gray-600">
                       Target Audience Age:{" "}
-                      {campaign.targetAgeGroup
+                      {campaign?.targetAgeGroup && campaign.targetAgeGroup
                         ? Array.isArray(campaign.targetAgeGroup)
                           ? (campaign.targetAgeGroup as string[])
                               .map((age) =>
@@ -144,9 +144,11 @@ export default function DetailsModal({
                     <p className="text-gray-600">
                       {" "}
                       Target Audience Gender:{" "}
-                      {campaign.targetGender
-                        .toString()
-                        .replace(/[\[\]"]/g, "") || "Not specified"}
+                      {(campaign?.targetGender &&
+                        campaign.targetGender
+                          .toString()
+                          .replace(/[\[\]"]/g, "")) ||
+                        "Not specified"}
                     </p>
                   </div>
                   <div className="flex items-center gap-5">
