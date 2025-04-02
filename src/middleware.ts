@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const AUTH_PAGES = ["/", "/login", "/register", "/get-started"];
+const AUTH_PAGES = ["/login", "/register", "/get-started"];
 export function middleware(request: NextRequest) {
   const authCookie = request.cookies.get("access_token");
   let authToken = null;
@@ -36,11 +36,5 @@ export function middleware(request: NextRequest) {
 
 // Update the matcher to include /get-started explicitly
 export const config = {
-  matcher: [
-    "/",
-    "/login",
-    "/register",
-    "/get-started",
-    "/dashboard/:path*",
-  ],
+  matcher: ["/", "/login", "/register", "/get-started", "/dashboard/:path*"],
 };
