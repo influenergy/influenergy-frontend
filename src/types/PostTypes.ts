@@ -6,6 +6,9 @@ export interface PostData {
   companyName?: string;
   campaignObjective?: string;
   campaignDescription?: string;
+  campaignConcept?: string;
+  campaignPost?: string;
+  yourBrief?: string;
   targetGroup?: {
     age?: string;
     gender?: string;
@@ -53,6 +56,8 @@ export interface CampaignResponse {
   brandName: string;
   campaignObjective: string[];
   campaignDescription: string;
+  campaignConcept: string;
+  yourBrief: string;
   targetAgeGroup: string;
   targetGender: string;
   targetLocation: string[];

@@ -50,6 +50,8 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
       companyName: campaignData.brandName,
       campaignObjective: parseJsonArray(campaignData.campaignObjective),
       campaignDescription: campaignData.campaignDescription,
+      campaignConcept: campaignData.campaignConcept,
+      yourBrief: campaignData.yourBrief,
       targetGroup: targetGroup,
       contentVibe: {
         contentType: campaignData.contentType,
@@ -96,87 +98,114 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
             alt={processedData.title}
             width={400}
             height={400}
-            className="object-cover"
+            className="object-cover aspect-square"
           />
         </div>
 
         <div className="w-full  space-y-4">
           <div className="flex items-center gap-2">
-            <h3 className="text-2xl  text-gray-900 line-clamp-2">
+            <h3 className="text-2xl  text-gray-900 line-clamp-2 font-bold">
               {processedData.title}
             </h3>
           </div>
-          {processedData.companyLogo && (
-            <div className=" relative rounded-full overflow-hidden flex items-center gap-4 md:pl-8">
-              <Image
-                src={processedData.image}
-                alt="Company Logo"
-                height={30}
-                width={30}
-                className="object-cover rounded-full"
-              />
-              <p className="text-black text-lg">
-                {processedData?.companyName || "Nike"}
-              </p>
-            </div>
-          )}
-          {!processedData.companyLogo && processedData.companyName && (
-            <div className="flex items-center gap-4 md:pl-8">
+
+          <div className="flex items-center gap-4">
+            <Image
+              src={
+                processedData.image ||
+                "https://avatar.iran.liara.run/public/boy"
+              }
+              alt="Campaign Image"
+              width={40}
+              height={40} // Make height equal to width for a perfect circle
+              className="object-cover rounded-full h-10 w-10"
+            />
+            <p className="text-black text-lg">
+              {processedData?.companyName || ""}
+            </p>
+          </div>
+
+          {/* {!processedData.companyLogo && processedData.companyName && (
+            <div className="flex items-center gap-4 ">
               <p className="text-black text-lg">{processedData.companyName}</p>
             </div>
-          )}
+          )} */}
           {processedData.campaignObjective && (
-            <div className="mt-4 md:pl-8">
-              <h4 className="text-lg font-semibold">Campaign Objective</h4>
+            <div className="mt-4 ">
+              <h4 className="text-lg font-semibold py-4">Campaign Objective</h4>
               <p className="text-gray-600">{processedData.campaignObjective}</p>
             </div>
           )}
 
           {processedData.campaignDescription && (
-            <div className="mt-4 md:pl-8">
-              <h4 className="text-lg font-semibold">Campaign Description</h4>
+            <div className="mt-4 ">
+              <h4 className="text-lg font-semibold py-4">
+                Campaign Description
+              </h4>
               <p className="text-gray-600">
                 {processedData.campaignDescription}
               </p>
             </div>
           )}
-
-          {processedData.targetGroup && (
-            <div className="mt-4 md:pl-8 space-y-1">
-              <h4 className="text-lg font-semibold">Target Group</h4>
-
-              <p className="text-gray-600">
-                <strong>Age:</strong>{" "}
-                {Array.isArray(processedData.targetGroup.age)
-                  ? processedData.targetGroup.age.join(", ")
-                  : processedData.targetGroup.age}
-              </p>
-
-              <p className="text-gray-600">
-                <strong>Gender:</strong>{" "}
-                {Array.isArray(processedData.targetGroup.gender)
-                  ? processedData.targetGroup.gender.join(", ")
-                  : processedData.targetGroup.gender}
-              </p>
-
-              <p className="text-gray-600">
-                <strong>Location:</strong>{" "}
-                {Array.isArray(processedData.targetGroup.location)
-                  ? processedData.targetGroup.location.join(", ")
-                  : processedData.targetGroup.location || "Not specified"}
-              </p>
-
-              <p className="text-gray-600">
-                <strong>Interests:</strong>{" "}
-                {Array.isArray(processedData.targetGroup.interest)
-                  ? processedData.targetGroup.interest.join(", ")
-                  : processedData.targetGroup.interest || "Not specified"}
-              </p>
+          <hr />
+          {processedData.yourBrief && (
+            <div className="mt-4 ">
+              <h4 className="text-lg font-semibold py-4">Your Brief</h4>
+              <p className="text-gray-600">{processedData.yourBrief}</p>
             </div>
           )}
 
+          <hr />
+          {processedData.campaignConcept && (
+            <div className="mt-4 ">
+              <h4 className="text-lg font-semibold py-4">Campaign Concept</h4>
+              <p className="text-gray-600">{processedData.campaignConcept}</p>
+            </div>
+          )}
+          <hr />
+
+          {processedData.targetGroup && (
+            <div className="mt-4 flex flex-col gap-4">
+              {/* <h4 className="text-lg font-semibold">Target Group</h4> */}
+
+              <div className="flex items-center gap-5">
+                <p className="text-gray-600">
+                  Target Audience Age Group :{" "}
+                  {Array.isArray(processedData.targetGroup.age)
+                    ? processedData.targetGroup.age.join(", ")
+                    : processedData.targetGroup.age}
+                </p>
+
+                <p className="text-gray-600">
+                  {"• "} Target Audience Gender :{" "}
+                  {Array.isArray(processedData.targetGroup.gender)
+                    ? processedData.targetGroup.gender.join(", ")
+                    : processedData.targetGroup.gender}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-5">
+                <p className="text-gray-600">
+                  Target Audience Location :{" "}
+                  {Array.isArray(processedData.targetGroup.location)
+                    ? processedData.targetGroup.location.join(", ")
+                    : processedData.targetGroup.location || "Not specified"}
+                </p>
+
+                <p className="text-gray-600">
+                  {"• "}Target Audience Interests :{" "}
+                  {Array.isArray(processedData.targetGroup.interest)
+                    ? processedData.targetGroup.interest.join(", ")
+                    : processedData.targetGroup.interest || "Not specified"}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <hr />
+
           {processedData.contentVibe && (
-            <div className="mt-4">
+            <div className="mt-4 py-4">
               <h4 className="text-lg font-semibold flex items-center gap-2">
                 <div className="relative">
                   <div className="h-5 w-5 bg-primary/40 rounded-full" />
@@ -188,38 +217,54 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                     className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
                   />
                 </div>
-                What is the Content Vibe?
+                <p className="text-2xl">What is the Content Vibe?</p>
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 px-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 px-6">
                 <div>
-                  <p className="text-gray-600">Content Type</p>
-                  <p>{processedData.contentVibe.contentType}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Duration of Video</p>
-                  <p>{processedData.contentVibe.durationOfVideo}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Call to Action</p>
-                  <p>{processedData.contentVibe.catchPhrase}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Key Message & Hashtags</p>
-                  <p>{processedData.contentVibe.keyMessage}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Tone & Style</p>
-                  <p>{processedData.contentVibe.toneStyle}</p>
-                </div>
-                <div>
+                  <p className="font-semibold text-lg">Content Type</p>
                   <p className="text-gray-600">
+                    {processedData.contentVibe.contentType}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-lg">Duration of Video</p>
+                  <p className="text-gray-600">
+                    {processedData.contentVibe.durationOfVideo}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-lg">Call to Action</p>
+                  <p className="text-gray-600">
+                    {processedData.contentVibe.catchPhrase}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-lg">
+                    Key Message & Hashtags
+                  </p>
+                  <p className="text-gray-600">
+                    {processedData.contentVibe.keyMessage}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-lg">Tone & Style</p>
+                  <p className="text-gray-600">
+                    {processedData.contentVibe.toneStyle}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-lg">
                     What kind of creator are you looking for?
                   </p>
-                  <p>{processedData.contentVibe.creatorLookingFor}</p>
+                  <p className="text-gray-600">
+                    {processedData.contentVibe.creatorLookingFor}
+                  </p>
                 </div>
               </div>
             </div>
           )}
+
+          <hr />
 
           {processedData.idealCreatorChecklist && (
             <div className="mt-4">
@@ -234,40 +279,48 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                     className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
                   />
                 </div>
-                Ideal Creator Checklist
+                <p className="text-2xl  py-4">Ideal Creator Checklist</p>
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 px-6">
                 <div>
-                  <p className="text-gray-600">Minimum Follower Count</p>
-                  <p>{processedData.idealCreatorChecklist.minFollowerCount}</p>
+                  <p className="font-semibold text-lg">
+                    Minimum Follower Count
+                  </p>
+                  <p className="text-gray-600">{processedData.idealCreatorChecklist.minFollowerCount}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">UGC Creator or Influencer</p>
-                  <p>
+                  <p className="font-semibold text-lg">
+                    UGC Creator or Influencer
+                  </p>
+                  <p className="text-gray-600">
                     {processedData.idealCreatorChecklist.ugcCreatorOrInfluencer}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Preferred Social Media</p>
-                  <p>
+                  <p className="font-semibold text-lg">
+                    Preferred Social Media
+                  </p>
+                  <p className="text-gray-600">
                     {processedData.idealCreatorChecklist.preferredSocialMedia}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Past Experience</p>
-                  <p>{processedData.idealCreatorChecklist.pastExperience}</p>
+                  <p className="font-semibold text-lg">Past Experience</p>
+                  <p className="text-gray-600">{processedData.idealCreatorChecklist.pastExperience}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Preferred Creator Niche</p>
-                  <p>
+                  <p className="font-semibold text-lg">
+                    Preferred Creator Niche
+                  </p>
+                  <p className="text-gray-600">
                     {processedData.idealCreatorChecklist.preferredCreatorNiche}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">
+                  <p className="font-semibold text-lg">
                     Preferred Creator Demographics
                   </p>
-                  <p>
+                  <p className="text-gray-600">
                     {
                       processedData.idealCreatorChecklist
                         .preferredCreatorDemographics
@@ -277,9 +330,10 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
               </div>
             </div>
           )}
+          <hr />
 
           {processedData.compensation && (
-            <div className="mt-4">
+            <div className="mt-4 ">
               <h4 className="text-lg font-semibold flex items-center gap-2">
                 <div className="relative">
                   <div className="h-5 w-5 bg-primary/40 rounded-full" />
@@ -291,24 +345,34 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
                     className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
                   />
                 </div>
-                Compensation & Deliverables
+                <p className="text-2xl py-4">Compensation & Deliverables</p>
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 px-6">
                 <div>
-                  <p className="text-gray-600">Budget for Campaign</p>
-                  <p>${processedData.compensation.budget}</p>
+                  <p className="font-semibold text-lg">Budget for Campaign</p>
+                  <p className="text-gray-600">
+                    ${processedData.compensation.budget}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Expected Deliverables</p>
-                  <p>{processedData.compensation.expectedDeliverables}</p>
+                  <p className="font-semibold text-lg">Expected Deliverables</p>
+                  <p className="text-gray-600">
+                    {processedData.compensation.expectedDeliverables}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">No. Of Days for Delivery</p>
-                  <p>{processedData.compensation.deliveryDays}</p>
+                  <p className="font-semibold text-lg">
+                    No. Of Days for Delivery
+                  </p>
+                  <p className="text-gray-600">
+                    {processedData.compensation.deliveryDays}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Additional Instructions</p>
-                  <p>
+                  <p className="font-semibold text-lg">
+                    Additional Instructions
+                  </p>
+                  <p className="text-gray-600">
                     {processedData.compensation.additionalInstructions ||
                       "Not Available"}
                   </p>

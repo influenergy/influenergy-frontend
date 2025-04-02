@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 // Google Font - Poppins
 export const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "500", "700", "800"],
+  weight: ["300", "500", "600", "700", "800"],
   variable: "--font-poppins",
   display: "swap",
 });
@@ -40,7 +40,6 @@ export const catamaran = localFont({
   variable: "--font-catamaran",
   display: "swap",
 });
-
 
 export const nirmala = localFont({
   src: [
