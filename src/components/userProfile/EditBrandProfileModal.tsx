@@ -28,8 +28,8 @@ const editProfileSchema = yup.object({
     .matches(/^[A-Za-z\s]+$/, "Name should only contain letters and spaces")
     .min(2, "Name must be at least 2 characters")
     .required("Name is required"),
-  companyName:yup.string().min(3).required("Company Name is required"),
-  companyWebsite:yup.string().url().required("Company Website is required")
+  companyName: yup.string().min(3).required("Company Name is required"),
+  companyWebsite: yup.string().url().required("Company Website is required"),
 });
 
 type FormData = yup.InferType<typeof editProfileSchema>;
@@ -42,8 +42,6 @@ export function EditBrandProfileModal({
   const { toast } = useToast();
   const dispatch = useDispatch();
 
-  // console.log("user", user);
-
   const {
     register,
     handleSubmit,
@@ -53,12 +51,12 @@ export function EditBrandProfileModal({
     resolver: yupResolver(editProfileSchema),
     defaultValues: {
       fullName: user?.fullName || "",
+      companyName: user?.companyName || "",
+      companyWebsite: user?.companyWebsite || "",
     },
   });
 
   const email = user?.email || "";
-  const company = user?.companyName || "";
-  const website = user?.companyWebsite || "";
 
   const onSubmit = async (data: FormData) => {
     if (!user?._id) {
@@ -71,7 +69,7 @@ export function EditBrandProfileModal({
     }
 
     try {
-      await userApi.updateBrandProfile(user._id, {
+      await userApi.updateBrandProfile({
         fullName: data.fullName,
         companyName: data.companyName,
         companyWebsite: data.companyWebsite,
@@ -149,32 +147,31 @@ export function EditBrandProfileModal({
               disabled
             />
           </div>
-          {company && (
-            <div className="space-y-2">
-              <label htmlFor="company" className="text-sm font-medium">
-                Company Name
-              </label>
-              <Input
-                id="company"
-                {...register("companyName")}
-                placeholder="Enter your company name"
-                className="w-full text-gray-800"
-              />
-            </div>
-          )}
-          {website && (
-            <div className="space-y-2">
-              <label htmlFor="website" className="text-sm font-medium">
-                Company Website
-              </label>
-              <Input
-                id="website"
-                {...register("companyWebsite")}
-                placeholder="Enter your company website"
-                className="w-full text-gray-800"
-              />
-            </div>
-          )}
+
+          <div className="space-y-2">
+            <label htmlFor="company" className="text-sm font-medium">
+              Company Name
+            </label>
+            <Input
+              id="company"
+              {...register("companyName")}
+              placeholder="Enter your company name"
+              className="w-full text-gray-800"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="website" className="text-sm font-medium">
+              Company Website
+            </label>
+            <Input
+              id="website"
+              {...register("companyWebsite")}
+              placeholder="Enter your company website"
+              className="w-full text-gray-800"
+            />
+          </div>
+
           <div className="flex justify-between space-x-2">
             <Button
               type="button"

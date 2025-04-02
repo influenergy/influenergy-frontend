@@ -24,16 +24,13 @@ export const userApi = {
     });
     return response.data;
   },
-  updateBrandProfile: async (
-    id: string,
-    data: {
-      fullName: string;
-      companyName: string;
-      companyWebsite: string;
-    }
-  ) => {
+  updateBrandProfile: async (data: {
+    fullName: string;
+    companyName: string;
+    companyWebsite: string;
+  }) => {
     const isFormData = data instanceof FormData;
-    const response = await api.patch(`/brand/update/${id}`, data, {
+    const response = await api.put(`/brand/update`, data, {
       headers: {
         "Content-Type": isFormData ? "multipart/form-data" : "application/json",
       },
