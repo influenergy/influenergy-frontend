@@ -97,26 +97,16 @@ export const transformPostData = (formData: PostQuestionnaireData) => {
 
   // Merge "Others" into target-interests
   let mergedTargetInterests = formData["target-interests"] || [];
-  if (
-    mergedTargetInterests.includes("Others") &&
-    formData["target-interests-other"]
-  ) {
+  if (mergedTargetInterests.includes("Others")) {
     mergedTargetInterests = [
       ...mergedTargetInterests.filter((i) => i !== "Others"), // remove "Others"
-      formData["target-interests-other"],
     ];
   }
 
   // Merge "Others" into target-gender
   let mergedTargetGender = formData["target-gender"] || [];
-  if (
-    mergedTargetGender.includes("Others") &&
-    formData["target-gender-other"]
-  ) {
-    mergedTargetGender = [
-      ...mergedTargetGender.filter((i) => i !== "Others"),
-      formData["target-gender-other"],
-    ];
+  if (mergedTargetGender.includes("Others")) {
+    mergedTargetGender = [...mergedTargetGender.filter((i) => i !== "Others")];
   }
 
   const regularData = {
