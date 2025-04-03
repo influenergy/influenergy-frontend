@@ -151,7 +151,7 @@ const CreatorDetailsPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-6 max-w-6xl">
+    <div className="container mx-auto px-4 py-6 max-w-6xl">
       <Suspense fallback={<SectionLoader />}>
         <CreatorHeader creator={creator} />
       </Suspense>
@@ -232,15 +232,10 @@ const CreatorDetailsPage = () => {
       />
 
       {/* Success Modal */}
-      <CollaborationSuccessModal
-        isOpen={successModalOpen}
-      />
+      <CollaborationSuccessModal isOpen={successModalOpen} />
 
       {/* Failed Modal */}
-      <CollaborationFailedModal
-        isOpen={failedModalOpen}
-       
-      />
+      <CollaborationFailedModal isOpen={failedModalOpen} />
 
       {/* Spacer for fixed button on mobile */}
       <div className="h-16 md:hidden"></div>
