@@ -32,7 +32,7 @@ export default function HowItWorks() {
             How It works
           </h1>
           <p className="font-light text-lg text-gray-600 mb-8">
-            AI Powered match making in 4 simple steps!
+            AI Powered match-making in 4 simple steps!
           </p>
 
           <motion.div

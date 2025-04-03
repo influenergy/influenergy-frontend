@@ -45,7 +45,7 @@ export default function WhatWeDo() {
                   AI Powered Solution
                 </h2>
                 <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                  AI-powered CRM platform that connects brands, UGC creators,
+                  AI-powered platform that connects brands, UGC creators,
                   and influencers
                 </p>
               </div>
