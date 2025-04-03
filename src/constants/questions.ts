@@ -30,46 +30,6 @@ interface Questions {
   [key: string]: Step;
 }
 
-// export const BRAND_QUESTIONS: Questions = {
-//   step1: {
-//     title: "Lets Create Your Profile",
-//     description:
-//       "In order to match you with the right brands, we need a few more details",
-//     fields: [
-//       {
-//         title: "Name",
-//         slug: "name",
-//         category: "text",
-//       },
-//       {
-//         title: "Email",
-//         slug: "email",
-//         category: "email",
-//       },
-//       {
-//         title: "Company Website",
-//         slug: "companyWebsite",
-//         category: "text",
-//       },
-//       {
-//         title: "No Of Employess",
-//         slug: "noOfEmployees",
-//         category: "number",
-//       },
-//       {
-//         title: "Budget For Campaign",
-//         slug: "budgetForCampaign",
-//         category: "number",
-//       },
-//       {
-//         title: "How did you hear about this",
-//         slug: "howDidYouHearAboutThis",
-//         category: "text",
-//       },
-//     ],
-//   },
-// };
-
 export const CREATOR_QUESTIONS: Questions = {
   step1: {
     title: "Your Profile",

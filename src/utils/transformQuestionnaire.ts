@@ -9,7 +9,7 @@ export const transformQuestionnaireData = (
   const gender = formData.gender?.toLowerCase();
   const genderList =
     gender === "others" && formData["gender-other"]
-      ? [gender, formData["gender-other"].toLowerCase()]
+      ? [formData["gender-other"].toLowerCase()]
       : [gender];
 
   // Handle primary niche - include "others" custom input
@@ -19,13 +19,6 @@ export const transformQuestionnaireData = (
     primaryNicheRaw = formData["primary-niche"].filter(
       (niche) => niche !== "Others"
     );
-
-    if (
-      formData["primary-niche"].includes("Others") &&
-      formData["primary-niche-other"]
-    ) {
-      primaryNicheRaw.push(formData["primary-niche-other"]);
-    }
   } else if (formData["primary-niche"]) {
     primaryNicheRaw = [formData["primary-niche"]];
   }
@@ -47,7 +40,7 @@ export const transformQuestionnaireData = (
       primaryGender:
         formData["primary-audience-gender"] === "Others" &&
         formData["primary-audience-gender-other"]
-          ? `${formData["primary-audience-gender"]}, ${formData["primary-audience-gender-other"]}`
+          ? `${formData["primary-audience-gender-other"]}`
           : formData["primary-audience-gender"],
       primaryLocation: formData["primary-audience-location"],
       secondaryPercentage: formData["secondary-audience-percentage"],
@@ -55,7 +48,7 @@ export const transformQuestionnaireData = (
       secondaryGender:
         formData["secondary-audience-gender"] === "Others" &&
         formData["secondary-audience-gender-other"]
-          ? `${formData["secondary-audience-gender"]}, ${formData["secondary-audience-gender-other"]}`
+          ? `${formData["secondary-audience-gender-other"]}`
           : formData["secondary-audience-gender"],
       secondaryLocation: formData["secondary-audience-location"],
     },

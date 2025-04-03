@@ -19,8 +19,6 @@ const GenderInput = ({ field }: { field: Field }) => {
   const otherGenderError = errors[otherGenderFieldName];
 
   const selectedGender = watch(fieldName);
-  
-
   return (
     <div>
       <div className="flex items-center gap-2">
@@ -80,7 +78,7 @@ const GenderInput = ({ field }: { field: Field }) => {
         )}
       </div>
 
-      {otherGenderError && (
+      {otherGenderError && selectedGender === "Others" && (
         <p className="text-red-500 text-sm mt-1">
           {otherGenderError.message as string}
         </p>

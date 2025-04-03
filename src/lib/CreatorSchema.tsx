@@ -84,33 +84,42 @@ export const step3Schema = yup.object().shape({
 export const step4Schema = yup.object().shape({
   "primary-social-media": yup
     .string()
-    .oneOf([
-      "Facebook",
-      "Instagram",
-      "LinkedIn",
-      "Newsletter",
-      "Pinterest",
-      "TikTok",
-      "Twitch",
-      "Twitter / X",
-      "Youtube",
-      "Youtube Reel",
-    ])
+    .oneOf(
+      [
+        "Facebook",
+        "Instagram",
+        "LinkedIn",
+        "Newsletter",
+        "Pinterest",
+        "TikTok",
+        "Twitch",
+        "Twitter / X",
+        "Youtube",
+        "Youtube Reel",
+      ],
+      "Please select a valid social media platform"
+    )
     .required("This Field is Required"),
+
   "primary-social-media-link": yup
     .string()
     .url("Must be a valid URL")
     .required("This Field is Required"),
+
   "primary-followers": yup
     .string()
-    .oneOf([
-      "Less than 1,000",
-      "1,000 - 10,000",
-      "10,000 - 100,000",
-      "100,000 - 1,000,000",
-      "More than 1,000,000",
-    ])
+    .oneOf(
+      [
+        "Less than 1,000",
+        "1,000 - 10,000",
+        "10,000 - 100,000",
+        "100,000 - 1,000,000",
+        "More than 1,000,000",
+      ],
+      "Please select a valid follower count"
+    )
     .required("This Field is Required"),
+
   "secondary-social-media": yup.string(),
   "secondary-social-media-link": yup.string(),
   "secondary-followers": yup.string(),
@@ -119,29 +128,33 @@ export const step4Schema = yup.object().shape({
 export const step5Schema = yup.object().shape({
   "primary-audience-location": yup
     .string()
-    .oneOf([
-      "Australia",
-      "Brazil",
-      "Canada",
-      "China",
-      "France",
-      "Germany",
-      "India",
-      "Italy",
-      "Japan",
-      "Mexico",
-      "Netherlands",
-      "Russia",
-      "Saudi Arabia",
-      "South Korea",
-      "Spain",
-      "Sweden",
-      "Switzerland",
-      "Turkey",
-      "United Kingdom",
-      "United States",
-    ])
+    .oneOf(
+      [
+        "Australia",
+        "Brazil",
+        "Canada",
+        "China",
+        "France",
+        "Germany",
+        "India",
+        "Italy",
+        "Japan",
+        "Mexico",
+        "Netherlands",
+        "Russia",
+        "Saudi Arabia",
+        "South Korea",
+        "Spain",
+        "Sweden",
+        "Switzerland",
+        "Turkey",
+        "United Kingdom",
+        "United States",
+      ],
+      "Please select a valid country"
+    )
     .required("This field is required"),
+
   "primary-audience-gender": yup.string().required("This field is required"),
   "primary-audience-gender-other": yup
     .string()
@@ -171,19 +184,22 @@ export const step5Schema = yup.object().shape({
 export const step6Schema = yup.object().shape({
   "growth-rate": yup
     .string()
-    .oneOf([
-      "Less than 10%",
-      "10% - 20%",
-      "20% - 30%",
-      "30% - 40%",
-      "40% - 50%",
-      "50% - 60%",
-      "60% - 70%",
-      "70% - 80%",
-      "80% - 90%",
-      "90% - 100%",
-      "More than 100%",
-    ])
+    .oneOf(
+      [
+        "Less than 10%",
+        "10% - 20%",
+        "20% - 30%",
+        "30% - 40%",
+        "40% - 50%",
+        "50% - 60%",
+        "60% - 70%",
+        "70% - 80%",
+        "80% - 90%",
+        "90% - 100%",
+        "More than 100%",
+      ],
+      "Please select a valid growth rate"
+    )
     .required("Growth rate is required"),
   "primary-locations": yup
     .array()
@@ -193,19 +209,22 @@ export const step6Schema = yup.object().shape({
     .required("Primary locations are required"),
   "us-based-audience": yup
     .string()
-    .oneOf([
-      "Less than 10%",
-      "10% - 20%",
-      "20% - 30%",
-      "30% - 40%",
-      "40% - 50%",
-      "50% - 60%",
-      "60% - 70%",
-      "70% - 80%",
-      "80% - 90%",
-      "90% - 100%",
-      "More than 100%",
-    ])
+    .oneOf(
+      [
+        "Less than 10%",
+        "10% - 20%",
+        "20% - 30%",
+        "30% - 40%",
+        "40% - 50%",
+        "50% - 60%",
+        "60% - 70%",
+        "70% - 80%",
+        "80% - 90%",
+        "90% - 100%",
+        "More than 100%",
+      ],
+      "Please select a valid US based audience percentage"
+    )
     .required("US based audience percentage is required"),
 }) as Schema;
 
@@ -219,22 +238,25 @@ export const step7Schema = yup
       .required("Age bracket is required"),
     "average-views": yup
       .string()
-      .oneOf([
-        "Less than 1,000",
-        "1,000 - 10,000",
-        "10,000 - 100,000",
-        "100,000 - 1,000,000",
-        "More than 1,000,000",
-      ])
+      .oneOf(
+        [
+          "Less than 1,000",
+          "1,000 - 10,000",
+          "10,000 - 100,000",
+          "100,000 - 1,000,000",
+          "More than 1,000,000",
+        ],
+        "Please select a valid average views"
+      )
       .required("Average views is required"),
     "favourite-brands": yup.string().required("Favourite brands are required"),
     "worked-with-ai": yup
       .string()
-      .oneOf(["Yes", "No"])
+      .oneOf(["Yes", "No"], "Please select a valid option")
       .required("This field is required"),
     "paid-campaigns": yup
       .string()
-      .oneOf(["Yes", "No", "Gifted", "Affiliate Marketing", "Other"])
+      .oneOf(["Yes", "No", "Gifted", "Affiliate Marketing", "Other"], "Please select a valid option")
       .required("This field is required"),
     "budget-video": yup.string().required("Compensation per video is required"),
   })
