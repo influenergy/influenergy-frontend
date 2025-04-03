@@ -131,7 +131,7 @@ export default function WhyWeDoIt() {
             >
               <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/landing/whywedo/box.png"
+                  src="/landing/whywedo/box1.png"
                   width={32}
                   height={32}
                   alt="Data Insights Icon"
