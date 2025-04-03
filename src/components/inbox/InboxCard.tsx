@@ -128,7 +128,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
                 ),
                 Done: (
                   <button className="w-full px-2 py-2 text-sm font-medium text-white border border-primary rounded-lg bg-primary transition cursor-not-allowed">
-                    Payment Collected
+                    Payment Completed
                   </button>
                 ),
                 Cancelled: (
