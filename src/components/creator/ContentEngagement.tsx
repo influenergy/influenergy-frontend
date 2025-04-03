@@ -17,7 +17,7 @@ const ContentEngagement = ({ creator }: UserProfile) => {
             What age bracket follows creator the most?
           </p>
           <p className="text-base md:text-lg">
-            {contentEngagement?.audience?.ageBracket || "Not Available"}
+            {contentEngagement?.audience?.ageBracket?.join(" , ") || "Not Available"}
           </p>
         </div>
         <div>

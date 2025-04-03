@@ -9,6 +9,7 @@ export interface PostData {
   campaignConcept?: string;
   campaignPost?: string;
   yourBrief?: string;
+  campaignPdf?: string;
   targetGroup?: {
     age?: string;
     gender?: string;
@@ -36,6 +37,7 @@ export interface PostData {
     expectedDeliverables?: string;
     deliveryDays?: string;
     additionalInstructions?: string;
+    campaignPdf?: string;
   };
   description: string;
   createdAt: string;
@@ -78,6 +80,7 @@ export interface CampaignResponse {
   expectedDeliverables: string;
   noOfDaysForDelivery: string;
   additionalInstructions: string;
+  campaignPdf: string;
 }
 
 export interface PostDescriptionProps {

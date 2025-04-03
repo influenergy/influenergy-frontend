@@ -28,6 +28,11 @@ export interface Collaboration {
     preferredCreatorDemographics: string;
     noOfDaysForDelivery: string;
     expectedDeliverables: string;
+    campaignPdf:string
+    additionalInstructions: string;
+    socialMediaPlatform: string[];
+    keyMessage: string;
+    toneStyle: string;
   };
   creatorId: string;
   status: string;
@@ -36,5 +41,5 @@ export interface Collaboration {
   createdAt: string;
   updatedAt: string;
   paymentStatus: string;
-  budget:string;
+  requiredDocuments:string;
 }

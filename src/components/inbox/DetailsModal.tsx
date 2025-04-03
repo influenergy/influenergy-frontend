@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
 import { Collaboration } from "@/types/Collaboration";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface DetailsModalProps {
   open: boolean;
@@ -83,203 +84,239 @@ export default function DetailsModal({
                     {campaign.brandName || "Brand"}
                   </p>
                 </div>
+              </div>
+            </div>
+            <div>
+              {/* Campaign Objective */}
+              <div className="mt-4 flex flex-col gap-4">
+                <h4 className="text-lg font-semibold">Campaign Objective</h4>
+                <p className="text-gray-600">
+                  {campaign.campaignObjective
+                    ? campaign.campaignObjective
+                        .toString()
+                        .replace(/[\[\]"]/g, " ")
+                    : "Awareness  Engagement Sales"}
+                </p>
+              </div>
 
-                {/* Campaign Objective */}
-                <div className="mt-4 flex flex-col gap-4">
-                  <h4 className="text-lg font-semibold">Campaign Objective</h4>
-                  <p className="text-gray-600">
-                    {campaign.campaignObjective
-                      ? campaign.campaignObjective
-                          .toString()
-                          .replace(/[\[\]"]/g, "")
-                      : "Awareness  Engagement Sales"}
-                  </p>
-                </div>
+              {/* Campaign Description */}
+              <div className="mt-4 flex flex-col gap-4">
+                <h4 className="text-lg font-semibold">Campaign Description</h4>
+                <p className="text-gray-600">
+                  {campaign.campaignDescription || "No description available"}
+                </p>
+              </div>
 
-                {/* Campaign Description */}
-                <div className="mt-4 flex flex-col gap-4">
-                  <h4 className="text-lg font-semibold">
-                    Campaign Description
-                  </h4>
-                  <p className="text-gray-600">
-                    {campaign.campaignDescription || "No description available"}
-                  </p>
-                </div>
+              <hr />
 
+              {/* Campaign Description */}
+              <div className="mt-4 flex flex-col gap-4 my-3">
+                <h4 className="text-lg font-semibold">Campaign Brief</h4>
+                <p className="text-gray-600">
+                  {campaign.yourBrief || "No brief provided"}
+                </p>
+              </div>
+
+              <hr />
+
+              {/* Target Group */}
+              <div className="my-3 flex flex-col gap-4">
+                <h4 className="text-lg font-semibold">Campaign Concept</h4>
+                <p className="text-gray-600">
+                  {campaign.campaignConcept || "No campaign concept provided"}
+                </p>
                 <hr />
+              </div>
 
-                {/* Campaign Description */}
-                <div className="mt-4 flex flex-col gap-4">
-                  <h4 className="text-lg font-semibold">Brand Brief</h4>
-                  <p className="text-gray-600">
-                    {campaign.yourBrief || "No brief provided"}
-                  </p>
-                </div>
+              {/* Target Audience */}
 
-                <hr />
+              <div className="my-7">
+                <h4 className="text-2xl font-semibold flex items-center gap-2 mb-4">
+                  Target Audience & Demographics
+                </h4>
 
-                {/* Target Group */}
-                <div className="mt-4 flex flex-col gap-4">
-                  <h4 className="text-lg font-semibold">Campaign Concept</h4>
-                  <p className="text-gray-600">
-                    {campaign.campaignConcept || "No campaign concept provided"}
-                  </p>
-                  <hr />
-                  <div className="flex items-center gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
+                  <div>
+                    <p className="font-medium ">Target Audience Age</p>
                     <p className="text-gray-600">
-                      Target Audience Age:{" "}
                       {campaign?.targetAgeGroup && campaign.targetAgeGroup
                         ? Array.isArray(campaign.targetAgeGroup)
                           ? (campaign.targetAgeGroup as string[])
                               .map((age) =>
-                                age.toString().replace(/[\[\]"]/g, "")
+                                age.toString().replace(/[\[\]"]/g, " ")
                               )
                               .join(", ")
                           : (campaign.targetAgeGroup as string)
                               .toString()
-                              .replace(/[\[\]"]/g, "")
+                              .replace(/[\[\]"]/g, " ")
                         : ""}
                     </p>
-                    {"•"}
+                  </div>
+
+                  <div>
+                    <p className="font-medium">Target Audience Gender</p>
                     <p className="text-gray-600">
-                      {" "}
-                      Target Audience Gender:{" "}
                       {(campaign?.targetGender &&
                         campaign.targetGender
                           .toString()
-                          .replace(/[\[\]"]/g, "")) ||
+                          .replace(/[\[\]"]/g, " ")) ||
                         "Not specified"}
                     </p>
                   </div>
-                  <div className="flex items-center gap-5">
+
+                  <div>
+                    <p className="font-medium"> Target Audience Location</p>
                     <p className="text-gray-600">
-                      Target Audience Location:{" "}
                       {campaign.targetLocation
                         ? campaign.targetLocation
-                            .map((loc) => loc.replace(/[\[\]"]/g, ""))
+                            .map((loc) => loc.replace(/[\[\]"]/g, " "))
                             .join(", ")
                         : "Not specified"}
                     </p>
-                    {"•"}
+                  </div>
+
+                  <div>
+                    <p className="font-medium"> Target Audience Interests</p>
                     <p className="text-gray-600">
-                      Target Audience Interests:{" "}
                       {campaign.targetInterests
                         ? campaign.targetInterests
-                            .map((int) => int.replace(/[\[\]"]/g, ""))
+                            .map((int) => int.replace(/[\[\]"]/g, " "))
                             .join(", ")
                         : "Not specified"}
                     </p>
                   </div>
-                  <hr />
                 </div>
+              </div>
 
-                {/* Content Vibe */}
-                <div className="mt-4">
-                  <h4 className="text-lg font-semibold flex items-center gap-2">
-                    <div className="relative">
-                      <div className="h-5 w-5 bg-primary/40 rounded-full" />
-                      <Image
-                        src="/images/editpost/1.png"
-                        alt=""
-                        width={20}
-                        height={20}
-                        className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
-                      />
-                    </div>
-                    What is the Content Vibe?
-                  </h4>
-                  <div className="grid grid-cols-2 gap-4 mt-2 px-6">
-                    <div>
-                      <p>Content Type</p>
-                      <p className="text-gray-600">
-                        {campaign.contentType || "Not specified"}
-                      </p>
-                    </div>
-                    <div>
-                      <p>Duration of Video</p>
-                      <p className="text-gray-600">
-                        {campaign.videoDuration || "Not specified"}
-                      </p>
-                    </div>
-                    <div>
-                      <p>Call to Action</p>
-                      <p className="text-gray-600">
-                        {campaign.catchPhrase || "Not specified"}
-                      </p>
-                    </div>
+              <hr />
+              {/* Content Vibe */}
+              <div className="my-7">
+                <h4 className="text-2xl font-semibold flex items-center gap-2">
+                  What is the Content Vibe?
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div>
+                    <p>Content Type</p>
+                    <p className="text-gray-600">
+                      {campaign.contentType || "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p>Duration of Video</p>
+                    <p className="text-gray-600">
+                      {campaign.videoDuration || "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p>Call to Action</p>
+                    <p className="text-gray-600">
+                      {campaign.catchPhrase || "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p>Key Message & Hashtags</p>
+                    <p className="text-gray-600">
+                      {campaign.keyMessage || "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p>Tone & Style</p>
+                    <p className="text-gray-600">
+                      {campaign.toneStyle || "Not specified"}
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                {/* Ideal Creator Checklist */}
-                <div className="mt-4">
-                  <h4 className="text-lg font-semibold flex items-center gap-2">
-                    <div className="relative">
-                      <div className="h-5 w-5 bg-primary/40 rounded-full" />
-                      <Image
-                        src="/images/editpost/2.png"
-                        alt=""
-                        width={18}
-                        height={18}
-                        className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
-                      />
-                    </div>
-                    Ideal Creator Checklist
-                  </h4>
-                  <div className="grid grid-cols-2 gap-4 mt-2 px-6">
-                    <div>
-                      <p>Preferred Creator Niche</p>
-                      <p className="text-gray-600">
-                        {campaign.preferredCreatorNiche
-                          ? campaign.preferredCreatorNiche
-                              .map((niche) => niche.replace(/[\[\]"]/g, ""))
+              {/* Ideal Creator Checklist */}
+              <div className="my-7">
+                <h4 className="text-2xl font-semibold flex items-center gap-2">
+                  Ideal Creator Checklist
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div>
+                    <p>Preferred Creator Niche</p>
+                    <p className="text-gray-600">
+                      {campaign.preferredCreatorNiche
+                        ? campaign.preferredCreatorNiche
+                            .map((niche) => niche.replace(/[\[\]"]/g, " "))
+                            .join(", ")
+                        : "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p>Preferred Creator Demographics</p>
+                    <p className="text-gray-600">
+                      {campaign.preferredCreatorDemographics || "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p>Preferred Social Media</p>
+                    <p className="text-gray-600">
+                      {/* {campaign.socialMediaPlatform || "Not specified"} */}
+                      {campaign?.socialMediaPlatform &&
+                      campaign.socialMediaPlatform
+                        ? Array.isArray(campaign.socialMediaPlatform)
+                          ? (campaign.socialMediaPlatform as string[])
+                              .map((age) =>
+                                age.toString().replace(/[\[\]"]/g, " ")
+                              )
                               .join(", ")
-                          : "Not specified"}
-                      </p>
-                    </div>
-                    <div>
-                      <p>Preferred Creator Demographics</p>
-                      <p className="text-gray-600">
-                        {campaign.preferredCreatorDemographics ||
-                          "Not specified"}
-                      </p>
-                    </div>
+                          : (campaign.socialMediaPlatform as string)
+                              .toString()
+                              .replace(/[\[\]"]/g, " ")
+                        : ""}
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                {/* Compensation & Deliverables */}
-                <div className="mt-4">
-                  <h4 className="text-lg font-semibold flex items-center gap-2">
-                    <div className="relative">
-                      <div className="h-5 w-5 bg-primary/40 rounded-full" />
-                      <Image
-                        src="/images/editpost/3.png"
-                        alt=""
-                        width={45}
-                        height={45}
-                        className="absolute top-1/2 -left-1/5 transform -translate-x-1/2 -translate-y-1/2 z-10"
-                      />
-                    </div>
-                    Compensation & Deliverables
-                  </h4>
-                  <div className="grid grid-cols-2 gap-4 mt-2 px-6">
-                    <div>
-                      <p>No. Of Days for Delivery</p>
-                      <p className="text-gray-600">
-                        {campaign.noOfDaysForDelivery || "Not specified"}
-                      </p>
-                    </div>
-                    <div>
-                      <p>Expected Deliverables</p>
-                      <p className="text-gray-600">
-                        {campaign.expectedDeliverables || "Not specified"}
-                      </p>
-                    </div>
-                    <div>
-                      <p>Budget</p>
-                      <p className="text-gray-600">
-                        {data?.amount ? `$ ${data.amount}` : "Not specified"}
-                      </p>
-                    </div>
+              {/* Compensation & Deliverables */}
+              <div className="my-7">
+                <h4 className="text-2xl font-semibold flex items-center gap-2">
+                  Compensation & Deliverables
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  <div>
+                    <p className="text-lg">No. Of Days for Delivery</p>
+                    <p className="text-gray-600">
+                      {campaign.noOfDaysForDelivery || "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-lg">Expected Deliverables</p>
+                    <p className="text-gray-600">
+                      {campaign.expectedDeliverables || "Not specified"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-lg">Required Documents</p>
+                    <p className="text-gray-600">
+                      {campaign.campaignPdf ? (
+                        <Link
+                          href={campaign.campaignPdf || "#"}
+                          target="_blank"
+                          className="underline italic"
+                        >
+                          Link
+                        </Link>
+                      ) : (
+                        <p>Not specified</p>
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-lg">Budget</p>
+                    <p className="text-gray-600">
+                      {data?.amount ? `$ ${data.amount}` : "Not specified"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-lg">Additional Information</p>
+                    <p className="text-gray-600">
+                      {campaign.additionalInstructions || "Not specified"}
+                    </p>
                   </div>
                 </div>
               </div>
