@@ -28,8 +28,7 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          CONNECTS GLOBAL <br className="hidden md:block" />
-          USES AI TO CONNECT CREATORS TO BRANDS, BUILDING{" "}
+          USES AI TO CONNECT CREATORS TO BRANDS BUILDING{" "}
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -45,7 +44,7 @@ export default function InfluEnergySection() {
             />
           </motion.span>
           <br className="hidden md:block" />
-          TO CREATE
+          CROSS-CULTURAL 
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -60,7 +59,7 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          CROSS-CULTURAL PARTNERSHIPS THAT DELIVER RESULTS
+          PARTNERSHIPS THAT DELIVER RESULTS
         </p>
       </motion.div>
     </div>
