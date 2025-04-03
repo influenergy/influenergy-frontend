@@ -39,7 +39,7 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        <h1 className="text-[clamp(1.875rem,1rem+5vw,5rem)] font-bold leading-tight font-mona">
+        <h1 className="text-[clamp(1.5rem,1rem+5vw,4rem)] font-bold leading-tight font-mona">
           WHERE AI CONNECTS CREATORS &<br className="hidden lg:block" /> BRANDS
           CONNECT TO MAKE MONEY
         </h1>
