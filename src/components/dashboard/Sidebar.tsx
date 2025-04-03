@@ -62,6 +62,7 @@ export default function Sidebar({ type }: { type: string }) {
                 "https://avatar.iran.liara.run/public/boy"
               }
               alt="@user"
+               className="object-cover"
             />
             <AvatarFallback>
               {userProfile?.fullName?.substring(0, 2) || "U"}

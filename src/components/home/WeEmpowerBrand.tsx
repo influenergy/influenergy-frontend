@@ -33,7 +33,8 @@ export default function WeEmpowerBrand() {
             <h3 className="text-2xl font-bold text-gray-900">Sandeep Asdhir</h3>
             <p className="text-gray-600 mt-1">Founder, CEO</p>
             <motion.div
-              whileHover={{ y: -5 }}
+              initial={{ y: 5 }}
+              whileHover={{ y: 0 }}
               transition={{ type: "spring", stiffness: 300 }}
               className=" w-fit absolute bottom-3 right-3 -translate-x-1/2 flex space-x-4"
             >
