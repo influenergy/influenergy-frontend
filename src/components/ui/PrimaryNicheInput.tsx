@@ -13,20 +13,15 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
   } = useFormContext<CreatorQuestionnaireData>();
 
   const fieldName = field.slug as keyof CreatorQuestionnaireData;
+  const error = errors[fieldName];
 
   const otherNicheFieldName =
     `${fieldName}-other` as keyof CreatorQuestionnaireData;
   const otherNicheError = errors[otherNicheFieldName];
 
-  // Use memoization to ensure stable dependencies
-  const selectedOptions = React.useMemo(
-    () => watch(fieldName) || [],
-    [watch, fieldName]
-  );
-  const otherNicheValue = React.useMemo(
-    () => (watch(otherNicheFieldName) as string) || "",
-    [watch, otherNicheFieldName]
-  );
+  // Use state to ensure reactive updates
+  const selectedOptions = watch(fieldName) || [];
+  const otherNicheValue = (watch(otherNicheFieldName) as string) || "";
 
   // Track if "Others" is selected - use state instead of memo for better reactivity
   const [hasOthersOption, setHasOthersOption] = React.useState(
@@ -188,6 +183,9 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
         )}
       </div>
 
+      {error && (
+        <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
+      )}
       {otherNicheError && (
         <p className="text-red-500 text-sm mt-1">
           {otherNicheError.message as string}
