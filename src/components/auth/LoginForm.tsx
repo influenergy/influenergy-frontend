@@ -85,8 +85,6 @@ export default function LoginForm() {
     },
   });
 
-
-
   const onSubmit = (data: LoginFormData) => {
     loginMutation.mutate(data);
   };
@@ -278,15 +276,17 @@ export default function LoginForm() {
 
           {/* Moved Dialog outside of the form to prevent form submission */}
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant="link"
-                type="button"
-                className="w-full justify-end"
-              >
-                Forgot Password?
-              </Button>
-            </DialogTrigger>
+            <div className="w-full flex justify-end items-center">
+              <DialogTrigger asChild>
+                <Button
+                  variant="link"
+                  type="button"
+                  className="inline-flex"
+                >
+                  Forgot Password?
+                </Button>
+              </DialogTrigger>
+            </div>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Forgot Password</DialogTitle>
