@@ -13,13 +13,14 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
   } = useFormContext<CreatorQuestionnaireData>();
 
   const fieldName = field.slug as keyof CreatorQuestionnaireData;
-  const error = errors[fieldName];
+  // const error = errors[fieldName];
 
   const otherNicheFieldName =
     `${fieldName}-other` as keyof CreatorQuestionnaireData;
   const otherNicheError = errors[otherNicheFieldName];
 
   // Use state to ensure reactive updates
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const selectedOptions = watch(fieldName) || [];
   const otherNicheValue = (watch(otherNicheFieldName) as string) || "";
 
@@ -183,9 +184,6 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
         )}
       </div>
 
-      {error && (
-        <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
-      )}
       {otherNicheError && (
         <p className="text-red-500 text-sm mt-1">
           {otherNicheError.message as string}
