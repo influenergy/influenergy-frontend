@@ -13,7 +13,7 @@ export default function InfluEnergySection() {
         className="max-w-9xl mx-auto"
       >
         <p className="font-black text-black leading-tight text-[clamp(2rem,5vw,4.5rem)]">
-          <span className="text-primary">INFLUENERGY</span>
+          <span className="text-[#6C63FF]">INFLUENERGY</span>
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -28,7 +28,8 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          USES AI TO CONNECTS CREATORS TO BRANDS BUILDING{" "}<br className="hidden lg:block" />
+          CONNECTS GLOBAL <br className="hidden md:block" />
+          USES AI TO CONNECT CREATORS TO BRANDS, BUILDING{" "}
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -43,8 +44,8 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          <br className="hidden lg:block" />
-         CROSS-CULTURAL
+          <br className="hidden md:block" />
+          TO CREATE
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -59,7 +60,7 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          PARTNERSHIPS THAT DELIVER RESULTS
+          CROSS-CULTURAL PARTNERSHIPS THAT DELIVER RESULTS
         </p>
       </motion.div>
     </div>
