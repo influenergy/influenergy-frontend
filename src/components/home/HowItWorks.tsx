@@ -104,8 +104,8 @@ export default function HowItWorks() {
                 Utilize AI Feature
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-                Leverage our advanced AI feature to effectively discover
-                influencers who perfectly match your brands goals.
+                Leverage our advanced AI feature to effortlessly discover
+                influencers who perfectly match your brand’s goals.
               </p>
             </motion.div>
 
@@ -127,7 +127,7 @@ export default function HowItWorks() {
                 Seamless Collaboration
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-                Connect, create, and watch your brand grow.
+                Connect, create and watch your brand grow and save time.
               </p>
             </motion.div>
           </motion.div>

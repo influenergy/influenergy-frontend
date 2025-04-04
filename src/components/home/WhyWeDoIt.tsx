@@ -70,7 +70,7 @@ export default function WhyWeDoIt() {
                 </h3>
                 <p className="text-gray-600 text-base">
                   AI-powered platform that connects brands, UGC creators, and
-                  influencers.
+                  influencers
                 </p>
               </div>
             </motion.div>
@@ -161,12 +161,13 @@ export default function WhyWeDoIt() {
             Why We Do It
           </h2>
           <p className="text-gray-600 text-base font-light">
-            Finding the right creator for your brand should not be a hassle.
+            Finding the right creator for your brand shouldn’t be a hassle.
           </p>
 
           <div className="mt-6">
             <p className="text-xl leading-relaxed mb-8">
-            Today’s consumers trust real stories from real creators. We empower brands to partner with ‘Influencer’ & UGC creators.
+              Today’s consumers trust real stories from real creators. We
+              empower brands to partner with influencer & UGC creators.
             </p>
 
             <motion.div
