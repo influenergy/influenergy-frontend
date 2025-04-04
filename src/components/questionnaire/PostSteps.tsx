@@ -275,7 +275,7 @@ export const FormField = ({ field }: { field: Field }) => {
         <div className="flex flex-col space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-500">Min: $1</span>
-            <span className="text-sm text-gray-500">Max: $3000</span>
+            <span className="text-sm text-gray-500">Max: $10000</span>
           </div>
 
           <Slider
@@ -284,7 +284,7 @@ export const FormField = ({ field }: { field: Field }) => {
               setValue(fieldName, value.toString(), { shouldValidate: true });
             }}
             min={1}
-            max={3000}
+            max={10000}
             step={1}
             className="w-full"
           />
@@ -293,7 +293,7 @@ export const FormField = ({ field }: { field: Field }) => {
             <div
               className="absolute px-2 py-1 bg-primary text-white rounded-md text-xs transform -translate-x-1/2"
               style={{
-                left: `${((Number(value) - 1) / (3000 - 1)) * 100}%`,
+                left: `${((Number(value) - 1) / (10000 - 1)) * 100}%`,
                 top: "4px",
               }}
             >

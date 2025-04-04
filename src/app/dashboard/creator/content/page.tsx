@@ -77,14 +77,15 @@ const Page = () => {
             className="object-cover"
           />
           <p className="text-4xl font-semibold text-center mt-4">
-          Welcome to My Videos section <br /> Upload your best performing videos to showcase your performance to brand
+            Welcome to My Videos section <br /> Upload your best performing
+            videos to showcase your performance to brand
           </p>
           {user?.isAccountVerified ? (
             <Button
               className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
               onClick={() => setIsOpen(true)}
             >
-              + Post Vide
+              + Post Video
             </Button>
           ) : (
             <p className="text-lg font-medium text-destructive">

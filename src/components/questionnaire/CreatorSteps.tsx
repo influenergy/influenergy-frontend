@@ -188,7 +188,7 @@ const FormField = ({ field }: { field: Field }) => {
         <div className="flex flex-col space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-500">Min: $1</span>
-            <span className="text-sm text-gray-500">Max: $3000</span>
+            <span className="text-sm text-gray-500">Max: $10000</span>
           </div>
 
           <Slider
@@ -197,7 +197,7 @@ const FormField = ({ field }: { field: Field }) => {
               setValue(fieldName, `${values[0]}`, { shouldValidate: true });
             }}
             min={1}
-            max={3000}
+            max={10000}
             step={1}
             className="w-full"
           />
@@ -206,7 +206,7 @@ const FormField = ({ field }: { field: Field }) => {
             <div
               className="absolute px-2 py-1 bg-primary text-white rounded-md text-xs transform -translate-x-[10%]"
               style={{
-                left: `${((Number(value) - 1) / (3000 - 1)) * 100}%`,
+                left: `${((Number(value) - 1) / (10000 - 1)) * 100}%`,
                 top: "4px",
               }}
             >
@@ -314,7 +314,7 @@ export const Step = ({ fields }: StepProps) => {
       <div className="space-y-2">
         {primaryAudienceFields.length > 0 && (
           <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-light mb-2 ">Primary Audience *</h3>
+            <h3 className="text-lg font-light mb-2 ">Your primary audience demography *</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-4">
               <StepComponent fields={primaryAudienceFields} />
             </div>
@@ -322,7 +322,7 @@ export const Step = ({ fields }: StepProps) => {
         )}
         {secondaryAudienceFields.length > 0 && (
           <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-light mb-2">Secondary Audience</h3>
+            <h3 className="text-lg font-light mb-2">Your secondary audience demography </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-4">
               <StepComponent fields={secondaryAudienceFields} />
             </div>

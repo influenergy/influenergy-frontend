@@ -113,8 +113,11 @@ export default function Page() {
       <div className="w-full max-w-7xl">
         {/* first section */}
         <div className="flex justify-start">
-          <Link href="/dashboard" className="flex items-center gap-2 text-gray-400 underline">
-          <ChevronsLeft />
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 text-gray-400 underline"
+          >
+            <ChevronsLeft />
             Back
           </Link>
         </div>
