@@ -87,7 +87,13 @@ export default function StatusDialog({
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between my-4">
               <p className="font-semibold">Check Status</p>
-              <p className="font-semibold text-primary">Get Help?</p>
+              <Button
+                className="font-semibold text-primary bg-white"
+                variant="link"
+                onClick={() => (window.location.href = "mailto:support@influenergy.com")}
+              >
+                Get Help?
+              </Button>
             </DialogTitle>
             <DialogClose />
           </DialogHeader>

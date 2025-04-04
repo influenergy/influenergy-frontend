@@ -66,7 +66,15 @@ export default function StatusModal({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between my-4">
             <p className="font-semibold">Your Status</p>
-            <p className="font-semibold text-primary">Get Help?</p>
+            <Button
+              variant="link"
+              className="font-semibold text-primary bg-white"
+              onClick={() =>
+                (window.location.href = "mailto:support@influenergy.com")
+              }
+            >
+              Get Help?
+            </Button>
           </DialogTitle>
           <DialogClose />
         </DialogHeader>
@@ -112,11 +120,17 @@ export default function StatusModal({
                   className="w-full px-3 py-2 border rounded-md text-sm"
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
-                  disabled={data[0]?.status == "Pending" || data[0]?.status == "Approved"}
+                  disabled={
+                    data[0]?.status == "Pending" ||
+                    data[0]?.status == "Approved"
+                  }
                 />
                 <button
                   onClick={() => setIsConfirmationOpen(true)}
-                  disabled={data[0]?.status == "Pending" || data[0]?.status == "Approved"}
+                  disabled={
+                    data[0]?.status == "Pending" ||
+                    data[0]?.status == "Approved"
+                  }
                   className="w-full p-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition"
                 >
                   Send Video Link to Brand
