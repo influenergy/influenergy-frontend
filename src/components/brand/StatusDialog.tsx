@@ -90,7 +90,7 @@ export default function StatusDialog({
               <Button
                 className="font-semibold text-primary bg-white"
                 variant="link"
-                onClick={() => (window.location.href = "mailto:support@influenergy.com")}
+                onClick={() => (window.location.href = "mailto:support@influenergy.co")}
               >
                 Get Help?
               </Button>

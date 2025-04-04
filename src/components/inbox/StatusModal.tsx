@@ -70,7 +70,7 @@ export default function StatusModal({
               variant="link"
               className="font-semibold text-primary bg-white"
               onClick={() =>
-                (window.location.href = "mailto:support@influenergy.com")
+                (window.location.href = "mailto:support@influenergy.co")
               }
             >
               Get Help?
