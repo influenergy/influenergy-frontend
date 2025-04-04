@@ -407,7 +407,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "United Kingdom",
           "United States",
         ],
-        placeholder: "Audience location",
+        placeholder: "Location",
       },
       {
         title: "Secondary Audience Gender",
@@ -543,7 +543,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select top age brackets",
       },
       {
-        title: "What are the average views of your last 8 videos?",
+        title: "What are the average views of your last 8 reels?",
         slug: "average-views",
         category: "dropdown",
         options: [

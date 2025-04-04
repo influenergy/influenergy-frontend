@@ -7,7 +7,7 @@ const minDate = new Date();
 minDate.setFullYear(minDate.getFullYear() - 85); // 85 years ago
 
 const maxDate = new Date();
-maxDate.setFullYear(maxDate.getFullYear() - 5); // 5 years ago
+maxDate.setFullYear(maxDate.getFullYear() - 18); // 18 years ago
 
 export const step1Schema = yup.object().shape({
   "are-you-ugc-creator": yup
@@ -22,7 +22,7 @@ export const step1Schema = yup.object().shape({
   dob: yup
     .date()
     .min(minDate, "Age must be at most 85 years")
-    .max(maxDate, "Age must be at least 5 years")
+    .max(maxDate, "Age must be at least 18 years")
     .required("Date of birth is required")
     .notOneOf([null], "Date of birth cannot be empty"),
 }) as Schema;
