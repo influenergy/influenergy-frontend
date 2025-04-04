@@ -89,7 +89,7 @@ const Page = () => {
               (!campaignsData?.collaborations ||
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
-                  No active collaborations found.
+                  No ongoing collaborations found.
                 </div>
               )}
           </Suspense>
