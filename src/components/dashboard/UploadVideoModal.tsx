@@ -104,25 +104,77 @@ const UploadVideoModal: React.FC<UploadVideoModalProps> = ({
       reader.onload = (event) => {
         const img = new window.Image();
         img.onload = () => {
-          const aspectRatio = img.width / img.height;
           const targetAspectRatio = 9 / 16;
-          const margin = 0.02;
-          const isValidRatio =
-            Math.abs(aspectRatio - targetAspectRatio) <= margin;
+          const margin = 0.02; // 2% margin for aspect ratio comparison
+          const currentAspectRatio = img.width / img.height;
 
-          if (!isValidRatio) {
-            toast({
-              title: "Error",
-              description:
-                "Please upload an image with 9:16 aspect ratio (1080x1920 pixels recommended)",
-              variant: "destructive",
-            });
-            e.target.value = "";
-            setImageFile(null);
+          // Check if image is already approximately 9:16
+          const isCorrectRatio =
+            Math.abs(currentAspectRatio - targetAspectRatio) <= margin;
+
+          if (isCorrectRatio) {
+            // If already correct ratio, use original file
+            setImageFile(file);
             return;
           }
 
-          setImageFile(file);
+          // Only convert if not already correct ratio
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          if (!ctx) {
+            toast({
+              title: "Error",
+              description: "Failed to process image",
+              variant: "destructive",
+            });
+            return;
+          }
+
+          // Calculate dimensions for 9:16 output
+          let outputWidth, outputHeight;
+
+          if (currentAspectRatio > targetAspectRatio) {
+            // Original is wider than 9:16 - crop sides
+            outputHeight = img.height;
+            outputWidth = outputHeight * targetAspectRatio;
+          } else {
+            // Original is taller than 9:16 - crop top/bottom
+            outputWidth = img.width;
+            outputHeight = outputWidth / targetAspectRatio;
+          }
+
+          // Set canvas dimensions
+          canvas.width = outputWidth;
+          canvas.height = outputHeight;
+
+          // Calculate source coordinates for centered crop
+          const sx = (img.width - outputWidth) / 2;
+          const sy = (img.height - outputHeight) / 2;
+
+          // Draw the image centered and cropped to 9:16
+          ctx.drawImage(
+            img,
+            sx,
+            sy, // source x, y
+            outputWidth,
+            outputHeight, // source width, height
+            0,
+            0, // destination x, y
+            outputWidth,
+            outputHeight // destination width, height
+          );
+
+          // Convert canvas to blob and update state
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const convertedFile = new File([blob], file.name, {
+                type: file.type,
+                lastModified: Date.now(),
+              });
+              setImageFile(convertedFile);
+            }
+          }, file.type);
         };
 
         img.src = event.target?.result as string;
@@ -131,7 +183,6 @@ const UploadVideoModal: React.FC<UploadVideoModalProps> = ({
       reader.readAsDataURL(file);
     }
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
