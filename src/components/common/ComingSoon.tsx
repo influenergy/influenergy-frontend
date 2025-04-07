@@ -18,13 +18,11 @@ const ComingSoon = () => {
       <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 text-center">Coming Soon</h2>
       <div className="text-center max-w-3xl px-2 md:px-4 mt-2 md:mt-3">
       <p className="text-base md:text-xl text-gray-600 mb-4 md:mb-6 leading-7 md:leading-8">
-        Are you Ready to get something new from us. ThankYou for being a
-        <br className="hidden md:block" />
-        early adopter of <span className="text-indigo-600">Influenergy</span>. Stay tuned! Exciting features on the way.
+        Thank You for being an early adopter of <span className="text-primary">Influenergy</span>. Stay tuned! Exciting features on the way.
       </p>
       <Link 
         href="/" 
-        className="inline-flex items-center text-indigo-600 hover:text-indigo-700 transition-colors font-medium"
+        className="inline-flex items-center text-primary hover:text-secondary transition-colors font-medium"
       >
         Back to Home
       </Link>
