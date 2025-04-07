@@ -121,7 +121,7 @@ export default function Page() {
             Back
           </Link>
         </div>
-        <p>Edit Profile</p>
+        <p className="mt-3">Edit Profile</p>
         <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-4 mt-3">
           <div className="relative w-[100px] h-[100px]">
             <Image
