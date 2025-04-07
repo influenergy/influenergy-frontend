@@ -13,7 +13,7 @@ export default function InfluEnergySection() {
         className="max-w-9xl mx-auto"
       >
         <p className="font-black text-black leading-tight text-[clamp(2rem,5vw,4.5rem)]">
-          <span className="text-[#6C63FF]">INFLUENERGY</span>
+          WITH OUR
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -28,7 +28,8 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          USES AI TO CONNECT CREATORS TO BRANDS BUILDING{" "}
+          POWERFUL AI-FIND TOOL
+          <span className="text-primary"> INFLUENERGY</span> CONNECTS
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -43,8 +44,9 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          <br className="hidden md:block" />
-          CROSS-CULTURAL 
+          CREATOR AND
+          
+          BRANDS UNLOCKING CROSS-CULTURAL PARTNERSHIPS
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -59,7 +61,7 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          PARTNERSHIPS THAT DELIVER RESULTS
+          THAT DELIVER RESULTS
         </p>
       </motion.div>
     </div>
