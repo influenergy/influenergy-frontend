@@ -11,7 +11,6 @@ export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
   const userType = useAppSelector((state) => state.auth.userType);
   const { data: userDetails, isLoading, error } = useUserDetails();
-  // console.log("userDetails", userDetails?.data);
 
   if (!isAuthenticated || !userType) {
     return null;
@@ -35,7 +34,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen p-2">
+    <div className="min-h-screen p-2 px-5">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
@@ -54,7 +53,7 @@ export default function DashboardPage() {
           </Link>
         </Card>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 grid-cols-1">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-2">
               Welcome Back,{" "}
