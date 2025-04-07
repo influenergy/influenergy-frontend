@@ -3,11 +3,12 @@ import {
   Film,
   ClipboardList,
   Settings,
-  Link,
+  // Link,
   Bell,
   LucideIcon,
   Mail,
   WandSparkles,
+  FileText,
   // ChartNoAxesCombined,
 } from "lucide-react";
 
@@ -45,6 +46,12 @@ const creatorNav: NavItem[] = [
     label: "Inbox",
     slug: "inbox",
   },
+  {
+    href: "/dashboard/feedback",
+    icon: FileText,
+    label: "Feedback",
+    slug: "feedback",
+  },
 ];
 
 const brandNav: NavItem[] = [
@@ -72,6 +79,12 @@ const brandNav: NavItem[] = [
       "/dashboard/brand/findai/campaign/[campaignId]/creator",
     ],
   },
+  {
+    href: "/dashboard/feedback",
+    icon: FileText,
+    label: "Feedback",
+    slug: "feedback",
+  },
 ];
 
 const creatorProfileNav: NavItem[] = [
@@ -81,12 +94,12 @@ const creatorProfileNav: NavItem[] = [
     label: "Account Settings",
     slug: "account",
   },
-  {
-    href: "/user-profile/socials",
-    icon: Link,
-    label: "Linked Socials",
-    slug: "socials",
-  },
+  // {
+  //   href: "/user-profile/socials",
+  //   icon: Link,
+  //   label: "Linked Socials",
+  //   slug: "socials",
+  // },
   {
     href: "/user-profile/notifications",
     icon: Bell,
