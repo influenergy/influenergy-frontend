@@ -89,7 +89,18 @@ const Page = () => {
               (!campaignsData?.collaborations ||
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
-                  No ongoing collaborations found.
+                  <Image
+                    src="/images/Inbox/intro.png"
+                    alt=""
+                    width={280}
+                    height={280}
+                    className="mx-auto"
+                    priority
+                  />
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                    Welcome to the inbox. <br /> No ongoing collaborations
+                    found.
+                  </h3>
                 </div>
               )}
           </Suspense>
@@ -123,7 +134,18 @@ const Page = () => {
               (!campaignsData?.collaborations ||
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
-                  No pending collaborations found.
+                  <Image
+                    src="/images/Inbox/intro.png"
+                    alt=""
+                    width={280}
+                    height={280}
+                    className="mx-auto"
+                    priority
+                  />
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                    Welcome to the inbox. <br /> No pending collaborations
+                    found.
+                  </h3>
                 </div>
               )}
           </Suspense>
@@ -157,7 +179,18 @@ const Page = () => {
               (!campaignsData?.collaborations ||
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
-                  No completed collaborations found.
+                  <Image
+                    src="/images/Inbox/intro.png"
+                    alt=""
+                    width={280}
+                    height={280}
+                    className="mx-auto"
+                    priority
+                  />
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                    Welcome to the inbox. <br /> No completed collaborations
+                    found.
+                  </h3>
                 </div>
               )}
           </Suspense>
@@ -191,7 +224,18 @@ const Page = () => {
               (!campaignsData?.collaborations ||
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
-                  No payment collaborations found.
+                  <Image
+                    src="/images/Inbox/intro.png"
+                    alt=""
+                    width={280}
+                    height={280}
+                    className="mx-auto"
+                    priority
+                  />
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                    Welcome to the inbox. <br /> No payment collaborations
+                    found.
+                  </h3>
                 </div>
               )}
           </Suspense>
