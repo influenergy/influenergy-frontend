@@ -121,8 +121,8 @@ export default function Page() {
             Back
           </Link>
         </div>
-        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 mt-3">
-          <p>Edit Profile</p>
+        <p>Edit Profile</p>
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-4 mt-3">
           <div className="relative w-[100px] h-[100px]">
             <Image
               src={
@@ -157,7 +157,6 @@ export default function Page() {
               </div>
             )}
           </div>
-          <DeleteModal />
         </div>
 
         {/* profile details section */}
@@ -214,6 +213,9 @@ export default function Page() {
               </>
             )}
           </div>
+        </div>
+        <div className="flex justify-end mt-4 w-full">
+          <DeleteModal />
         </div>
 
         {/* Complete Profile Section */}
