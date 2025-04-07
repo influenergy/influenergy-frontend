@@ -7,10 +7,12 @@ import HeroSection from "@/components/home/HeroSection";
 import InfluEnergySection from "@/components/home/Influenergy";
 import { Loader } from "@/components/common/Loader";
 import dynamic from "next/dynamic";
-const HearFromInfluencer = dynamic(() => 
-  import('@/components/home/HearFromInfluencer'), {
-    ssr: false 
-});
+const HearFromInfluencer = dynamic(
+  () => import("@/components/home/HearFromInfluencer"),
+  {
+    ssr: false,
+  }
+);
 const WhoAreWe = lazy(() => import("@/components/home/WhoAreWe"));
 const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const WhatWeDo = lazy(() => import("@/components/home/WhatWeDo"));
@@ -72,7 +74,9 @@ export default function Home() {
         </Suspense>
 
         <Suspense fallback={<Loader />}>
-          <Blog />
+          <div id="blog">
+            <Blog />
+          </div>
           <div id="get-in-touch">
             <GetInTouch />
           </div>
