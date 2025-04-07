@@ -103,9 +103,8 @@ const Page = () => {
       ) : shouldShowContent ? (
         <>
           <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:space-x-4">
-            <p className="text-2xl font-semibold md:text-3xl font-poppins md:w-1/2">
-              Upload your best performing videos to showcase your performance to
-              brand!
+            <p className="text-2xl font-semibold md:text-3xl font-poppins md:w-4/6">
+              Upload your best performing videos or reels to showcase yourself to brands who will find you with our AI-Find feature.
             </p>
             <div className="flex items-center justify-end w-full md:w-auto">
               <Button
