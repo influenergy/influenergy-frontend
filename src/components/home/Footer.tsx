@@ -74,11 +74,12 @@ export default function Footer() {
 
   const quickLinks = [
     { name: "Home", href: "/", section: "" },
-    { name: "How It Works", href: "#how-it-works", section: "how-it-works" },
     { name: "Who We Are", href: "#who-we-are", section: "who-we-are" },
+    { name: "How It Works", href: "#how-it-works", section: "how-it-works" },
     { name: "What We Do", href: "#what-we-do", section: "what-we-do" },
-    { name: "Contact", href: "#get-in-touch", section: "get-in-touch" },
     { name: "Why We do It", href: "#why-we-do-it", section: "why-we-do-it" },
+    { name: "Blogs", href: "#blog", section: "blog" },
+    { name: "Contact", href: "#get-in-touch", section: "get-in-touch" },
   ];
 
   return (
@@ -99,16 +100,17 @@ export default function Footer() {
         >
           {/* Quick Contact */}
           <motion.div
-            className="space-y-4 text-center md:text-left w-full flex flex-col items-center justify-start gap-4"
+            className="space-y-4 text-center w-full flex flex-col items-center justify-start gap-4"
             variants={item}
           >
             <h3 className="text-xl font-semibold ">Quick Contact</h3>
             <div className="border h-0.5 bg-gray-400 w-full" />
-            <p className="text-gray-300 font-light">
-            W 13TH Part Suite 559, California
-            </p>
-            <p className="text-gray-300 font-light">+1 (408) 386-9334</p>
-            <p className="text-gray-300 font-light">connect@influenergy.co</p>
+            <div className="flex flex-col px-10">
+              <p className="text-gray-300 font-light">
+                Contact Influenergy for any inquiries or questions
+              </p>
+              <p className="text-gray-300 font-light mt-5">connect@influenergy.co</p>
+            </div>
           </motion.div>
 
           {/* Company Info */}
@@ -120,17 +122,11 @@ export default function Footer() {
               <Image
                 src="/images/logo.svg"
                 alt="Influenergy Logo"
-                width={180}
-                height={180}
+                width={380}
+                height={380}
                 className="object-cover"
               />
             </div>
-            <p className="text-gray-300 text-center font-light">
-              Influenergy is the AI-powered bridge between brands and UGC
-              creators. We simplify the influencer collaboration process by
-              automating creator-brand matching and maximizing campaign impact.
-            </p>
-
             <div className="flex justify-center space-x-4 mt-8">
               {socialLinks.map((link, index) => (
                 <motion.div
@@ -157,7 +153,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             {/* <hr className="border border-gray-400 w-full" />
              */}
-             <div className="h-0.5 bg-gray-400 w-full"/>
+            <div className="h-0.5 bg-gray-400 w-full"/>
             <ul className="space-y-3 font-light">
               {quickLinks.map((link, index) => (
                 <motion.li
