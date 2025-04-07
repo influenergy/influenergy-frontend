@@ -44,8 +44,7 @@ export default function HeroSection() {
           TO MAKE MONEY
         </h1>
         <p className="mt-6 text-[clamp(1.125rem,0.9rem+1vw,1.875rem)] mx-auto max-w-4xl font-poppins">
-          Let’s create Influencer and UGC campaigns that connect, inspire, and
-          perform - empowering brands to grow
+        Let’s create influencer and UGC campaigns that connect, inspire, and perform—empowering brands to grow
         </p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
