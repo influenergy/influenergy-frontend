@@ -112,7 +112,7 @@ export default function DeleteModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"destructive"} className="text-red-700 bg-red-300">
+        <Button variant="outline"  className="text-gray-700 bg-gray-300">
           <Trash2 />
           Delete Account
         </Button>
