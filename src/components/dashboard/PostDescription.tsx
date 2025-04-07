@@ -346,9 +346,9 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
               <div>
                 <p className="text-lg">Required Documents</p>
                 <p className="text-gray-600">
-                  {processedData.campaignPdf ? (
+                  {data.campaignPdf ? (
                     <Link
-                      href={processedData.campaignPdf || "#"}
+                      href={data.campaignPdf || "#"}
                       target="_blank"
                       className="underline italic"
                     >
