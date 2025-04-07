@@ -43,7 +43,7 @@ const CampaignCard = memo(
           <div className="mb-3">
             <h3 className="text-sm text-gray-900 line-clamp-2 text-left">
               {campaign.campaignName.length > 50
-                ? campaign.campaignName.slice(0, 45) + "..."
+                ? campaign.campaignName.slice(0, 35) + "..."
                 : campaign.campaignName}
             </h3>
           </div>
