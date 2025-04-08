@@ -5,6 +5,7 @@ import DetailsModal from "./DetailsModal";
 import { Collaboration } from "@/types/Collaboration";
 import { useQueryClient } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
+import { PaymentModal } from "./PaymentModal";
 
 interface InboxCardProps {
   status: string;
@@ -12,6 +13,13 @@ interface InboxCardProps {
   image: string;
   data: Collaboration;
   refetch: () => void;
+}
+
+interface FormData {
+  fullName: string;
+  email: string;
+  selectedMethod: string;
+  paymentDetail: string;
 }
 
 const InboxCard: React.FC<InboxCardProps> = ({
@@ -25,6 +33,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const handleModalClose = (wasUpdated: boolean = false) => {
     if (wasUpdated) {
@@ -41,9 +50,10 @@ const InboxCard: React.FC<InboxCardProps> = ({
     setIsStatusModalOpen(false);
   };
 
-  const handleCollectPayment = async () => {
+  const handleCollectPayment = async (payload: FormData) => {
     setIsLoading(true);
     try {
+      console.log("Collecting payment with payload:", payload);
       await postApi.paymentCollect(data._id || "");
       // Handle success, e.g., show a success message
       console.log("Payment collected successfully");
@@ -119,7 +129,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
               {
                 Pending: (
                   <button
-                    onClick={handleCollectPayment}
+                    // onClick={handleCollectPayment}
+                    onClick={() => setIsPaymentModalOpen(true)}
                     disabled={isLoading}
                     className="w-full px-2 py-2 text-sm font-medium text-white border border-primary rounded-lg bg-primary transition "
                   >
@@ -158,6 +169,13 @@ const InboxCard: React.FC<InboxCardProps> = ({
         status={status}
         data={data}
       />
+
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onOpenChange={setIsPaymentModalOpen}
+        handleCollectPayment={handleCollectPayment}
+      />
+
       {status !== "Payment" && (
         <StatusModal
           open={isStatusModalOpen}

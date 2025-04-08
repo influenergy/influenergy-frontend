@@ -565,6 +565,23 @@ export const CREATOR_QUESTIONS: Questions = {
         options: ["Yes", "No", "Gifted", "Affiliate Marketing", "Other"],
         placeholder: "Select",
       },
+      
+      {
+        title: "Add Method Of Payment",
+        slug: "payment-method",
+        category: "multiselect",
+        placeholder: "Select payment method",
+        options: [
+          "Apple Pay",
+          "Amazon Pay",
+          "Cash App",
+          "Google Pay",
+          "Stripe",
+          "Paypal",
+          "Venmo",
+          "Zelle"
+        ],
+      },
       {
         title: "What’s Your desired compensation per video ?",
         slug: "budget-video",

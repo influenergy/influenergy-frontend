@@ -233,7 +233,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
             onSubmit={handleSubmit(handleNext)}
             className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly"
           >
-            <div className="mb-8 flex flex-col items-center">
+            <div className="md:mb-8 flex flex-col items-center">
               <h2 className="text-2xl font-bold mb-2">
                 Lets Create Your Profile
               </h2>
@@ -256,7 +256,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
               {renderStepComponent()}
             </motion.div>
 
-            <div className="mt-8 flex justify-center items-center w-full gap-4 ">
+            <div className="md:mt-8 flex justify-center items-center w-full gap-4 ">
               {currentStepIndex > 0 ? (
                 <Button
                   variant="outline"

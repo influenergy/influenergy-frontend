@@ -335,7 +335,7 @@ export const StepComponent = ({ fields }: StepProps) => {
         const required = isFieldRequired(field.slug);
 
         return (
-          <div key={field.title} className="space-y-2 mt-4">
+          <div key={field.title} className="md:space-y-2 md:mt-4">
             <label className="block text-sm font-light text-black">
               {field.title}
               {required && <span className="text-red-500 ml-1">*</span>}

@@ -80,6 +80,7 @@ export const transformQuestionnaireData = (
     workedWithAIConsumerApps: formData["worked-with-ai"] === "Yes",
     hasPaidCampaignExperience: formData["paid-campaigns"] === "Yes",
     budgetVideo: formData["budget-video"],
+    paymentMethod:formData['payment-method']
   };
 
   return transformedData;

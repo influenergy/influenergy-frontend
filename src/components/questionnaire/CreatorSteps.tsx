@@ -311,19 +311,19 @@ export const Step = ({ fields }: StepProps) => {
 
   if (primaryAudienceFields.length > 0 && secondaryAudienceFields.length > 0) {
     return (
-      <div className="space-y-2">
+      <div className="">
         {primaryAudienceFields.length > 0 && (
           <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-light mb-2 ">Your primary audience demography *</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-4">
+            <h3 className="text-lg font-light md:mb-2 ">Your primary audience demography *</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center md:gap-4">
               <StepComponent fields={primaryAudienceFields} />
             </div>
           </div>
         )}
         {secondaryAudienceFields.length > 0 && (
           <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-light mb-2">Your secondary audience demography </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-4">
+            <h3 className="text-lg font-light md:mb-2">Your secondary audience demography </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center md:gap-4">
               <StepComponent fields={secondaryAudienceFields} />
             </div>
           </div>

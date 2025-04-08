@@ -256,9 +256,18 @@ export const step7Schema = yup
       .required("This field is required"),
     "paid-campaigns": yup
       .string()
-      .oneOf(["Yes", "No", "Gifted", "Affiliate Marketing", "Other"], "Please select a valid option")
+      .oneOf(
+        ["Yes", "No", "Gifted", "Affiliate Marketing", "Other"],
+        "Please select a valid option"
+      )
       .required("This field is required"),
     "budget-video": yup.string().required("Compensation per video is required"),
+    "payment-method": yup
+      .array()
+      .of(yup.string())
+      .min(1, "Select at least one payment method")
+      .max(3, "Cannot select more than three payment methods")
+      .required("Payment method is required"),
   })
   .nullable() as unknown as Schema;
 

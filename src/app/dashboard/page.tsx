@@ -53,7 +53,7 @@ export default function DashboardPage() {
           </Link>
         </Card>
       ) : (
-        <div className="grid gap-6 grid-cols-1">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-2">
               Welcome Back,{" "}

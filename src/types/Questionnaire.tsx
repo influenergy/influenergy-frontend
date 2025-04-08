@@ -46,6 +46,7 @@ export interface CreatorQuestionnaireData {
   "worked-with-ai": string;
   "paid-campaigns": string;
   "budget-video": string;
+  "payment-method":string[];
 }
 
 export interface BrandQuestionnaireData {
