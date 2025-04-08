@@ -177,10 +177,20 @@ export const postApi = {
       throw error;
     }
   },
-  paymentCollect: async (collaborationId: string) => {
+
+  paymentCollect: async (
+    collaborationId: string,
+    payload: {
+      fullName: string;
+      email: string;
+      selectedMethod: string;
+      paymentDetail: string;
+    }
+  ) => {
     try {
       const response = await api.put(
-        `/creator/collaboration/get-payment/${collaborationId}`
+        `/creator/collaboration/get-payment/${collaborationId}`,
+        payload
       );
       return response.data;
     } catch (error) {
@@ -188,9 +198,11 @@ export const postApi = {
       throw error;
     }
   },
-  getAISummary: async (creatorId:string,campaignId: string) => {
+  getAISummary: async (creatorId: string, campaignId: string) => {
     try {
-      const response = await api.get(`/ai/create-text/${creatorId}/${campaignId}`);
+      const response = await api.get(
+        `/ai/create-text/${creatorId}/${campaignId}`
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching posts:", error);
