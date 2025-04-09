@@ -23,7 +23,7 @@ const Page = () => {
             <h1 className="text-2xl font-bold">My Posts</h1>
             <Link href="/dashboard/brand/create-post">
               <Button className="bg-primary px-5 py-2 rounded-xl">
-                + Create Ad
+                + Create Ad Brief
               </Button>
             </Link>
           </>
