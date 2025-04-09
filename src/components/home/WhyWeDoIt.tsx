@@ -175,7 +175,7 @@ export default function WhyWeDoIt() {
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6  flex items-center">
+              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 flex items-center text-lg">
                 <Link href="/get-started">Explore Now</Link>
               </Button>
             </motion.div>

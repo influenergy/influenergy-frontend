@@ -29,7 +29,7 @@ export default function HowItWorks() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            How It works
+            How It Works
           </h1>
           <p className="font-light text-lg text-gray-600 mb-8">
             AI- Powered matchmaking in 4 simple steps!
