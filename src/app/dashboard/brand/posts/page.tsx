@@ -48,13 +48,13 @@ const Page = () => {
               alt="Empty"
               className="object-cover"
             />
-            <p className="text-4xl font-semibold text-center mt-4">
-              Welcome to Brief section <br />
-              Here you can create brief for your campaign
+            <p className="text-4xl font-semibold text-center mt-4 leading-normal">
+             
+              Welcome to the brief section!<br />Create your campaign brief and let our AI Find tool match <br />you with the perfect creators.
             </p>
             <Link href="/dashboard/brand/create-post">
               <Button className="bg-primary px-5 py-2 h-10 rounded-xl text-lg ">
-                + Create Ad
+                + Create Ad Brief
               </Button>
             </Link>
           </div>

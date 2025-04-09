@@ -30,7 +30,7 @@ const Page = () => {
   // console.log('shouldShowContent', shouldShowContent);
 
   return (
-    <div className="p-4 h-screen">
+    <div className="p-4 h-[calc(100vh - 200px)]">
       {!user?.isAccountVerified ? (
         <div className="w-full flex flex-col items-center justify-center h-[calc(100vh-16rem)] gap-5">
           <Image
@@ -67,22 +67,23 @@ const Page = () => {
             Something went wrong while fetching data
           </p>
         </div>
-      ) : shouldShowContent && posts?.data?.videos.length === 0 ? (
+      ) : shouldShowContent && posts?.data?.videos.length >= 0 ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
-            src="/images/MyPost/empty.png"
+            src="/images/MyPost/my-video-empty.png"
             width={400}
             height={400}
             alt="Empty"
             className="object-cover"
           />
           <p className="text-4xl font-semibold text-center mt-4">
-            Welcome to My Videos section <br /> Upload your best performing
-            videos to showcase your performance to brand
+            Welcome to My Videos!
+            <br />
+            Upload your top-performing reels to show brands what you’re made of.
           </p>
           {user?.isAccountVerified ? (
             <Button
-              className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
+              className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto text-lg"
               onClick={() => setIsOpen(true)}
             >
               + Post Video
@@ -103,12 +104,13 @@ const Page = () => {
       ) : shouldShowContent ? (
         <>
           <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:space-x-4">
-            <p className="text-2xl font-semibold md:text-3xl font-poppins md:w-4/6">
-              Upload your best performing videos or reels to showcase yourself to brands who will find you with our AI-Find feature.
+            <p className="text-xl font-semibold md:text-3xl font-poppins md:w-4/6">
+              Upload your best performing videos or reels to showcase yourself
+              to brands who will find you with our AI-Find feature.
             </p>
             <div className="flex items-center justify-end w-full md:w-auto">
               <Button
-                className="bg-primary text-white py-1 px-4 rounded-lg md:w-auto"
+                className="bg-primary text-white py-2 px-4 rounded-lg md:w-auto"
                 onClick={() => setIsOpen(true)}
               >
                 + Post Video
