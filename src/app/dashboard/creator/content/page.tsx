@@ -67,7 +67,7 @@ const Page = () => {
             Something went wrong while fetching data
           </p>
         </div>
-      ) : shouldShowContent && posts?.data?.videos.length >= 0 ? (
+      ) : shouldShowContent && posts?.data?.videos.length === 0 ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
             src="/images/MyPost/my-video-empty.png"
