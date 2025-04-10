@@ -70,7 +70,7 @@ export default function WhyWeDoIt() {
                 </h3>
                 <p className="text-gray-600 text-base">
                   AI-powered platform that connects brands, UGC creators, and
-                  influencers
+                  Influencers
                 </p>
               </div>
             </motion.div>

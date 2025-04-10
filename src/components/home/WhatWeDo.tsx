@@ -19,8 +19,8 @@ export default function WhatWeDo() {
               What We Do
             </h1>
             <p className="text-gray-600 font-light text-lg leading-relaxed">
-              We simplify the process of finding, connecting, and collaborating
-              with top creators and influencers for your brand.
+              We simplify the process of connecting with high-performing UGC
+              creators through AI-powered matchmaking.
             </p>
           </div>
 
@@ -45,8 +45,8 @@ export default function WhatWeDo() {
                   AI Powered Solution
                 </h2>
                 <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                  AI-powered platform that connects brands, UGC creators,
-                  and influencers
+                  AI-powered platform that connects brands, UGC creators, and
+                  Influencers
                 </p>
               </div>
             </motion.div>
@@ -86,19 +86,19 @@ export default function WhatWeDo() {
             >
               <div className="h-14 w-14 sm:h-16 sm:w-16 bg-[#f3e8ff] rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
                 <Image
-                  src="/landing/whatwedo/note.png"
-                  width={25}
-                  height={25}
+                  src="/landing/whatwedo/payment.png"
+                  width={35}
+                  height={35}
                   alt="AI Solution Icon"
                 />
               </div>
               <div className="flex flex-col">
                 <h2 className="text-xl font-semibold mb-2">
-                  Free Reporting & Analytics
+                  Flexible Payment Plans & Seamless Transactions
                 </h2>
                 <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                  Our Analytics ensure that you are getting the best reports and
-                  data to improve your campaign.
+                  Our payment options and built-in transaction tools make it
+                  easy to pay creators securely and on your terms.
                 </p>
               </div>
             </motion.div>

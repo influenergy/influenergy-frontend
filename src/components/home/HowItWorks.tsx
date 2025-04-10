@@ -19,7 +19,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <div className="bg-[#fefaf6] w-full">
+    <div className="bg-white w-full">
       <div className="flex flex-col lg:flex-row w-full px-6 md:px-12 lg:px-20 xl:px-24 py-14 gap-8 lg:gap-12 items-center max-w-[1440px] mx-auto">
         <motion.div
           className="w-full lg:w-1/2"
@@ -32,7 +32,8 @@ export default function HowItWorks() {
             How It Works
           </h1>
           <p className="font-light text-lg text-gray-600 mb-8">
-            AI- Powered matchmaking in 4 simple steps!
+            Here’s How You Can Get Matched With the Right Creators in 4 Simple
+            Steps
           </p>
 
           <motion.div
@@ -56,10 +57,12 @@ export default function HowItWorks() {
                   quality={100}
                 />
               </div>
-              <h2 className="text-lg font-bold mt-4 md:mt-5">Create Account</h2>
+              <h2 className="text-lg font-bold mt-4 md:mt-5">
+                Create Your Campaign
+              </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-                Join today to connect, collaborate, & grow. Create your account
-                and unlock exclusive opportunities.
+                Tell us what you need—your goals, product, and target audience
+                in a simplified brief.
               </p>
             </motion.div>
 
@@ -69,20 +72,27 @@ export default function HowItWorks() {
               variants={item}
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
-                <Image
+                {/* <Image
                   src="/landing/howitworks/image.png"
                   alt="Post Ads Icon"
                   height={45}
                   width={45}
                   quality={100}
+                /> */}
+                <Image
+                  src="/landing/howitworks/sparkle.png"
+                  alt="AI Feature Icon"
+                  height={40}
+                  width={40}
+                  quality={100}
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Post & Create Ads
+                Let AI Find Your Match
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-                Effortlessly post and create targeted ads to attract influencers
-                who align with your brand.
+                Our system scans and matches you with verified creators that fit
+                your brand.
               </p>
             </motion.div>
 
@@ -101,11 +111,11 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Utilize AI Feature
+                Review & Approve
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-                Leverage our advanced AI feature to effortlessly discover
-                influencers who perfectly match your brand’s goals.
+                Browse curated matches, review content examples, and approve
+                your favorites.
               </p>
             </motion.div>
 
@@ -124,10 +134,10 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Seamless Collaboration
+              Collaborate & Launch
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-                Connect, create and watch your brand grow and save time.
+              Message, pay, and launch content—all in one seamless platform.
               </p>
             </motion.div>
           </motion.div>

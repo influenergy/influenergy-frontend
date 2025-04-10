@@ -57,14 +57,15 @@ export default function Home() {
         </Suspense>
 
         <Suspense fallback={<Loader />}>
-          <div id="how-it-works">
-            <HowItWorks />
+          
+          <div id="what-we-do">
+            <WhatWeDo />
           </div>
         </Suspense>
 
         <Suspense fallback={<Loader />}>
-          <div id="what-we-do">
-            <WhatWeDo />
+        <div id="how-it-works">
+            <HowItWorks />
           </div>
           <div id="why-we-do-it">
             <WhyWeDoIt />

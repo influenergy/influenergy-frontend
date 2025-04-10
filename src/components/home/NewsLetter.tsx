@@ -31,7 +31,7 @@ const NewsLetter = () => {
           </h2>
           <p className="mt-3 max-w-2xl text-xl font-light text-white sm:mt-4">
             Subscribe for Updates: Stay informed about the latest brand updates,
-            influencers and announcements by subscribing to our newsletter.
+            Influencers and announcements by subscribing to our newsletter.
           </p>
         </div>
 

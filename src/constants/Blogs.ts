@@ -66,7 +66,7 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "SO you know Kim K, Mr. Beast —yes, they’re influencers. Today, many people both revere and criticize this label. But what does it really mean to be an influencer?",
+        text: "SO you know Kim K, Mr. Beast —yes, they’re Influencers. Today, many people both revere and criticize this label. But what does it really mean to be an influencer?",
       },
       {
         type: "paragraph",
@@ -79,11 +79,11 @@ export const BlogContent = [
       {
         type: "list",
         items: [
-          "Nano-Influencer: These influencers have a small but dedicated following, often ranging from 1,000 to 10,000 followers, and typically engage closely with their audience.",
-          "Micro-Influencer: With a following of 10,000 to 100,000, micro-influencers are known for their niche expertise and strong community engagement.",
-          "Mid-Influencer: Mid-influencers, boasting 100,000 to 500,000 followers, strike a balance between reach and personal connection, making them effective brand advocates.",
-          "Macro-Influencer: Macro-influencers, with 500,000 to a few million followers, possess a significant online presence and can reach a broad audience across various demographics.",
-          "Mega-Influencer (or Celebrities): These influencers are often well-known public figures or celebrities with millions of followers, providing brands with massive visibility and reach.",
+          "Nano-Influencer: These Influencers have a small but dedicated following, often ranging from 1,000 to 10,000 followers, and typically engage closely with their audience.",
+          "Micro-Influencer: With a following of 10,000 to 100,000, micro-Influencers are known for their niche expertise and strong community engagement.",
+          "Mid-Influencer: Mid-Influencers, boasting 100,000 to 500,000 followers, strike a balance between reach and personal connection, making them effective brand advocates.",
+          "Macro-Influencer: Macro-Influencers, with 500,000 to a few million followers, possess a significant online presence and can reach a broad audience across various demographics.",
+          "Mega-Influencer (or Celebrities): These Influencers are often well-known public figures or celebrities with millions of followers, providing brands with massive visibility and reach.",
         ],
       },
       {
@@ -96,11 +96,11 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "Influencer Marketing is a form of marketing that leverages influencers to create genuine content for their audiences. Unlike traditional advertising, it creates genuine connections, as influencers provide honest reviews and insights that resonate with their followers.",
+        text: "Influencer Marketing is a form of marketing that leverages Influencers to create genuine content for their audiences. Unlike traditional advertising, it creates genuine connections, as Influencers provide honest reviews and insights that resonate with their followers.",
       },
       {
         type: "paragraph",
-        text: "By collaborating with influencers, brands tap into established communities, enhancing visibility and credibility. This approach not only boosts brand awareness but also builds trust among consumers who seek authentic recommendations in a crowded market. Ultimately, influencer marketing is about creating mutually beneficial relationships that drive success through collaboration.",
+        text: "By collaborating with Influencers, brands tap into established communities, enhancing visibility and credibility. This approach not only boosts brand awareness but also builds trust among consumers who seek authentic recommendations in a crowded market. Ultimately, influencer marketing is about creating mutually beneficial relationships that drive success through collaboration.",
       },
       {
         type: "heading",
@@ -134,7 +134,7 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "Influencer marketing isn't just about throwing money at celebrities and praying things work. It's about building genuine connections with people who have already earned the trust and admiration of their online communities. These individuals, known as influencers, can range from micro-influencers with dedicated niche followings to established personalities with millions of fans… and her'e’s the thing, it works. Studies have shown that 33% of Gen Z buyers are more likely to buy something online from their favorite influencer.",
+        text: "Influencer marketing isn't just about throwing money at celebrities and praying things work. It's about building genuine connections with people who have already earned the trust and admiration of their online communities. These individuals, known as Influencers, can range from micro-Influencers with dedicated niche followings to established personalities with millions of fans… and her'e’s the thing, it works. Studies have shown that 33% of Gen Z buyers are more likely to buy something online from their favorite influencer.",
       },
       {
         type: "paragraph",
@@ -146,7 +146,7 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "But how can influencer marketing platforms elevate your campaign even further? These platforms offer a treasure trove of tools to help you find the perfect influencers, track campaign performance, and streamline the entire collaboration process.",
+        text: "But how can influencer marketing platforms elevate your campaign even further? These platforms offer a treasure trove of tools to help you find the perfect Influencers, track campaign performance, and streamline the entire collaboration process.",
       },
       {
         type: "paragraph",
@@ -160,7 +160,7 @@ export const BlogContent = [
         type: "list",
         items: [
           "Focus on authenticity: Don't micromanage the content. Let the influencer's creativity shine through while ensuring brand alignment.",
-          "Choose the right influencers: Look beyond follower count. Find individuals whose values resonate with your brand and whose audience aligns with your target demographic.",
+          "Choose the right Influencers: Look beyond follower count. Find individuals whose values resonate with your brand and whose audience aligns with your target demographic.",
           "Set clear goals and expectations: Do you want to boost brand awareness, drive sales, or generate user-generated content? Clearly define your goals and communicate them effectively to the influencer.",
           "Track and measure results: Don't just throw content out there and hope for the best. Analyze engagement metrics, track website traffic, and monitor sales figures to gauge the campaign's success.",
         ],
@@ -172,11 +172,11 @@ export const BlogContent = [
       {
         type: "list",
         items: [
-          "Nike: Collaborates with athletes (like Lebron James and Cristiano Ronaldo) and fitness influencers to promote their latest gear and inspire a healthy lifestyle.",
-          "Daniel Wellington: Partners with micro-influencers to showcase their classic watches in various settings and styles.",
-          "Sephora: Works with beauty influencers to share product reviews, tutorials, and makeup tips with their audience.",
-          "Gymshark: Leverages fitness influencers to showcase their activewear and motivate their followers to reach their fitness goals.",
-          "Fenty Beauty: Partners with a diverse range of influencers to promote inclusive beauty products and create a sense of community.",
+          "Nike: Collaborates with athletes (like Lebron James and Cristiano Ronaldo) and fitness Influencers to promote their latest gear and inspire a healthy lifestyle.",
+          "Daniel Wellington: Partners with micro-Influencers to showcase their classic watches in various settings and styles.",
+          "Sephora: Works with beauty Influencers to share product reviews, tutorials, and makeup tips with their audience.",
+          "Gymshark: Leverages fitness Influencers to showcase their activewear and motivate their followers to reach their fitness goals.",
+          "Fenty Beauty: Partners with a diverse range of Influencers to promote inclusive beauty products and create a sense of community.",
         ],
       },
       {
