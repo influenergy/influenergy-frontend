@@ -103,7 +103,7 @@ export default function HowItWorks() {
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
                 <Image
-                  src="/landing/howitworks/sparkle.png"
+                  src="/landing/howitworks/review.png"
                   alt="AI Feature Icon"
                   height={40}
                   width={40}
