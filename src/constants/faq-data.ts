@@ -31,7 +31,7 @@ export const faqData = [
   },
   {
     id: 6,
-    trigger: "What is an influencer?",
+    trigger: "What is an Influencer?",
     content:
       "Influencers are social media personalities with an established following in a specific niche. They use their audience to influence opinions and purchasing decisions. Influencers usually form formal partnerships with brands and are compensated based on their reach and engagement. Their content is often polished and commercial, aimed at boosting brand awareness and reaching new audiences—while retaining control over how the content is shared with their followers",
   },
@@ -52,7 +52,7 @@ export const faqData = [
     id: 9,
     trigger: "Why do creators work with Influenergy?",
     content:
-      "We’re a trusted influencer platform, having partnered with brands and creators in over 25+ countries. We handle all the logistics—contracts, payouts, AI-Find —so creators can focus purely on creativity and delivering great results.",
+      "We’re a trusted Influencer platform, having partnered with brands and creators in over 25+ countries. We handle all the logistics—contracts, payouts, AI-Find —so creators can focus purely on creativity and delivering great results.",
   },
   {
     id: 10,

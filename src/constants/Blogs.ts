@@ -10,8 +10,8 @@ export const blogs = [
     image: "/landing/blog/newblog2.jpeg",
     date: "25 Oct 2024",
     title: "A Introduction To Influencer Marketing Part One",
-    slug: "influencer-marketing-intro",
-    link: "/blogs/influencer-marketing-intro",
+    slug: "Influencer-marketing-intro",
+    link: "/blogs/Influencer-marketing-intro",
   },
   {
     image: "/landing/blog/newblog3.jpeg",
@@ -38,7 +38,7 @@ export const blogs = [
 
 export const BlogContent = [
   {
-    id: "influencer-marketing-intro",
+    id: "Influencer-marketing-intro",
     title: "A Introduction To Influencer Marketing Part One",
     image: "/landing/blog/newblog2.jpeg", // replace with actual path
     date: "Oct 25",
@@ -66,11 +66,11 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "SO you know Kim K, Mr. Beast —yes, they’re Influencers. Today, many people both revere and criticize this label. But what does it really mean to be an influencer?",
+        text: "SO you know Kim K, Mr. Beast —yes, they’re Influencers. Today, many people both revere and criticize this label. But what does it really mean to be an Influencer?",
       },
       {
         type: "paragraph",
-        text: "An influencer is someone who has the power to affect the opinions, behaviors, or purchasing decisions of others, typically through their online presence. They often have a substantial following on social media platforms, where they share content that engages their audience, such as reviews, tutorials, or lifestyle posts. Influencers can come from various backgrounds, including fashion, fitness, gaming, travel, and more. Their credibility and relatability help brands connect with target audiences in an authentic way, making influencer marketing a popular strategy for reaching consumers.",
+        text: "An Influencer is someone who has the power to affect the opinions, behaviors, or purchasing decisions of others, typically through their online presence. They often have a substantial following on social media platforms, where they share content that engages their audience, such as reviews, tutorials, or lifestyle posts. Influencers can come from various backgrounds, including fashion, fitness, gaming, travel, and more. Their credibility and relatability help brands connect with target audiences in an authentic way, making Influencer marketing a popular strategy for reaching consumers.",
       },
       {
         type: "heading",
@@ -100,7 +100,7 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "By collaborating with Influencers, brands tap into established communities, enhancing visibility and credibility. This approach not only boosts brand awareness but also builds trust among consumers who seek authentic recommendations in a crowded market. Ultimately, influencer marketing is about creating mutually beneficial relationships that drive success through collaboration.",
+        text: "By collaborating with Influencers, brands tap into established communities, enhancing visibility and credibility. This approach not only boosts brand awareness but also builds trust among consumers who seek authentic recommendations in a crowded market. Ultimately, Influencer marketing is about creating mutually beneficial relationships that drive success through collaboration.",
       },
       {
         type: "heading",
@@ -112,7 +112,7 @@ export const BlogContent = [
           "SEO: Search Engine Optimization which is pretty much getting your page on top of Google",
           "Influencer Marketing: Using Influencers and creators to promote products through genuine reviews.",
           "UGC: User-Generated Content. If Influencers are celebrities than UGC creators are the indie filmmakers. This is about producing content for the brand to use.",
-          "SMMA: Social Media Marketing Agencies that handle influencer outreach and campaigns.",
+          "SMMA: Social Media Marketing Agencies that handle Influencer outreach and campaigns.",
         ],
       },
     ],
@@ -130,27 +130,27 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "So, what exactly is influencer marketing and how can it transform your brand from out of nowhere to fulfilling so many orders? ",
+        text: "So, what exactly is Influencer marketing and how can it transform your brand from out of nowhere to fulfilling so many orders? ",
       },
       {
         type: "paragraph",
-        text: "Influencer marketing isn't just about throwing money at celebrities and praying things work. It's about building genuine connections with people who have already earned the trust and admiration of their online communities. These individuals, known as Influencers, can range from micro-Influencers with dedicated niche followings to established personalities with millions of fans… and her'e’s the thing, it works. Studies have shown that 33% of Gen Z buyers are more likely to buy something online from their favorite influencer.",
+        text: "Influencer marketing isn't just about throwing money at celebrities and praying things work. It's about building genuine connections with people who have already earned the trust and admiration of their online communities. These individuals, known as Influencers, can range from micro-Influencers with dedicated niche followings to established personalities with millions of fans… and her'e’s the thing, it works. Studies have shown that 33% of Gen Z buyers are more likely to buy something online from their favorite Influencer.",
       },
       {
         type: "paragraph",
-        text: "So, how does influencer marketing work? Imagine this: You, as a brand, partner with an influencer who aligns perfectly with your values and target audience. You might provide them with your latest product or even offer compensation. In turn, the influencer creates content (think engaging videos, relatable posts, or insightful reviews) that seamlessly integrates your brand into their usual style.",
+        text: "So, how does Influencer marketing work? Imagine this: You, as a brand, partner with an Influencer who aligns perfectly with your values and target audience. You might provide them with your latest product or even offer compensation. In turn, the Influencer creates content (think engaging videos, relatable posts, or insightful reviews) that seamlessly integrates your brand into their usual style.",
       },
       {
         type: "paragraph",
-        text: "Here's the magic: Because the content feels authentic and personal, it resonates deeply with the influencer's audience. This loyal following is much more likely to trust their favorite influencer's recommendations than a traditional advertisement.",
+        text: "Here's the magic: Because the content feels authentic and personal, it resonates deeply with the Influencer's audience. This loyal following is much more likely to trust their favorite Influencer's recommendations than a traditional advertisement.",
       },
       {
         type: "paragraph",
-        text: "But how can influencer marketing platforms elevate your campaign even further? These platforms offer a treasure trove of tools to help you find the perfect Influencers, track campaign performance, and streamline the entire collaboration process.",
+        text: "But how can Influencer marketing platforms elevate your campaign even further? These platforms offer a treasure trove of tools to help you find the perfect Influencers, track campaign performance, and streamline the entire collaboration process.",
       },
       {
         type: "paragraph",
-        text: `Now you might be wondering, "How can I improve my influencer marketing efforts?" Here are a few tips:`,
+        text: `Now you might be wondering, "How can I improve my Influencer marketing efforts?" Here are a few tips:`,
       },
       {
         type: "heading",
@@ -159,9 +159,9 @@ export const BlogContent = [
       {
         type: "list",
         items: [
-          "Focus on authenticity: Don't micromanage the content. Let the influencer's creativity shine through while ensuring brand alignment.",
+          "Focus on authenticity: Don't micromanage the content. Let the Influencer's creativity shine through while ensuring brand alignment.",
           "Choose the right Influencers: Look beyond follower count. Find individuals whose values resonate with your brand and whose audience aligns with your target demographic.",
-          "Set clear goals and expectations: Do you want to boost brand awareness, drive sales, or generate user-generated content? Clearly define your goals and communicate them effectively to the influencer.",
+          "Set clear goals and expectations: Do you want to boost brand awareness, drive sales, or generate user-generated content? Clearly define your goals and communicate them effectively to the Influencer.",
           "Track and measure results: Don't just throw content out there and hope for the best. Analyze engagement metrics, track website traffic, and monitor sales figures to gauge the campaign's success.",
         ],
       },
@@ -181,7 +181,7 @@ export const BlogContent = [
       },
       {
         type: "paragraph",
-        text: "By leveraging the power of influencer marketing, you can build lasting relationships with your audience, establish brand credibility, and achieve your marketing goals in a way that feels genuine and impactful. So, ditch the impersonal ads and embrace the power of authentic connections.  Influencer marketing might just be the secret weapon your brand needs to take it to the next level.",
+        text: "By leveraging the power of Influencer marketing, you can build lasting relationships with your audience, establish brand credibility, and achieve your marketing goals in a way that feels genuine and impactful. So, ditch the impersonal ads and embrace the power of authentic connections.  Influencer marketing might just be the secret weapon your brand needs to take it to the next level.",
       },
     ],
   },

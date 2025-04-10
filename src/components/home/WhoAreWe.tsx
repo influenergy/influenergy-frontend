@@ -96,7 +96,7 @@ export default function WhoAreWe() {
         </h1>
         <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
           We’re Influenergy — an AI-powered platform that bridges the gap
-          between brands and creators. Our platform streamlines influencer
+          between brands and creators. Our platform streamlines Influencer
           collaborations through smart automation, saving time, maximizing
           campaign success, and ultimately delivering the best ROI.
         </p>

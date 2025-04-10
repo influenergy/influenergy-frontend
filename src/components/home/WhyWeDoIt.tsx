@@ -167,7 +167,7 @@ export default function WhyWeDoIt() {
           <div className="mt-6">
             <p className="text-xl leading-relaxed mb-8">
               Today’s consumers trust real stories from real creators. We
-              empower brands to partner with influencer & UGC creators.
+              empower brands to partner with Influencer & UGC creators.
             </p>
 
             <motion.div

@@ -106,7 +106,7 @@ export default function Footer() {
             <div className="border h-0.5 bg-gray-400 w-full" />
             <div className="flex flex-col px-10">
               <p className="text-gray-300 font-light">
-                Contact Influenergy for any inquiries or questions
+                Contact Influenergy for any inquiries or questions:
               </p>
               <p className="text-gray-300 font-light mt-5">connect@influenergy.co</p>
             </div>
