@@ -207,6 +207,12 @@ export default function Footer() {
             >
               Terms of Service
             </Link>
+            <Link
+              href="faqs"
+              className="text-gray-400 text-sm hover:text-primary transition-colors"
+            >
+              FAQ’s
+            </Link>
           </div>
         </motion.div>
       </div>
