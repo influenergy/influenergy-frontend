@@ -63,11 +63,11 @@ const Page = () => {
             alt="Error"
             className="object-cover"
           />
-          <p className="text-4xl font-semibold text-center mt-4">
+          <p className="text-xl font-semibold text-center md:text-2xl mt-4 md:mt-10">
             Something went wrong while fetching data
           </p>
         </div>
-      ) : shouldShowContent && posts?.data?.videos.length === 0 ? (
+      ) : shouldShowContent && posts?.data?.videos.length >= 0 ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
             src="/images/MyPost/my-video-empty.png"
@@ -76,9 +76,9 @@ const Page = () => {
             alt="Empty"
             className="object-cover"
           />
-          <p className="text-4xl font-semibold text-center mt-4">
+          <p className="text-xl font-semibold text-center md:text-2xl mt-4 md:mt-10">
             Welcome to My Videos!
-            <br />
+            <br className="hidden md:block" />
             Upload your top-performing reels to show brands what you’re made of.
           </p>
           {user?.isAccountVerified ? (

@@ -62,7 +62,7 @@ const brandNav: NavItem[] = [
     slug: "dashboard",
   },
   {
-    label: "My Brief",
+    label: "My Ad Brief",
     href: "/dashboard/brand/posts",
     icon: ClipboardList,
     slug: "posts",

@@ -15,26 +15,27 @@ export const faqData = [
     id: 3,
     trigger: "What is Influenergy’s AI-Find Feature?",
     content:
-      "Our strategy empowers brands to use and implement our AI-Find feature to discover influencers and UGC creators best suited for their campaigns. The AI-Find feature handles the heavy lifting—so you don’t have to. We factor in all the pain points both creators and brands have to improve the chance of your success.",
+      "The AI-Find Feature is your brand’s secret weapon for discovering the right creators at the right time. It’s an AI-powered matching tool that helps brands instantly connect with verified, high-performing UGC creators across platforms like Instagram, TikTok, LinkedIn, YouTube & more.",
   },
   {
     id: 4,
+    trigger: "What is Influenergy’s Strategy?",
+    content:
+      "Our strategy empowers brands to use and implement our AI-Find feature to discover Influencers and UGC creators best suited for their campaigns. The AI-Find feature handles the heavy lifting—so you don’t have to. We factor in all the pain points both creators and brands have to improve the chance of your success.",
+  },
+  {
+    id: 5,
     trigger: "What is a UGC creator?",
     content:
       "UGC (User-Generated Content) creators often have smaller, more niche audiences—or sometimes no following at all. They produce authentic content for brands to use on their own marketing channels without necessarily posting it themselves. UGC is typically paid content designed to enhance engagement and resonate with customers. It’s often perceived as more genuine, making it a valuable asset for brands aiming to build trust and relatability.",
   },
   {
-    id: 5,
-    trigger: "How long until we deliver your first blog post?",
-    content:
-      "Really boy law county she unable her sister. Feet you off its like besix. Among ses are leave low built now in built table in an rapid blush. Merits behind on ahald or warmly.",
-  },
-  {
     id: 6,
     trigger: "What is an influencer?",
     content:
-      "Influencers are social media personalities with an established following in a specific niche. They use their audience to influence opinions and purchasing decisions. Influencers usually form formal partnerships with brands and are compensated based on their reach and engagement. Their content is often polished and commercial, aimed at boosting brand awareness and reaching new audiences—while retaining control over how the content is shared with their followers.",
+      "Influencers are social media personalities with an established following in a specific niche. They use their audience to influence opinions and purchasing decisions. Influencers usually form formal partnerships with brands and are compensated based on their reach and engagement. Their content is often polished and commercial, aimed at boosting brand awareness and reaching new audiences—while retaining control over how the content is shared with their followers",
   },
+
   {
     id: 7,
     trigger: "What’s The Difference Between a UGC Creator and an Influencer?",
@@ -60,3 +61,4 @@ export const faqData = [
       "Payments are made after the brand approves your deliverables. You’ll receive payment via Influenergy using your preferred payment method. Note: any fees deducted by payment processors will be subtracted from the total.",
   },
 ];
+

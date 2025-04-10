@@ -3,20 +3,16 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription, // Re-import
-  // DialogFooter, // Still unused
-  DialogHeader, // Re-import
-  DialogTitle, // Re-import
+  DialogDescription,
+  DialogHeader, 
+  DialogTitle, 
   DialogTrigger,
-  // DialogClose, // Still unused
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { CREATE_POST as questions } from "@/constants/CreatePost";
 import { motion } from "framer-motion";
-import Image from "next/image"; // Import next/image
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-// import { useDispatch } from "react-redux"; // Removed unused import
-// import { setCredentials, User } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -60,7 +56,6 @@ const PostQuestionnaire = (): JSX.Element => {
     null
   ); // Added state for dialog step
   const { toast } = useToast();
-  // const dispatch = useDispatch(); // Removed unused variable
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
@@ -136,13 +131,6 @@ const PostQuestionnaire = (): JSX.Element => {
         if (user && user._id) {
           // Use the transformed data directly without FormData
           await postApi.createAdPost(updatedData as PostQuestionnaireData);
-
-          // Don't show toast or navigate immediately
-          // toast({
-          //   title: "Success!",
-          //   description: "Your campaign has been created successfully.",
-          // });
-          // router.push("/dashboard/brand/posts");
 
           // Set dialog step to success
           setDialogStep("success");
