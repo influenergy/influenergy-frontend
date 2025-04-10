@@ -41,6 +41,7 @@ export default function HeroSection() {
       >
         <h1 className="text-[clamp(1.5rem,1rem+5vw,4rem)] font-bold leading-tight font-mona">
           AI-POWERED SOLUTION CONNECTING {" "}
+          <br className="hidden 2xl:block" />
           BRANDS WITH CREATORS
         </h1>
         <p className="mt-6 text-[clamp(1.125rem,0.9rem+1vw,1.875rem)] mx-auto max-w-4xl font-poppins">
