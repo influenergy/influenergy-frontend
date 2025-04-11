@@ -1,35 +1,9 @@
 "use client";
-// import { Button } from "@/components/ui/button";
-// import { socialSchema } from "@/lib/SocialSchema";
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import * as yup from "yup";
 import { motion } from "framer-motion";
-// import { Loader2 } from "lucide-react";
 import Image from "next/image";
-// import { SocialLinkInput } from "@/components/userProfile/SocialLinkInput";
 import ComingSoon from "@/components/common/ComingSoon";
 
-// type ProfileFormData = yup.InferType<typeof socialSchema>;
-
 export default function Page() {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors, isSubmitting },
-  // } = useForm<ProfileFormData>({
-  //   resolver: yupResolver(socialSchema),
-  // });
-
-  // const onSubmit = async (data: ProfileFormData) => {
-  //   try {
-  //     console.log(data);
-  //     await new Promise((resolve) => setTimeout(resolve, 2000));
-  //     // Add your API call here
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <div className="min-h-[calc(100vh-80px)] relative px-4 sm:px-8 py-5 overflow-hidden bg-white">
