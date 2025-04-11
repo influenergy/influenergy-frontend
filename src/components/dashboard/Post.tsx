@@ -19,7 +19,7 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
         {/* Image */}
         <div className="aspect-video relative rounded-xl overflow-hidden mb-3">
           <Image
-            src={campaignPost || "/images/login.webp"}
+            src={campaignPost || "https://placehold.co/600x400?text=Image\nNot+Available"}
             alt={campaignName}
             fill
             className="object-cover rounded-xl"
