@@ -123,6 +123,7 @@ export const CREATE_POST: Questions = {
         slug: "target-interests",
         category: "multiselect",
         options: [
+          "AI",
           "Beauty & Care",
           "Business & Finance",
           "Events",
@@ -146,7 +147,7 @@ export const CREATE_POST: Questions = {
           "Restaurants",
           "Skincare",
           "Sports & Fitness",
-          "Tech",
+          "Tech Apps",
           "Travel",
           "Yoga",
           "Others",
