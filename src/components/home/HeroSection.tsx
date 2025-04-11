@@ -12,7 +12,7 @@ export default function HeroSection() {
     { logo: "/landing/marquee/company1.png" },
     { logo: "/landing/marquee/company2.png" },
     { logo: "/landing/marquee/company3.png" },
-    { logo: "/landing/marquee/company4.png" },
+    { logo: "/landing/marquee/company-4.png" },
     { logo: "/landing/marquee/company5.png" },
     { logo: "/landing/marquee/company6.png" },
     { logo: "/landing/marquee/company7.png" },
