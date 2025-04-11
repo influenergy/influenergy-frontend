@@ -21,8 +21,8 @@ const ComingSoon = () => {
       <div className="text-center max-w-3xl px-2 md:px-4 mt-2 md:mt-3">
         <p className="text-base md:text-xl text-gray-600 mb-4 md:mb-6 leading-7 md:leading-8">
           Thank You for being an early adopter of{" "}
-          <span className="text-primary">Influenergy</span>. Stay tuned! <br />
-          Exciting features on the way.
+          <span className="text-primary">Influenergy</span>.<br />
+          Stay tuned! Exciting features on the way.
         </p>
         <Link
           href="/"
