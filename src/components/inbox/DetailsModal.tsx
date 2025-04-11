@@ -51,7 +51,7 @@ export default function DetailsModal({
                 <Image
                   src={
                     campaign.campaignPost ||
-                    "https://avatar.iran.liara.run/public/boy"
+                    "/images/placeholder.png"
                   }
                   alt="Campaign Image"
                   width={550}
@@ -73,7 +73,7 @@ export default function DetailsModal({
                   <Image
                     src={
                       campaign.campaignPost ||
-                      "https://avatar.iran.liara.run/public/boy"
+                      "/images/placeholder.png"
                     }
                     alt="Campaign Image"
                     width={40}

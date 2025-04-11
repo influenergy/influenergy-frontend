@@ -156,6 +156,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             </div>
           )}
 
+          <p className="text-xs text-gray-500 mt-3">
+            Payment processor fees may be subject to deduction from your
+            payout
+          </p>
+
           <div className="mt-6 flex justify-end space-x-3">
             <Button
               type="button"
@@ -169,7 +174,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               type="submit"
               className="bg-primary hover:bg-indigo-700 text-white transition-colors"
             >
-              Raise Payment Request
+              Request Payment
             </Button>
           </div>
         </form>

@@ -199,10 +199,10 @@ const CreatorDetailsPage = () => {
           refetch={refetch}
         />
       </Suspense>
-
       {/* Collaborate Button - Fixed to bottom on mobile */}
       {!alreadyPaid && (
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg md:static md:shadow-none md:border-0 md:bg-transparent md:p-0 md:mt-8 z-10">
+          <p className="text-xs text-right text-gray-500 mb-3"> **Payment processor fees may apply at checkout</p>
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-white py-6"
             disabled={isPending}

@@ -1,4 +1,6 @@
-{/* eslint-disable */}
+{
+  /* eslint-disable */
+}
 import { Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -24,7 +26,6 @@ export interface CampaignData {
     videos: CampaignVideo[];
   };
 } 
- 
 const CampaignCard = memo(
   ({
     campaign,
@@ -50,7 +51,7 @@ const CampaignCard = memo(
 
           <div className="aspect-video relative rounded-xl overflow-hidden mb-3">
             <Image
-              src={campaign.campaignPost || "/images/login.webp"}
+              src={campaign.campaignPost || "/images/placeholder.png"}
               alt={campaign.campaignName}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"

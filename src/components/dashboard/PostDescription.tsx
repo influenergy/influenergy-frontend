@@ -96,7 +96,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
         {/* Image Section */}
         <div className=" relative rounded-lg overflow-hidden">
           <Image
-            src={processedData.image}
+            src={processedData.image || "/images/placeholder.png"}
             alt={processedData.title}
             width={550}
             height={550}
@@ -115,7 +115,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
             <Image
               src={
                 processedData.image ||
-                "https://avatar.iran.liara.run/public/boy"
+                "/images/placeholder.png"
               }
               alt="Campaign Image"
               width={40}

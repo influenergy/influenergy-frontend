@@ -11,7 +11,7 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
         <div className="mb-3">
           <h3 className="text-sm text-gray-900 line-clamp-2 text-left">
             {campaignName.length > 50
-              ? campaignName.slice(0, 50)+"..."
+              ? campaignName.slice(0, 50) + "..."
               : campaignName}
           </h3>
         </div>
@@ -19,7 +19,7 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
         {/* Image */}
         <div className="aspect-video relative rounded-xl overflow-hidden mb-3">
           <Image
-            src={campaignPost || "https://placehold.co/600x400?text=Image\nNot+Available"}
+            src={campaignPost || "/images/placeholder.png"}
             alt={campaignName}
             fill
             className="object-cover rounded-xl"

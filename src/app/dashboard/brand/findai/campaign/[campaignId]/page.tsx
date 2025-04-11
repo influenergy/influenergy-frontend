@@ -66,7 +66,7 @@ export default function ProfileMatch() {
           >
             <div className="relative w-full pt-[60%]">
               <Image
-                src={data?.creator?.profileIcon || "/images/login.webp"}
+                src={data?.creator?.profileIcon || "/images/placeholder.png"}
                 alt={data?.creator?.fullName}
                 fill
                 className="absolute top-0 left-0 object-cover"

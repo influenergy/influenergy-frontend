@@ -20,7 +20,7 @@ const CreatorHeader = ({ creator }: UserProfile) => {
       <div className="bg-white rounded-lg shadow-sm p-4 flex flex-col md:flex-row items-center md:items-start gap-5">
         <div className="relative h-32 w-32 md:h-40 md:w-40 flex-shrink-0">
           <Image
-            src={creator?.profileIcons || "/images/login.webp"}
+            src={creator?.profileIcons || "/images/placeholder.png"}
             alt={creator?.fullName}
             fill
             sizes="(max-width: 768px) 128px, 160px"

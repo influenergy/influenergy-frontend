@@ -26,7 +26,7 @@ const PostCard: React.FC<PostCardProps> = ({ data }) => {
     >
       <div className="flex justify-center items-center rounded-md relative w-full aspect-square">
         <Image
-          src={data.image || "/images/login.webp"}
+          src={data.image || "/images/placeholder.png"}
           fill
           alt={data.title || "Post image"}
           className="object-cover rounded-md"
