@@ -65,7 +65,7 @@ export default function HeroSection() {
       {/* Companies Bar - Repositioned for better centering */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
         <motion.div
-          className="relative -bottom-14 px-6 py-4 w-10/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
+          className="relative -bottom-14 px-6 py-4 w-10/12 lg:w-8/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.5 }}
