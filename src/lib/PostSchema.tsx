@@ -19,12 +19,13 @@ export const step1Schema = yup.object().shape({
     .required("Campaign description is required"),
   "campaign-post": yup
     .mixed()
-    .required("Campaign post image is required")
+    .nullable()
+    .optional()
     .test(
       "is-valid-file-type",
       "Only JPG, JPEG, and PNG formats are allowed",
       (value) => {
-        if (typeof value !== "string") return false;
+        if (typeof value !== "string") return true;
         const mimeMatch = value.match(/^data:(image\/\w+);base64,/);
         if (!mimeMatch) return false;
         const mimeType = mimeMatch[1];
@@ -34,7 +35,7 @@ export const step1Schema = yup.object().shape({
     .test("fileSize", "File size must be less than 2MB", (value) => {
       if (typeof value === "string") {
         const base64Str = value.split(",")[1]; // strip "data:image/...;base64,"
-        if (!base64Str) return false;
+        if (!base64Str) return true;
 
         // Calculate base64 size in bytes
         const sizeInBytes =
@@ -43,7 +44,7 @@ export const step1Schema = yup.object().shape({
 
         return sizeInBytes <= 2 * 1024 * 1024; // 2MB
       }
-      return false;
+      return true;
     }),
 }) as Schema;
 
