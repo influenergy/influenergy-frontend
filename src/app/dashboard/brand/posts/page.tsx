@@ -17,10 +17,10 @@ const Page = () => {
 
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4">
         {campaigns.length != 0 && (
           <>
-            <h1 className="text-2xl font-bold">My Posts</h1>
+            <h1 className="text-2xl font-bold mb-2">My Posts</h1>
             <Link href="/dashboard/brand/create-post">
               <Button className="bg-primary px-5 py-2 rounded-xl">
                 + New Ad Brief
