@@ -212,19 +212,24 @@ export default function RegisterForm({ userType }: { userType: string }) {
 
                 <p className="text-xs sm:text-sm font-light">
                   I accept all{" "}
-                  <Link
-                    href="/terms"
-                    className="underline text-primary hover:text-[#6564d8] transition-colors"
-                  >
-                    terms of use
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/privacy"
-                    className="underline text-primary hover:text-[#6564d8] transition-colors"
-                  >
-                    privacy policy
-                  </Link>
+                  <a
+                      
+                      href="/Influenergy - Terms of Service.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-primary hover:text-[#6564d8] transition-colors"
+                    >
+                      terms of use
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="/Influenergy - Privacy Policy.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-primary hover:text-[#6564d8] transition-colors"
+                    >
+                      privacy policy
+                    </a>
                 </p>
               </motion.div>
               {errors.terms && (
