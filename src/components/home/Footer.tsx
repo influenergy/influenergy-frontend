@@ -108,7 +108,9 @@ export default function Footer() {
               <p className="text-gray-300 font-light">
                 Contact Influenergy for any inquiries or questions:
               </p>
-              <p className="text-gray-300 font-light mt-5">connect@influenergy.co</p>
+              <p className="text-gray-300 font-light mt-5">
+                connect@influenergy.co
+              </p>
             </div>
           </motion.div>
 
@@ -152,7 +154,7 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             {/* <hr className="border border-gray-400 w-full" />
              */}
-            <div className="h-0.5 bg-gray-400 w-full"/>
+            <div className="h-0.5 bg-gray-400 w-full" />
             <ul className="space-y-3 font-light">
               {quickLinks.map((link, index) => (
                 <motion.li
@@ -195,13 +197,15 @@ export default function Footer() {
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
-              href="#"
+              href="/Influenergy - Privacy Policy.pdf"
+              target="_blank"
               className="text-gray-400 text-sm hover:text-primary transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
-              href="#"
+              href="/Influenergy - Terms of Service.pdf"
+              target="_blank"
               className="text-gray-400 text-sm hover:text-primary transition-colors"
             >
               Terms of Service
