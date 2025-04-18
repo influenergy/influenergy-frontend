@@ -20,7 +20,7 @@ export default function WhatWeDo() {
             </h1>
             <p className="text-gray-600 font-light text-lg leading-relaxed">
               We simplify the process of connecting with high-performing UGC
-              creators through AI-powered matchmaking.
+              creators through AI-powered matchmaking
             </p>
           </div>
 
@@ -45,7 +45,7 @@ export default function WhatWeDo() {
                   AI Powered Solution
                 </h2>
                 <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                  AI-powered platform that connects brands, UGC creators, and
+                  AI-Powered platform that connects brands, UGC creators, and
                   Influencers
                 </p>
               </div>
@@ -71,8 +71,7 @@ export default function WhatWeDo() {
                   Time Saving Influencer Marketing
                 </h2>
                 <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                  Saves time on creator search, find best creator, custom briefs
-                  & pitches for creators.
+                Save time on creator discovery with custom briefs & personalized pitches tailored to your brand
                 </p>
               </div>
             </motion.div>
@@ -98,7 +97,7 @@ export default function WhatWeDo() {
                 </h2>
                 <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
                   Our payment options and built-in transaction tools make it
-                  easy to pay creators securely and on your terms.
+                  easy to pay creators securely and on your terms
                 </p>
               </div>
             </motion.div>

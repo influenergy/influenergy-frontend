@@ -13,7 +13,7 @@ export default function InfluEnergySection() {
         className="max-w-9xl mx-auto"
       >
         <p className="font-black text-black leading-tight text-[clamp(2rem,5vw,4.5rem)]">
-          WITH OUR
+          OUR
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -46,7 +46,7 @@ export default function InfluEnergySection() {
           </motion.span>
           CREATOR AND
           
-          BRANDS UNLOCKING CROSS-CULTURAL PARTNERSHIPS
+          BRANDS UNLOCKING PARTNERSHIPS
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}

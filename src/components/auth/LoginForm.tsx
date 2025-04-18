@@ -195,7 +195,7 @@ export default function LoginForm() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Login To Your {userType} Account
+            Log In To Your {userType} Account
           </motion.h3>
 
           <form

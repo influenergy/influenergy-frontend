@@ -88,7 +88,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Let AI Find Your Match
+                Let AI-Find Your Match
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
                 Our system scans and matches you with verified creators that fit

@@ -160,14 +160,14 @@ export default function WhyWeDoIt() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
             Why We Do It
           </h2>
-          <p className="text-gray-600 text-base font-light">
-            Finding the right creator for your brand shouldn’t be a hassle.
+          <p className="text-gray-600 text-base font-light m-0 p-0 h-full">
+            Finding the right creator for your brand shouldn’t be a hassle
           </p>
 
           <div className="mt-6">
             <p className="text-xl leading-relaxed mb-8">
               Today’s consumers trust real stories from real creators. We
-              empower brands to partner with Influencer & UGC creators.
+              empower brands to partner with Influencer & UGC creators
             </p>
 
             <motion.div
