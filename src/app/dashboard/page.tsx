@@ -6,6 +6,7 @@ import { useRouteProtection } from "@/hooks/useRouteProtection";
 import { useAppSelector } from "@/store";
 import { useUserDetails } from "@/hooks/useUser";
 import { Loader } from "@/components/common/Loader";
+import { Info } from "lucide-react";
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
@@ -40,18 +41,29 @@ export default function DashboardPage() {
       </div>
 
       {userType === "creator" && !userDetails?.data?.isProfileCompleted ? (
-        <Card className="p-6 bg-violet-100 border border-violet-400 text-black">
-          <h2 className="text-xl font-semibold mb-2">
-            Complete Your Preferences
-          </h2>
-          <p className="text-muted-foreground">
-            Please complete the questionnaire to personalize your dashboard
-            experience and help us match you with the right brands.
-          </p>
-          <Link href="/questionnaire">
-            <Button className="mt-4">Go to Questionnaire</Button>
-          </Link>
-        </Card>
+        <>
+          <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 text-center sm:text-left">
+              <p className="text-gray-700 font-medium">
+                Please fill the questionnaire and upload profile image to get
+                verified
+              </p>
+            </div>
+            <Info size={24} className="text-red-600 shrink-0" />
+          </div>
+          <Card className="p-6 bg-violet-100 border border-violet-400 text-black mt-5">
+            <h2 className="text-xl font-semibold mb-2">
+              Complete Your Preferences
+            </h2>
+            <p className="text-muted-foreground">
+              Please complete the questionnaire to personalize your dashboard
+              experience and help us match you with the right brands.
+            </p>
+            <Link href="/questionnaire">
+              <Button className="mt-4">Go to Questionnaire</Button>
+            </Link>
+          </Card>
+        </>
       ) : (
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card className="p-6">
