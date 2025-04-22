@@ -45,7 +45,7 @@ const BrandQuestionnaire = () => {
   }, [trigger]);
 
   const onSubmit = useCallback(
-    async (data: BrandFormData) => {
+    async () => {
       try {
         setIsSubmitting(true);
 

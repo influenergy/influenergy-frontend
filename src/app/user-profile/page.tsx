@@ -25,6 +25,7 @@ export default function Page() {
   const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchAccountDetails = async () => {
     if (!userType) return;
 
@@ -43,7 +44,7 @@ export default function Page() {
   };
   useEffect(() => {
     fetchAccountDetails();
-  }, []);
+  }, [fetchAccountDetails]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

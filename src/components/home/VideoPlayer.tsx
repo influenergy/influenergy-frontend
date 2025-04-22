@@ -114,7 +114,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         videoElement.src = "";
         videoElement.load();
       };
-    }, [videoUrl, videoRef]);
+    }, [videoUrl, videoRef, isPlaying]);
 
     useEffect(() => {
       const videoElement = videoRef.current;
