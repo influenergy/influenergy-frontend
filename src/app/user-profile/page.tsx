@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+// import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import DeleteModal from "@/components/userProfile/DeleteModal";
 import ProfileActions from "@/components/userProfile/ProfileActions";
@@ -6,7 +8,7 @@ import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
 import { ChevronsLeft, PenLine } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { selectUser, useAppSelector } from "@/store";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
@@ -25,32 +27,25 @@ export default function Page() {
   const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-
-  // Use useCallback to memoize the function
-  const fetchAccountDetails = useCallback(async () => {
+  const fetchAccountDetails = async () => {
     if (!userType) return;
 
-    try {
-      const response = await userApi.getProfileDetails(userType);
-      dispatch(
-        setCredentials({
-          user: {
-            ...user,
-            profileIcon: response.data.profileIcon,
-            isProfileCompleted: user?.isProfileCompleted ?? false,
-            isEmailVerified: user?.isEmailVerified ?? false,
-            isAccountVerified: response.data.isAccountVerified ?? false,
-          },
-        })
-      );
-    } catch (error) {
-      console.error("Failed to fetch account details:", error);
-    }
-  }, [userType, user, dispatch]);
-
+    const response = await userApi.getProfileDetails(userType);
+    dispatch(
+      setCredentials({
+        user: {
+          ...user,
+          profileIcon: response.data.profileIcon,
+          isProfileCompleted: user?.isProfileCompleted ?? false,
+          isEmailVerified: user?.isEmailVerified ?? false,
+          isAccountVerified: response.data.isAccountVerified ?? false,
+        },
+      })
+    );
+  };
   useEffect(() => {
     fetchAccountDetails();
-  }, [fetchAccountDetails]);
+  }, []);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -82,11 +77,6 @@ export default function Page() {
       const formData = new FormData();
       formData.append("photo", file);
       if (!userType) {
-        toast({
-          title: "Error",
-          description: "User type not available",
-          variant: "destructive",
-        });
         return;
       }
 
@@ -108,17 +98,14 @@ export default function Page() {
         title: "Success",
         description: "Profile image updated successfully",
       });
-    } catch (error) {
-      console.error("Failed to upload image:", error);
+    } catch {
       toast({
         title: "Error",
-        description: "Failed to upload image. Please try again later.",
+        description: "Failed to upload image",
         variant: "destructive",
       });
     } finally {
       setIsUploading(false);
-      // Reset the file input to allow uploading the same file again
-      e.target.value = "";
     }
   };
 
@@ -135,8 +122,8 @@ export default function Page() {
             Back
           </Link>
         </div>
-        <p className="mt-3">Edit Profile</p>
-        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-4 mt-3">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 mt-3">
+          <p>Edit Profile</p>
           <div className="relative w-[100px] h-[100px]">
             <Image
               src={
@@ -171,6 +158,7 @@ export default function Page() {
               </div>
             )}
           </div>
+          <DeleteModal />
         </div>
 
         {/* profile details section */}
@@ -227,9 +215,6 @@ export default function Page() {
               </>
             )}
           </div>
-        </div>
-        <div className="flex justify-end mt-4 w-full">
-          <DeleteModal />
         </div>
 
         {/* Complete Profile Section */}
