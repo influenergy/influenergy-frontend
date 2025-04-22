@@ -6,7 +6,7 @@ import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
 import { ChevronsLeft, PenLine } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { selectUser, useAppSelector } from "@/store";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
@@ -25,23 +25,29 @@ export default function Page() {
   const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchAccountDetails = async () => {
+
+  // Use useCallback to memoize the function
+  const fetchAccountDetails = useCallback(async () => {
     if (!userType) return;
 
-    const response = await userApi.getProfileDetails(userType);
-    dispatch(
-      setCredentials({
-        user: {
-          ...user,
-          profileIcon: response.data.profileIcon,
-          isProfileCompleted: user?.isProfileCompleted ?? false,
-          isEmailVerified: user?.isEmailVerified ?? false,
-          isAccountVerified: response.data.isAccountVerified ?? false,
-        },
-      })
-    );
-  };
+    try {
+      const response = await userApi.getProfileDetails(userType);
+      dispatch(
+        setCredentials({
+          user: {
+            ...user,
+            profileIcon: response.data.profileIcon,
+            isProfileCompleted: user?.isProfileCompleted ?? false,
+            isEmailVerified: user?.isEmailVerified ?? false,
+            isAccountVerified: response.data.isAccountVerified ?? false,
+          },
+        })
+      );
+    } catch (error) {
+      console.error("Failed to fetch account details:", error);
+    }
+  }, [userType, user, dispatch]);
+
   useEffect(() => {
     fetchAccountDetails();
   }, [fetchAccountDetails]);
@@ -76,6 +82,11 @@ export default function Page() {
       const formData = new FormData();
       formData.append("photo", file);
       if (!userType) {
+        toast({
+          title: "Error",
+          description: "User type not available",
+          variant: "destructive",
+        });
         return;
       }
 
@@ -97,14 +108,17 @@ export default function Page() {
         title: "Success",
         description: "Profile image updated successfully",
       });
-    } catch {
+    } catch (error) {
+      console.error("Failed to upload image:", error);
       toast({
         title: "Error",
-        description: "Failed to upload image",
+        description: "Failed to upload image. Please try again later.",
         variant: "destructive",
       });
     } finally {
       setIsUploading(false);
+      // Reset the file input to allow uploading the same file again
+      e.target.value = "";
     }
   };
 
