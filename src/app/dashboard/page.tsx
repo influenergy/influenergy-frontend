@@ -40,43 +40,120 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
 
-      {userType === "creator" && !userDetails?.data?.isProfileCompleted ? (
+      {userType === "creator" ? (
         <>
-          <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 text-center sm:text-left">
-              <p className="text-gray-700 font-medium">
-                Please fill the questionnaire and upload profile image to get
-                verified
-              </p>
-            </div>
-            <Info size={24} className="text-red-600 shrink-0" />
-          </div>
-          <Card className="p-6 bg-violet-100 border border-violet-400 text-black mt-5">
-            <h2 className="text-xl font-semibold mb-2">
-              Complete Your Preferences
-            </h2>
-            <p className="text-muted-foreground">
-              Please complete the questionnaire to personalize your dashboard
-              experience and help us match you with the right brands.
-            </p>
-            <Link href="/questionnaire">
-              <Button className="mt-4">Go to Questionnaire</Button>
-            </Link>
-          </Card>
+          {/* Case 1: Profile not completed and no profile image */}
+          {!userDetails?.data?.isProfileCompleted &&
+            !userDetails?.data?.profileIcon && (
+              <>
+                <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 text-center sm:text-left">
+                    <p className="text-gray-700 font-medium">
+                      Please fill the questionnaire and upload profile image to
+                      get verified
+                    </p>
+                  </div>
+                  <Info size={24} className="text-red-600 shrink-0" />
+                </div>
+                <Card className="p-6 bg-violet-100 border border-violet-400 text-black mt-5">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Complete Your Profile
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Please complete the questionnaire and upload a profile image
+                    to personalize your dashboard experience and help us match
+                    you with the right brands.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                    <Link href="/questionnaire">
+                      <Button>Go to Questionnaire</Button>
+                    </Link>
+                  </div>
+                </Card>
+              </>
+            )}
+
+          {/* Case 2: Profile not completed but has profile image */}
+          {!userDetails?.data?.isProfileCompleted &&
+            userDetails?.data?.profileIcon && (
+              <>
+                <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 text-center sm:text-left">
+                    <p className="text-gray-700 font-medium">
+                      Please fill the questionnaire to get verified
+                    </p>
+                  </div>
+                  <Info size={24} className="text-red-600 shrink-0" />
+                </div>
+                <Card className="p-6 bg-violet-100 border border-violet-400 text-black mt-5">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Complete Your Preferences
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Please complete the questionnaire to personalize your
+                    dashboard experience and help us match you with the right
+                    brands.
+                  </p>
+                  <Link href="/questionnaire">
+                    <Button className="mt-4">Go to Questionnaire</Button>
+                  </Link>
+                </Card>
+              </>
+            )}
+
+          {/* Case 3: Profile completed but no profile image */}
+          {userDetails?.data?.isProfileCompleted &&
+            !userDetails?.data?.profileIcon && (
+              <>
+                <div className="w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-2 sm:gap-4 bg-red-100 border border-red-100 min-h-[64px] rounded-xl px-4 sm:px-6 py-3 mt-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 text-center sm:text-left">
+                    <p className="text-gray-700 font-medium">
+                      Please upload profile image to get verified
+                    </p>
+                  </div>
+                  <Info size={24} className="text-red-600 shrink-0" />
+                </div>
+                <Card className="p-6 bg-violet-100 border border-violet-400 text-black mt-5">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Add Your Profile Image
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Please upload a profile image to complete your profile and
+                    get verified.
+                  </p>
+                  <Link href="/user-profile">
+                    <Button className="mt-4">Upload Profile Image</Button>
+                  </Link>
+                </Card>
+              </>
+            )}
+
+          {/* Case 4: Profile completed and has profile image */}
+          {userDetails?.data?.isProfileCompleted &&
+            userDetails?.data?.profileIcon && (
+              <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+                <Card className="p-6">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Welcome Back, {userDetails?.data?.fullName || "Creator"}!
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Your creator dashboard is ready. Start exploring
+                    opportunities!
+                  </p>
+                </Card>
+                {/* Add more dashboard cards and content here */}
+              </div>
+            )}
         </>
       ) : (
+        // Brand dashboard
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-2">
-              Welcome Back,{" "}
-              {userDetails?.name ||
-                (userType === "creator" ? "Creator" : "Brand")}
-              !
+              Welcome Back, {userDetails?.data?.fullName || "Brand"}!
             </h2>
             <p className="text-muted-foreground">
-              {userType === "creator"
-                ? "Your creator dashboard is ready. Start exploring opportunities!"
-                : "Your brand dashboard is ready. Start connecting with creators!"}
+              Your brand dashboard is ready. Start connecting with creators!
             </p>
           </Card>
           {/* Add more dashboard cards and content here */}
