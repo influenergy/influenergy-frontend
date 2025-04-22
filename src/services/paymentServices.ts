@@ -13,11 +13,6 @@ export const paymentApi = {
         amount,
         creatorId,
         similarity,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
     return response.data;

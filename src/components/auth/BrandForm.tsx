@@ -62,8 +62,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       }
       return authApi.brandRegister(obj);
     },
-    onSuccess: (data) => {
-      console.log("Registration successful:", data);
+    onSuccess: () => {
       toast({
         title: "Registration successful 🎉",
         description: "We will verify your details and get back to you soon. 😀",

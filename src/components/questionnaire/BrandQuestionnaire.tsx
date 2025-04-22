@@ -48,8 +48,8 @@ const BrandQuestionnaire = () => {
     async (data: BrandFormData) => {
       try {
         setIsSubmitting(true);
-        console.log('data',data)
 
+        
         // Additional validation check before submission
         const isFormValid = await trigger();
         if (!isFormValid) {
@@ -61,7 +61,6 @@ const BrandQuestionnaire = () => {
           return;
         }
 
-        console.log("Submitting data:", data);
         await new Promise((resolve) => setTimeout(resolve, 2000));
         // await brandApi.submitQuestionnaire(data);
         dispatch(completeQuestionnaire());

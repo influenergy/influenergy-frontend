@@ -10,6 +10,7 @@ import { CollaborationFailedModal } from "@/components/ui/CollaborationFailedMod
 import { useInitiatePayment } from "@/hooks/usePayment";
 import { toast } from "@/hooks/use-toast";
 import { useGetAISummary } from "@/hooks/useQueryCampaigns";
+import { CollaborationContractModal } from "@/components/ui/ContractModal";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -47,6 +48,7 @@ const CreatorDetailsPage = () => {
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [failedModalOpen, setFailedModalOpen] = useState(false);
+  const [contractModalOpen, setContractModalOpen] = useState(false);
   const [alreadyPaid, setAlreadyPaid] = useState(false);
   const router = useRouter();
 
@@ -72,6 +74,13 @@ const CreatorDetailsPage = () => {
 
   const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
 
+  const handleContractModalOpen = () => {
+    setContractModalOpen(true);
+  }
+  const handleContractModalClose = () => {
+    setContractModalOpen(false);
+  }
+
   const handleCollaborate = async () => {
     try {
       const response = await initiatePayment({
@@ -87,8 +96,8 @@ const CreatorDetailsPage = () => {
         router.replace(response.url);
       }
     } catch (error) {
-      console.error("Payment initiation failed:", error);
       setFailedModalOpen(true);
+      console.error("Payment initiation failed:", error);
     }
   };
 
@@ -206,7 +215,7 @@ const CreatorDetailsPage = () => {
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-white py-6"
             disabled={isPending}
-            onClick={handleCollaborate}
+            onClick={handleContractModalOpen}
           >
             {isPending ? (
               <>
@@ -236,6 +245,8 @@ const CreatorDetailsPage = () => {
 
       {/* Failed Modal */}
       <CollaborationFailedModal isOpen={failedModalOpen} />
+
+      <CollaborationContractModal isOpen={contractModalOpen} onClose={handleContractModalClose} handleCollaborate={handleCollaborate} />
 
       {/* Spacer for fixed button on mobile */}
       <div className="h-16 md:hidden"></div>

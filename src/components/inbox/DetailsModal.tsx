@@ -1,14 +1,18 @@
+"use client";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogClose,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
 import { Collaboration } from "@/types/Collaboration";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { CollaborationContractModal } from "../ui/ContractModal";
+import { useState } from "react";
 
 interface DetailsModalProps {
   open: boolean;
@@ -26,6 +30,15 @@ export default function DetailsModal({
   const campaign = data?.campaignId || {};
   const collaborationId = data?._id;
 
+  const [contractModalOpen, setContractModalOpen] = useState(false);
+
+  const handleContractModalOpen = () => {
+    setContractModalOpen(true);
+  };
+  const handleContractModalClose = () => {
+    setContractModalOpen(false);
+  };
+
   const { mutate: acceptCollaboration, isPending: isAccepting } =
     useAcceptOrDeclineCollaboration(collaborationId, "Active", {
       onSuccess: () => onOpenChange(false),
@@ -39,6 +52,7 @@ export default function DetailsModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-screen flex flex-col p-0">
         <DialogHeader className="p-6 pb-0">
+          <DialogTitle className="sr-only">Campaign Details</DialogTitle>
           <DialogClose />
         </DialogHeader>
 
@@ -49,10 +63,7 @@ export default function DetailsModal({
               {/* Image Section */}
               <div className=" relative rounded-lg overflow-hidden">
                 <Image
-                  src={
-                    campaign.campaignPost ||
-                    "/images/placeholder.png"
-                  }
+                  src={campaign.campaignPost || "/images/placeholder.png"}
                   alt="Campaign Image"
                   width={550}
                   height={550}
@@ -71,10 +82,7 @@ export default function DetailsModal({
 
                 <div className="flex items-center gap-4">
                   <Image
-                    src={
-                      campaign.campaignPost ||
-                      "/images/placeholder.png"
-                    }
+                    src={campaign.campaignPost || "/images/placeholder.png"}
                     alt="Campaign Image"
                     width={40}
                     height={40} // Make height equal to width for a perfect circle
@@ -329,7 +337,7 @@ export default function DetailsModal({
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
             <Button
               className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
-              onClick={() => acceptCollaboration()}
+              onClick={() => handleContractModalOpen()}
               disabled={isAccepting || declineLoading}
             >
               {isAccepting ? "Accepting..." : "Accept"}
@@ -343,6 +351,12 @@ export default function DetailsModal({
             </Button>
           </div>
         )}
+
+        <CollaborationContractModal
+          isOpen={contractModalOpen}
+          onClose={handleContractModalClose}
+          handleCollaborate={acceptCollaboration}
+        />
       </DialogContent>
     </Dialog>
   );
