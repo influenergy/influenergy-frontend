@@ -44,7 +44,7 @@ const Page = () => {
             Please complete your profile
           </p>
           <p className="text-lg font-medium text-center">
-            You need to complete your profile before you can access this
+            You need to complete your profile and get verified by admin before you can access this
             feature.
           </p>
         </div>
