@@ -172,6 +172,7 @@ export const CREATOR_QUESTIONS: Questions = {
         slug: "primary-niche",
         category: "multiselect",
         options: [
+          "AI",
           "Beauty & Care",
           "Business & Finance",
           "Events",
@@ -195,7 +196,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Restaurants",
           "Skincare",
           "Sports & Fitness",
-          "Tech",
+          "Tech Apps",
           "Travel",
           "Yoga",
           "Others",
