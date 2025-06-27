@@ -10,11 +10,15 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = ({ children }) => {
 
   return (
     <div className="flex max-h-screen">
-      <Sidebar type="profile" />
-      <main className="ml-16 md:ml-[240px] w-full">
+      <div className="hidden md:block">
+        <Sidebar type="profile" className="" />
+      </div>
+      {/* <Sidebar type="profile" className="" /> */}
+      <main className="w-full">
         <div className="">{children}</div>
       </main>
     </div>
+
   );
 };
 

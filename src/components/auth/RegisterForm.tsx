@@ -74,9 +74,20 @@ export default function RegisterForm({ userType }: { userType: string }) {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
+    <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden relative">
+      {/* Mobile background image with 10% opacity */}
+      <div className="absolute inset-0 md:hidden z-0">
+        <Image
+          src="/images/register.webp"
+          alt="Register illustration background"
+          fill
+          className="object-cover object-center opacity-10"
+          priority
+        />
+      </div>
+      {/* Main content */}
       <motion.div
-        className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
+        className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen z-10"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -213,23 +224,23 @@ export default function RegisterForm({ userType }: { userType: string }) {
                 <p className="text-xs sm:text-sm font-light">
                   I accept all{" "}
                   <a
-                      
-                      href="/Influenergy - Terms of Service.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-primary hover:text-[#6564d8] transition-colors"
-                    >
-                      terms of use
-                    </a>{" "}
-                    and{" "}
-                    <a
-                      href="/Influenergy - Privacy Policy.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline text-primary hover:text-[#6564d8] transition-colors"
-                    >
-                      privacy policy
-                    </a>
+
+                    href="/Influenergy - Terms of Service.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-primary hover:text-[#6564d8] transition-colors"
+                  >
+                    terms of use
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="/Influenergy - Privacy Policy.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-primary hover:text-[#6564d8] transition-colors"
+                  >
+                    privacy policy
+                  </a>
                 </p>
               </motion.div>
               {errors.terms && (

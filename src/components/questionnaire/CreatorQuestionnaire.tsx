@@ -36,10 +36,10 @@ const schemas: StepSchemas = {
   step3: step3Schema,
   step4: step4Schema,
   step5: step5Schema,
-  step6: step6Schema, 
-  step7: step7Schema, 
+  step6: step6Schema,
+  step7: step7Schema,
 };
- 
+
 const CreatorQuestionnaire = (): JSX.Element => {
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
@@ -233,13 +233,12 @@ const CreatorQuestionnaire = (): JSX.Element => {
             onSubmit={handleSubmit(handleNext)}
             className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly"
           >
-            <div className="md:mb-8 flex flex-col items-center">
-              <h2 className="text-2xl font-bold mb-2">
+            <div className="md:mb-8 flex flex-col items-center w-full px-2 sm:px-0">
+              <h2 className="text-2xl font-bold mb-2 text-center">
                 Lets Create Your Profile
               </h2>
-              <p className="text-gray-600">
-                In order to match you with the right brands, we need a few more
-                details
+              <p className="text-gray-600 text-center">
+                In order to match you with the right brands, we need a few more details
               </p>
               <div className="mt-4 text-sm text-gray-500">
                 Step {currentStepIndex + 1} of {steps.length}
@@ -256,12 +255,12 @@ const CreatorQuestionnaire = (): JSX.Element => {
               {renderStepComponent()}
             </motion.div>
 
-            <div className="md:mt-8 flex justify-center items-center w-full gap-4 ">
+            <div className="mt-4 md:mt-8 flex flex-col sm:flex-row justify-center items-center w-full gap-3 sm:gap-4 ">
               {currentStepIndex > 0 ? (
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
-                  className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
+                  className="w-full sm:w-auto p-4 sm:p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-base sm:text-lg"
                   type="button"
                 >
                   <MoveLeft size={20} />
@@ -270,7 +269,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
               ) : (
                 <Button
                   variant="outline"
-                  className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
+                  className="w-full sm:w-auto p-4 sm:p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-base sm:text-lg"
                   type="button"
                   onClick={() => router.push("/dashboard")}
                 >
@@ -278,7 +277,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
                 </Button>
               )}
               <Button
-                className="p-6  bg-primary text-lg  rounded-lg flex items-center justify-center gap-2"
+                className="w-full sm:w-auto p-4 sm:p-6 bg-primary text-base sm:text-lg rounded-lg flex items-center justify-center gap-2"
                 type="submit"
                 disabled={isSubmitting}
               >

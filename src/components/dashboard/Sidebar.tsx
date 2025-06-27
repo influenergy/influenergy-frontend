@@ -30,7 +30,7 @@ interface NavLinks {
   };
 }
 
-export default function Sidebar({ type }: { type: string }) {
+export default function Sidebar({ type, className }: { type: string,className: string }) {
   const user = useAppSelector((state) => state.auth.userType);
   const userProfile = useAppSelector(selectUser);
   const pathname = usePathname();
@@ -40,7 +40,7 @@ export default function Sidebar({ type }: { type: string }) {
   const navItems = (navLinks as NavLinks)[user][type];
 
   return (
-    <div className="border-r bg-primary fixed left-0 top-0 h-screen w-16 sm:w-20 md:w-[240px] z-10 transition-all duration-300">
+    <div className={`border-r bg-primary h-screen z-10 transition-all duration-300 overflow-hidden ${className}`}>
       <div className="flex h-full flex-col gap-2 p-2 md:p-4">
         <Link href="/dashboard" className="flex justify-center items-center">
           <Image
@@ -48,7 +48,7 @@ export default function Sidebar({ type }: { type: string }) {
             width={180}
             height={180}
             alt="logo"
-            className="w-12 md:w-auto"
+            className="w-20 md:w-auto"
           />
         </Link>
         <hr className="my-2 opacity-30" />
@@ -88,7 +88,7 @@ export default function Sidebar({ type }: { type: string }) {
                 )}
               >
                 {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
-                <p className="text-sm hidden md:block">{item.label}</p>
+                <p className="text-sm md:block">{item.label}</p>
               </Button>
             </Link>
           ))}

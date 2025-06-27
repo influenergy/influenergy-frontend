@@ -138,9 +138,20 @@ export default function LoginForm() {
       : "https://d20cf3kfv1a9jn.cloudfront.net/images/brand_login.webp";
 
   return (
-    <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
+    <div className="relative w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
+      {/* Mobile background image */}
+      <div
+        className="block md:hidden absolute inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: `url(${imageUrl})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.10,
+        }}
+      />
+      {/* Form container, ensure it's above the background */}
       <motion.div
-        className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
+        className="relative z-10 flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 min-h-[70vh] md:min-h-screen"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -237,6 +248,7 @@ export default function LoginForm() {
                   placeholder="Enter Password"
                   register={register}
                   name="password"
+                  autoComplete="current-password"
                   error={errors.password}
                   icon={
                     showPassword ? (

@@ -96,7 +96,20 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       {showSuccess ? (
         <RegistrationSuccess />
       ) : (
-        <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden">
+        <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden relative">
+          {/* Mobile background image with 10% opacity */}
+          <div
+            className="absolute inset-0 md:hidden z-0"
+            aria-hidden="true"
+          >
+            <Image
+              src={"https://d20cf3kfv1a9jn.cloudfront.net/images/register_brand1.webp"}
+              alt="Background"
+              fill
+              className="object-cover object-center opacity-10"
+              priority
+            />
+          </div>
           <motion.div
             className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
             initial={{ opacity: 0, y: -50 }}
@@ -220,7 +233,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                     <p className="text-xs sm:text-sm font-light">
                       I accept all{" "}
                       <a
-                      
+
                         href="/Influenergy - Terms of Service.pdf"
                         target="_blank"
                         rel="noopener noreferrer"

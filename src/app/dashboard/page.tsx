@@ -35,7 +35,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen p-2 px-5">
+    <div className="p-2 px-5">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">Dashboard</h1>
       </div>
@@ -110,6 +110,7 @@ export default function DashboardPage() {
                     <p className="text-gray-700 font-medium">
                       Please upload profile image to get verified
                     </p>
+                    
                   </div>
                   <Info size={24} className="text-red-600 shrink-0" />
                 </div>
@@ -140,6 +141,18 @@ export default function DashboardPage() {
                     Your creator dashboard is ready. Start exploring
                     opportunities!
                   </p>
+                  {/* Video player for demo video */}
+                  <div className="mt-6">
+                    <video
+                      controls
+                      width="100%"
+                      style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
+                    >
+                      {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" /> */}
+                      <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 </Card>
                 {/* Add more dashboard cards and content here */}
               </div>
@@ -155,6 +168,17 @@ export default function DashboardPage() {
             <p className="text-muted-foreground">
               Your brand dashboard is ready. Start connecting with creators!
             </p>
+            <div className="mt-6">
+                    <video
+                      controls
+                      width="100%"
+                      style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
+                    >
+                      <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
+                      <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
           </Card>
           {/* Add more dashboard cards and content here */}
         </div>

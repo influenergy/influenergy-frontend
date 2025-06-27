@@ -122,8 +122,8 @@ export default function Page() {
             Back
           </Link>
         </div>
-        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 mt-3">
-          <p>Edit Profile</p>
+        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 mt-3">
+          <p className="hidden md:block">Edit Profile</p>
           <div className="relative w-[100px] h-[100px]">
             <Image
               src={
@@ -131,9 +131,8 @@ export default function Page() {
               }
               alt="Profile picture"
               fill
-              className={`w-full h-full object-cover rounded-full ${
-                isUploading ? "opacity-50" : ""
-              }`}
+              className={`w-full h-full object-cover rounded-full ${isUploading ? "opacity-50" : ""
+                }`}
               onError={(e) => {
                 // Fallback to default image if S3 image fails to load
                 const target = e.target as HTMLImageElement;

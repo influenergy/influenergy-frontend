@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 
-export function MobileSidebar() {
+export function MobileSidebar({ type, className = "" }: { type: string; className?: string }) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -12,7 +12,7 @@ export function MobileSidebar() {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 bg-white">
-        <Sidebar type="dashboard" />
+        <Sidebar type={type} className={className} />
       </SheetContent>
     </Sheet>
   );

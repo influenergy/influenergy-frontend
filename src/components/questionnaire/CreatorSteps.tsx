@@ -113,11 +113,10 @@ const FormField = ({ field }: { field: Field }) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins ${
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:ring-primary"
-          } focus:outline-none focus:ring-2 appearance-none`}
+          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins ${error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-primary"
+            } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
             {field.placeholder || "Select"}
@@ -223,11 +222,10 @@ const FormField = ({ field }: { field: Field }) => {
       type={field.category}
       placeholder={field.placeholder}
       {...register(fieldName)}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 ${
-        error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-primary"
-      } focus:outline-none focus:ring-2`}
+      className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+        ? "border-red-500 focus:ring-red-500"
+        : "border-gray-300 focus:ring-primary"
+        } focus:outline-none focus:ring-2`}
     />
   );
 };
@@ -280,7 +278,7 @@ const StepComponent = ({ fields }: StepProps) => {
 
         // Regular field rendering
         return (
-          <div key={field.title} className="space-y-2 mt-4">
+          <div key={field.title} className="space-y-2 mt-4 w-full">
             {primaryAudience ||
               (!secondaryAudience && (
                 <label className="block text-sm font-medium text-gray-700">
@@ -313,17 +311,17 @@ export const Step = ({ fields }: StepProps) => {
     return (
       <div className="">
         {primaryAudienceFields.length > 0 && (
-          <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-light md:mb-2 ">Your primary audience demography *</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center md:gap-4">
+          <div className="p-2 sm:p-4 rounded-lg">
+            <h3 className="text-lg font-light mb-2 ">Your primary audience demography *</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-2 md:gap-4">
               <StepComponent fields={primaryAudienceFields} />
             </div>
           </div>
         )}
         {secondaryAudienceFields.length > 0 && (
-          <div className="p-4 rounded-lg">
-            <h3 className="text-lg font-light md:mb-2">Your secondary audience demography </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center md:gap-4">
+          <div className="p-2 sm:p-4 rounded-lg">
+            <h3 className="text-lg font-light mb-2">Your secondary audience demography </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-2 md:gap-4">
               <StepComponent fields={secondaryAudienceFields} />
             </div>
           </div>
@@ -339,7 +337,7 @@ export const Step = ({ fields }: StepProps) => {
           <StepComponent fields={fields} />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-2 md:gap-4 w-full">
           <StepComponent fields={fields} />
         </div>
       )}
@@ -362,8 +360,8 @@ const DateInput = ({ field }: { field: Field }) => {
           typeof selectedDate === "string"
             ? new Date(selectedDate)
             : selectedDate instanceof Date
-            ? selectedDate
-            : null
+              ? selectedDate
+              : null
         }
         onChange={(date: Date | null) => {
           setValue(fieldName, date ? format(date, "yyyy-MM-dd") : "", {

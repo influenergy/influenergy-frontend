@@ -18,6 +18,7 @@ interface LoginFormProps<T extends object> {
   register: UseFormRegister<T>;
   name: Path<T>;
   error?: FieldError;
+  autoComplete?: string;
   icon: React.ReactNode;
   showPassword?: boolean;
   onTogglePassword?: () => void;
@@ -77,6 +78,7 @@ export const LoginFormInput = <T extends object>({
   name,
   error,
   icon,
+  autoComplete,
   onTogglePassword,
 }: LoginFormProps<T>) => (
   <div className="space-y-2">
@@ -89,6 +91,7 @@ export const LoginFormInput = <T extends object>({
       <input
         type={type}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         {...register(name)}
         className="border h-12 sm:h-14 w-full px-4 sm:px-5 focus:outline-none focus:border-b-2 focus:border-b-primary font-light transition-all duration-300 rounded-md text-base sm:text-lg"
       />
