@@ -26,6 +26,7 @@ export const step1Schema = yup.object().shape({
       "Only JPG, JPEG, and PNG formats are allowed",
       (value) => {
         if (typeof value !== "string") return true;
+        if (value.startsWith("http://") || value.startsWith("https://")) return true;
         const mimeMatch = value.match(/^data:(image\/\w+);base64,/);
         if (!mimeMatch) return false;
         const mimeType = mimeMatch[1];
@@ -34,6 +35,7 @@ export const step1Schema = yup.object().shape({
     )
     .test("fileSize", "File size must be less than 2MB", (value) => {
       if (typeof value === "string") {
+        if (value.startsWith("http://") || value.startsWith("https://")) return true;
         const base64Str = value.split(",")[1]; // strip "data:image/...;base64,"
         if (!base64Str) return true;
 

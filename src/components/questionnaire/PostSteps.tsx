@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import React from "react";
 
 import {
   step1Schema,
@@ -20,6 +21,7 @@ import { Slider } from "../ui/slider";
 
 interface StepProps {
   fields: Field[];
+  mode?: "create" | "edit";
 }
 
 // Helper function to determine if a field is required based on validation schemas
@@ -90,11 +92,10 @@ export const GenderInput = ({ field }: { field: Field }) => {
         <div className="relative w-full">
           <select
             {...register(fieldName)}
-            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
-              error
-                ? "border-red-500 focus:ring-red-500"
-                : "border-gray-300 focus:ring-primary"
-            } focus:outline-none focus:ring-2 appearance-none`}
+            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${error
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:ring-primary"
+              } focus:outline-none focus:ring-2 appearance-none`}
           >
             <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
               {field.placeholder || "Select"}
@@ -125,11 +126,10 @@ export const GenderInput = ({ field }: { field: Field }) => {
                     ? "This field is required"
                     : true,
               })}
-              className={`w-full p-3 border rounded-lg transition-all font-poppins duration-300 ${
-                otherGenderError
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-primary"
-              }`}
+              className={`w-full p-3 border rounded-lg transition-all font-poppins duration-300 ${otherGenderError
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-primary"
+                }`}
             />
           </div>
         )}
@@ -144,7 +144,12 @@ export const GenderInput = ({ field }: { field: Field }) => {
   );
 };
 
-export const FormField = ({ field }: { field: Field }) => {
+interface FormFieldProps {
+  field: Field;
+  mode?: "create" | "edit";
+}
+
+export const FormField = ({ field, mode }: FormFieldProps) => {
   const {
     register,
     setValue,
@@ -154,6 +159,8 @@ export const FormField = ({ field }: { field: Field }) => {
 
   const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
+  // Always call useRef at the top level to avoid conditional hook call
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   if (fieldName === "target-interests" || fieldName === "target-gender") {
     return <PrimaryNicheInput field={field} />;
@@ -174,11 +181,10 @@ export const FormField = ({ field }: { field: Field }) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:ring-primary"
-          } focus:outline-none focus:ring-2 appearance-none`}
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-primary"
+            } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
             Select
@@ -242,6 +248,45 @@ export const FormField = ({ field }: { field: Field }) => {
   }
 
   if (field.category === "file") {
+    // Special handling for campaign-post image preview and upload
+    if (fieldName === "campaign-post") {
+      const value = watch(fieldName);
+      const isImage = typeof value === "string" && value.startsWith("data:image");
+      const isUploadedImage = typeof value === "string" && value.startsWith("https://");
+      const isHttpImage = typeof value === "string" && (value.startsWith("http://") || value.startsWith("https://"));
+      return (
+        <div className="flex flex-col gap-2">
+          {isImage ? (
+            <div
+              className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden"
+              onClick={() => inputRef.current?.click()}
+              title="Click to upload a new image"
+              style={{ maxHeight: 200 }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={value}
+                alt="Campaign Post Preview"
+                className="object-contain w-full h-48 bg-gray-100"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          ) : isUploadedImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={value}
+              alt="Uploaded Campaign Post"
+              className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden"
+              // onClick={() => inputRef.current?.click()}
+              // title="Click to upload a new image"
+              style={{ maxHeight: 200 }}
+            />
+          ) : ""}
+         
+        </div>
+      );
+    }
+    // Default file input for other file fields
     return (
       <input
         type="file"
@@ -258,11 +303,10 @@ export const FormField = ({ field }: { field: Field }) => {
             };
           }
         }}
-        className={`w-full p-3 border rounded-lg transition-all duration-200 ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-primary"
-        } focus:outline-none focus:ring-2`}
+        className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+          ? "border-red-500 focus:ring-red-500"
+          : "border-gray-300 focus:ring-primary"
+          } focus:outline-none focus:ring-2`}
       />
     );
   }
@@ -313,16 +357,15 @@ export const FormField = ({ field }: { field: Field }) => {
     <input
       type={field.category}
       {...register(fieldName)}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 ${
-        error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-primary"
-      } focus:outline-none focus:ring-2`}
+      className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+        ? "border-red-500 focus:ring-red-500"
+        : "border-gray-300 focus:ring-primary"
+        } focus:outline-none focus:ring-2`}
     />
   );
 };
 
-export const StepComponent = ({ fields }: StepProps) => {
+export const StepComponent = ({ fields, mode }: StepProps) => {
   const {
     formState: { errors },
   } = useFormContext<PostQuestionnaireData>();
@@ -340,7 +383,7 @@ export const StepComponent = ({ fields }: StepProps) => {
               {field.title}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
-            <FormField field={field} />
+            <FormField field={field} mode={mode} />
             {error && (
               <p className="text-red-500 text-sm mt-1">
                 {error.message as string}
@@ -379,19 +422,18 @@ const DateInput = ({ field }: { field: Field }) => {
           });
         }}
         dateFormat="MM/dd/yyyy"
-        className={`w-full p-3 border rounded-lg transition-all duration-200 ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-primary"
-        } focus:outline-none focus:ring-2`}
+        className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+          ? "border-red-500 focus:ring-red-500"
+          : "border-gray-300 focus:ring-primary"
+          } focus:outline-none focus:ring-2`}
         placeholderText="Select date"
       />
     </div>
   );
 };
 
-export const Step = ({ fields }: StepProps) => (
+export const Step = ({ fields, mode }: StepProps) => (
   <div className="grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-4">
-    <StepComponent fields={fields} />
+    <StepComponent fields={fields} mode={mode} />
   </div>
 );

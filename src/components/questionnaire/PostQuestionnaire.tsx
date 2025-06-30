@@ -4,8 +4,8 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader, 
-  DialogTitle, 
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -46,7 +46,16 @@ const schemas: StepSchemas = {
   step6: step6Schema,
 };
 
-const PostQuestionnaire = (): JSX.Element => {
+const PostQuestionnaire = ({
+  mode = "create",
+  defaultValues = {},
+  onClose,
+}: {
+  mode?: "create" | "edit";
+  defaultValues?: Partial<PostQuestionnaireData>;
+  onClose?: () => void;
+}) => {
+  console.log(defaultValues, " defaultValues in PostQuestionnaire");
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
   >("step1");
@@ -85,10 +94,19 @@ const PostQuestionnaire = (): JSX.Element => {
       ? schemas[currentStep as keyof typeof questions]
       : schemas.step5;
 
+  useEffect(() => {
+    if (mode === "edit" && defaultValues) {
+      setFormData(defaultValues);
+    }
+  }, [defaultValues, mode]);
+
+
+
+
   const methods = useForm<PostQuestionnaireData>({
     resolver: yupResolver(currentSchema),
     mode: "onBlur",
-    defaultValues: formData,
+    defaultValues: mode === "edit" ? defaultValues : formData,
   });
 
   const { handleSubmit, trigger, clearErrors, getValues } = methods;
@@ -119,8 +137,14 @@ const PostQuestionnaire = (): JSX.Element => {
         ...prevData,
         ...currentValues,
       };
+
       setFormData(updatedData);
 
+      if (isLastStep && mode === "edit") {
+        // await postApi.updateAdPost(postId, updatedData);
+        setDialogStep("success");
+        return;
+      }
       if (currentStepIndex === steps.length - 1) {
         setCurrentStep("review");
       } else if (currentStep !== "review") {
@@ -159,19 +183,7 @@ const PostQuestionnaire = (): JSX.Element => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [
-    currentFields,
-    formData,
-    currentStepIndex,
-    steps,
-    toast,
-    trigger,
-    getValues,
-    currentStep,
-    user,
-    setDialogStep, // Add setDialogStep dependency
-    setIsDialogOpen, // Add setIsDialogOpen dependency
-  ]);
+  }, [currentFields, formData, trigger, getValues, isLastStep, mode, currentStepIndex, steps, currentStep, user, toast]);
 
   const handlePrevious = useCallback(() => {
     if (currentStepIndex > 0) {
@@ -180,8 +192,8 @@ const PostQuestionnaire = (): JSX.Element => {
   }, [currentStepIndex, steps]);
 
   const renderStepComponent = useCallback(() => {
-    return <Step fields={currentFields} />;
-  }, [currentFields]);
+    return <Step fields={currentFields} mode={mode} />;
+  }, [currentFields, mode]);
 
   return (
     <>

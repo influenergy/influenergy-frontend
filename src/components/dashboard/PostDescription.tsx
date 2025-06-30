@@ -5,119 +5,146 @@ import {
 } from "@/types/PostTypes";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useAppDispatch } from "@/store";
-import { setEditingPost, clearEditingPost } from "@/store/features/postSlice";
 import dynamic from "next/dynamic";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-const PostQuestionnaire = dynamic(() => import("@/components/questionnaire/PostQuestionnaire"), { ssr: false });
+const PostQuestionnaire = dynamic(
+  () => import("@/components/questionnaire/PostQuestionnaire"),
+  { ssr: false }
+);
+
+// Helper function
+const parseJsonArray = (input?: string | string[]): string[] => {
+  try {
+    if (Array.isArray(input)) {
+      return JSON.parse(input[0]);
+    }
+    return JSON.parse(input || "[]");
+  } catch {
+    return Array.isArray(input) ? input : input ? [input] : [];
+  }
+};
+
+// Type guard
+const isCampaignResponse = (data: any): data is CampaignResponse => {
+  return "_id" in data && "campaignName" in data;
+};
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  // Function to process the data into the expected format
-  const processData = (): PostData => {
-    // If already in correct format
-    if ("image" in data && "title" in data) {
-      return data as PostData;
-    }
+  const processedData: PostData = useMemo(() => {
+    if (!isCampaignResponse(data)) return data as PostData;
 
-    const campaignData = data as CampaignResponse;
-
-    // General parser to handle weird array-wrapped JSON strings or plain strings
-    const parseJsonArray = (input: string | string[]): string => {
-      try {
-        if (Array.isArray(input)) {
-          const value = input[0];
-          const parsed = JSON.parse(value);
-          return Array.isArray(parsed) ? parsed.join(", ") : value;
-        } else {
-          const parsed = JSON.parse(input);
-          return Array.isArray(parsed) ? parsed.join(", ") : input;
-        }
-      } catch {
-        // Fallback: if not JSON, treat as CSV or return raw
-        if (Array.isArray(input)) return input.join(", ");
-        return input;
-      }
-    };
-
-    const targetGroup = {
-      age: parseJsonArray(campaignData.targetAgeGroup) || "Not specified",
-      gender: parseJsonArray(campaignData.targetGender) || "Not specified",
-      location: parseJsonArray(campaignData.targetLocation),
-      interest: parseJsonArray(campaignData.targetInterests),
-    };
+    const campaign = data;
 
     return {
-      id: campaignData._id,
-      image: campaignData.campaignPost,
-      title: campaignData.campaignName,
-      companyName: campaignData.brandName,
-      campaignObjective: parseJsonArray(campaignData.campaignObjective),
-      campaignDescription: campaignData.campaignDescription,
-      campaignConcept: campaignData.campaignConcept,
-      yourBrief: campaignData.yourBrief,
-      targetGroup: targetGroup,
+      id: campaign._id,
+      image: campaign.campaignPost,
+      title: campaign.campaignName,
+      companyName: campaign.brandName,
+      campaignObjective: parseJsonArray(campaign.campaignObjective).join(", "),
+      campaignDescription: campaign.campaignDescription,
+      campaignConcept: campaign.campaignConcept,
+      yourBrief: campaign.yourBrief,
+      targetGroup: {
+        age: parseJsonArray(campaign.targetAgeGroup),
+        gender: parseJsonArray(campaign.targetGender),
+        location: parseJsonArray(campaign.targetLocation),
+        interest: parseJsonArray(campaign.targetInterests),
+      },
       contentVibe: {
-        contentType: campaignData.contentType,
-        durationOfVideo: campaignData.videoDuration,
-        catchPhrase: campaignData.catchPhrase,
-        keyMessage: campaignData.keyMessage,
-        toneStyle: campaignData.toneStyle,
-        creatorLookingFor: campaignData.creatorType,
+        contentType: campaign.contentType,
+        durationOfVideo: campaign.videoDuration,
+        catchPhrase: campaign.catchPhrase,
+        keyMessage: campaign.keyMessage,
+        toneStyle: campaign.toneStyle,
+        creatorLookingFor: campaign.creatorType,
       },
       idealCreatorChecklist: {
-        minFollowerCount: campaignData.minimumFollowers,
-        ugcCreatorOrInfluencer: campaignData.creatorInfluencer,
-        preferredSocialMedia: parseJsonArray(campaignData.socialMediaPlatform),
-        pastExperience: campaignData.pastExperience,
-        preferredCreatorNiche: parseJsonArray(
-          campaignData.preferredCreatorNiche
-        ),
-        preferredCreatorDemographics: campaignData.preferredCreatorDemographics,
+        minFollowerCount: campaign.minimumFollowers,
+        ugcCreatorOrInfluencer: campaign.creatorInfluencer,
+        preferredSocialMedia: parseJsonArray(campaign.socialMediaPlatform),
+        pastExperience: campaign.pastExperience,
+        preferredCreatorNiche: parseJsonArray(campaign.preferredCreatorNiche),
+        preferredCreatorDemographics: campaign.preferredCreatorDemographics,
       },
       compensation: {
-        budget: campaignData.budgetForCampaign,
-        expectedDeliverables: campaignData.expectedDeliverables,
-        deliveryDays: campaignData.noOfDaysForDelivery,
-        additionalInstructions: campaignData.additionalInstructions,
-        campaignPdf: campaignData.campaignPdf,
+        budget: campaign.budgetForCampaign,
+        expectedDeliverables: campaign.expectedDeliverables,
+        deliveryDays: campaign.noOfDaysForDelivery,
+        additionalInstructions: campaign.additionalInstructions,
+        campaignPdf: campaign.campaignPdf,
       },
-      description: campaignData.campaignDescription,
-      createdAt: "", // Optionally set this from backend if needed
+      description: campaign.campaignDescription,
+      createdAt: "",
       requirement: {
-        location: parseJsonArray(campaignData.targetLocation),
-        minFollowers: campaignData.minimumFollowers,
-        minEngagement: "", // Add this in CampaignResponse if needed
+        location: parseJsonArray(campaign.targetLocation),
+        minFollowers: campaign.minimumFollowers,
+        minEngagement: "",
       },
     };
-  };
+  }, [data]);
 
-  const processedData = processData();
+  const defaultValues = useMemo(() => {
+    if (!isCampaignResponse(data)) return {};
 
-  const handleEdit = () => {
-    // Map processedData to PostQuestionnaireData shape if needed
-    dispatch(setEditingPost({ ...processedData }));
-    setOpen(true);
-  };
+    return {
+      "brand-name": data.brandName,
+      "campaign-objective": parseJsonArray(data.campaignObjective),
+      "campaign-description": data.campaignDescription,
+      "campaign-post": data.campaignPost,
 
-  const handleClose = () => {
-    setOpen(false);
-    dispatch(clearEditingPost());
-  };
+      "target-age-group": parseJsonArray(data.targetAgeGroup),
+      "target-gender": parseJsonArray(data.targetGender),
+      "target-location": parseJsonArray(data.targetLocation),
+      "target-interests": parseJsonArray(data.targetInterests),
+
+      "compaign-name": data.campaignName,
+      "your-brief": data.yourBrief,
+      "compaign-concept": data.campaignConcept,
+
+      "content-type": data.contentType,
+      "video-duration": data.videoDuration,
+      "catch-phrase": data.catchPhrase,
+      "key-message": data.keyMessage,
+      "tone-style": data.toneStyle,
+      "creator-type": data.creatorType,
+
+      "minimum-followers": data.minimumFollowers,
+      "creator-influencer": data.creatorInfluencer,
+      "social-media-platform": parseJsonArray(data.socialMediaPlatform),
+      "past-experience": data.pastExperience,
+      "preferred-creator-niche": parseJsonArray(data.preferredCreatorNiche),
+      "preferred-creator-demographics": data.preferredCreatorDemographics,
+
+      "budget-for-campaign": data.budgetForCampaign,
+      "expected-deliverables": data.expectedDeliverables,
+      "no-of-days-for-delivery": data.noOfDaysForDelivery,
+      "additional-instructions": data.additionalInstructions,
+      "requirement-documents": data.campaignPdf,
+    };
+  }, [data]);
 
   return (
-    <div className="bg-white rounded-lg space-y-4  p-6 relative">
+    <div className="bg-white rounded-lg p-6 relative space-y-4">
       <div className="absolute top-4 right-4">
-        <Button variant="outline" onClick={handleEdit}>Edit Brief</Button>
+        <Button variant="outline" onClick={() => setOpen(true)}>
+          Edit Brief
+        </Button>
       </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Image Section */}
-        <div className=" relative rounded-lg overflow-hidden">
+        <div className="relative rounded-lg overflow-hidden">
           <Image
             src={processedData.image || "/images/placeholder.png"}
             alt={processedData.title}
@@ -127,278 +154,196 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           />
         </div>
 
-        <div className="w-full  space-y-4">
-          <div className="flex items-center gap-2">
-            <h3 className="text-2xl text-gray-900 line-clamp-2 font-bold">
-              {processedData.title}
-            </h3>
-          </div>
-
+        <div className="w-full space-y-4">
+          <h3 className="text-2xl font-bold text-gray-900">
+            {processedData.title}
+          </h3>
           <div className="flex items-center gap-4">
             <Image
-              src={
-                processedData.image ||
-                "/images/placeholder.png"
-              }
+              src={processedData.image || "/images/placeholder.png"}
               alt="Campaign Image"
               width={40}
-              height={40} // Make height equal to width for a perfect circle
+              height={40}
               className="object-cover rounded-full h-10 w-10"
             />
-            <p className="text-black text-lg">
-              {processedData?.companyName || ""}
-            </p>
+            <p className="text-black text-lg">{processedData.companyName}</p>
           </div>
-
-          {/* {!processedData.companyLogo && processedData.companyName && (
-            <div className="flex items-center gap-4 ">
-              <p className="text-black text-lg">{processedData.companyName}</p>
-            </div>
-          )} */}
         </div>
       </div>
-      <div>
-        {processedData.campaignObjective && (
-          <div className="mt-4 flex flex-col gap-4 ">
-            <h4 className="text-lg font-semibold">Campaign Objective</h4>
-            <p className="text-gray-600">{processedData.campaignObjective}</p>
+
+      {processedData.campaignObjective && (
+        <section>
+          <h4 className="font-semibold text-lg">Campaign Objective</h4>
+          <p className="text-gray-600">{processedData.campaignObjective}</p>
+        </section>
+      )}
+
+      {processedData.campaignDescription && (
+        <section>
+          <h4 className="font-semibold text-lg">Campaign Description</h4>
+          <p className="text-gray-600">{processedData.campaignDescription}</p>
+        </section>
+      )}
+
+      {processedData.yourBrief && (
+        <section>
+          <h4 className="font-semibold text-lg">Campaign Brief</h4>
+          <p className="text-gray-600">{processedData.yourBrief}</p>
+        </section>
+      )}
+
+      {processedData.campaignConcept && (
+        <section>
+          <h4 className="font-semibold text-lg">Campaign Concept</h4>
+          <p className="text-gray-600">{processedData.campaignConcept}</p>
+        </section>
+      )}
+
+      {processedData.targetGroup && (
+        <section>
+          <h4 className="text-xl font-semibold">Target Audience</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p>
+              <strong>Age:</strong>{" "}
+              {Array.isArray(processedData.targetGroup.age)
+                ? processedData.targetGroup.age.join(", ")
+                : processedData.targetGroup.age}
+            </p>
+            <p>
+              <strong>Gender:</strong>{" "}
+              {Array.isArray(processedData.targetGroup.gender)
+                ? processedData.targetGroup.gender.join(", ")
+                : processedData.targetGroup.gender}
+            </p>
+            <p>
+              <strong>Location:</strong>{" "}
+              {Array.isArray(processedData.targetGroup.location)
+                ? processedData.targetGroup.location.join(", ")
+                : processedData.targetGroup.location}
+            </p>
+            <p>
+              <strong>Interests:</strong>{" "}
+              {Array.isArray(processedData.targetGroup.interest)
+                ? processedData.targetGroup.interest.join(", ")
+                : processedData.targetGroup.interest}
+            </p>
           </div>
-        )}
+        </section>
+      )}
 
-        {processedData.campaignDescription && (
-          <div className="mt-4 flex flex-col gap-4 my-3">
-            <h4 className="text-lg font-semibold">Campaign Description</h4>
-            <p className="text-gray-600">{processedData.campaignDescription}</p>
+      {processedData.contentVibe && (
+        <section>
+          <h4 className="text-xl font-semibold">Content Vibe</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p>
+              <strong>Content Type:</strong>{" "}
+              {processedData.contentVibe.contentType}
+            </p>
+            <p>
+              <strong>Video Duration:</strong>{" "}
+              {processedData.contentVibe.durationOfVideo}
+            </p>
+            <p>
+              <strong>Catch Phrase:</strong>{" "}
+              {processedData.contentVibe.catchPhrase}
+            </p>
+            <p>
+              <strong>Key Message:</strong>{" "}
+              {processedData.contentVibe.keyMessage}
+            </p>
+            <p>
+              <strong>Tone & Style:</strong>{" "}
+              {processedData.contentVibe.toneStyle}
+            </p>
+            <p>
+              <strong>Looking For:</strong>{" "}
+              {processedData.contentVibe.creatorLookingFor}
+            </p>
           </div>
-        )}
-        <hr />
-        {processedData.yourBrief && (
-          <div className="mt-4 flex flex-col gap-4 my-3">
-            <h4 className="text-lg font-semibold">Campaign Brief</h4>
-            <p className="text-gray-600">{processedData.yourBrief}</p>
+        </section>
+      )}
+
+      {processedData.idealCreatorChecklist && (
+        <section>
+          <h4 className="text-xl font-semibold">Ideal Creator Checklist</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p>
+              <strong>Min Followers:</strong>{" "}
+              {processedData.idealCreatorChecklist.minFollowerCount}
+            </p>
+            <p>
+              <strong>UGC or Influencer:</strong>{" "}
+              {processedData.idealCreatorChecklist.ugcCreatorOrInfluencer}
+            </p>
+            <p>
+              <strong>Social Media:</strong>{" "}
+              {processedData.idealCreatorChecklist.preferredSocialMedia}
+            </p>
+            <p>
+              <strong>Past Experience:</strong>{" "}
+              {processedData.idealCreatorChecklist.pastExperience}
+            </p>
+            <p>
+              <strong>Niche:</strong>{" "}
+              {processedData.idealCreatorChecklist.preferredCreatorNiche}
+            </p>
+            <p>
+              <strong>Demographics:</strong>{" "}
+              {processedData.idealCreatorChecklist.preferredCreatorDemographics}
+            </p>
           </div>
-        )}
+        </section>
+      )}
 
-        <hr />
-        {processedData.campaignConcept && (
-          <div className="mt-4 flex flex-col gap-4 my-3">
-            <h4 className="text-lg font-semibold">Campaign Concept</h4>
-            <p className="text-gray-600">{processedData.campaignConcept}</p>
+      {processedData.compensation && (
+        <section>
+          <h4 className="text-xl font-semibold">Compensation</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p>
+              <strong>Budget:</strong> ${processedData.compensation.budget}
+            </p>
+            <p>
+              <strong>Deliverables:</strong>{" "}
+              {processedData.compensation.expectedDeliverables}
+            </p>
+            <p>
+              <strong>Delivery Days:</strong>{" "}
+              {processedData.compensation.deliveryDays}
+            </p>
+            <p>
+              <strong>Instructions:</strong>{" "}
+              {processedData.compensation.additionalInstructions || "N/A"}
+            </p>
+            <p>
+              <strong>Document:</strong>{" "}
+              {processedData.compensation.campaignPdf ? (
+                <Link
+                  href={processedData.compensation.campaignPdf}
+                  className="underline text-blue-500"
+                  target="_blank"
+                >
+                  View PDF
+                </Link>
+              ) : (
+                "Not Provided"
+              )}
+            </p>
           </div>
-        )}
-        <hr />
+        </section>
+      )}
 
-        {processedData.targetGroup && (
-          <div className="my-7">
-            <h4 className="text-2xl font-semibold flex items-center gap-2 ">
-              Target Audience & Demographics
-            </h4>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
-              <div className="mt-4">
-                <p className="font-medium ">Target Audience Age</p>
-                <p className="text-gray-600">
-                  {Array.isArray(processedData.targetGroup.age)
-                    ? processedData.targetGroup.age.join(", ")
-                    : processedData.targetGroup.age}
-                </p>
-              </div>
-
-              <div className="mt-4">
-                <p className="font-medium">Target Audience Gender</p>
-                <p className="text-gray-600">
-                  {Array.isArray(processedData.targetGroup.gender)
-                    ? processedData.targetGroup.gender.join(", ")
-                    : processedData.targetGroup.gender}
-                </p>
-              </div>
-
-              <div className="mt-4">
-                <p className="font-medium"> Target Audience Location</p>
-                <p className="text-gray-600">
-                  {Array.isArray(processedData.targetGroup.location)
-                    ? processedData.targetGroup.location.join(", ")
-                    : processedData.targetGroup.location || "Not specified"}
-                </p>
-              </div>
-
-              <div className="mt-4">
-                <p className="font-medium"> Target Audience Interests</p>
-                <p className="text-gray-600">
-                  {Array.isArray(processedData.targetGroup.interest)
-                    ? processedData.targetGroup.interest.join(", ")
-                    : processedData.targetGroup.interest || "Not specified"}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <hr />
-
-        {processedData.contentVibe && (
-          <div className="mt-4 py-4">
-            <h4 className="text-lg font-semibold flex items-center gap-2">
-              <p className="text-2xl">What is the Content Vibe?</p>
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div>
-                <p className="font-semibold text-lg">Content Type</p>
-                <p className="text-gray-600">
-                  {processedData.contentVibe.contentType}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Duration of Video</p>
-                <p className="text-gray-600">
-                  {processedData.contentVibe.durationOfVideo}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Call to Action</p>
-                <p className="text-gray-600">
-                  {processedData.contentVibe.catchPhrase}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Key Message & Hashtags</p>
-                <p className="text-gray-600">
-                  {processedData.contentVibe.keyMessage}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Tone & Style</p>
-                <p className="text-gray-600">
-                  {processedData.contentVibe.toneStyle}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">
-                  What kind of creator are you looking for?
-                </p>
-                <p className="text-gray-600">
-                  {processedData.contentVibe.creatorLookingFor}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <hr />
-
-        {processedData.idealCreatorChecklist && (
-          <div className="mt-4 py-4">
-            <h4 className="text-lg font-semibold flex items-center gap-2">
-              <p className="text-2xl  ">Ideal Creator Checklist</p>
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-              <div>
-                <p className="font-semibold text-lg">Minimum Follower Count</p>
-                <p className="text-gray-600">
-                  {processedData.idealCreatorChecklist.minFollowerCount}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">
-                  UGC Creator or Influencer
-                </p>
-                <p className="text-gray-600">
-                  {processedData.idealCreatorChecklist.ugcCreatorOrInfluencer}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Preferred Social Media</p>
-                <p className="text-gray-600">
-                  {processedData.idealCreatorChecklist.preferredSocialMedia}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Past Experience</p>
-                <p className="text-gray-600">
-                  {processedData.idealCreatorChecklist.pastExperience}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Preferred Creator Niche</p>
-                <p className="text-gray-600">
-                  {processedData.idealCreatorChecklist.preferredCreatorNiche}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">
-                  Preferred Creator Demographics
-                </p>
-                <p className="text-gray-600">
-                  {
-                    processedData.idealCreatorChecklist
-                      .preferredCreatorDemographics
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-        <hr />
-
-        {processedData.compensation && (
-          <div className="mt-4 py-4">
-            <h4 className="text-lg font-semibold flex items-center gap-2">
-              <p className="text-2xl ">Compensation & Deliverables</p>
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-              <div>
-                <p className="font-semibold text-lg">Budget for Campaign</p>
-                <p className="text-gray-600">
-                  ${processedData.compensation.budget}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Expected Deliverables</p>
-                <p className="text-gray-600">
-                  {processedData.compensation.expectedDeliverables}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">
-                  No. Of Days for Delivery
-                </p>
-                <p className="text-gray-600">
-                  {processedData.compensation.deliveryDays}
-                </p>
-              </div>
-              <div>
-                <p className="text-lg">Required Documents</p>
-                <p className="text-gray-600">
-                  {data.campaignPdf ? (
-                    <Link
-                      href={data.campaignPdf || "#"}
-                      target="_blank"
-                      className="underline italic"
-                    >
-                      Link
-                    </Link>
-                  ) : (
-                    <p>Not specified</p>
-                  )}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold text-lg">Additional Instructions</p>
-                <p className="text-gray-600">
-                  {processedData.compensation.additionalInstructions ||
-                    "Not Available"}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      {/* Edit Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-3xl w-full">
           <DialogHeader>
             <DialogTitle>Edit Campaign Brief</DialogTitle>
           </DialogHeader>
-          <PostQuestionnaire mode="edit" onClose={handleClose} postId={processedData.id} />
+          <PostQuestionnaire
+            mode="edit"
+            postId={isCampaignResponse(data) ? data._id : data.id}
+            defaultValues={defaultValues}
+            onClose={() => setOpen(false)}
+          />
         </DialogContent>
       </Dialog>
     </div>
