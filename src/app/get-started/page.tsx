@@ -10,6 +10,7 @@ export default function GetStarted() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+
   const handleUserTypeSelection = (type: string, link: string) => {
     dispatch(setUserType(type));
     router.push(`${link}`);

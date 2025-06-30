@@ -14,16 +14,17 @@ import {
 import { useAppDispatch } from "@/store";
 import { logout } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
-import { selectUser, useAppSelector } from "@/store";
+import { selectUser, useAppSelector,selectUserType } from "@/store";
 import { authApi } from "@/services/authServices";
 
 export function UserNav() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useAppSelector(selectUser);
+  const userType: string = useAppSelector(selectUserType) ?? "";
 
   const handleLogout = async () => {
-    await authApi.logout();
+    await authApi.logout(userType);
     dispatch(logout());
     router.push("/login");
   };

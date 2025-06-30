@@ -2,24 +2,32 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const AUTH_PAGES = ["/login", "/register", "/get-started"];
+
+
+const COOKIE_KEYS = [
+  "access_token_creator_dev",
+  "access_token_brand_dev",
+  "access_token_admin_dev",
+  "access_token_creator",
+  "access_token_brand",
+  "access_token_admin"
+];
+
 export function middleware(request: NextRequest) {
-  const authCookie = request.cookies.get("access_token");
-  let authToken = null;
-
-  if (authCookie?.value) {
-    try {
-      // Parse the JWT token from cookie
-      authToken = authCookie.value;
-    } catch (error) {
-      console.error("Error parsing auth token:", error);
-    }
-  }
-
+  
   const { pathname } = request.nextUrl;
-
-  // Check if the current path is in the AUTH_PAGES array
   const isAuthPage = AUTH_PAGES.includes(pathname);
   const isProtectedRoute = pathname.startsWith("/dashboard");
+
+  let authToken: string | null = null;
+
+   for (const key of COOKIE_KEYS) {
+    const cookie = request.cookies.get(key);
+    if (cookie?.value) {
+      authToken = cookie.value;
+      break;
+    }
+  }
 
   // If user is authenticated and trying to access login, register, or home page
   if (authToken && isAuthPage) {

@@ -32,8 +32,8 @@ export const authApi = {
     const response = await api.post("/creator/register", userData);
     return response.data;
   },
-  logout: async () => {
-    const response = await api.post("/logout");
+  logout: async (userType: string) => {
+    const response = await api.post("/logout",{ userType });
     return response.data;
   },
   resendVerificationEmail: async (email: string) => {
