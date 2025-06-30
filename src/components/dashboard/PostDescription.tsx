@@ -5,10 +5,19 @@ import {
 } from "@/types/PostTypes";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { useAppDispatch } from "@/store";
+import { setEditingPost, clearEditingPost } from "@/store/features/postSlice";
+import dynamic from "next/dynamic";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
+const PostQuestionnaire = dynamic(() => import("@/components/questionnaire/PostQuestionnaire"), { ssr: false });
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
   // Function to process the data into the expected format
   const processData = (): PostData => {
     // If already in correct format
@@ -90,8 +99,22 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
 
   const processedData = processData();
 
+  const handleEdit = () => {
+    // Map processedData to PostQuestionnaireData shape if needed
+    dispatch(setEditingPost({ ...processedData }));
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    dispatch(clearEditingPost());
+  };
+
   return (
-    <div className="bg-white rounded-lg space-y-4  p-6">
+    <div className="bg-white rounded-lg space-y-4  p-6 relative">
+      <div className="absolute top-4 right-4">
+        <Button variant="outline" onClick={handleEdit}>Edit Brief</Button>
+      </div>
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Image Section */}
         <div className=" relative rounded-lg overflow-hidden">
@@ -370,6 +393,14 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           </div>
         )}
       </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-3xl w-full">
+          <DialogHeader>
+            <DialogTitle>Edit Campaign Brief</DialogTitle>
+          </DialogHeader>
+          <PostQuestionnaire mode="edit" onClose={handleClose} postId={processedData.id} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

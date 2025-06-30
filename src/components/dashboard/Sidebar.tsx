@@ -40,7 +40,7 @@ export default function Sidebar({ type, className }: { type: string,className: s
   const navItems = (navLinks as NavLinks)[user][type];
 
   return (
-    <div className={`border-r bg-primary h-screen z-10 transition-all duration-300 overflow-hidden ${className}`}>
+    <div className={`border-r bg-primary h-full z-10 transition-all duration-300 overflow-hidden ${className}`}>
       <div className="flex h-full flex-col gap-2 p-2 md:p-4">
         <Link href="/dashboard" className="flex justify-center items-center">
           <Image

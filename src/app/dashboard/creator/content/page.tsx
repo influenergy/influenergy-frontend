@@ -32,7 +32,7 @@ const Page = () => {
   return (
     <div className="p-4 h-[calc(100vh - 200px)]">
       {!user?.isAccountVerified ? (
-        <div className="w-full flex flex-col items-center justify-center h-[calc(100vh-16rem)] gap-5">
+        <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
             src="/images/MyPost/empty.png"
             width={400}
