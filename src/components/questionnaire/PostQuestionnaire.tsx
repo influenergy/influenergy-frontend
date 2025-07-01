@@ -55,7 +55,6 @@ const PostQuestionnaire = ({
   defaultValues?: Partial<PostQuestionnaireData>;
   onClose?: () => void;
 }) => {
-  console.log(defaultValues, " defaultValues in PostQuestionnaire");
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
   >("step1");
@@ -115,7 +114,10 @@ const PostQuestionnaire = ({
     clearErrors();
   }, [currentStep, clearErrors]);
 
-  const handleNext = useCallback(async () => {
+
+
+
+  const handleNext = useCallback(async (createNew: boolean) => {
     const { currentFields: fields, formData: prevData } = {
       currentFields,
       formData,
@@ -141,8 +143,12 @@ const PostQuestionnaire = ({
       setFormData(updatedData);
 
       if (isLastStep && mode === "edit") {
-        // await postApi.updateAdPost(postId, updatedData);
+        await postApi.updateAdPost(updatedData as PostQuestionnaireData, createNew);
+
+        // Set dialog step to success
         setDialogStep("success");
+        // Keep the dialog open
+        setIsDialogOpen(true);
         return;
       }
       if (currentStepIndex === steps.length - 1) {
@@ -152,7 +158,7 @@ const PostQuestionnaire = ({
       } else {
         setIsSubmitting(true);
 
-        if (user && user._id) {
+        if (user && user._id && mode !== "edit") {
           // Use the transformed data directly without FormData
           await postApi.createAdPost(updatedData as PostQuestionnaireData);
 
@@ -169,7 +175,6 @@ const PostQuestionnaire = ({
         }
       }
     } catch (error) {
-      console.error("Form validation/submission error:", error);
       if (error instanceof Error) {
         toast({
           variant: "destructive",
@@ -228,7 +233,7 @@ const PostQuestionnaire = ({
                 </DialogTrigger>
                 {/* Apply styling similar to DeleteModal */}
                 <DialogContent className="sm:max-w-sm bg-white rounded-lg p-6">
-                  {dialogStep === "confirm" && (
+                  {dialogStep === "confirm" ? mode === "edit" ? (
                     <>
                       <DialogHeader className="flex flex-col items-center gap-4 text-center">
                         <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
@@ -240,8 +245,7 @@ const PostQuestionnaire = ({
                           />
                         </DialogTitle>
                         <DialogDescription className="text-base text-black">
-                          Once all details are submitted, edits will no longer
-                          be possible.
+                          Do you want to update the existing post, or create a new post with this data?
                         </DialogDescription>
                       </DialogHeader>
                       <div className="flex items-center justify-center gap-4 mt-6">
@@ -249,23 +253,60 @@ const PostQuestionnaire = ({
                           variant={"outline"}
                           className="border-primary border text-primary px-6" // Adjusted styling
                           size="lg"
-                          onClick={() => setIsDialogOpen(false)}
+                          onClick={() => handleSubmit(() => handleNext(false))()}
                           type="button"
                         >
-                          No
+                          Update
                         </Button>
                         <Button
                           className="bg-primary text-white px-6" // Adjusted styling
                           size="lg"
-                          onClick={handleSubmit(handleNext)}
+                          onClick={() => handleSubmit(() => handleNext(true))()}
                           disabled={isSubmitting}
                           type="button"
                         >
-                          {isSubmitting ? "Submitting..." : "Yes"}
+                          Copy and Create New
                         </Button>
                       </div>
                     </>
-                  )}
+                  ) :
+                    (
+                      <>
+                        <DialogHeader className="flex flex-col items-center gap-4 text-center">
+                          <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
+                            <Image
+                              src="/images/icons/message.png" // Confirmation Icon
+                              width={40}
+                              height={40}
+                              alt="Confirmation"
+                            />
+                          </DialogTitle>
+                          <DialogDescription className="text-base text-black">
+                            Are you sure you want to submit? Once you complete this step, you will be able to make further edits.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex items-center justify-center gap-4 mt-6">
+                          <Button
+                            variant={"outline"}
+                            className="border-primary border text-primary px-6" // Adjusted styling
+                            size="lg"
+                            onClick={() => setIsDialogOpen(false)}
+                            type="button"
+                          >
+                            No
+                          </Button>
+                          <Button
+                            className="bg-primary text-white px-6" // Adjusted styling
+                            size="lg"
+                            onClick={handleSubmit(handleNext)}
+                            disabled={isSubmitting}
+                            type="button"
+                          >
+                            {isSubmitting ? "Submitting..." : "Yes"}
+                          </Button>
+                        </div>
+                      </>
+                    ) : ""}
                   {dialogStep === "success" && (
                     <>
                       <DialogHeader className="flex flex-col items-center gap-4 text-center">

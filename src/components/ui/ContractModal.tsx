@@ -15,7 +15,6 @@ export const CollaborationContractModal: React.FC<
 
   const userType = useAppSelector((state) => state.auth.userType);
 
-  console.log("User Type:", userType);
   if (!isOpen) return null;
 
   return (

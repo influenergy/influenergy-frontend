@@ -49,6 +49,7 @@ export interface PostData {
 }
 
 export interface CampaignResponse {
+  vectorId: any;
   status: boolean;
   message: string;
   _id: string;

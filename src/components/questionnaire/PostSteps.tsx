@@ -253,10 +253,10 @@ export const FormField = ({ field, mode }: FormFieldProps) => {
       const value = watch(fieldName);
       const isImage = typeof value === "string" && value.startsWith("data:image");
       const isUploadedImage = typeof value === "string" && value.startsWith("https://");
-      const isHttpImage = typeof value === "string" && (value.startsWith("http://") || value.startsWith("https://"));
+
       return (
         <div className="flex flex-col gap-2">
-          {isImage ? (
+          {(isImage || isUploadedImage) ? (
             <div
               className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden"
               onClick={() => inputRef.current?.click()}
@@ -271,18 +271,34 @@ export const FormField = ({ field, mode }: FormFieldProps) => {
                 style={{ objectFit: "contain" }}
               />
             </div>
-          ) : isUploadedImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={value}
-              alt="Uploaded Campaign Post"
-              className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden"
-              // onClick={() => inputRef.current?.click()}
-              // title="Click to upload a new image"
+          ) : (
+            <div
+              className="w-full p-3 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 text-gray-400"
+              onClick={() => inputRef.current?.click()}
+              title="Click to upload an image"
               style={{ maxHeight: 200 }}
-            />
-          ) : ""}
-         
+            >
+              Click to upload an image
+            </div>
+          )}
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg, image/png, image/jpg, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = () => {
+                  if (typeof reader.result === "string") {
+                    setValue(fieldName, reader.result, { shouldValidate: true });
+                  }
+                };
+              }
+            }}
+            className="hidden"
+          />
         </div>
       );
     }

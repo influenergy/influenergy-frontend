@@ -104,6 +104,9 @@ export const transformPostData = (formData: PostQuestionnaireData) => {
   }
 
   const regularData = {
+    _id: formData._id || "", // Use empty string if _id is not provided
+    brandId: formData["brandId"],
+    vectorId: formData["vectorId"],
     campaignName: formData["compaign-name"],
     brandName: formData["brand-name"],
     campaignObjective: formData["campaign-objective"],

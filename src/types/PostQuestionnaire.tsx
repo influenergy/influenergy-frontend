@@ -5,7 +5,10 @@ export interface Requirement {
 }
 
 export interface PostQuestionnaireData {
+  "_id"?: string; // Optional, will be used for updates
   "brand-name": string;
+  "brandId"?:string;
+  "vectorId"?: string;
   "campaign-objective": string[];
   "campaign-description": string;
   "campaign-post": string;

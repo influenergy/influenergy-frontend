@@ -5,7 +5,6 @@ import { PostQuestionnaireData } from "@/types/Questionnaire";
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
     const transformedData = transformPostData(formData);
-
     try {
       const response = await api.post("/brand/add-campaign", transformedData, {
         headers: {
@@ -18,7 +17,23 @@ export const postApi = {
       throw error;
     }
   },
+  updateAdPost: async (formData: PostQuestionnaireData, createNew: boolean) => {
+    const transformedData = transformPostData(formData);
+    transformedData.append("createNew", String(createNew)); 
 
+    try {
+      const response = await api.put("/brand/update-campaign", transformedData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error updating ad post:", error);
+      throw error;
+    }
+  }
+  ,
   getCampaigns: async () => {
     try {
       const response = await api.get("/brand/get-campaigns");

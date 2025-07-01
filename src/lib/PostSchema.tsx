@@ -3,6 +3,7 @@ import { PostQuestionnaireData } from "@/types/PostQuestionnaire";
 
 type Schema = yup.ObjectSchema<Partial<PostQuestionnaireData>>;
 const SUPPORTED_FORMATS = ["image/jpeg", "image/png", "image/jpg"];
+
 export const step1Schema = yup.object().shape({
   "brand-name": yup
     .string()

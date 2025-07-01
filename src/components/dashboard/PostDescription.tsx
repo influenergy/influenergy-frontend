@@ -99,6 +99,9 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
     if (!isCampaignResponse(data)) return {};
 
     return {
+      "_id":data._id,
+      "brandId": data.brandId,
+      "vectorId": data.vectorId,
       "brand-name": data.brandName,
       "campaign-objective": parseJsonArray(data.campaignObjective),
       "campaign-description": data.campaignDescription,
@@ -334,13 +337,12 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
 
       {/* Edit Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl w-full">
+        <DialogContent className="max-w-3xl w-full max-h-screen overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Campaign Brief</DialogTitle>
           </DialogHeader>
           <PostQuestionnaire
             mode="edit"
-            postId={isCampaignResponse(data) ? data._id : data.id}
             defaultValues={defaultValues}
             onClose={() => setOpen(false)}
           />
