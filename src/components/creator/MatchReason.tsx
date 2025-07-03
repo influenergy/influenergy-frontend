@@ -17,7 +17,7 @@ const MatchReason: React.FC<MatchReasonProps> = ({
   refetch,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4">
+    <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
       <h2 className="text-lg md:text-xl font-bold mb-4">Match Assessment</h2>
       <div className="flex flex-col md:flex-row items-center gap-6">
         <div className="md:w-1/4 flex-shrink-0">

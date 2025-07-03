@@ -40,7 +40,7 @@ const CampaignCard = memo(
 
     return (
       <>
-        <div className="w-3/4 md:w-full rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2">
+        <div className="md:w-full rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2">
           <div className="mb-3">
             <h3 className="text-sm text-gray-900 line-clamp-2 text-left">
               {campaign.campaignName.length > 50

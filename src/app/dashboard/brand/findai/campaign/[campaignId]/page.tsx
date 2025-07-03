@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { MdVerified } from "react-icons/md";
 import Link from "next/link";
 import { useFindAiCampaign } from "@/hooks/useFindAi";
-import { ChevronsLeft} from "lucide-react";
+import { ChevronsLeft } from "lucide-react";
 import { CreatorAPIResponse } from "@/types/Creator";
 import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/brand/Loader";
@@ -42,6 +42,14 @@ export default function ProfileMatch() {
   if (creators.length == 0) {
     return (
       <div className="text-center py-10">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1 mb-5"
+        >
+          <ChevronsLeft className="h-5 w-5" />
+          Back
+        </button>
         <p className="text-red-500">No creators found</p>
       </div>
     );
@@ -140,9 +148,8 @@ export default function ProfileMatch() {
                 </p>
               </div>
               <Link
-                href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${
-                  data?.creatorId
-                }?similarity=${(data?.similarity * 100).toFixed(2) || 10}`}
+                href={`/dashboard/brand/findai/campaign/${campaignId}/creator/${data?.creatorId
+                  }?similarity=${(data?.similarity * 100).toFixed(2) || 10}`}
                 className="block mt-2 sm:mt-3"
               >
                 <Button

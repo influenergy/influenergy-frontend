@@ -371,7 +371,7 @@ const PostQuestionnaire = ({
               {renderStepComponent()}
             </motion.div>
 
-            <div className="md:mt-8 flex justify-center items-center w-full gap-4 ">
+            <div className="mt-4 md:mt-8 flex justify-center items-center w-full gap-4 ">
               {currentStepIndex > 0 ? (
                 <Button
                   variant="outline"

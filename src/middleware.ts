@@ -7,10 +7,8 @@ const AUTH_PAGES = ["/login", "/register", "/get-started"];
 const COOKIE_KEYS = [
   "access_token_creator_dev",
   "access_token_brand_dev",
-  "access_token_admin_dev",
   "access_token_creator",
   "access_token_brand",
-  "access_token_admin"
 ];
 
 export function middleware(request: NextRequest) {

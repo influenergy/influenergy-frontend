@@ -140,7 +140,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
 
   return (
     <div className="bg-white rounded-lg p-6 relative space-y-4">
-      <div className="absolute top-4 right-4">
+      <div className="flex justify-end">
         <Button variant="outline" onClick={() => setOpen(true)}>
           Edit Brief
         </Button>
