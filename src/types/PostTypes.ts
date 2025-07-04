@@ -11,10 +11,10 @@ export interface PostData {
   yourBrief?: string;
   campaignPdf?: string;
   targetGroup?: {
-    age?: string;
-    gender?: string;
-    location?: string;
-    interest?: string;
+    age?: string[];
+    gender?: string[];
+    location?: string[];
+    interest?: string[];
   };
   contentVibe?: {
     contentType?: string;
@@ -27,9 +27,9 @@ export interface PostData {
   idealCreatorChecklist?: {
     minFollowerCount?: string;
     ugcCreatorOrInfluencer?: string;
-    preferredSocialMedia?: string;
+    preferredSocialMedia?: string[]; // ✅ Fix: string[] not string
     pastExperience?: string;
-    preferredCreatorNiche?: string;
+    preferredCreatorNiche?: string[];
     preferredCreatorDemographics?: string;
   };
   compensation?: {
@@ -42,14 +42,14 @@ export interface PostData {
   description: string;
   createdAt: string;
   requirement: {
-    location: string;
+    location: string[];
     minFollowers: string;
     minEngagement: string;
   };
 }
 
 export interface CampaignResponse {
-  vectorId: any;
+  vectorId: string;
   status: boolean;
   message: string;
   _id: string;

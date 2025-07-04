@@ -149,7 +149,7 @@ interface FormFieldProps {
   mode?: "create" | "edit";
 }
 
-export const FormField = ({ field, mode }: FormFieldProps) => {
+export const FormField = ({ field }: FormFieldProps) => {
   const {
     register,
     setValue,

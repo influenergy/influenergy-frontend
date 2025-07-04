@@ -6,7 +6,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
-import { useAppDispatch } from "@/store";
 import dynamic from "next/dynamic";
 import {
   Dialog,
@@ -34,13 +33,17 @@ const parseJsonArray = (input?: string | string[]): string[] => {
 };
 
 // Type guard
-const isCampaignResponse = (data: any): data is CampaignResponse => {
-  return "_id" in data && "campaignName" in data;
+const isCampaignResponse = (data: unknown): data is CampaignResponse => {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "_id" in data &&
+    "campaignName" in data
+  );
 };
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
   const [open, setOpen] = useState(false);
-  const dispatch = useAppDispatch();
 
   const processedData: PostData = useMemo(() => {
     if (!isCampaignResponse(data)) return data as PostData;
@@ -99,7 +102,7 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
     if (!isCampaignResponse(data)) return {};
 
     return {
-      "_id":data._id,
+      "_id": data._id,
       "brandId": data.brandId,
       "vectorId": data.vectorId,
       "brand-name": data.brandName,

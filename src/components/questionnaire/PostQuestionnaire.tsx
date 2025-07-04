@@ -49,7 +49,6 @@ const schemas: StepSchemas = {
 const PostQuestionnaire = ({
   mode = "create",
   defaultValues = {},
-  onClose,
 }: {
   mode?: "create" | "edit";
   defaultValues?: Partial<PostQuestionnaireData>;
@@ -117,7 +116,7 @@ const PostQuestionnaire = ({
 
 
 
-  const handleNext = useCallback(async (createNew: boolean) => {
+  const handleNext = useCallback(async (createNew?: boolean) => {
     const { currentFields: fields, formData: prevData } = {
       currentFields,
       formData,
@@ -143,8 +142,10 @@ const PostQuestionnaire = ({
       setFormData(updatedData);
 
       if (isLastStep && mode === "edit") {
-        await postApi.updateAdPost(updatedData as PostQuestionnaireData, createNew);
-
+        await postApi.updateAdPost(
+          updatedData as PostQuestionnaireData,
+          Boolean(createNew)
+        );
         // Set dialog step to success
         setDialogStep("success");
         // Keep the dialog open
@@ -298,7 +299,7 @@ const PostQuestionnaire = ({
                           <Button
                             className="bg-primary text-white px-6" // Adjusted styling
                             size="lg"
-                            onClick={handleSubmit(handleNext)}
+                            onClick={() => handleSubmit(() => handleNext())()}
                             disabled={isSubmitting}
                             type="button"
                           >
@@ -346,7 +347,7 @@ const PostQuestionnaire = ({
       ) : (
         <FormProvider {...methods}>
           <form
-            onSubmit={handleSubmit(handleNext)}
+            onSubmit={handleSubmit(() => handleNext())}
             className="max-w-7xl w-full h-full p-2 flex flex-col items-center justify-evenly"
           >
             <div className="md:mb-8 flex flex-col items-center">
