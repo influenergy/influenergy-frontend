@@ -1,14 +1,14 @@
 "use client";
 import PostDescription from "@/components/dashboard/PostDescription";
 import React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
-
+import { ChevronsLeft } from "lucide-react";
 const Page = () => {
   const { postId } = useParams();
   const { data: campaign, isLoading, error } = useCampaign(postId as string);
-
+  const router = useRouter();
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -30,7 +30,10 @@ const Page = () => {
     return <div>Campaign not found</div>;
   }
 
-  return <PostDescription {...campaign} />;
+  return <>
+    
+    <PostDescription {...campaign} />
+  </>
 };
 
 export default Page;

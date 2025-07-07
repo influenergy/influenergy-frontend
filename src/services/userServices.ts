@@ -61,4 +61,5 @@ export const userApi = {
     const response = await api.delete(`/request-delete-account/${userType}`);
     return response.data;
   },
+  getProfileQuestionnaire: () => api.get(`/creator/questionnaire`),
 };

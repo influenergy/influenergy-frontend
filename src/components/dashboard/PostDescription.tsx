@@ -14,6 +14,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { ChevronsLeft } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 
 const PostQuestionnaire = dynamic(
   () => import("@/components/questionnaire/PostQuestionnaire"),
@@ -44,6 +46,7 @@ const isCampaignResponse = (data: unknown): data is CampaignResponse => {
 
 const PostDescription = ({ data }: PostDescriptionProps) => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const processedData: PostData = useMemo(() => {
     if (!isCampaignResponse(data)) return data as PostData;
@@ -143,8 +146,16 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
 
   return (
     <div className="bg-white rounded-lg p-6 relative space-y-4">
-      <div className="flex justify-end">
-        <Button variant="outline" onClick={() => setOpen(true)}>
+      <div className="flex justify-between items-center">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
+        >
+          <ChevronsLeft className="h-5 w-5" />
+          Back
+        </button>
+        <Button className="bg-primary px-5 py-2 rounded-xl" onClick={() => setOpen(true)}>
           Edit Brief
         </Button>
       </div>

@@ -40,7 +40,11 @@ const schemas: StepSchemas = {
   step7: step7Schema,
 };
 
-const CreatorQuestionnaire = (): JSX.Element => {
+interface CreatorQuestionnaireProps {
+  initialData?: Partial<CreatorQuestionnaireData>;
+}
+
+const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.Element => {
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
   >("step1");
@@ -49,9 +53,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
   const dispatch = useDispatch();
   const user = useAppSelector(selectUser);
   const router = useRouter();
-  const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(
-    {}
-  );
+  const [formData, setFormData] = useState<Partial<CreatorQuestionnaireData>>(initialData || {});
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
@@ -89,7 +91,7 @@ const CreatorQuestionnaire = (): JSX.Element => {
   useEffect(() => {
     clearErrors();
   }, [currentStep, clearErrors]);
-
+  // console.log(formData,'form data')
   const handleNext = useCallback(async () => {
     const { currentFields: fields, formData: prevData } = {
       currentFields,

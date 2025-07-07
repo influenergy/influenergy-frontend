@@ -9,10 +9,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50 relative overflow-scroll">
+    <div className="min-h-screen bg-gray-50 max-w-full">
       {children}
       <motion.div
-        className="absolute -bottom-5 -left-5 hidden lg:block w-[200px] lg:w-[200px] "
+        className="absolute bottom-0 left-0 hidden lg:block w-[200px] lg:w-[200px] "
         initial={{ y: "100%", opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -28,7 +28,7 @@ export default function DashboardLayout({
       </motion.div>
 
       <motion.div
-        className="absolute top-0 -right-10 z-10 hidden lg:block  w-[200px] lg:w-[200px]"
+        className="absolute top-0 right-0 z-10 hidden lg:block  w-[200px] lg:w-[200px]"
         initial={{ y: "-100%", opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}

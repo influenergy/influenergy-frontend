@@ -17,6 +17,7 @@ import { userApi } from "@/services/userServices";
 import { Loader2 } from "lucide-react";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import Link from "next/link";
+import EditCreatorQuestionnaireModal from "@/components/userProfile/EditCreatorQuestionnaireModal";
 // import Link from "next/link";
 
 export default function Page() {
@@ -26,6 +27,7 @@ export default function Page() {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const fetchAccountDetails = async () => {
     if (!userType) return;
@@ -159,6 +161,20 @@ export default function Page() {
           </div>
           <DeleteModal />
         </div>
+        <div className="flex items-center justify-center my-8">
+          {userType === "creator" && (
+            <div className="m-0 md:mr-20">
+              <button
+                className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition duration-200"
+                onClick={() => setIsQuestionnaireModalOpen(true)}
+              >
+                Edit Profile Questionnaire
+              </button>
+            </div>
+          )}
+        </div>
+
+
 
         {/* profile details section */}
         <div className="border mt-8 rounded-xl py-4 px-4 sm:px-7">
@@ -230,6 +246,12 @@ export default function Page() {
         <EditProfileModal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
+      {userType === "creator" && (
+        <EditCreatorQuestionnaireModal
+          isOpen={isQuestionnaireModalOpen}
+          onClose={() => setIsQuestionnaireModalOpen(false)}
         />
       )}
     </div>

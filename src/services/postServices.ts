@@ -81,6 +81,17 @@ export const postApi = {
       throw error;
     }
   },
+  copyCampaign: async (id: string, newName: string) => {
+    try {
+      const response = await api.post(`/brand/copy-campaign/${id}`, {
+        newName,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error copying campaign:", error);
+      throw error;
+    }
+  },
   profileCardDetails: async (id: string) => {
     try {
       const response = await api.get(`/creator/details/${id}`);
