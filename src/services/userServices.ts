@@ -53,8 +53,26 @@ export const userApi = {
       throw error;
     }
   },
+  submitLeftStep: async (
+    currentStep: number
+  ) => {
+    try {
+      const response = await api.post(
+        "/creator/submit_left_step",
+        {currentStep:currentStep || 0}
+      );
+      return response.data;
+    } catch (error) {
+      console.error("API error:", error);
+      throw error;
+    }
+  },
   getProfileDetails: async (userType: string) => {
     const response = await api.get(`/${userType}/account_details`);
+    return response.data;
+  },
+  getImprovementText: async () => {
+    const response = await api.get(`/ai/create-improvement-text`);
     return response.data;
   },
   deleteAccount: async (userType: string) => {

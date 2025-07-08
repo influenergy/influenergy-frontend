@@ -7,11 +7,43 @@ import { useAppSelector } from "@/store";
 import { useUserDetails } from "@/hooks/useUser";
 import { Loader } from "@/components/common/Loader";
 import { Info } from "lucide-react";
+import Image from "next/image";
+import { userApi } from "@/services/userServices";
+import React, { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
   const userType = useAppSelector((state) => state.auth.userType);
   const { data: userDetails, isLoading, error } = useUserDetails();
+
+  // Add state for improvement text
+  const [improvementText, setImprovementText] = useState<string | null>(null);
+  const [improvementLoading, setImprovementLoading] = useState(false);
+  const [collaborationCount, setCollaborationCount] = useState(0);
+  useEffect(() => {
+    if (
+      userType === "creator" &&
+      userDetails?.data?.isProfileCompleted &&
+      userDetails?.data?.profileIcon
+    ) {
+      setImprovementLoading(true);
+      fetchImprovementText().then((text) => {
+        setImprovementText(text.data || "");
+        setCollaborationCount(text?.collaborationCount)
+        setImprovementLoading(false);
+      });
+    }
+  }, [userType, userDetails]);
+
+  const fetchImprovementText = async () => {
+    try {
+      const improvementText = await userApi.getImprovementText();
+      return improvementText;
+    } catch (error) {
+      console.error("Error fetching improvement text:", error);
+      return "Unable to fetch improvement suggestions at this time.";
+    }
+  }
 
   if (!isAuthenticated || !userType) {
     return null;
@@ -110,7 +142,7 @@ export default function DashboardPage() {
                     <p className="text-gray-700 font-medium">
                       Please upload profile image to get verified
                     </p>
-                    
+
                   </div>
                   <Info size={24} className="text-red-600 shrink-0" />
                 </div>
@@ -132,8 +164,8 @@ export default function DashboardPage() {
           {/* Case 4: Profile completed and has profile image */}
           {userDetails?.data?.isProfileCompleted &&
             userDetails?.data?.profileIcon && (
-              <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-                <Card className="p-6">
+              <div className="flex flex-col lg:flex-row gap-6 pr-4">
+                <Card className="p-6 w-full ">
                   <h2 className="text-xl font-semibold mb-2">
                     Welcome Back, {userDetails?.data?.fullName || "Creator"}!
                   </h2>
@@ -154,6 +186,43 @@ export default function DashboardPage() {
                     </video>
                   </div>
                 </Card>
+                <Card className="p-6 w-full flex flex-col">
+                  <h2 className="text-xl font-semibold mb-2">
+                    AI Recommendations
+                  </h2>
+
+                  <div className="mt-6 bg-purple-gradient flex rounded-xl p-6 text-white flex-col gap-8 flex-1">
+                    <div className="flex justify-between items-center w-full">
+                      <div className="flex flex-col gap-4">
+                        <h1 className="font-medium text-lg" >Total Collaboration</h1>
+                        <span className="text-5xl font-medium">{collaborationCount}</span>
+                      </div>
+                      <div>
+                        <Image src="/flex_user.svg" alt="flex user" className="w-full h-full" width={40} height={40} />
+                      </div>
+                    </div>
+                    <div className="flex gap-4 flex-col">
+                      <h1 className="font-medium text-lg">How to Improve</h1>
+                      <span>
+                        {improvementLoading ? (
+                          <span>Loading suggestions...</span>
+                        ) : improvementText ? (
+                          <ul className="list-disc pl-5 space-y-1">
+                            {improvementText
+                              .split('\n')
+                              .map(line => line.replace(/^\*\s*/, '').trim())
+                              .filter(line => line.length > 0)
+                              .map((line, idx) => (
+                                <li key={idx}>{line}</li>
+                              ))}
+                          </ul>
+                        ) : (
+                          <span>No suggestions available.</span>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                </Card>
                 {/* Add more dashboard cards and content here */}
               </div>
             )}
@@ -169,16 +238,16 @@ export default function DashboardPage() {
               Your brand dashboard is ready. Start connecting with creators!
             </p>
             <div className="mt-6">
-                    <video
-                      controls
-                      width="100%"
-                      style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
-                    >
-                      <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
-                      <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
+              <video
+                controls
+                width="100%"
+                style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
+              >
+                <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
+                <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
           </Card>
           {/* Add more dashboard cards and content here */}
         </div>

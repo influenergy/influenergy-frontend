@@ -91,7 +91,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
   useEffect(() => {
     clearErrors();
   }, [currentStep, clearErrors]);
-  // console.log(formData,'form data')
+
   const handleNext = useCallback(async () => {
     const { currentFields: fields, formData: prevData } = {
       currentFields,
@@ -197,6 +197,38 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
   const renderStepComponent = useCallback(() => {
     return <Step fields={currentFields} />;
   }, [currentFields]);
+
+  const saveProgress = useCallback(async () => {
+    if (!user?._id || currentStep === "review") return;
+
+    try {
+      await userApi.submitLeftStep(currentStepIndex + 1);
+    } catch (err) {
+      console.error("Failed to save progress:", err);
+    }
+  }, [user?._id, currentStepIndex,currentStep]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      saveProgress();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        saveProgress();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [currentStep, saveProgress]);
+
+
 
   return (
     <>

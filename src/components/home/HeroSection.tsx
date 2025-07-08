@@ -18,6 +18,7 @@ export default function HeroSection() {
     { logo: "/landing/marquee/company7.png" },
     { logo: "/landing/marquee/company8.png" },
     { logo: "/landing/marquee/company9.png" },
+    { logo: "/landing/marquee/company10.jpg" },
   ];
 
   return (
@@ -57,7 +58,7 @@ export default function HeroSection() {
             className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-9 py-7 text-lg"
             onClick={() => router.push("/get-started")}
           >
-            Start Free
+            Start Free Campaign
           </Button>
         </motion.div>
       </motion.div>

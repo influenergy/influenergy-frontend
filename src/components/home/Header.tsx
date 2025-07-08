@@ -12,7 +12,7 @@ export default function Header() {
         <div className="flex justify-center items-center gap-3">
           <Link href="/get-started">
             <Button className="bg-primary text-white rounded-xl px-9 py-5">
-              Start Free
+              Start Free Trail
             </Button>
           </Link>
         </div>

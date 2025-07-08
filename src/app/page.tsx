@@ -7,6 +7,7 @@ import HeroSection from "@/components/home/HeroSection";
 import InfluEnergySection from "@/components/home/Influenergy";
 import { Loader } from "@/components/common/Loader";
 import dynamic from "next/dynamic";
+import Banner from "@/components/home/Banner";
 const HearFromInfluencer = dynamic(
   () => import("@/components/home/HearFromInfluencer"),
   {
@@ -44,6 +45,7 @@ function SearchParamsComponent() {
 export default function Home() {
   return (
     <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
+      <Banner />
       <Header />
       <HeroSection />
 
