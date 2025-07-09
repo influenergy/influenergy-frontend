@@ -59,7 +59,7 @@ export const userApi = {
     try {
       const response = await api.post(
         "/creator/submit_left_step",
-        {currentStep:currentStep || 0}
+        { currentStep: currentStep || 0 }
       );
       return response.data;
     } catch (error) {
@@ -80,4 +80,6 @@ export const userApi = {
     return response.data;
   },
   getProfileQuestionnaire: () => api.get(`/creator/questionnaire`),
+  getRecommendedPriceRange: (data: { primaryFollowers: string; secondaryFollowers?: string }) =>
+    api.post(`/creator/recommended-price-range`, data),
 };

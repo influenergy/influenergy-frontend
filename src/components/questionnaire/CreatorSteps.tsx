@@ -23,6 +23,8 @@ import {
 import PrimaryNicheInput from "../ui/PrimaryNicheInput";
 import { Slider } from "../ui/slider";
 // import { Input } from "@/components/ui/input";
+import React, { useEffect, useState } from "react";
+import { userApi } from "@/services/userServices";
 
 interface StepProps {
   fields: Field[];
@@ -73,6 +75,15 @@ const isFieldRequired = (fieldName: string): boolean => {
   }
 };
 
+interface PriceRangeResponse {
+  data?: {
+    range?: {
+      min?: number;
+      max?: number;
+    }
+  }
+}
+
 const FormField = ({ field }: { field: Field }) => {
   const {
     register,
@@ -84,6 +95,41 @@ const FormField = ({ field }: { field: Field }) => {
   const fieldName = field.slug as keyof CreatorQuestionnaireData;
   const error = errors[fieldName];
 
+  // State for price range suggestion
+  const [priceRange, setPriceRange] = useState<string | null>(null);
+  const [loadingRange, setLoadingRange] = useState(false);
+  const [rangeError, setRangeError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (fieldName === "budget-video") {
+      const primaryFollowers = watch("primary-followers");
+      const secondaryFollowers = watch("secondary-followers");
+      if (!primaryFollowers) return; // Don't fetch if primaryFollowers is not set
+      setLoadingRange(true);
+      setRangeError(null);
+      userApi.getRecommendedPriceRange({
+        primaryFollowers,
+        secondaryFollowers,
+      })
+        .then((res: PriceRangeResponse) => {
+          // console.log(res?.data?.data.range?.min, res?.data?.data.range?.max)
+          if (res?.data?.range?.min != null && res?.data?.range?.max != null) {
+            setPriceRange(`$${res.data.range.min} - $${res.data.range.max}`);
+            console.log(`$${res.data.range.min} - $${res.data.range.max}`, "Price Range Response");
+            // } else if (res?.data?.range) {
+            //   setPriceRange(res.data.range);
+          } else {
+            setPriceRange(null);
+          }
+        })
+        .catch(() => {
+          setRangeError("Could not fetch recommended price range");
+        })
+        .finally(() => setLoadingRange(false));
+    }
+  }, [fieldName, watch("primary-followers"), watch("secondary-followers")]);
+
+  // console.log(priceRange, "Price Range");
   // Special handling for gender fields
   if (fieldName === "gender") {
     return <GenderInput field={field} />;
@@ -213,6 +259,16 @@ const FormField = ({ field }: { field: Field }) => {
             </div>
           </div>
         </div>
+        {/* Price range suggestion for budget-video */}
+        {fieldName === "budget-video" && (
+          <div className="mt-2 text-xs text-gray-600">
+            {loadingRange && <span>Fetching recommended price range...</span>}
+            {rangeError && <span className="text-red-500">{rangeError}</span>}
+            {!loadingRange && !rangeError && priceRange && (
+              <span>Suggested range: <b>{priceRange}</b></span>
+            )}
+          </div>
+        )}
       </div>
     );
   }
