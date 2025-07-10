@@ -165,20 +165,23 @@ export default function DashboardPage() {
           {userDetails?.data?.isProfileCompleted &&
             userDetails?.data?.profileIcon && (
               <div className="flex flex-col lg:flex-row gap-6 pr-4">
-                <Card className="p-6 w-full ">
-                  <h2 className="text-xl font-semibold mb-2">
-                    Welcome Back, {userDetails?.data?.fullName || "Creator"}!
-                  </h2>
-                  <p className="text-muted-foreground">
-                    Your creator dashboard is ready. Start exploring
-                    opportunities!
-                  </p>
+                <Card className="p-6 w-full flex flex-col">
+                  <div>
+                    <h2 className="text-xl font-semibold mb-2">
+                      Welcome Back, {userDetails?.data?.fullName || "Creator"}!
+                    </h2>
+                    <p className="text-muted-foreground">
+                      Your creator dashboard is ready. Start exploring
+                      opportunities!
+                    </p>
+                  </div>
                   {/* Video player for demo video */}
-                  <div className="mt-6">
+                  <div className="mt-6 flex-1">
                     <video
                       controls
                       width="100%"
-                      style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
+                      height="100%"
+                      style={{ borderRadius: '12px',height:'100%',maxHeight:'400px', background: '#000' }}
                     >
                       {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" /> */}
                       <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />

@@ -12,7 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
         <UserProfileLayout>{children}</UserProfileLayout>
     </div>
   );

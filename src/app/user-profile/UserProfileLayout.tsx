@@ -11,13 +11,13 @@ interface UserProfileLayoutProps {
 const UserProfileLayout: React.FC<UserProfileLayoutProps> = ({ children }) => {
 
   return (
-    <div className="flex max-h-screen">
+    <div className="flex min-h-screen">
       <div className="hidden md:block">
         <Sidebar type="profile" className="" />
       </div>
       {/* <Sidebar type="profile" className="" /> */}
-      <main className="w-full">
-      <div className="flex items-center h-16 px-4 border-b bg-white">
+      <main className="w-full flex flex-col">
+        <div className="flex items-center h-16 px-4 border-b bg-white">
           {/* Hamburger menu for mobile */}
           <div className="md:hidden mr-2">
             <MobileSidebar type="dashboard" />
@@ -26,7 +26,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = ({ children }) => {
             <Header />
           </div>
         </div>
-        <div className="">{children}</div>
+        <div className="flex-1">{children}</div>
       </main>
     </div>
 
