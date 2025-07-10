@@ -12,7 +12,7 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
   const [newName, setNewName] = useState("");
   const [copying, setCopying] = useState(false);
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = () => {
     // Prevent navigation if dropdown is open or copy modal is open
     if (showCopyModal) return;
     router.push(`/dashboard/brand/posts/${encodeURIComponent(_id)}`);

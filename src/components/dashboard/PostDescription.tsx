@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronsLeft } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const PostQuestionnaire = dynamic(
   () => import("@/components/questionnaire/PostQuestionnaire"),

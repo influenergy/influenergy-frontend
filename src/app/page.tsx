@@ -7,7 +7,6 @@ import HeroSection from "@/components/home/HeroSection";
 import InfluEnergySection from "@/components/home/Influenergy";
 import { Loader } from "@/components/common/Loader";
 import dynamic from "next/dynamic";
-import Banner from "@/components/home/Banner";
 const HearFromInfluencer = dynamic(
   () => import("@/components/home/HearFromInfluencer"),
   {
@@ -15,6 +14,8 @@ const HearFromInfluencer = dynamic(
   }
 );
 const WhoAreWe = lazy(() => import("@/components/home/WhoAreWe"));
+// import Banner from "@/components/home/Banner";
+const Banner = lazy(() => import("@/components/home/Banner"));
 const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const WhatWeDo = lazy(() => import("@/components/home/WhatWeDo"));
 const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));

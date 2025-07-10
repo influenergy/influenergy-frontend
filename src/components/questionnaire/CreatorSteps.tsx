@@ -127,7 +127,7 @@ const FormField = ({ field }: { field: Field }) => {
         })
         .finally(() => setLoadingRange(false));
     }
-  }, [fieldName, watch("primary-followers"), watch("secondary-followers")]);
+  }, [fieldName, watch]);
 
   // console.log(priceRange, "Price Range");
   // Special handling for gender fields
