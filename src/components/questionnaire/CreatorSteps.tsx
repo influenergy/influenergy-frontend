@@ -265,7 +265,7 @@ const FormField = ({ field }: { field: Field }) => {
             {loadingRange && <span>Fetching recommended price range...</span>}
             {rangeError && <span className="text-red-500">{rangeError}</span>}
             {!loadingRange && !rangeError && priceRange && (
-              <span>Suggested range: <b>{priceRange}</b></span>
+              <span>AI Suggested Price Range: <b>{priceRange}</b></span>
             )}
           </div>
         )}

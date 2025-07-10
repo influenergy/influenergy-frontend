@@ -188,7 +188,7 @@ export default function DashboardPage() {
                 </Card>
                 <Card className="p-6 w-full flex flex-col">
                   <h2 className="text-xl font-semibold mb-2">
-                    AI Recommendations
+                    AI Profile Recommendation
                   </h2>
 
                   <div className="mt-6 bg-purple-gradient flex rounded-xl p-6 text-white flex-col gap-8 flex-1">
