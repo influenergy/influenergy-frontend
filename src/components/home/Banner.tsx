@@ -22,7 +22,7 @@ function Banner() {
           Unleash your creativity with Filmora’s intuitive video editor — seamless, powerful, and tailored for influencers and brands.&nbsp;
           <a
             className="underline"
-            href="https://filmora.wondershare.com/?utm_source=instagram&utm_medium=banner&utm_campaign=partnership&utm_term=jeev&utm_content=image_21111744_2025-04-23"
+            href=" http://bit.ly/4lmhmoa"
             target="_blank"
             rel="noopener noreferrer"
           >
