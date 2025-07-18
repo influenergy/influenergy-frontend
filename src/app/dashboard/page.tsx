@@ -247,7 +247,7 @@ export default function DashboardPage() {
                 style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
               >
                 <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
-                <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
+                {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" /> */}
                 Your browser does not support the video tag.
               </video>
             </div>

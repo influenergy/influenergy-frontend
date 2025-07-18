@@ -28,8 +28,8 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          POWERFUL AI-FIND TOOL
-          <span className="text-primary"> INFLUENERGY</span> CONNECTS
+          POWERFUL 
+          <span className="text-primary"> AI-FIND </span>TOOL  CONNECTS 
           <motion.span
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -61,7 +61,9 @@ export default function InfluEnergySection() {
               className="w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] md:w-[60px] md:h-[60px] lg:w-[70px] lg:h-[70px] rounded-full object-cover inline-block align-middle mx-1 sm:mx-2 shadow-md"
             />
           </motion.span>
-          THAT DELIVER RESULTS
+          THAT
+          <span className="text-primary"> DELIVER RESULTS </span> 
+          
         </p>
       </motion.div>
     </div>

@@ -73,9 +73,10 @@ const UploadVideoModal: React.FC<UploadVideoModalProps> = ({
       newErrors.title = "Video title is required";
     }
 
-    if (!imageFile) {
-      newErrors.image = "Thumbnail image is required";
-    }
+    // Thumbnail image is now optional, so remove this check:
+    // if (!imageFile) {
+    //   newErrors.image = "Thumbnail image is required";
+    // }
 
     if (!formData.url) {
       newErrors.url = "Video URL is required";

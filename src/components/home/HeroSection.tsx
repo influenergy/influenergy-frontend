@@ -41,12 +41,12 @@ export default function HeroSection() {
         transition={{ duration: 0.7 }}
       >
         <h1 className="text-[clamp(2rem,4vw,3.5rem)] font-bold leading-tight font-mona max-w-[90vw] text-center mx-auto">
-          AI-POWERED SOLUTION CONNECTING <br className="block sm:hidden" />
+          AI-POWERED PLATFORM CONNECTING <br className="block sm:hidden" />
           BRANDS WITH CREATORS
         </h1>
 
-        <p className="mt-6 text-[clamp(1.125rem,0.9rem+1vw,1.875rem)] mx-auto max-w-4xl font-poppins">
-          Let’s create Influencers and UGC campaigns that connect, inspire, and
+        <p className="mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.875rem)] mx-auto  max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.75rem] font-poppins">
+          Let’s create Influencers and UGC marketing campaigns that connect, inspire, and
           perform—empowering brands to grow
         </p>
         <motion.div

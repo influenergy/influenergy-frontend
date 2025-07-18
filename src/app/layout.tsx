@@ -5,7 +5,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Influenergy - Creator AI Finding Platform",
+  title: "Influenergy - AI-Powered Influencer Marketing Connecting Brands With Creators",
   description:
     "Influenergy is a platform for Influencers to connect with brands and monetize their content. We help Influencers to grow their audience and make money.",
 };

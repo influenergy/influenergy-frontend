@@ -56,8 +56,8 @@ export default function WeEmpowerBrand() {
           transition={{ duration: 0.7, delay: 0.2 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
-            We Empower Brands
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold whitespace-nowrap">
+            Message From Our Founder
           </h2>
 
           <p className="text-gray-700 text-lg leading-relaxed">

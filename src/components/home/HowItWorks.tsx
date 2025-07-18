@@ -21,6 +21,53 @@ export default function HowItWorks() {
   return (
     <div className="bg-white w-full">
       <div className="flex flex-col lg:flex-row w-full px-6 md:px-12 lg:px-20 xl:px-24 py-14 gap-8 lg:gap-12 items-center max-w-[1440px] mx-auto">
+
+        <motion.div
+          className="w-full lg:w-1/2 flex flex-col gap-10"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <div>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+              How It Works
+            </h1>
+            <p className="font-light text-lg text-gray-600">
+              Here’s How You Can Get Matched With the Right Creators in 4 Simple
+              Steps
+            </p>
+          </div>
+          <div className="flex h-full  gap-6 mt-4">
+            <motion.div
+              className="h-full rounded-2xl"
+              transition={{ duration: 0.3 }}
+            >
+              <div className="relative w-full mx-auto overflow-hidden rounded-lg">
+                {/* <div className="mt-6 flex-1"> */}
+                <video
+                  controls
+                  width="100%"
+                  height="100%"
+                  style={{ borderRadius: '12px', height: '100%', maxHeight: '750px', background: '#000' }}
+                >
+                  {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" /> */}
+                  <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                {/* </div> */}
+                {/* <Image
+                  src="/landing/howitworks/updateImage.webp"
+                  alt="How it works illustration"
+                  height={750}
+                  width={750}
+                  className="object-cover"
+                /> */}
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+        {/* Right side brand images */}
         <motion.div
           className="w-full lg:w-1/2"
           initial={{ opacity: 0 }}
@@ -28,13 +75,7 @@ export default function HowItWorks() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            How It Works
-          </h1>
-          <p className="font-light text-lg text-gray-600 mb-8">
-            Here’s How You Can Get Matched With the Right Creators in 4 Simple
-            Steps
-          </p>
+
 
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-5"
@@ -88,7 +129,8 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Let AI-Find Your Match
+                {/* Let AI-Find Your Match */}
+                AI Powered Matching
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
                 Our system scans and matches you with verified creators that fit
@@ -134,39 +176,13 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-              Collaborate & Launch
+                Collaborate & Launch
               </h2>
               <p className="font-light text-base  mt-2 text-gray-700">
-              Message, pay, and launch content—all in one seamless platform.
+                Message, pay, and launch content—all in one seamless platform.
               </p>
             </motion.div>
           </motion.div>
-        </motion.div>
-
-        {/* Right side brand images */}
-        <motion.div
-          className="w-full lg:w-1/2 flex flex-col gap-10"
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <div className="flex h-full justify-center  gap-6 mt-4">
-            <motion.div
-              className="h-full rounded-2xl"
-              transition={{ duration: 0.3 }}
-            >
-              <div className="relative w-full max-w-[500px] mx-auto overflow-hidden rounded-lg">
-                <Image
-                  src="/landing/howitworks/updateImage.webp"
-                  alt="How it works illustration"
-                  height={750}
-                  width={750}
-                  className="object-cover"
-                />
-              </div>
-            </motion.div>
-          </div>
         </motion.div>
       </div>
     </div>
