@@ -171,6 +171,16 @@ const CreatorDetailsPage = () => {
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
+        <MatchReason
+          value={similarity || ""}
+          summary={summary?.data}
+          isSummaryLoading={isSummaryLoading}
+          summaryError={summaryError}
+          refetch={refetch}
+        />
+      </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
           <CreatorAudience creator={creator} />
         </Suspense>
       </div>
@@ -199,15 +209,6 @@ const CreatorDetailsPage = () => {
         />
       </Suspense>
 
-      <Suspense fallback={<SectionLoader />}>
-        <MatchReason
-          value={similarity || ""}
-          summary={summary?.data}
-          isSummaryLoading={isSummaryLoading}
-          summaryError={summaryError}
-          refetch={refetch}
-        />
-      </Suspense>
       {/* Collaborate Button - Fixed to bottom on mobile */}
       {!alreadyPaid && (
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg md:static md:shadow-none md:border-0 md:bg-transparent md:p-0 md:mt-8 z-10">

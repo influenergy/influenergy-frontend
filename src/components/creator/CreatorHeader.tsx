@@ -8,11 +8,11 @@ import { ChevronsLeft } from "lucide-react";
 const CreatorHeader = ({ creator }: UserProfile) => {
   const router = useRouter();
   return (
-    <>
+    < div className="gap-2 flex flex-col">
       <button
         type="button"
         onClick={() => router.back()}
-        className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
+        className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center w-fit gap-1 bg-gray-200 p-1.5 rounded-md"
       >
         <ChevronsLeft className="h-5 w-5" />
         Back
@@ -42,7 +42,7 @@ const CreatorHeader = ({ creator }: UserProfile) => {
           </p>
         </div>
       </div>
-    </>
+    </ div>
   );
 };
 
