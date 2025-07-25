@@ -10,6 +10,18 @@ import { Info } from "lucide-react";
 import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import React, { useEffect, useState } from "react";
+import PieChart from "@/components/brand/PieChart";
+
+interface RegionDataItem {
+  city?: string;
+  platform?: string;
+  percentage: string;
+}
+
+interface RegionAnalysis {
+  cityData: RegionDataItem[];
+  platformData: RegionDataItem[];
+}
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
@@ -20,6 +32,17 @@ export default function DashboardPage() {
   const [improvementText, setImprovementText] = useState<string | null>(null);
   const [improvementLoading, setImprovementLoading] = useState(false);
   const [collaborationCount, setCollaborationCount] = useState(0);
+  const [regionAnalysis, setRegionAnalysis] = useState<any>(null);
+
+  useEffect(() => {
+    if (userType === "brand") {
+      userApi.getRegionAnalysis().then((data) => {
+        console.log(data.regionAnalysis,'data')
+        setRegionAnalysis(data.regionAnalysis);
+      });
+    }
+  }, [userType]);
+
   useEffect(() => {
     if (
       userType === "creator" &&
@@ -181,7 +204,7 @@ export default function DashboardPage() {
                       controls
                       width="100%"
                       height="100%"
-                      style={{ borderRadius: '12px',height:'100%',maxHeight:'400px', background: '#000' }}
+                      style={{ borderRadius: '12px', height: '100%', maxHeight: '400px', background: '#000' }}
                     >
                       {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" /> */}
                       <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
@@ -250,6 +273,20 @@ export default function DashboardPage() {
                 {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" /> */}
                 Your browser does not support the video tag.
               </video>
+            </div>
+          </Card>
+          <Card className="p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <PieChart
+                data={regionAnalysis?.cityData}
+                labelKey="city"
+                title="Creator Distribution by City"
+              />
+              <PieChart
+                data={regionAnalysis?.platformData}
+                labelKey="platform"
+                title="Creator Distribution by Platform"
+              />
             </div>
           </Card>
           {/* Add more dashboard cards and content here */}

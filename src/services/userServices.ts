@@ -82,4 +82,8 @@ export const userApi = {
   getProfileQuestionnaire: () => api.get(`/creator/questionnaire`),
   getRecommendedPriceRange: (data: { primaryFollowers: string; secondaryFollowers?: string }) =>
     api.post(`/creator/recommended-price-range`, data),
+  getRegionAnalysis: async () => {
+    const response = await api.get(`/brand/get-region-analysis`);
+    return response.data; // return only the data payload
+  },
 };
