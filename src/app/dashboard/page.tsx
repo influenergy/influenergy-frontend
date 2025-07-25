@@ -12,16 +12,6 @@ import { userApi } from "@/services/userServices";
 import React, { useEffect, useState } from "react";
 import PieChart from "@/components/brand/PieChart";
 
-interface RegionDataItem {
-  city?: string;
-  platform?: string;
-  percentage: string;
-}
-
-interface RegionAnalysis {
-  cityData: RegionDataItem[];
-  platformData: RegionDataItem[];
-}
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
@@ -32,12 +22,12 @@ export default function DashboardPage() {
   const [improvementText, setImprovementText] = useState<string | null>(null);
   const [improvementLoading, setImprovementLoading] = useState(false);
   const [collaborationCount, setCollaborationCount] = useState(0);
-  const [regionAnalysis, setRegionAnalysis] = useState<any>(null);
+  const [regionAnalysis, setRegionAnalysis] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
     if (userType === "brand") {
       userApi.getRegionAnalysis().then((data) => {
-        console.log(data.regionAnalysis,'data')
+        console.log(data.regionAnalysis, 'data')
         setRegionAnalysis(data.regionAnalysis);
       });
     }
@@ -278,12 +268,12 @@ export default function DashboardPage() {
           <Card className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <PieChart
-                data={regionAnalysis?.cityData}
+                data={regionAnalysis?.cityData as DataItem[]}
                 labelKey="city"
                 title="Creator Distribution by City"
               />
               <PieChart
-                data={regionAnalysis?.platformData}
+                data={regionAnalysis?.platformData as DataItem[]}
                 labelKey="platform"
                 title="Creator Distribution by Platform"
               />
@@ -295,3 +285,10 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+type DataItem = {
+  city?: string;
+  platform?: string;
+  value: number;
+  percentage: string;
+};

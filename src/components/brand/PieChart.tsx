@@ -13,6 +13,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 type DataItem = {
   city?: string;
   platform?: string;
+  value: number;
   percentage: string;
 };
 
@@ -23,11 +24,9 @@ type PieChartProps = {
 };
 
 const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
-    console.log(data,'data pie')
   const labels = data?.map((item) => item[labelKey]!);
   const values = data?.map((item) => parseFloat(item.percentage));
-   console.log(labels,'labels')
-   console.log(values,'values')
+
   const chartData = {
     labels,
     datasets: [
@@ -51,7 +50,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: function (context: import("chart.js").TooltipItem<"pie">) {
             return `${context.label}: ${context.parsed}%`;
           },
         },
