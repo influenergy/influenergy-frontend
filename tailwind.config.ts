@@ -115,6 +115,7 @@ const config: Config = {
 				'purple-gradient':
 				  'linear-gradient(113.98deg, #A980FF 1.11%, rgba(142, 96, 236, 0.8) 52.87%, #7544DB 98.99%)',
 			  },
+			  
 		}
 	},
 	// eslint-disable-next-line @typescript-eslint/no-require-imports

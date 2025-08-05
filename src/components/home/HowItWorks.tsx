@@ -55,14 +55,7 @@ export default function HowItWorks() {
                   <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-                {/* </div> */}
-                {/* <Image
-                  src="/landing/howitworks/updateImage.webp"
-                  alt="How it works illustration"
-                  height={750}
-                  width={750}
-                  className="object-cover"
-                /> */}
+              
               </div>
             </motion.div>
           </div>

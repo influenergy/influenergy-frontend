@@ -67,6 +67,8 @@ const PostQuestionnaire = ({
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
 
+  const [campaingId,setCampaignId] = useState<string>("");
+
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
   const isLastStep = currentStep === "review";
@@ -97,9 +99,6 @@ const PostQuestionnaire = ({
       setFormData(defaultValues);
     }
   }, [defaultValues, mode]);
-
-
-
 
   const methods = useForm<PostQuestionnaireData>({
     resolver: yupResolver(currentSchema),
@@ -161,8 +160,9 @@ const PostQuestionnaire = ({
 
         if (user && user._id && mode !== "edit") {
           // Use the transformed data directly without FormData
-          await postApi.createAdPost(updatedData as PostQuestionnaireData);
-
+          let data = await postApi.createAdPost(updatedData as PostQuestionnaireData);
+          console.log("Created Campaign Data:", data);
+          setCampaignId(data.campaingId);
           // Set dialog step to success
           setDialogStep("success");
           // Keep the dialog open
@@ -200,6 +200,10 @@ const PostQuestionnaire = ({
   const renderStepComponent = useCallback(() => {
     return <Step fields={currentFields} mode={mode} />;
   }, [currentFields, mode]);
+
+  const handleFindAI = async (campaignId: string) => {
+    router.push(`/dashboard/brand/findai/campaign/${campaignId}`);
+  };
 
   return (
     <>
@@ -330,7 +334,8 @@ const PostQuestionnaire = ({
                           size="lg"
                           onClick={() => {
                             setIsDialogOpen(false);
-                            router.push("/dashboard/brand/findai"); // Navigate on click
+                            handleFindAI(campaingId); // Navigate to AI Find with campaignId
+                            // router.push("/dashboard/brand/findai"); // Navigate on click
                           }}
                           type="button"
                         >

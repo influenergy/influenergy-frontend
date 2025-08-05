@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.bg-fade-gradient {
+  background: linear-gradient(to right, #ffffff 0%, rgb(255 255 255 / 75%) 10%, rgb(255 255 255 / 35%) 18%, rgb(255 255 255 / 20%) 24%, rgba(255, 255, 255, 12%) 28%);
+}
+
+
+
 @layer base {
   :root {
 

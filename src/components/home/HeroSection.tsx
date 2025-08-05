@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { MarqueeLogos } from "../magicui/marquee";
 
+
 export default function HeroSection() {
   const router = useRouter();
   const imageList = [
@@ -24,59 +25,81 @@ export default function HeroSection() {
   return (
     <div className="relative w-full h-[600px] sm:h-[650px] md:h-[600px] flex items-center justify-center text-center">
       {/* Background Image with Overlay */}
-      <Image
+      {/* <Image
         src="/landing/hero.webp"
         alt="Landing Page Banner"
         fill
         className="object-cover"
         priority
-      />
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-white/70" />
+      /> */}
+      <div className="grid grid-cols-1 sm:grid-cols-1  md:grid-cols-[60%_40%] w-full h-full absolute inset-0">
 
-      {/* Centered Content */}
-      <motion.div
-        className="relative z-10 text-white px-6 md:px-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-      >
-        <h1 className="text-[clamp(2rem,4vw,3.5rem)] font-bold leading-tight font-mona max-w-[90vw] text-center mx-auto">
-          AI-POWERED PLATFORM CONNECTING <br className="block sm:hidden" />
-          BRANDS WITH CREATORS
-        </h1>
-
-        <p className="mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.875rem)] mx-auto  max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.75rem] font-poppins">
-          Let’s create Influencers and UGC marketing campaigns that connect, inspire, and
-          perform—empowering brands to grow
-        </p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <Button
-            className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-9 py-7 text-lg"
-            onClick={() => router.push("/get-started")}
+        <div className="text-black relative flex">
+          {/* Centered Content */}
+          <motion.div
+            className="relative z-10 text-white px-6 md:px-8 flex items-start justify-center flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
           >
-            Start Free Campaign
-          </Button>
-        </motion.div>
-      </motion.div>
+            <h1 className="text-[clamp(2rem,4vw,3rem)] font-bold leading-tight font-mona max-w-[90vw] text-start mx-auto text-black ">
+              AI-POWERED PLATFORM CONNECTING <br className="block sm:hidden" />
+              BRANDS WITH CREATORS
+            </h1>
 
-      {/* Companies Bar - Repositioned for better centering */}
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
-        <motion.div
-          className="relative -bottom-14 px-6 py-4 w-10/12 lg:w-8/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          {/* Replace static logos with Marquee component */}
-          <div className="w-full overflow-hidden">
-            <MarqueeLogos images={imageList} />
+            <p className="mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.475rem)] mx-auto  max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.45rem] font-poppins text-start text-black">
+              Let’s create Influencers and UGC marketing campaigns that connect, inspire, and
+              perform—empowering brands to grow
+            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="text-start flex items-start"
+            >
+              <Button
+                className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-9 py-7 text-lg"
+                onClick={() => router.push("/get-started")}
+              >
+                Start Free Campaign
+              </Button>
+            </motion.div>
+          </motion.div>
+
+          {/* Companies Bar - Repositioned for better centering */}
+          <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
+            <motion.div
+              className="relative -bottom-14 px-6 py-4 w-10/12 lg:w-10/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
+              {/* Replace static logos with Marquee component */}
+              <div className="w-full overflow-hidden">
+                <MarqueeLogos images={imageList} />
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
+        <div className="relative w-full mx-auto overflow-hidden">
+          {/* Gradient background fading from white to transparent */}
+          <div className="absolute inset-0 z-50 bg-fade-gradient pointer-events-none h-[95%] mt-3" />
+
+          {/* Video Element */}
+          <video
+            controls
+            width="100%"
+            height="100%"
+            className="relative z-10 rounded-lg w-full h-full bg-transparent"
+          >
+            <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
+
+
     </div>
   );
 }
