@@ -9,6 +9,7 @@ import {
   Mail,
   WandSparkles,
   FileText,
+  
   // ChartNoAxesCombined,
 } from "lucide-react";
 
@@ -40,18 +41,19 @@ const creatorNav: NavItem[] = [
     label: "My Videos",
     slug: "content",
   },
+  // {
+  //   href: "/dashboard/creator/inbox",
+  //   icon: Mail,
+  //   label: "Educational Hub",
+  //   slug: "inbox",
+  // },
   {
     href: "/dashboard/creator/inbox",
     icon: Mail,
     label: "Inbox",
     slug: "inbox",
   },
-  {
-    href: "/dashboard/feedback",
-    icon: FileText,
-    label: "Feedback",
-    slug: "feedback",
-  },
+ 
 ];
 
 const brandNav: NavItem[] = [

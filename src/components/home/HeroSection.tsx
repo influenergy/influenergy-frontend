@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 // import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { MarqueeLogos } from "../magicui/marquee";
-
+// import DemoVideo from "../../../public/demo.mp4"
 
 export default function HeroSection() {
   const router = useRouter();
@@ -23,16 +23,8 @@ export default function HeroSection() {
   ];
 
   return (
-    <div className="relative w-full h-[600px] sm:h-[650px] md:h-[600px] flex items-center justify-center text-center">
-      {/* Background Image with Overlay */}
-      {/* <Image
-        src="/landing/hero.webp"
-        alt="Landing Page Banner"
-        fill
-        className="object-cover"
-        priority
-      <div className="absolute inset-0 bg-white/70" />
-      /> */}
+    <div className="relative w-full h-[500px] sm:h-[650px] md:h-[600px] flex items-center justify-center text-center">
+
       <div className="grid grid-cols-1 sm:grid-cols-1  md:grid-cols-[60%_40%] w-full h-full absolute inset-0">
 
         <div className="text-black relative flex">
@@ -48,7 +40,7 @@ export default function HeroSection() {
               BRANDS WITH CREATORS
             </h1>
 
-            <p className="mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.475rem)] mx-auto  max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.45rem] font-poppins text-start text-black">
+            <p className="mt-3 md:mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.475rem)] mx-auto  max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.45rem] font-poppins text-start text-black">
               Let’s create Influencers and UGC marketing campaigns that connect, inspire, and
               perform—empowering brands to grow
             </p>
@@ -70,7 +62,7 @@ export default function HeroSection() {
           {/* Companies Bar - Repositioned for better centering */}
           <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
             <motion.div
-              className="relative -bottom-14 px-6 py-4 w-10/12 lg:w-10/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
+              className="relative -bottom-10 md:-bottom-14 px-3 md:px-6 py-2 md:py-4 w-10/12 lg:w-10/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.5 }}
@@ -82,20 +74,20 @@ export default function HeroSection() {
             </motion.div>
           </div>
         </div>
-        <div className="relative w-full mx-auto overflow-hidden">
+        <div className="hidden md:block relative w-full mx-auto overflow-hidden">
           {/* Gradient background fading from white to transparent */}
-          <div className="absolute inset-0 z-50 bg-fade-gradient pointer-events-none h-[95%] mt-3" />
+          <div className="absolute inset-0 z-50 bg-fade-gradient pointer-events-none h-[100%] " />
 
+          <Image src="/hero.jpg" alt="Hero Image" width={600} height={600} className="absolute inset-0 object-cover w-full h-full rounded-lg z-0" />
           {/* Video Element */}
-          <video
-            controls
+          {/* <video
             width="100%"
             height="100%"
             className="relative z-10 rounded-lg w-full h-full bg-transparent"
           >
-            <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
+            <source src="/demo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
-          </video>
+          </video> */}
         </div>
       </div>
 

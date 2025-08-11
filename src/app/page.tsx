@@ -20,6 +20,7 @@ const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const WhatWeDo = lazy(() => import("@/components/home/WhatWeDo"));
 const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));
 const WeEmpowerBrand = lazy(() => import("@/components/home/WeEmpowerBrand"));
+const Stats = lazy(() => import("@/components/home/Stats"));
 const Blog = lazy(() => import("@/components/home/Blog"));
 const GetInTouch = lazy(() => import("@/components/home/GetInTouch"));
 const NewsLetter = lazy(() => import("@/components/home/NewsLetter"));
@@ -60,20 +61,24 @@ export default function Home() {
         </Suspense>
 
         <Suspense fallback={<Loader />}>
-          
+
           <div id="what-we-do">
             <WhatWeDo />
           </div>
         </Suspense>
 
         <Suspense fallback={<Loader />}>
-        <div id="how-it-works">
+          <div id="how-it-works">
             <HowItWorks />
           </div>
           <div id="why-we-do-it">
             <WhyWeDoIt />
           </div>
           <HearFromInfluencer />
+          <div id="stats">
+
+          <Stats />
+          </div>
           <WeEmpowerBrand />
         </Suspense>
 

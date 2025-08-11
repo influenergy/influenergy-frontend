@@ -160,8 +160,7 @@ const PostQuestionnaire = ({
 
         if (user && user._id && mode !== "edit") {
           // Use the transformed data directly without FormData
-          let data = await postApi.createAdPost(updatedData as PostQuestionnaireData);
-          console.log("Created Campaign Data:", data);
+          const data = await postApi.createAdPost(updatedData as PostQuestionnaireData);
           setCampaignId(data.campaingId);
           // Set dialog step to success
           setDialogStep("success");

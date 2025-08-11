@@ -1,80 +1,49 @@
-"use client";
+'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAppDispatch } from "@/store";
-import { logout } from "@/store/features/authSlice";
-import { useRouter } from "next/navigation";
-import { selectUser, useAppSelector,selectUserType } from "@/store";
-import { authApi } from "@/services/authServices";
+import { useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
 
 export function UserNav() {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const user = useAppSelector(selectUser);
-  const userType: string = useAppSelector(selectUserType) ?? "";
+  const [theme, setTheme] = useState('light');
 
-  const handleLogout = async () => {
-    await authApi.logout(userType);
-    dispatch(logout());
-    router.push("/login");
+  // Load theme from localStorage or system preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', prefersDark);
+    }
+  }, []);
+  // Toggle theme
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem('theme', newTheme);
   };
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={
-                user?.profileIcon || "https://avatar.iran.liara.run/public/boy"
-              }
-              alt="@user"
-            />
-            <AvatarFallback>SC</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {user?.fullName || "Not available"}
-            </p>
-
-            <p className="text-xs leading-none text-muted-foreground">
-              {user?.email || "Not available"}
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push("/user-profile")}>
-            Profile
-          </DropdownMenuItem>
-          {/* <DropdownMenuItem
-            onClick={() => router.push("/user-profile/settings")}
-          >
-            Settings
-          </DropdownMenuItem> */}
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={handleLogout}
-          className="text-red-500 bg-red-100"
-        >
-          Log out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <button
+    onClick={toggleTheme}
+    className="relative w-14 h-7 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center transition-colors duration-300 ease-in-out"
+  >
+    {/* Sliding Knob */}
+    <span
+      className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transform transition-transform duration-300 ease-in-out ${
+        theme === 'dark' ? 'translate-x-7' : 'translate-x-0'
+      }`}
+    >
+      {theme === 'light' ? (
+        <Sun size={14} className="text-yellow-500" />
+      ) : (
+        <Moon size={14} className="text-indigo-400" />
+      )}
+    </span>
+  </button>
   );
+
+
 }

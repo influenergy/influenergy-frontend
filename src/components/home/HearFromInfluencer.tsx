@@ -175,14 +175,23 @@ export default function HearFromInfluencer() {
       id="influencers"
     >
       <motion.h1
-        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 sm:mb-6 md:mb-8"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
         viewport={{ once: true }}
       >
-        Hear from our Influencers
+        Our Influencers
       </motion.h1>
+      <motion.h3
+        className="font-light sm:text-sm text-base text-center mb-4 sm:mb-6 md:mb-8 text-gray-600"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        viewport={{ once: true }}
+      >
+        Collaborate, create, and grow with top influencers
+      </motion.h3>
 
       <div className="relative flex justify-center items-center overflow-hidden py-2">
         <div className="flex items-center justify-center gap-0.5 sm:gap-1 md:gap-3">

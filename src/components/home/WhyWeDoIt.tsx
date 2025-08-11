@@ -23,40 +23,7 @@ export default function WhyWeDoIt() {
   return (
     <div className="bg-[#f7f6ff] w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 items-center max-w-[1440px] mx-auto">
-        {/* Left Column - Feature Cards */}
-        <motion.div
-          className="flex flex-col space-y-6 px-0 md:px-5"
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
-            Why We Do It
-          </h2>
-          <p className="text-gray-600 text-base font-light m-0 p-0 h-full">
-            Finding the right creator for your brand shouldn’t be a hassle
-          </p>
-
-          <div className="mt-6">
-            <p className="text-xl leading-relaxed mb-8">
-              Today’s consumers trust real stories from real creators. We
-              empower brands to partner with Influencer & UGC creators
-            </p>
-
-            <motion.div
-              className="flex items-center relative"
-              whileHover={{ x: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 flex items-center text-lg">
-                <Link href="/get-started">Explore Now</Link>
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Right Column - Content */}
+        {/* Left Column  */}
         <motion.div
           className="relative w-full space-y-12"
           variants={container}
@@ -182,8 +149,38 @@ export default function WhyWeDoIt() {
           </motion.div>
         </motion.div>
 
+          {/* Right Column  */}
+        <motion.div
+          className="flex flex-col space-y-6 px-0 md:px-5"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+            Why We Do It
+          </h2>
+          <p className="text-gray-600 text-base font-light m-0 p-0 h-full">
+            Finding the right creator for your brand shouldn’t be a hassle
+          </p>
 
+          <div className="mt-6">
+            <p className="text-xl leading-relaxed mb-8">
+              Today’s consumers trust real stories from real creators. We
+              empower brands to partner with Influencer & UGC creators
+            </p>
 
+            <motion.div
+              className="flex items-center relative"
+              whileHover={{ x: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 flex items-center text-lg">
+                <Link href="/get-started">Explore Now</Link>
+              </Button>
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

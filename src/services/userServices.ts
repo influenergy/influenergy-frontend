@@ -86,4 +86,8 @@ export const userApi = {
     const response = await api.get(`/brand/get-region-analysis`);
     return response.data; // return only the data payload
   },
+  getCreatorHistoryData: async () => {
+    const response = await api.get(`/creator/history`);
+    return response.data; // return only the data payload
+  },
 };

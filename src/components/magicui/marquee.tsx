@@ -84,7 +84,7 @@ export function MarqueeLogos({
 }: MarqueeLogosProps) {
   return (
     <Marquee
-      className="py-4"
+      className="py-2 md:py-4"
       pauseOnHover={pauseOnHover}
       repeat={2}
       style={{ "--duration": "20s" } as React.CSSProperties}

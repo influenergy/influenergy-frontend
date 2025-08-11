@@ -21,7 +21,7 @@ const config: Config = {
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				primary: {
-					DEFAULT: '#a679dc',
+					DEFAULT: '#7544DB',
 					foreground: 'white'
 				},
 				secondary: {
@@ -111,6 +111,7 @@ const config: Config = {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
+			
 			backgroundImage: {
 				'purple-gradient':
 				  'linear-gradient(113.98deg, #A980FF 1.11%, rgba(142, 96, 236, 0.8) 52.87%, #7544DB 98.99%)',
