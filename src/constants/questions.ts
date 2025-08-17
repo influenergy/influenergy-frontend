@@ -12,11 +12,16 @@ export interface Field {
     | "multiselect"
     | "textarea"
     | "file"
+    | "grouped-dropdown"
     | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
   placeholder?: string;
+  groups?:{
+    label:string,
+    options:string[]
+  }[]
 }
 
 interface Step {

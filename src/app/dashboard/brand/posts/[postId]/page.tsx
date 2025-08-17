@@ -1,13 +1,22 @@
 "use client";
 import PostDescription from "@/components/dashboard/PostDescription";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
+import { CampaignResponse, Collaboration } from "@/types/PostTypes";
+
 const Page = () => {
   const { postId } = useParams();
-  const { data: campaign, isLoading, error } = useCampaign(postId as string);
-
+  const [campaignData, setCampaignData] = useState<CampaignResponse | null>(null);
+  const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
+  const { data, isLoading, error } = useCampaign(postId as string, 'none');
+  useEffect(() => {
+    if (data?.data) {
+      setCampaignData(data.data.campaignData || {});
+      setCollaborations(data.data.collaborations || []);
+    }
+  }, [data]);
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -25,13 +34,13 @@ const Page = () => {
     );
   }
 
-  if (!campaign) {
+  if (!campaignData) {
     return <div>Campaign not found</div>;
   }
 
   return <>
-    
-    <PostDescription {...campaign} />
+
+    <PostDescription data={campaignData} collaborations={collaborations} />
   </>
 };
 

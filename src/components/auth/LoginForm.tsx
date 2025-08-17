@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 
 import { ArrowLeft, Eye, EyeOff, Loader2, Mail } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { loginSchema } from "@/lib/AuthSchema";
 import { LoginFormInput } from "./FormInput";
 import { useAppDispatch, useAppSelector } from "@/store";
@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import creatorHeroImg from "../../../public/Rectangle 4587.png";
 import sittingImg from "../../../public/sitting.png";
 import Footer from "../home/Footer";
 type LoginFormData = yup.InferType<typeof loginSchema>;
@@ -134,14 +133,31 @@ export default function LoginForm() {
     }
   };
 
-  // const imageUrl =
-  //   userType === "creator"
-  //     ? "https://d20cf3kfv1a9jn.cloudfront.net/images/login_creator.webp"
-  //     : "https://d20cf3kfv1a9jn.cloudfront.net/images/brand_login.webp";
-  const imageUrl =
-    userType === "creator"
-      ? creatorHeroImg
-      : "https://d20cf3kfv1a9jn.cloudfront.net/images/brand_login.webp";
+  const videos = [
+    "/video1.mp4",
+    "/video2.mov",
+    "/video3.mov",
+    "/video4.mov",
+  ];
+
+  const [mainIndex, setMainIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Auto rotate main video every 8 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMainIndex((prev) => (prev + 1) % videos.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [videos.length]);
+
+  // Auto-play the video when mainIndex changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => { });
+    }
+  }, [mainIndex]);
 
   return (
     <div className="relative w-full min-h-screen flex flex-col overflow-hidden ">
@@ -323,20 +339,49 @@ export default function LoginForm() {
               </div>
               {/* Image Section */}
               <motion.div
-                className="bg-gray-50 hidden md:block"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
+                className="bg-gray-50 hidden md:flex  justify-start h-full relative"
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true, amount: 0.3 }}
               >
-                <div className="relative w-full h-full hidden md:block rounded-[7%] overflow-hidden bg-transparent hover:scale-[1.02] transition fade-in-out duration-300">
-                  <Image
-                    src={imageUrl}
-                    alt={`${userType} login background`}
-                    fill
-                    className="object-fill bg-transparent z-0"
-                    quality={80}
-                    loading="lazy"
-                  />
+                <div className="flex w-full max-w-2xl gap-4 max-h-[500px]">
+                  {/* Main Video */}
+                  <div className="flex-1 rounded-xl overflow-hidden">
+                    <video
+                      ref={videoRef}
+                      key={mainIndex}
+                      src={videos[mainIndex]}
+                      className="w-full h-full object-cover rounded-xl aspect-[9/16] max-h-[500px]"
+                      controls={false}
+                      muted
+                      autoPlay
+                      playsInline
+                    />
+                  </div>
+
+                  {/* Side Thumbnails */}
+                  <div className="flex flex-col gap-3 w-40">
+                    {videos
+                      .filter((_, idx) => idx !== mainIndex)
+                      .map((video) => {
+                        const actualIndex = videos.findIndex((v) => v === video);
+                        return (
+                          <motion.div
+                            key={video}
+                            className="flex-1 rounded-xl overflow-hidden cursor-pointer"
+                            whileHover={{ scale: 1.05 }}
+                            onClick={() => setMainIndex(actualIndex)}
+                          >
+                            <video
+                              src={video}
+                              className="w-full h-full object-cover"
+                              muted
+                            />
+                          </motion.div>
+                        );
+                      })}
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -344,8 +389,8 @@ export default function LoginForm() {
         </motion.div>
       </div>
 
-      {/* SUCCESS STORIES SECTION */}
-      <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
+
+      {userType === "creator" && <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -401,10 +446,9 @@ export default function LoginForm() {
             </div>
           </motion.div>
         </motion.div>
-      </section>
+      </section>}
 
-      {/* METRICS ROW */}
-      <div className="w-full py-12 px-4 text-center grid grid-cols-1 sm:grid-cols-3 gap-6 bg-white max-w-6xl mx-auto">
+      {userType === "creator" && <div className="w-full py-12 px-4 text-center grid grid-cols-1 sm:grid-cols-3 gap-6 bg-white max-w-6xl mx-auto">
         <div className="flex flex-col items-center">
           <p className="text-sm text-gray-700">Trusted by brands</p>
           <h3 className="text-6xl font-bold text-[#8055FE]">100+</h3>
@@ -420,7 +464,66 @@ export default function LoginForm() {
             <span className="text-sm font-bold text-[#8055FE]">per annum</span>
           </h3>
         </div>
-      </div>
+      </div>}
+
+
+      {userType === "brand" &&
+        <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex flex-col items-center max-w-5xl mx-auto"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">
+              Brand Testimonials
+            </h2>
+            <p className="text-center text-gray-600 max-w-2xl mb-10">
+              iscover how leading brands have experienced growth, innovation, and success through our partnerships.
+            </p>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="flex flex-col sm:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-dashed border-[#c8c8f1]"
+            >
+              {/* Image */}
+              <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
+                <Image
+                  src={sittingImg}
+                  alt="Creator Success Stories"
+                  fill
+                  className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col justify-between p-6 w-full">
+                <div className="flex flex-col sm:flex-row gap-6 mb-4 ">
+                  <div>
+                    <span className="text-gray-400 block">Brand</span>
+                    <p className="font-semibold text-black">Starkbucks</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block">Joined On</span>
+                    <p className="font-semibold text-black">12th Sep 2025</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block">Total Collaboration</span>
+                    <p className="font-semibold text-black">51</p>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed max-w-lg">
+                  Adam, a lifestyle creator from Austin, turned his passion for
+                  self-care and storytelling into a thriving career. Through
+                  Influenery, he connected with over 15 brands in 8 months — creating
+                  authentic product videos that reached 1M+ viewers. He doubled his
+                  income and landed a long-term brand deal, all while working from his
+                  home studio.
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>}
 
       <Footer />
     </div>

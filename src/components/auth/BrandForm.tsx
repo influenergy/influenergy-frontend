@@ -15,6 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/authServices";
 import RegistrationSuccess from "./RegistrationSucess";
 import { useState } from "react";
+import sittingImg from "../../../public/sitting.png";
+import Footer from "../home/Footer";
 
 type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
 
@@ -96,56 +98,17 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       {showSuccess ? (
         <RegistrationSuccess />
       ) : (
+        <div className="relative w-full min-h-screen flex flex-col overflow-hidden ">
+
         <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden relative">
-          {/* Mobile background image with 10% opacity */}
-          <div
-            className="absolute inset-0 md:hidden z-0"
-            aria-hidden="true"
-          >
-            <Image
-              src={"https://d20cf3kfv1a9jn.cloudfront.net/images/register_brand1.webp"}
-              alt="Background"
-              fill
-              className="object-cover object-center opacity-10"
-              priority
-            />
-          </div>
+      
           <motion.div
             className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <motion.div
-              className="absolute top-0 -right-36 -z-10 hidden md:block w-[300px] lg:w-[400px]"
-              initial={{ y: -100 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Image
-                src="/images/line1.png"
-                alt="Decorative line"
-                width={400}
-                height={100}
-                className="w-full h-auto"
-                priority
-              />
-            </motion.div>
-
-            <motion.div
-              className="absolute bottom-0 -right-36 -z-10 hidden md:block w-[300px] lg:w-[400px]"
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Image
-                src="/images/line2.png"
-                alt="Decorative line"
-                width={400}
-                height={100}
-                className="w-full h-auto"
-              />
-            </motion.div>
+            
 
             <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
               <Link href="/get-started">
@@ -313,6 +276,65 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
               />
             </div>
           </motion.div>
+        </div>
+        <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col items-center max-w-5xl mx-auto"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">
+          Brand Testimonials
+          </h2>
+          <p className="text-center text-gray-600 max-w-2xl mb-10">
+          iscover how leading brands have experienced growth, innovation, and success through our partnerships.
+          </p>
+
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="flex flex-col sm:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-dashed border-[#c8c8f1]"
+          >
+            {/* Image */}
+            <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
+              <Image
+                src={sittingImg}
+                alt="Creator Success Stories"
+                fill
+                className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-col justify-between p-6 w-full">
+              <div className="flex flex-col sm:flex-row gap-6 mb-4 ">
+                <div>
+                  <span className="text-gray-400 block">Brand</span>
+                  <p className="font-semibold text-black">Starkbucks</p>
+                </div>
+                <div>
+                  <span className="text-gray-400 block">Joined On</span>
+                  <p className="font-semibold text-black">12th Sep 2025</p>
+                </div>
+                <div>
+                  <span className="text-gray-400 block">Total Collaboration</span>
+                  <p className="font-semibold text-black">51</p>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed max-w-lg">
+                Adam, a lifestyle creator from Austin, turned his passion for
+                self-care and storytelling into a thriving career. Through
+                Influenery, he connected with over 15 brands in 8 months — creating
+                authentic product videos that reached 1M+ viewers. He doubled his
+                income and landed a long-term brand deal, all while working from his
+                home studio.
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      <Footer />
         </div>
       )}
     </>

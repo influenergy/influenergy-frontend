@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import Image from "next/image";
@@ -8,9 +9,21 @@ interface CreatorWithCompleteProfileProps {
   fullName?: string;
 }
 
+interface Collaboration {
+  _id: string;
+  brandName: string;
+  status: string;
+  videos: Array<{ link: string }>;
+  campaignPost?: string;
+}
+
 function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProps) {
   const [improvementLoading, setImprovementLoading] = useState<boolean>(false);
   const [improvementText, setImprovementText] = useState<string | null>(null);
+
+  const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
+  const [counts, setCounts] = useState<{ Pending: number; Active: number; Completed: number } | null>(null);
+
   const [collaborationCount, setCollaborationCount] = useState<number>(0);
 
   const fetchImprovementText = async () => {
@@ -30,6 +43,16 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       setCollaborationCount(text?.collaborationCount);
       setImprovementLoading(false);
     });
+
+    userApi
+      .getCreatorHistoryData()
+      .then((res) => {
+        if (res?.data) {
+          setCollaborations(res.data.collaborations || []);
+          setCounts(res.data.counts || null);
+        }
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   if (improvementLoading) {
@@ -112,11 +135,11 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
               Recently Worked With:
             </h2>
-            <div className="flex flex-col gap-4 justify-between flex-1">
-              {["Anthony Macky", "Jennifer Jane", "Alexander John", "Lisa Jacob"].map((name, idx) => (
-                <div key={idx} className="flex items-center gap-4 mt-2">
-                  <Image src="/brandIcon.jpg" alt={name} width={70} height={70} className="rounded-full" />
-                  <span className="text-lg text-gray-600 dark:text-gray-300">{name}</span>
+            <div className="flex flex-col gap-4 flex-1 overflow-hidden">
+              {collaborations.map((collab) => (
+                <div key={collab._id} className="flex items-center gap-4 mt-2">
+                  <Image src={collab.campaignPost || "/brandIcon.jpg"} alt={collab.brandName} width={70} height={70} className="rounded-full" />
+                  <span className="text-lg text-gray-600 dark:text-gray-300">{collab.brandName}</span>
                 </div>
               ))}
             </div>
@@ -124,17 +147,17 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
 
           <div className="w-full flex flex-col">
             <div className="flex flex-col gap-4 justify-between h-full">
-              {[
-                { label: "Ongoing Collaboration", count: "05" },
-                { label: "Pending Opportunities", count: "05" },
-                { label: "Completed Collaboration", count: "05" },
+              {counts && [
+                { label: "Ongoing Collaboration", count: counts.Active },
+                { label: "Pending Opportunities", count: counts.Pending },
+                { label: "Completed Collaboration", count: counts.Completed },
               ].map((item, idx) => (
                 <Card
                   key={idx}
                   className="flex flex-col items-start gap-4 px-2 py-5 bg-white dark:bg-gray-800 transition-colors duration-300"
                 >
                   <p className="text-xl font-normal text-gray-700 dark:text-gray-300">{item.label}</p>
-                  <span className="text-5xl text-blue-600 dark:text-blue-400 font-semibold">{item.count}</span>
+                  <span className="text-5xl text-blue-600 dark:text-blue-400 font-semibold">{item.count < 10 ? '0' + item.count : item.count}</span>
                 </Card>
               ))}
             </div>
@@ -144,8 +167,22 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
 
       {/* Recent Videos */}
       <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
-        <h1 className="text-gray-900 dark:text-white">Recent Videos</h1>
-        <div></div>
+        <h1 className="text-gray-900 dark:text-white mb-4">Recent Videos</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {collaborations
+            .flatMap((c) => c.videos)
+            .slice(0, 6)
+            .map((video, idx) => {
+              return <video
+                key={idx}
+                controls
+                className="rounded-lg w-full max-h-48 bg-black"
+              >
+                <source src={video.link} type="video/mp4" />
+              </video>
+            }
+            )}
+        </div>
       </Card>
     </div>
   );

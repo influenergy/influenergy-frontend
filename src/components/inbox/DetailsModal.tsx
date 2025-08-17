@@ -128,13 +128,13 @@ export default function DetailsModal({
               <hr />
 
               {/* Target Group */}
-              <div className="my-3 flex flex-col gap-4">
+              {/* <div className="my-3 flex flex-col gap-4">
                 <h4 className="text-lg font-semibold">Campaign Concept</h4>
                 <p className="text-gray-600">
                   {campaign.campaignConcept || "No campaign concept provided"}
                 </p>
                 <hr />
-              </div>
+              </div> */}
 
               {/* Target Audience */}
 

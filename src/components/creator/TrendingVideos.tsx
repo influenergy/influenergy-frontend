@@ -56,8 +56,8 @@ const TrendingVideos: React.FC<{ creatorId: string }> = ({ creatorId }) => {
             >
               <div className="relative h-48 w-full">
                 <Image
-                  src={video?.image}
-                  alt={video?.title}
+                  src={video?.image || "/video-preview.svg"}
+                  alt={video?.title || "post image"}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover"

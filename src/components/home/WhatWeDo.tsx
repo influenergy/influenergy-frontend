@@ -9,28 +9,28 @@ export default function WhatWeDo() {
       icon: "/landing/whatwedo/sparkle.png",
       title: "AI Powered Solution",
       description:
-        "AI-Find tool that seamlessly finds the best creator for brands to use for UGC & Influencer Campaigns",
+        "Our AI-Find tool saves days connecting brands with the best creators for UGC and influencer marketing campaigns",
       delay: 0.2,
     },
     {
       icon: "/landing/whatwedo/bulb.png",
-      title: "Time Saving Influencer Marketing",
+      title: "Verified Creators & Streamlined Briefs",
       description:
-        "Save time on creator discovery with custom briefs & personalized pitches tailored to your brand",
+        "Work with a curated network of vetted creators and share clear, standardized briefs that save time and drive better campaign results",
       delay: 0.4,
     },
     {
       icon: "/landing/whatwedo/payment.png",
-      title: "Flexible Payment Plans & Seamless Transactions",
+      title: "Fast & Secure Payments",
       description:
-        "Our payment options and built-in transaction tools make it easy to pay creators securely and on your terms",
+        "With flexible payment options and built-in transaction tools, you can pay creators securely, on your terms, and get fast deliverables for your brand",
       delay: 0.6,
     },
   ];
 
   return (
     <div className="bg-white w-full">
-      <div className="flex flex-col lg:flex-row w-full px-6 md:px-12 lg:px-20 xl:px-24 py-14 gap-8 lg:gap-12 items-center max-w-[1440px] mx-auto">
+      <div className="flex flex-col lg:flex-row w-full px-6 md:px-12 lg:px-20 xl:px-24 py-6 md:py-10 lg:py-16 gap-8 lg:gap-12 items-center max-w-[1440px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

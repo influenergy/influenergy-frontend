@@ -5,12 +5,15 @@ import { Campaign } from "@/types/PostQuestionnaire";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
-import { postApi } from "@/services/postServices"; // Adjust the import based on your file structure
-const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
+import { postApi } from "@/services/postServices";
+
+const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign) => {
   const router = useRouter();
   const [showCopyModal, setShowCopyModal] = useState(false);
   const [newName, setNewName] = useState("");
   const [copying, setCopying] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isLongDescription = (campaignDescription?.length || 0) > 120;
 
   const handleCardClick = () => {
     // Prevent navigation if dropdown is open or copy modal is open
@@ -52,6 +55,9 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
     }
 
   };
+
+
+
 
   return (
     <>
@@ -102,6 +108,17 @@ const Post = ({ _id, campaignName, campaignPost }: Campaign) => {
             className="object-cover rounded-xl"
           />
         </div>
+        <p className={`text-gray-700 text-sm leading-snug transition-all ${isExpanded ? "" : "line-clamp-2"}`}>
+          {campaignDescription}
+        </p>
+        {isLongDescription && (
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsExpanded(prev => !prev); }}
+            className="text-blue-500 hover:underline text-xs mt-1"
+          >
+            {isExpanded ? "View Less" : "View More"}
+          </button>
+        )}
       </div>
 
       {/* Copy Modal */}

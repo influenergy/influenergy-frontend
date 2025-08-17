@@ -22,7 +22,7 @@ export default function WhyWeDoIt() {
 
   return (
     <div className="bg-[#f7f6ff] w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 items-center max-w-[1440px] mx-auto">
+      <div className="flex flex-col-reverse md:grid md:grid-cols-2 px-6 md:px-16 lg:px-24 py-6 md:py-10 lg:py-16 gap-10 items-center max-w-[1440px] mx-auto">
         {/* Left Column  */}
         <motion.div
           className="relative w-full space-y-12"

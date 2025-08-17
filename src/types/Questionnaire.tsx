@@ -88,7 +88,7 @@ export interface PostQuestionnaireData {
   // Step 4 - Brief
   "compaign-name": string;
   "your-brief": string;
-  "compaign-concept": string;
+  // "compaign-concept": string;
 
   // Step 3 - Content Vibe
   "content-type": string;

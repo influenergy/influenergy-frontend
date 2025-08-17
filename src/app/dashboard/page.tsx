@@ -6,11 +6,10 @@ import { useAppSelector } from "@/store";
 import { useUserDetails } from "@/hooks/useUser";
 import { Loader } from "@/components/common/Loader";
 
-import { userApi } from "@/services/userServices";
-import React, { useEffect, useState } from "react";
-import PieChart from "@/components/brand/PieChart";
+import React  from "react";
 import CreatorWithCompleteProfile from "@/components/dashboard/CreatorWithCompleteProfile";
 import NonVerifiedCreatorProfile from "@/components/dashboard/NonVerifiedCreatorProfile";
+import BrandDashboard from "@/components/dashboard/BrandDashboard";
 
 
 export default function DashboardPage() {
@@ -20,16 +19,6 @@ export default function DashboardPage() {
 
   // Add state for improvement text
 
-  const [regionAnalysis, setRegionAnalysis] = useState<Record<string, unknown> | null>(null);
-
-  useEffect(() => {
-    if (userType === "brand") {
-      userApi.getRegionAnalysis().then((data) => {
-        console.log(data.regionAnalysis, 'data')
-        setRegionAnalysis(data.regionAnalysis);
-      });
-    }
-  }, [userType]);
 
 
 
@@ -76,50 +65,11 @@ export default function DashboardPage() {
         </>
       ) : (
         // Brand dashboard
-        <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-2">
-              Welcome Back, {userDetails?.data?.fullName || "Brand"}!
-            </h2>
-            <p className="text-muted-foreground">
-              Your brand dashboard is ready. Start connecting with creators!
-            </p>
-            <div className="mt-6">
-              <video
-                controls
-                width="100%"
-                style={{ borderRadius: '12px', maxHeight: '320px', background: '#000' }}
-              >
-                <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
-                {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" /> */}
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </Card>
-          <Card className="p-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <PieChart
-                data={regionAnalysis?.cityData as DataItem[]}
-                labelKey="city"
-                title="Creator Distribution by City"
-              />
-              <PieChart
-                data={regionAnalysis?.platformData as DataItem[]}
-                labelKey="platform"
-                title="Creator Distribution by Platform"
-              />
-            </div>
-          </Card>
-          {/* Add more dashboard cards and content here */}
+        <div className="">
+          <BrandDashboard fullName={userDetails?.data?.fullName} />
         </div>
       )}
     </div>
   );
 }
 
-type DataItem = {
-  city?: string;
-  platform?: string;
-  value: number;
-  percentage: string;
-};

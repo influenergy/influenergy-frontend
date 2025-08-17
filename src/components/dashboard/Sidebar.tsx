@@ -80,7 +80,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
 
   return (
     <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className}`}>
-      <div className=" flex h-full flex-col gap-2 p-2 md:p-4">
+      <div className=" flex h-full flex-col gap-2 p-2 md:p-4 overflow-auto">
         <Link href="/dashboard" className="flex justify-center items-center">
           <Image
             src="/images/logo-white.svg"

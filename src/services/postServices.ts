@@ -45,9 +45,9 @@ export const postApi = {
   },
 
   // Get a single campaign by ID
-  getCampaignById: async (id: string) => {
+  getCampaignById: async (id: string, status:string) => {
     try {
-      const response = await api.get(`/brand/campaign/${id}`);
+      const response = await api.get(`/brand/campaign/${id}/${status}`);
       return response.data;
     } catch (error) {
       console.error(`Error fetching campaign with ID ${id}:`, error);
@@ -235,4 +235,8 @@ export const postApi = {
       throw error;
     }
   },
+  getCollaborationHistory: async() => {
+    const response = await api.get(`/brand/collaborations-history`);
+    return response.data; // return only the data payload
+  }
 };

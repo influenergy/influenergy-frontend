@@ -228,6 +228,41 @@ export const FormField = ({ field }: FormFieldProps) => {
       </div>
     );
   }
+  if (field.category === "grouped-dropdown") {
+    return (
+      <div className="relative w-full">
+        <select
+          {...register(fieldName)}
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
+            error
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:ring-primary"
+          } focus:outline-none focus:ring-2 appearance-none`}
+        >
+          <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+            Select
+          </option>
+          {field.groups?.map((group) => (
+            <optgroup key={group.label} label={group.label}>
+              {group.options.map((option: string) => (
+                <option
+                  key={option}
+                  value={option}
+                  style={{ fontFamily: "Poppins, sans-serif" }}
+                >
+                  {option}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
+          <ChevronDown size={20} />
+        </div>
+      </div>
+    );
+  }
+  
 
   if (field.category === "date") {
     return <DateInput field={field} />;

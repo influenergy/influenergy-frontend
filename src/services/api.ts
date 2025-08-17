@@ -1,6 +1,6 @@
 import axios from "axios";
 import { safeNavigate } from "@/utils/navigation";
-
+import { store } from "@/store";
 const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/v1/api";
 
 export const api = axios.create({
@@ -11,6 +11,24 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+api.interceptors.request.use((config) => {
+  const state = store.getState(); // direct store access
+  const userType = state.auth.userType; // persisted from Redux
+
+  if (userType) {
+    config.headers["x-user-type"] = userType;
+  }
+  return config;
+});
+
+// Add interceptor to set x-user-type dynamically
+api.interceptors.request.use((config) => {
+  const userType = localStorage.getItem("userType"); // or from your auth state
+  if (userType) {
+    config.headers["x-user-type"] = userType;
+  }
+  return config;
+});
 
 api.interceptors.response.use(
   (response) => response,
@@ -22,7 +40,7 @@ api.interceptors.response.use(
         // Use safeNavigate for navigation that works in both client and server environments
         safeNavigate('/login');
       }
-      
+
       // Handle rate limiting
       if (error.response.status === 429) {
         // You might want to implement retry logic or show a user-friendly message

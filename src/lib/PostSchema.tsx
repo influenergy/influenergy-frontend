@@ -95,7 +95,7 @@ export const step3Schema = yup.object().shape({
     .min(2, "Campaign name must be at least 2 characters")
     .required("Campaign name is required"),
   "your-brief": yup.string().required("Your brief is required"),
-  "compaign-concept": yup.string().required("Campaign concept is required"),
+  // "compaign-concept": yup.string().required("Campaign concept is required"),
 }) as Schema;
 
 export const step4Schema = yup.object().shape({

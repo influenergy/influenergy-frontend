@@ -20,7 +20,7 @@ export interface PostQuestionnaireData {
   "target-interests-other"?: string;
   "compaign-name": string;
   "your-brief": string;
-  "compaign-concept": string;
+  // "compaign-concept": string;
   "content-type": string;
   "video-duration"?: string;
   "catch-phrase": string;

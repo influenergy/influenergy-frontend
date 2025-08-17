@@ -11,10 +11,15 @@ export interface Field {
     | "textarea"
     | "multiselect"
     | "file"
+    | "grouped-dropdown"
     | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
+  groups?:{
+    label:string,
+    options:string[]
+  }[]
 }
 
 interface Step {
@@ -171,11 +176,11 @@ export const CREATE_POST: Questions = {
         slug: "your-brief",
         category: "textarea",
       },
-      {
-        title: "Compaign Concept",
-        slug: "compaign-concept",
-        category: "textarea",
-      },
+      // {
+      //   title: "Compaign Concept",
+      //   slug: "compaign-concept",
+      //   category: "textarea",
+      // },
     ],
   },
 
@@ -206,8 +211,68 @@ export const CREATE_POST: Questions = {
       {
         title: "Call to Action",
         slug: "catch-phrase",
-        category: "textarea",
-      },
+        category: "grouped-dropdown",
+        groups: [
+          {
+            label: "Purchase-Driven CTAs",
+            options: [
+              "Apply discount code",
+              "Book your consultation",
+              "Claim your free sample",
+              "Discover the collection",
+              "Order today for free shipping",
+              "Start your free trial"
+            ]
+          },
+          {
+            label: "Engagement-Driven CTAs",
+            options: [
+              "Enter the giveaway",
+              "Follow the brand",
+              "Join the community",
+              "Join the loyalty program",
+              "Share your experience"
+            ]
+          },
+          {
+            label: "Awareness-Driven CTAs",
+            options: [
+              "Click the link to learn more",
+              "Download the app",
+              "Sign up for early access",
+              "Take the product quiz"
+            ]
+          },
+          {
+            label: "Content-Driven CTAs",
+            options: [
+              "Create and share a video review",
+              "Post an unboxing",
+              "Share before-and-after photos",
+              "Showcase the product in your routine"
+            ]
+          },
+          {
+            label: "Event-Driven CTAs",
+            options: [
+              "RSVP for the live event",
+              "Join the webinar",
+              "Register for the launch party",
+              "Tune in to the livestream"
+            ]
+          },
+          {
+            label: "Advocacy-Driven CTAs",
+            options: [
+              "Refer a friend",
+              "Become a brand ambassador",
+              "Leave a product review",
+              "Share your referral link"
+            ]
+          }
+        ]
+      }
+      ,
       {
         title: "Key Message & Hashtags",
         slug: "key-message",
@@ -323,6 +388,7 @@ export const CREATE_POST: Questions = {
         slug: "preferred-creator-niche",
         category: "multiselect",
         options: [
+          "AI",
           "Beauty & Care",
           "Business & Finance",
           "Events",

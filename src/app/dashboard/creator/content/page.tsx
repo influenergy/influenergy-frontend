@@ -104,10 +104,14 @@ const Page = () => {
       ) : shouldShowContent ? (
         <>
           <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:space-x-4">
-            <p className="text-xl font-semibold md:text-3xl font-poppins md:w-4/6">
-              Upload your best performing videos or reels to showcase yourself
-              to brands who will find you with our AI-Find feature.
-            </p>
+            <div className="flex flex-col justify-start gap-2 md:gap-4">
+
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold">My Videos</h1>
+              <p className="text-lg md:text-xl font-normal font-poppins md:w-4/6">
+                Upload your best performing videos or reels to showcase yourself
+                to brands who will find you with our AI-Find feature.
+              </p>
+            </div>
             <div className="flex items-center justify-end w-full md:w-auto">
               <Button
                 className="bg-primary text-white py-2 px-4 rounded-lg md:w-auto"
@@ -118,7 +122,7 @@ const Page = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 mt-4">
+          <div className="flex flex-wrap gap-4 mt-4 md:mt-6">
             {posts?.data?.videos.map((data: VideoData, index: number) => (
               <PostCard
                 key={index}

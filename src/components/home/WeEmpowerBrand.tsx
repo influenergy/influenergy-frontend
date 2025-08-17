@@ -7,10 +7,11 @@ import Link from "next/link";
 export default function WeEmpowerBrand() {
   return (
     <div className="bg-[#fefaf6] w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 px-6 md:px-16 lg:px-24 py-16 gap-10 md:gap-16 items-start max-w-[1440px] mx-auto ">
+      <div className="flex flex-col-reverse md:grid md:grid-cols-2 px-6 md:px-16 lg:px-24 py-6 md:py-10 lg:py-16 gap-10 md:gap-16 items-start max-w-[1440px] mx-auto">
+
         {/* Left Column - Profile Card */}
         <motion.div
-          className="flex justify-center items-center relative"
+          className="flex justify-center items-center relative flex-1 h-full"
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
@@ -31,7 +32,7 @@ export default function WeEmpowerBrand() {
           </motion.div>
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-white p-4 text-center rounded-b-xl w-[350px] rounded-2xl shadow-lg ">
             <h3 className="text-2xl font-bold text-gray-900">Sandeep Asdhir</h3>
-            <p className="text-gray-600 mt-1">Founder, CEO</p>
+            <p className="text-gray-600 mt-1">Founder & CEO, Influenergy</p>
             <motion.div
               initial={{ y: 5 }}
               whileHover={{ y: 0 }}
@@ -50,22 +51,22 @@ export default function WeEmpowerBrand() {
 
         {/* Right Column - Content */}
         <motion.div
-          className="flex flex-col space-y-6 mt-5 sm:mt-0"
+          className="flex flex-col space-y-6  sm:mt-0"
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold whitespace-nowrap">
-            Message From Our Founder
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold lg:whitespace-nowrap">
+            A Message From Our Founder
           </h2>
 
           <p className="text-gray-700 text-lg leading-relaxed">
-            Sandy is not afraid to roll up his sleeves and get things done,
-            whether it is automating YouTube channels, designing clothes, or
-            analyzing multi-million-dollar deals in the venture world. He is a
-            passionate entrepreneur with a knack for content creation, a keen
-            eye for trends, and a sharp financial mind.
+            When I launched Influenergy, I noticed two major issues in influencer marketing: brands spent endless hours searching for the right creators, and creators faced unclear briefs, slow payments, and frustrating back-and-forth. The process was time consuming and both sides feel short.
+            <br />
+            Influenergy is built to fix that. Our AI-Find tool instantly connects brands with vetted creators who perfectly match their niche, while our built-in contracts, payment options, and streamlined briefs make campaigns simple and efficient.
+            <br />
+            Whether you’re a brand aiming to scale campaigns or a creator seeking consistent work, we’re here to make success faster, easier, and stress-free.
           </p>
         </motion.div>
       </div>

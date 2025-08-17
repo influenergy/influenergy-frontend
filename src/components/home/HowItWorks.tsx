@@ -19,13 +19,13 @@ export default function HowItWorks() {
   };
 
   return (
-    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 xl:px-24 py-14">
+    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 xl:px-24 py-6 md:py-10 lg:py-16">
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
           How It Works
         </h1>
         <p className="text-gray-700 text-base font-light ">
-          Here’s how you can get matched with the right creators in 4 simple steps
+        Tell us what you need - your goals, product, and target audience and let AI curate your brief
         </p>
       </div>
       <div className="grid lg:grid-cols-2 w-full gap-8 lg:gap-12 items-stretch  ">
@@ -91,12 +91,10 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                {/* Let AI-Find Your Match */}
                 AI Powered Matching
               </h2>
               <p className="text-base  mt-2 text-gray-600">
-                Our system scans and matches you with verified creators that fit
-                your brand.
+              Our AI-Find matches your brand with verified creators that fit your brand
               </p>
             </motion.div>
 
@@ -115,7 +113,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Collaborate & Launch
+              Review & Approve
               </h2>
               <p className="text-base  mt-2 text-gray-600">
                 Browse curated matches, review content examples, and approve

@@ -5,13 +5,6 @@ import { motion } from "framer-motion";
 
 
 export default function Stats() {
-
-
-
-
-
-
-
     return (
         <motion.div
             className="w-full py-6 sm:py-8 md:py-10 px-2 sm:px-4 bg-[#f7f6ff] relative"

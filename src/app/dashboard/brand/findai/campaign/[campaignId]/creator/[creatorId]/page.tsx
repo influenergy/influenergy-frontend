@@ -43,7 +43,7 @@ const SectionLoader = () => (
   </div>
 );
 
-const CreatorDetailsPage = () => {
+export default function CreatorDetailsPage(){
   const { campaignId, creatorId } = useParams();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -255,4 +255,4 @@ const CreatorDetailsPage = () => {
   );
 };
 
-export default CreatorDetailsPage;
+

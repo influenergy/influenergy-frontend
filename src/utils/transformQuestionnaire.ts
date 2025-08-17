@@ -132,7 +132,7 @@ export const transformPostData = (formData: PostQuestionnaireData) => {
     noOfDaysForDelivery: formData["no-of-days-for-delivery"],
     additionalInstructions: formData["additional-instructions"] || "",
     campaignPost: formData["campaign-post"],
-    campaignConcept: formData["compaign-concept"],
+    // campaignConcept: formData["compaign-concept"],
     yourBrief: formData["your-brief"],
   };
 
