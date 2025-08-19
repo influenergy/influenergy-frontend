@@ -9,10 +9,10 @@ export const queryKeys = {
 
 export const useFindAiCampaignsList = (status: string) => {
   return useQuery({
-    queryKey: [queryKeys.finddaiCampaignsList, status],
+    queryKey: [queryKeys.finddaiCampaignsList, "status"],
     queryFn: async () => {
       try {
-        return await postApi.getCampaignByStatus(status);
+        return await postApi.getCollabByStatus(status);
       } catch (error) {
         console.error("Error fetching AI campaigns list:", error);
         throw error;
@@ -20,7 +20,7 @@ export const useFindAiCampaignsList = (status: string) => {
     },
     retry: false,
     // Set staleTime to 5 seconds
-    // staleTime: 5000,
+    // staleTime: 1000 * 60,
   });
 };
 

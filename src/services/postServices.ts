@@ -19,7 +19,7 @@ export const postApi = {
   },
   updateAdPost: async (formData: PostQuestionnaireData, createNew: boolean) => {
     const transformedData = transformPostData(formData);
-    transformedData.append("createNew", String(createNew)); 
+    transformedData.append("createNew", String(createNew));
 
     try {
       const response = await api.put("/brand/update-campaign", transformedData, {
@@ -45,7 +45,7 @@ export const postApi = {
   },
 
   // Get a single campaign by ID
-  getCampaignById: async (id: string, status:string) => {
+  getCampaignById: async (id: string, status: string) => {
     try {
       const response = await api.get(`/brand/campaign/${id}/${status}`);
       return response.data;
@@ -54,12 +54,12 @@ export const postApi = {
       throw error;
     }
   },
-  getCampaignByStatus: async (status: string) => {
+  getCollabByStatus: async (status: string) => {
     try {
-      const response = await api.get(`/brand/campaigns/${status}`);
+      const response = await api.get(`/brand/collab/${status}`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching getCampaignByStatus :", error);
+      console.error("Error fetching getCollabByStatus :", error);
       throw error;
     }
   },
@@ -235,7 +235,7 @@ export const postApi = {
       throw error;
     }
   },
-  getCollaborationHistory: async() => {
+  getCollaborationHistory: async () => {
     const response = await api.get(`/brand/collaborations-history`);
     return response.data; // return only the data payload
   }

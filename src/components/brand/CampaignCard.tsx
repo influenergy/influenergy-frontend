@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { memo, useState } from "react";
 import StatusDialog from "./StatusDialog";
+import { Campaign } from "@/types/PostQuestionnaire";
 
 export interface CampaignVideo {
   link: string;
@@ -25,6 +26,7 @@ export interface CampaignData {
   collaborationData?: {
     videos: CampaignVideo[];
   };
+  collaborations?:string[]
 } 
 const CampaignCard = memo(
   ({
@@ -32,12 +34,12 @@ const CampaignCard = memo(
     onFindClick,
     status,
   }: {
-    campaign: CampaignData;
+    campaign: Campaign;
     onFindClick?: (id: string) => void;
     status: string;
   }) => {
     const [isOpen, setIsOpen] = useState(false);
-
+    console.log(campaign,'from campaign card')
     return (
       <>
         <div className="md:w-full rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2">
@@ -64,7 +66,7 @@ const CampaignCard = memo(
           {status === "Initial" && (
             <Button
               className="bg-primary w-full text-sm p-5 flex items-center justify-center gap-2"
-              onClick={() => onFindClick && onFindClick(campaign._id)}
+              onClick={() => onFindClick && onFindClick(campaign?._id)}
             >
               AI Find <Sparkles className="h-5 w-5 sm:h-7 sm:w-7" />
             </Button>

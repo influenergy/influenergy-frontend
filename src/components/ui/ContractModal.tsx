@@ -6,11 +6,12 @@ interface CollaborationContractModalProps {
   isOpen: boolean;
   onClose: () => void;
   handleCollaborate: () => void;
+  disabled?: boolean;
 }
 
 export const CollaborationContractModal: React.FC<
   CollaborationContractModalProps
-> = ({ isOpen, onClose,handleCollaborate }) => {
+> = ({ isOpen, onClose,handleCollaborate,disabled }) => {
   const [accepted, setAccepted] = useState(false);
 
   const userType = useAppSelector((state) => state.auth.userType);
@@ -51,10 +52,10 @@ export const CollaborationContractModal: React.FC<
         </div>
 
         <div className="mt-6 flex justify-end gap-2">
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" disabled={disabled} onClick={onClose}>
             Decline
           </Button>
-          <Button disabled={!accepted} type="button" onClick={handleCollaborate} className="bg-primary hover:bg-primary/90 text-white">
+          <Button disabled={!accepted || disabled} type="button" onClick={handleCollaborate} className="bg-primary hover:bg-primary/90 text-white">
             Accept & Proceed
           </Button>
         </div>

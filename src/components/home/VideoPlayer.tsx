@@ -127,7 +127,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             console.error("Error playing video:", err);
             // Most browsers will only allow autoplay if video is muted
             if (err.name === "NotAllowedError" && !muted) {
-              console.log("Autoplay prevented, trying with muted audio");
+              
               videoElement.muted = true;
               videoElement
                 .play()

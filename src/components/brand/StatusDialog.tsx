@@ -55,11 +55,7 @@ export default function StatusDialog({
 
   const { mutate: handleApproveVideo, isPending: isApproving } =
     useAcceptOrDeclineVideo({
-      collaborationId: campaign?.collaborationId,
-      videoId: campaign?.collaborationData?.videos[0]?._id,
-      status: "Approved",
-      message: "test",
-      onSuccess: () => {
+          onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["campaigns"] });
         onClose();
       },
@@ -67,10 +63,7 @@ export default function StatusDialog({
 
   const { mutate: handleDeclineVideo, isPending: isDeclining } =
     useAcceptOrDeclineVideo({
-      collaborationId: campaign?.collaborationId,
-      videoId: campaign?.collaborationData?.videos[0]?._id,
-      status: "Declined",
-      message: requestMessage,
+     
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["campaigns"] });
         onClose();
@@ -241,7 +234,13 @@ export default function StatusDialog({
             <Button
               className="bg-primary text-white w-full"
               onClick={() => {
-                handleApproveVideo();
+                handleApproveVideo({
+                  collaborationId: campaign?.collaborationId,
+                  videoId: campaign?.collaborationData?.videos[0]?._id,
+                  status: "Approved",
+                  message: "test",
+                 
+                });
                 setApproveDialogOpen(false);
               }}
               disabled={isApproving}
@@ -289,7 +288,13 @@ export default function StatusDialog({
             <Button
               className="bg-primary text-white w-full"
               onClick={() => {
-                handleDeclineVideo();
+                handleDeclineVideo({
+                  collaborationId: campaign?.collaborationId,
+                  videoId: campaign?.collaborationData?.videos[0]?._id,
+                  status: "Declined",
+                  message: requestMessage,
+                 
+                });
                 setRequestChangesDialogOpen(false);
               }}
               disabled={isDeclining}

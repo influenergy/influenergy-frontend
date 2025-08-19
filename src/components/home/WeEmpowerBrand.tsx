@@ -61,10 +61,12 @@ export default function WeEmpowerBrand() {
             A Message From Our Founder
           </h2>
 
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-gray-700 text-lg leading-relaxed text-justify">
             When I launched Influenergy, I noticed two major issues in influencer marketing: brands spent endless hours searching for the right creators, and creators faced unclear briefs, slow payments, and frustrating back-and-forth. The process was time consuming and both sides feel short.
             <br />
+            <br />
             Influenergy is built to fix that. Our AI-Find tool instantly connects brands with vetted creators who perfectly match their niche, while our built-in contracts, payment options, and streamlined briefs make campaigns simple and efficient.
+            <br />
             <br />
             Whether you’re a brand aiming to scale campaigns or a creator seeking consistent work, we’re here to make success faster, easier, and stress-free.
           </p>

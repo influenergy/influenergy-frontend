@@ -50,10 +50,13 @@ export interface Campaign {
   campaignObjective: string[];
   campaignDescription: string;
   targetAgeGroup: string[];
+  yourBrief?:string;
+  campaignConcept?:string;
   targetGender: string[];
   targetLocation: string[];
   targetInterests: string[];
   contentType: string;
+  campaignPdf?:string;
   videoDuration: string;
   catchPhrase: string;
   keyMessage: string;

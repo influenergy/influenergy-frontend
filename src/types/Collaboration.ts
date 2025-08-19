@@ -37,9 +37,10 @@ export interface Collaboration {
   creatorId: string;
   status: string;
   amount: number;
-  videos: Video[];
+  videos?: Video[];
   createdAt: string;
   updatedAt: string;
   paymentStatus: string;
   requiredDocuments:string;
 }
+

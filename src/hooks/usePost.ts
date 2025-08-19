@@ -91,30 +91,28 @@ export const useAcceptOrDeclineCollaboration = (
   });
 };
 
-interface AcceptOrDeclineVideoParams {
-  collaborationId: string;
-  videoId: string;
-  status: string;
-  message: string;
-  onSuccess?: () => void;
-}
 
-export const useAcceptOrDeclineVideo = ({
-  collaborationId,
-  videoId,
-  status,
-  message,
-  onSuccess,
-}: AcceptOrDeclineVideoParams) => {
+
+export const useAcceptOrDeclineVideo = ({ onSuccess }: { onSuccess?: () => void }) => {
   return useMutation({
-    mutationKey: ["acceptOrDeclineVideo", collaborationId, status],
-    mutationFn: async () => {
+    mutationKey: ["acceptOrDeclineVideo"],
+    mutationFn: async ({
+      collaborationId,
+      videoId,
+      status,
+      message = "",
+    }: {
+      collaborationId: string;
+      videoId: string;
+      status: "Approved" | "Declined" | "Pending";
+      message?: string;
+    }) => {
       try {
         const response = await postApi.acceptOrDeclineVideo(
           collaborationId,
           videoId,
           status,
-          message || ""
+          message
         );
         return response.data;
       } catch (error) {
@@ -125,3 +123,4 @@ export const useAcceptOrDeclineVideo = ({
     onSuccess,
   });
 };
+

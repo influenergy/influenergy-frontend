@@ -68,13 +68,13 @@ export default function Page() {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="active" className="w-full mt-5 sm:mt-8">
+        <TabsContent value="active" className="w-full mt-0 bg-gray-50 pt-5 md:pt-8">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "active" && <ActiveCollaborationTab />}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="pending" className="w-full mt-5 sm:mt-8">
+        <TabsContent value="pending" className="w-full mt-0 bg-gray-50 pt-5 md:pt-8">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "pending" && <PendingCollaborationTab />}
           </Suspense>

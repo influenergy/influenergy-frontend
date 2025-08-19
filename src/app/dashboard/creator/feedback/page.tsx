@@ -10,8 +10,7 @@ function Page() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Rating:', rating);
-    console.log('Suggestion:', suggestion);
+
     // Here you can handle sending data to backend
   };
 

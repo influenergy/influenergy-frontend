@@ -13,7 +13,6 @@ const Page = () => {
   const { data, isLoading, error } = useCampaign(postId as string,status as string);
   useEffect(() => {
     if (data?.data) {
-      console.log(data.data, "dataa");
       setCampaignData(data.data.campaignData || {});
       setCollaborations(data.data.collaborations);
     }

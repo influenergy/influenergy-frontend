@@ -65,7 +65,7 @@ export default function HowItWorks() {
               </h2>
               <p className="text-gray-600 text-base mt-2 ">
                 Tell us what you need—your goals, product, and target audience
-                in a simplified brief.
+                in a simplified brief
               </p>
             </motion.div>
 
@@ -117,7 +117,7 @@ export default function HowItWorks() {
               </h2>
               <p className="text-base  mt-2 text-gray-600">
                 Browse curated matches, review content examples, and approve
-                your favorites.
+                your favorites
               </p>
             </motion.div>
 
@@ -139,7 +139,7 @@ export default function HowItWorks() {
                 Collaborate & Launch
               </h2>
               <p className="text-base  mt-2 text-gray-600">
-                Message, pay, and launch content—all in one seamless platform.
+                Message, pay, and launch content—all in one seamless platform
               </p>
             </motion.div>
           </motion.div>

@@ -95,7 +95,7 @@ const getSocialMediaIcon = (platform: string) => {
 };
 
 const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
-  console.log(collaborations)
+
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -208,7 +208,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
       </button>
 
       {
-        collaborations && (
+        collaborations.length>0 && (
           <div className="flex flex-col gap-10 pb-10">
             <div className="flex w-full items-center justify-between ">
               <p className="text-2xl font-semibold">Creator Details</p>

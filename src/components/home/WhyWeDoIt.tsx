@@ -99,7 +99,7 @@ export default function WhyWeDoIt() {
                   Effortless Brand-Creator Connections
                 </h3>
                 <p className="text-gray-600 text-base">
-                  We streamline onboarding & brand-creator connections.
+                  We streamline onboarding & brand-creator connections
                 </p>
               </div>
             </motion.div>
@@ -142,7 +142,7 @@ export default function WhyWeDoIt() {
                   Data-Driven Insights
                 </h3>
                 <p className="text-gray-600 text-base">
-                  We help brands maximize ROI with data-backed insights.
+                  We help brands maximize ROI with data-backed insights
                 </p>
               </div>
             </motion.div>

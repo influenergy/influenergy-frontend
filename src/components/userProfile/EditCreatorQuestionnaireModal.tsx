@@ -80,7 +80,7 @@ const EditCreatorQuestionnaireModal = ({ isOpen, onClose }: EditCreatorQuestionn
             userApi.getProfileQuestionnaire()
                 .then((res) => {
                     const mapped = mapApiToForm(res.data.data);
-                    console.log(mapped, 'mapped')
+                    
                     setInitialData(mapped);
                 })
                 .catch(() => setInitialData(null))

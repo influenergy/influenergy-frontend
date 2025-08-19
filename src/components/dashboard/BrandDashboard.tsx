@@ -112,9 +112,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
                 const completed = collabData?.collaborations?.completedCollabs ?? [];
                 setCompletedCollabs(completed);
-                console.log(completed, 'complted')
                 setRecentlyWorkedWith(completed.slice(0, 3));
-                console.log(collabData, 'collabData')
             })
             .catch((err) => console.error("Error fetching data:", err))
             .finally(() => setLoading(false));

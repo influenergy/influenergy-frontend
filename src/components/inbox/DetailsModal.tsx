@@ -28,6 +28,7 @@ export default function DetailsModal({
   data,
 }: DetailsModalProps) {
   const campaign = data?.campaignId || {};
+
   const collaborationId = data?._id;
 
   const [contractModalOpen, setContractModalOpen] = useState(false);

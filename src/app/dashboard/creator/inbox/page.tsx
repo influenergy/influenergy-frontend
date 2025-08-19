@@ -61,11 +61,11 @@ const Page = () => {
         </div>
 
         {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="Active" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Active" &&
               campaignsData?.collaborations?.length > 0 && (
-                <div className="flex flex-wrap gap-4">
+                <div className="grid grid-cols-1 gap-5 md:gap-10">
                   {campaignsData.collaborations.map(
                     (collaboration: Collaboration, index: number) => (
                       <InboxCard
@@ -106,11 +106,11 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Pending" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Pending" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Pending" &&
               campaignsData?.collaborations?.length > 0 && (
-                <div className="flex flex-wrap gap-4">
+                <div className="grid grid-cols-1 gap-5 md:gap-10">
                   {campaignsData.collaborations.map(
                     (collaboration: Collaboration, index: number) => (
                       <InboxCard
@@ -151,11 +151,11 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Completed" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8 ">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Completed" &&
               campaignsData?.collaborations?.length > 0 && (
-                <div className="flex flex-wrap gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {campaignsData.collaborations.map(
                     (collaboration: Collaboration, index: number) => (
                       <InboxCard
@@ -196,11 +196,11 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Payment" className="w-full mt-5 sm:mt-8 px-5">
+        <TabsContent value="Payment" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Payment" &&
               campaignsData?.collaborations?.length > 0 && (
-                <div className="flex flex-wrap gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {campaignsData.collaborations.map(
                     (collaboration: Collaboration, index: number) => (
                       <InboxCard
