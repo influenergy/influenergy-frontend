@@ -7,6 +7,8 @@ import { Collaboration } from "@/types/Collaboration";
 import { useState } from "react";
 import { Campaign } from "@/types/PostQuestionnaire";
 import DetailsModal from "../inbox/DetailsModal";
+import { Button } from "../ui/button";
+import { useDeleteCollab } from "@/hooks/usePost";
 
 const getSocialMediaIcon = (platform: string) => {
   switch (platform?.toLowerCase()) {
@@ -41,6 +43,8 @@ interface CollabInterface {
   collaborations: {
     collaborationId: string,
     creatorName: string,
+    creatorId: string,
+    isFavorite: string,
     profile: {
       socialLinks: {
         primary: {
@@ -109,9 +113,12 @@ export default function PendingCollaborationTab() {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
 
   const { data, isLoading, isError } = useFindAiCampaignsList("Pending");
+  const { mutate: handleCollabDelete, isPending } = useDeleteCollab("Pending");
+
   if (isLoading) {
     return <Loader />;
   }
+
 
   if (isError) {
     return (
@@ -190,7 +197,7 @@ export default function PendingCollaborationTab() {
                         campaign.collaborations.map((collab, idx) => {
                           return (
                             <div key={idx}>
-                              <Card  className="flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-whit">
+                              <Card className={`flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-white ${collab.status === "Cancelled" ? "opacity-75 cursor-wait" : ""} `}>
                                 <div className="flex items-center">
                                   <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600">
                                     <Image
@@ -255,15 +262,32 @@ export default function PendingCollaborationTab() {
 
                                   </div>
                                   <div className="flex justify-end items-center">
-                                    <span className="border rounded-md p-3 cursor-pointer group">
-                                      <Heart className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
+                                    <span className="border rounded-md p-3 cursor-not-allowed group" >
+                                      <Heart
+                                        className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110
+      ${collab.isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"}`}
+                                      />
                                     </span>
 
                                   </div>
                                 </div>
                               </Card>
                               {
-                                collab.status === "Cancelled"
+                                collab.status === "Cancelled" && <div className="flex justify-between items-center gap-4 mt-6">
+                                  <div className="flex flex-col gap-4">
+                                    <h3>Status</h3>
+                                    <p className="text-red-500 font-semibold">
+                                      <span className="bg-red-500 inline-block h-3 w-3 rounded-full mr-2" />
+                                      Rejected
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <Button className="text-red-500 bg-transparent border-none hover:bg-transparent hover:text-red-500 hover:scale-105" disabled={isPending}
+                                      onClick={() => handleCollabDelete(collab.collaborationId)}>{isPending ? "Deleting..." : "Delete Rejected Request"}</Button>
+                                  </div>
+
+
+                                </div>
                               }
                             </div>
                           )
@@ -276,7 +300,7 @@ export default function PendingCollaborationTab() {
               </div>)
           }
           )}
-          
+
           <DetailsModal
             open={isDetailsModalOpen}
             onOpenChange={setIsDetailsModalOpen}

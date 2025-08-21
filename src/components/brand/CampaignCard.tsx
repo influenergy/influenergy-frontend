@@ -39,7 +39,6 @@ const CampaignCard = memo(
     status: string;
   }) => {
     const [isOpen, setIsOpen] = useState(false);
-    console.log(campaign,'from campaign card')
     return (
       <>
         <div className="md:w-full rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2">

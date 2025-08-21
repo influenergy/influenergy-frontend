@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import DetailsModal from "../inbox/DetailsModal";
 import { Collaboration } from "@/types/Collaboration";
+import { useToggleFavorite } from "@/hooks/usePost";
 
 const getSocialMediaIcon = (platform: string) => {
   switch (platform?.toLowerCase()) {
@@ -44,6 +45,8 @@ interface CollabInterface {
   collaborations: {
     collaborationId: string,
     creatorName: string,
+    creatorId: string,
+    isFavorite: string,
     profile: {
       socialLinks: {
         primary: {
@@ -108,9 +111,9 @@ const emptyCollaboration: Collaboration = {
   requiredDocuments: "",
 }
 export default function CompletedCollaborationTab() {
-
-  const [campaignData, setCampaignData] = useState<Collaboration>(emptyCollaboration)  
-  const [isDetailsModalOpen,setIsDetailsModalOpen] = useState(false)
+  const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite();
+  const [campaignData, setCampaignData] = useState<Collaboration>(emptyCollaboration)
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
 
   const { data, isLoading, isError } = useFindAiCampaignsList("Completed");
 
@@ -143,7 +146,7 @@ export default function CompletedCollaborationTab() {
                   </p>
 
                 </div>
-                <div className="-mt-2 shadow-lg bg-white py-6 px-4 flex flex-col gap-2 md:gap-6 rounded-lg">
+                <div className="-mt-2 shadow-[0px_10px_20px_5px_rgba(0,0,0,0.1)]  bg-white py-6 px-4 flex flex-col gap-2 md:gap-6 rounded-lg">
                   <section className="flex flex-col items-start gap-2 md:gap-4">
                     <h2 className="font-semibold text-sm md:text-base">Campaign Description</h2>
                     <p className="text-gray-500 text-sm md:text-base font-normal">{campaign.campaignDescription}</p>
@@ -195,7 +198,7 @@ export default function CompletedCollaborationTab() {
                         campaign.collaborations.map((collab, idx) => {
                           return (
                             <div key={idx}>
-                              <Card  className="flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-whit">
+                              <Card className="flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-whit">
                                 <div className="flex items-center">
                                   <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600">
                                     <Image
@@ -260,8 +263,18 @@ export default function CompletedCollaborationTab() {
 
                                   </div>
                                   <div className="flex justify-end items-center">
-                                    <span className="border rounded-md p-3 cursor-pointer group">
-                                      <Heart className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
+                                    <span className="border rounded-md p-3 cursor-pointer group" onClick={() => {
+                                    
+                                      toggleFavorite({
+                                        creatorId: collab.creatorId,
+                                      })
+                                    }
+                                    }>
+                                      <Heart
+                                        className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110
+      ${collab.isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"}
+      ${isToggling ? "animate-pulse" : ""}`}
+                                      />
                                     </span>
 
                                   </div>
@@ -312,7 +325,7 @@ export default function CompletedCollaborationTab() {
               </div>)
           }
           )}
-          <DetailsModal 
+          <DetailsModal
             open={isDetailsModalOpen}
             onOpenChange={setIsDetailsModalOpen}
             status={"Completed"}

@@ -90,9 +90,16 @@ export const userApi = {
     const response = await api.get(`/creator/history`);
     return response.data; // return only the data payload
   },
-  getRandomCreators: async()=>{
+  getRandomCreators: async () => {
     const respose = await api.get("/random-creators");
     return respose.data
+  },
+  getExploredCreators: async (page: number, limit: number) => {
+    const response = await api.get("/brand/explore-creators", {
+      params: { page, limit }
+    });
+    // API returns { status, message, data }
+    return response.data.data;
   }
 
 };

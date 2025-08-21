@@ -13,7 +13,7 @@ interface Collaboration {
   _id: string;
   brandName: string;
   status: string;
-  videos: Array<{ link: string }>;
+  videos: Array<{ link: string, status:string }>;
   campaignPost?: string;
 }
 
@@ -137,7 +137,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             </h2>
             <div className="flex flex-col gap-4 flex-1 overflow-hidden">
               {collaborations.map((collab) => (
-                <div key={collab._id} className="flex items-center gap-4 mt-2">
+               collab.status === "Completed" && <div key={collab._id} className="flex items-center gap-4 mt-2">
                   <Image src={collab.campaignPost || "/brandIcon.jpg"} alt={collab.brandName} width={70} height={70} className="rounded-full" />
                   <span className="text-lg text-gray-600 dark:text-gray-300">{collab.brandName}</span>
                 </div>
@@ -173,7 +173,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             .flatMap((c) => c.videos)
             .slice(0, 6)
             .map((video, idx) => {
-              return <video
+              return video.status === "Approved" && <video
                 key={idx}
                 controls
                 className="rounded-lg w-full max-h-48 bg-black"

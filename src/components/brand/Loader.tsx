@@ -3,7 +3,7 @@ import React from "react";
 
 const Loader = () => {
   return (
-    <div className="h-[75vh] flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
+    <div className="h-full flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto p-4 sm:p-6 md:p-8">
       <Image
         src="/images/AIFind/loader.webp"
         alt=""

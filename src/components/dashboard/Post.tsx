@@ -62,13 +62,13 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
   return (
     <>
       <div
-        className="w-[300px] rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2 cursor-pointer"
+        className="w-[300px] rounded-xl border bg-white shadow-md hover:shadow-lg transition-shadow py-4 px-3 gap-2 cursor-pointer dark:bg-gray-800"
         onClick={handleCardClick}
       >
         {/* Content */}
         <div className="flex justify-between items-center mb-3">
           <div className="">
-            <h3 className="text-sm text-gray-900 line-clamp-2 text-left">
+            <h3 className="text-sm text-gray-900 line-clamp-2 text-left dark:text-white">
               {campaignName.length > 50
                 ? campaignName.slice(0, 50) + "..."
                 : campaignName}
@@ -92,7 +92,7 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
                 onClick={handleCopy}
                 className="hover:bg-gray-100 hover:text-black px-3 py-2 rounded-md cursor-pointer transition"
               >
-                Copy
+                Duplicate Campaign
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -108,7 +108,7 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
             className="object-cover rounded-xl"
           />
         </div>
-        <p className={`text-gray-700 text-sm leading-snug transition-all ${isExpanded ? "" : "line-clamp-2"}`}>
+        <p className={`text-gray-700 text-sm leading-snug transition-all dark:text-white ${isExpanded ? "" : "line-clamp-2"}`}>
           {campaignDescription}
         </p>
         {isLongDescription && (

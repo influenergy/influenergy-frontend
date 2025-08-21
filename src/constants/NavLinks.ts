@@ -9,7 +9,7 @@ import {
   Mail,
   WandSparkles,
   FileText,
-  
+  UserRoundSearch
   // ChartNoAxesCombined,
 } from "lucide-react";
 
@@ -80,6 +80,13 @@ const brandNav: NavItem[] = [
       "/dashboard/brand/findai/campaign",
       "/dashboard/brand/findai/campaign/[campaignId]/creator",
     ],
+  },
+  {
+    label: "Explore Creators",
+    href: "/dashboard/brand/explore",
+    icon: UserRoundSearch,
+    slug: "explore",
+    
   },
   {
     href: "/dashboard/feedback",

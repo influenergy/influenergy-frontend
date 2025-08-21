@@ -124,3 +124,44 @@ export const useAcceptOrDeclineVideo = ({ onSuccess }: { onSuccess?: () => void 
   });
 };
 
+export const useToggleFavorite = (options?: { onSuccess?: () => void,status?:string }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      creatorId
+    }: {
+      creatorId: string;
+    }) => {
+      try{
+
+        const res =  await postApi.toggleFavoriteCreator(creatorId);
+        return res.data
+      }
+      catch(error){
+        console.error("Error in favoriteToggle :", error);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      // refresh campaigns/collabs so isFavourite updates
+      queryClient.invalidateQueries({ queryKey: ["finddaiCampaignsList"] });
+      // queryClient.invalidateQueries({ queryKey: ["collaborations"] });
+
+      if (options?.onSuccess) options.onSuccess();
+    },
+  });
+};
+
+export const useDeleteCollab = (status: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (collabId: string) => postApi.deleteCollab(collabId),
+    onSuccess: () => {
+      // Refresh the list after deletion
+      queryClient.invalidateQueries({ queryKey: ["finddaiCampaignsList", status] });
+    },
+  });
+};
+

@@ -63,9 +63,9 @@ export const postApi = {
       throw error;
     }
   },
-  findAIMatch: async (campaignId: string) => {
+  findAIMatch: async (campaignId: string,creatorId:string) => {
     try {
-      const response = await api.get(`/brand/ai-find/${campaignId}`);
+      const response = creatorId ?await api.get(`/brand/ai-find/${campaignId}?creatorId=${creatorId}`) : await api.get(`/brand/ai-find/${campaignId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching campaigns:", error);
@@ -238,5 +238,13 @@ export const postApi = {
   getCollaborationHistory: async () => {
     const response = await api.get(`/brand/collaborations-history`);
     return response.data; // return only the data payload
+  },
+  toggleFavoriteCreator :async(creatorId:string) =>{
+    const response = await api.post(`/brand/favorite/${creatorId}`)
+    return response.data
+  },
+  deleteCollab:async(collabId:string) => {
+    const response = await api.delete(`/brand/collab/${collabId}`)
+    return response.data
   }
 };

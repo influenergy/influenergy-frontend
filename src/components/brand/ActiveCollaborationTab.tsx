@@ -50,6 +50,8 @@ interface CollabInterface {
   collaborations: {
     collaborationId: string,
     creatorName: string,
+    creatorId: string,
+    isFavorite: string,
     profile: {
       socialLinks: {
         primary: {
@@ -161,9 +163,9 @@ export default function ActiveCollaborationTab() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-5 md:gap-10">
-          {data.campaigns.map((campaign: CollabInterface) => {
+          {data.campaigns.map((campaign: CollabInterface,idx:number) => {
             return (
-              <div key={campaign._id} className="relative flex flex-col">
+              <div key={campaign.campaignId + idx} className="relative flex flex-col">
                 <div className="flex ">
                   <p className="text-gray-500 bg-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
                     {campaign.campaignName}
@@ -287,8 +289,11 @@ export default function ActiveCollaborationTab() {
 
                                   </div>
                                   <div className="flex justify-end items-center">
-                                    <span className="border rounded-md p-3 cursor-pointer group">
-                                      <Heart className="w-5 h-5 transition-transform duration-200 group-hover:scale-110" />
+                                    <span className="border rounded-md p-3 group cursor-not-allowed" >
+                                      <Heart
+                                        className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110
+      ${collab.isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"}`}
+                                      />
                                     </span>
 
                                   </div>
@@ -298,7 +303,7 @@ export default function ActiveCollaborationTab() {
                                 collab.status === "Active" && <div className="flex flex-col gap-4 mt-6">
                                   <h3>Status</h3>
                                   <p className="text-green-500">
-                                    <span className="bg-green-500 inline-block h-3 w-3 rounded-full" />
+                                    <span className="bg-green-500 inline-block h-3 w-3 rounded-full mr-2" />
                                     Approved
                                   </p>
 

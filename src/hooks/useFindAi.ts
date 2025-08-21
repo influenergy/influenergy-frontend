@@ -9,7 +9,7 @@ export const queryKeys = {
 
 export const useFindAiCampaignsList = (status: string) => {
   return useQuery({
-    queryKey: [queryKeys.finddaiCampaignsList, "status"],
+    queryKey: [queryKeys.finddaiCampaignsList, status],
     queryFn: async () => {
       try {
         return await postApi.getCollabByStatus(status);
@@ -46,14 +46,14 @@ export const useCampaignProfileDetails = (id: string) => {
   });
 };
 
-export const useFindAiCampaign = (id: string) => {
+export const useFindAiCampaign = (id: string,creatorId:string) => {
   return useQuery({
     queryKey: ["findaiCampaign", id],
     queryFn: async () => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 3000));
 
-        return await postApi.findAIMatch(id);
+        return await postApi.findAIMatch(id,creatorId);
       } catch (error) {
         console.error(`Error fetching AI match for ID ${id}:`, error);
         throw error;
@@ -83,3 +83,5 @@ export const useGetCreatorVideos = (id: string) => {
     staleTime: 5000,
   });
 };
+
+

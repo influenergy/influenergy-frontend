@@ -1,20 +1,30 @@
 "use client";
-
 import React from "react";
-import CardSkeleton from "@/components/common/CardSkeleton";
 import Post from "@/components/dashboard/Post";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useCampaigns } from "@/hooks/useQueryCampaigns";
 import { Campaign } from "@/types/PostQuestionnaire";
 import Image from "next/image";
+import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
 
 const Page = () => {
   const { data, isLoading, error } = useCampaigns();
 
   // Extract campaigns from the response and provide a default empty array
   const campaigns: Campaign[] = data?.campaigns || [];
-
+if(isLoading){
+ 
+  return (
+    <div className="p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">My Ad Briefs</h1>
+        <div className="w-36 h-10 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+      </div>
+      <CampaignSkeleton />
+    </div>
+  );
+}
   return (
     <div className="p-4">
       <div className="mb-4">
@@ -37,9 +47,7 @@ const Page = () => {
       )}
 
       <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-        {isLoading ? (
-          [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
-        ) : campaigns.length === 0 ? (
+        {campaigns.length === 0 ? (
           <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-16rem)]  gap-5 ">
             <Image
               src="/images/MyPost/empty.png"
@@ -48,7 +56,7 @@ const Page = () => {
               alt="Empty"
               className="object-cover"
             />
-            <p className="text-4xl font-semibold text-center mt-4 leading-normal">
+            <p className="text-4xl font-semibold text-center mt-4 leading-normal dark:text-gray-200">
              
               Welcome to the brief section!<br />Create your campaign brief and let our AI Find tool match <br />you with the perfect creators.
             </p>

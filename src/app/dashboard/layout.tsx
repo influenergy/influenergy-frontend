@@ -24,14 +24,14 @@ export default function DashboardLayout({
       {/* Main content */}
       <main className="w-full overflow-y-scroll flex flex-col">
         {/* Top Header Bar */}
-        <div className="flex items-center h-16 px-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="flex items-center h-16 px-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-background transition-colors duration-300">
           {/* Hamburger menu for mobile */}
           <div className="md:hidden mr-2">
             <MobileSidebar type="dashboard" />
           </div>
 
           {/* Main header content */}
-          <div className="flex-1">
+          <div className="flex-1 ">
             <Header />
           </div>
 
