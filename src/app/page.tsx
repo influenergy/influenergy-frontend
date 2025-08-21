@@ -15,7 +15,7 @@ const HearFromInfluencer = dynamic(
 );
 const WhoAreWe = lazy(() => import("@/components/home/WhoAreWe"));
 // import Banner from "@/components/home/Banner";
-const Banner = lazy(() => import("@/components/home/Banner"));
+// const Banner = lazy(() => import("@/components/home/Banner"));
 const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const WhatWeDo = lazy(() => import("@/components/home/WhatWeDo"));
 const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));
@@ -47,7 +47,7 @@ function SearchParamsComponent() {
 export default function Home() {
   return (
     <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
-      <Banner />
+      {/* <Banner /> */}
       <Header />
       <HeroSection />
 
