@@ -1,6 +1,6 @@
 // components/PieChart.tsx
-import React from "react";
-import { PieChart as MUIPieChart } from '@mui/x-charts/PieChart';
+import React, { useState, useEffect } from "react";
+import { PieChart as MUIPieChart } from "@mui/x-charts/PieChart";
 import { Card } from "../ui/card";
 
 type DataItem = {
@@ -17,23 +17,43 @@ type PieChartProps = {
 };
 
 const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
-  // Hardcoded widths for different screen sizes
-  const getChartWidth = () => {
-    if (typeof window === 'undefined') return 400; // SSR fallback
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const screenWidth = window.innerWidth;
+      setIsMobile(screenWidth < 640);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Dynamic width based on screen size
+  const getChartWidth = () => {
+    if (typeof window === "undefined") return 400; // SSR fallback
     const screenWidth = window.innerWidth;
 
-    if (screenWidth < 640) { // sm: 640px
-      return 280; // Mobile
-    } else if (screenWidth < 768) { // md: 768px
-      return 320; // Small tablet
-    } else if (screenWidth < 1024) { // lg: 1024px
-      return 360; // Tablet
-    } else if (screenWidth < 1280) { // xl: 1280px
-      return 400; // Desktop
-    } else { // 2xl: 1536px+
-      return 450; // Large desktop
-    }
+    if (screenWidth < 480) return 250; // Very small mobile
+    else if (screenWidth < 640) return 280; // Mobile
+    else if (screenWidth < 768) return 320; // Small tablet
+    else if (screenWidth < 1024) return 360; // Tablet
+    else if (screenWidth < 1280) return 400; // Desktop
+    else return 450; // Large desktop
+  };
+
+  // Dynamic height based on screen size
+  const getChartHeight = () => {
+    if (typeof window === "undefined") return 300; // SSR fallback
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth < 480) return 200; // Very small mobile
+    else if (screenWidth < 640) return 220; // Mobile
+    else if (screenWidth < 768) return 260; // Small tablet
+    else if (screenWidth < 1024) return 280; // Tablet
+    else if (screenWidth < 1280) return 300; // Desktop
+    else return 350; // Large desktop
   };
 
   const chartColors = [
@@ -49,21 +69,19 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
     (a, b) => parseFloat(b.percentage) - parseFloat(a.percentage)
   );
 
-  // Map each item to a color based on sorted order
-  const chartData = data?.map((item) => {
-    const sortedIndex = sortedData.findIndex(
-      (d) => d[labelKey] === item[labelKey]
-    );
-    return {
-      id: sortedIndex,
-      value: parseFloat(item.percentage) || 0,
-      label: item[labelKey] || `Item ${sortedIndex + 1}`,
-      color: chartColors[sortedIndex % chartColors.length],
-    };
-  }) || [];
+  const chartData =
+    data?.map((item) => {
+      const sortedIndex = sortedData.findIndex(
+        (d) => d[labelKey] === item[labelKey]
+      );
+      return {
+        id: sortedIndex,
+        value: parseFloat(item.percentage) || 0,
+        label: item[labelKey] || `Item ${sortedIndex + 1}`,
+        color: chartColors[sortedIndex % chartColors.length],
+      };
+    }) || [];
 
-
-  // Don't render chart if no data
   if (!data || data.length === 0) {
     return (
       <Card className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 w-full">
@@ -72,7 +90,9 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
             {title}
           </h2>
           <div className="flex items-center justify-center w-full h-[300px]">
-            <p className="text-gray-500 dark:text-gray-400">No data available</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              No data available
+            </p>
           </div>
         </div>
       </Card>
@@ -81,12 +101,20 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
 
   return (
     <Card className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 w-full">
+      <style jsx>{`
+        .pie-chart-container .MuiChartsLegend-label {
+          color: #374151 !important;
+          font-size: ${isMobile ? '12px' : '14px'} !important;
+        }
+        .dark .pie-chart-container .MuiChartsLegend-label {
+          color: #ffffff !important;
+        }
+      `}</style>
       <div className="flex flex-col items-center justify-center w-full">
         <div className="flex items-start w-full">
-          <h2 className="text-gray-600 dark:text-gray-300 text-sm font-medium mb-4 text-center">
+          <h2 className="text-gray-600 dark:text-gray-300 text-sm font-medium mb-4 text-center w-full">
             {title}
           </h2>
-
         </div>
         <div className="flex items-center justify-center w-full">
           <MUIPieChart
@@ -95,20 +123,21 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
                 data: chartData,
               },
             ]}
-            height={300}
             width={getChartWidth()}
+            height={getChartHeight()}
             slotProps={{
               legend: {
-                position: { vertical: 'middle', horizontal: 'end' },
-                // itemMarkWidth: 8,
-                // itemMarkHeight: 8,
-                // markGap: 5,
-                // itemGap: 20,
-                // labelStyle: {
-                //   fontSize: 14,
-                //   fill: '#000',
-                // },
+                position: isMobile
+                  ? { vertical: "bottom", horizontal: "center" }
+                  : { vertical: "middle", horizontal: "end" },
               },
+            }}
+            className="pie-chart-container"
+            margin={{
+              top: isMobile ? 10 : 20,
+              bottom: isMobile ? 10 : 20,
+              left: isMobile ? 10 : 20,
+              right: isMobile ? 10 : 20,
             }}
           />
         </div>

@@ -30,7 +30,7 @@ const Page = () => {
   };
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="" onValueChange={handleTabChange}>
+      <Tabs defaultValue="" onValueChange={handleTabChange} className="flex-1 h-full dark:bg-foreground">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full bg-secondary">
             <TabsTrigger
@@ -60,8 +60,27 @@ const Page = () => {
           </TabsList>
         </div>
 
+        {activeTab == "" && (
+        <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
+          <Image
+            src="/images/Inbox/intro.png"
+            alt=""
+            width={280}
+            height={280}
+            className="mx-auto"
+            priority
+          />
+          <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
+            <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900">
+              Welcome to the inbox. <br /> Collaboration opportunities from
+              brands will appear here.
+            </h3>
+          </div>
+        </div>
+      )}
+      
         {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8">
+        <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8 flex-1">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Active" &&
               campaignsData?.collaborations?.length > 0 && (
@@ -97,7 +116,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
                     Welcome to the inbox. <br /> No ongoing collaborations
                     found.
                   </h3>
@@ -106,7 +125,7 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Pending" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8">
+        <TabsContent value="Pending" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8 flex-1">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Pending" &&
               campaignsData?.collaborations?.length > 0 && (
@@ -142,7 +161,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
                     Welcome to the inbox. <br /> No pending collaborations
                     found.
                   </h3>
@@ -151,7 +170,7 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8 ">
+        <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8 flex-1 ">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Completed" &&
               campaignsData?.collaborations?.length > 0 && (
@@ -187,7 +206,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
                     Welcome to the inbox. <br /> No completed collaborations
                     found.
                   </h3>
@@ -196,7 +215,7 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Payment" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8">
+        <TabsContent value="Payment" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10 pt-5 md:pt-8 flex-1">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Payment" &&
               campaignsData?.collaborations?.length > 0 && (
@@ -232,7 +251,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
                     Welcome to the inbox. <br /> No payment collaborations
                     found.
                   </h3>
@@ -242,24 +261,7 @@ const Page = () => {
         </TabsContent>
       </Tabs>
 
-      {activeTab == "" && (
-        <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
-          <Image
-            src="/images/Inbox/intro.png"
-            alt=""
-            width={280}
-            height={280}
-            className="mx-auto"
-            priority
-          />
-          <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
-            <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900">
-              Welcome to the inbox. <br /> Collaboration opportunities from
-              brands will appear here.
-            </h3>
-          </div>
-        </div>
-      )}
+      
     </AnimatePresence>
   );
 };

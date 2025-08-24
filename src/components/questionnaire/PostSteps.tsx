@@ -89,15 +89,15 @@ export const GenderInput = ({ field }: { field: Field }) => {
   return (
     <div>
       <div className="flex items-center gap-2">
-        <div className="relative w-full">
+        <div className="relative w-full dark:text-black">
           <select
             {...register(fieldName)}
-            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${error
+            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-300 focus:ring-primary"
               } focus:outline-none focus:ring-2 appearance-none`}
           >
-            <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+            <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-black">
               {field.placeholder || "Select"}
             </option>
             {field.options?.map((option) => (
@@ -105,6 +105,7 @@ export const GenderInput = ({ field }: { field: Field }) => {
                 key={option}
                 value={option}
                 style={{ fontFamily: "Poppins, sans-serif" }}
+                className="dark:text-black"
               >
                 {option}
               </option>
@@ -126,7 +127,7 @@ export const GenderInput = ({ field }: { field: Field }) => {
                     ? "This field is required"
                     : true,
               })}
-              className={`w-full p-3 border rounded-lg transition-all font-poppins duration-300 ${otherGenderError
+              className={`w-full p-3 border rounded-lg transition-all font-poppins duration-300 dark:text-black ${otherGenderError
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-primary"
                 }`}
@@ -181,7 +182,7 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${error
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-300 focus:ring-primary"
             } focus:outline-none focus:ring-2 appearance-none`}
@@ -194,6 +195,7 @@ export const FormField = ({ field }: FormFieldProps) => {
               key={option}
               value={option}
               style={{ fontFamily: "Poppins, sans-serif" }}
+              className="dark:text-black"
             >
               {option}
             </option>
@@ -224,6 +226,7 @@ export const FormField = ({ field }: FormFieldProps) => {
             setValue(fieldName, values, { shouldValidate: true });
           }}
           classNamePrefix="react-select"
+          className="dark:text-black"
         />
       </div>
     );
@@ -233,11 +236,10 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:ring-primary"
-          } focus:outline-none focus:ring-2 appearance-none`}
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-primary"
+            } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
             Select
@@ -262,7 +264,7 @@ export const FormField = ({ field }: FormFieldProps) => {
       </div>
     );
   }
-  
+
 
   if (field.category === "date") {
     return <DateInput field={field} />;
@@ -276,7 +278,7 @@ export const FormField = ({ field }: FormFieldProps) => {
           placeholder={field.placeholder}
           cols={3}
           rows={3}
-          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 focus:outline-none focus:ring-2"
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 dark:text-black focus:outline-none focus:ring-2"
         ></textarea>
       </div>
     );
@@ -354,7 +356,7 @@ export const FormField = ({ field }: FormFieldProps) => {
             };
           }
         }}
-        className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
           ? "border-red-500 focus:ring-red-500"
           : "border-gray-300 focus:ring-primary"
           } focus:outline-none focus:ring-2`}
@@ -408,7 +410,7 @@ export const FormField = ({ field }: FormFieldProps) => {
     <input
       type={field.category}
       {...register(fieldName)}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
         ? "border-red-500 focus:ring-red-500"
         : "border-gray-300 focus:ring-primary"
         } focus:outline-none focus:ring-2`}
@@ -430,7 +432,7 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
 
         return (
           <div key={field.title} className="md:space-y-2 md:mt-4">
-            <label className="block text-sm font-light text-black">
+            <label className="block text-sm font-light text-black dark:text-black">
               {field.title}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
@@ -473,7 +475,7 @@ const DateInput = ({ field }: { field: Field }) => {
           });
         }}
         dateFormat="MM/dd/yyyy"
-        className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
           ? "border-red-500 focus:ring-red-500"
           : "border-gray-300 focus:ring-primary"
           } focus:outline-none focus:ring-2`}

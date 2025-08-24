@@ -51,15 +51,15 @@ export default function DetailsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-screen flex flex-col p-0">
+      <DialogContent className="max-w-6xl max-h-screen flex flex-col p-0 dark:bg-background">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="sr-only">Campaign Details</DialogTitle>
           <DialogClose />
         </DialogHeader>
 
         {/* Scrollable Content Area */}
-        <div className="flex-1 overflow-y-auto px-6 pb-20">
-          <div className="bg-white rounded-lg space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 pb-20 dark:bg-background">
+          <div className="bg-white rounded-lg space-y-4 dark:bg-background">
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Image Section */}
               <div className=" relative rounded-lg overflow-hidden">
@@ -76,7 +76,7 @@ export default function DetailsModal({
               <div className="w-full space-y-4">
                 {/* Title and Brand */}
                 <div className="flex items-center gap-2">
-                  <h3 className="text-2xl text-gray-900 line-clamp-2 font-bold">
+                  <h3 className="text-2xl text-gray-900 line-clamp-2 font-bold dark:text-white">
                     {campaign.campaignName || "Campaign Name"}
                   </h3>
                 </div>
@@ -89,7 +89,7 @@ export default function DetailsModal({
                     height={40} // Make height equal to width for a perfect circle
                     className="object-cover rounded-full h-10 w-10"
                   />
-                  <p className="text-black text-lg">
+                  <p className="text-black text-lg dark:text-white">
                     {campaign.brandName || "Brand"}
                   </p>
                 </div>
@@ -146,7 +146,7 @@ export default function DetailsModal({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
                   <div>
-                    <p className="font-medium ">Target Audience Age</p>
+                    <p className="font-medium dark:text-white">Target Audience Age</p>
                     <p className="text-gray-600">
                       {campaign?.targetAgeGroup && campaign.targetAgeGroup
                         ? Array.isArray(campaign.targetAgeGroup)
@@ -163,7 +163,7 @@ export default function DetailsModal({
                   </div>
 
                   <div>
-                    <p className="font-medium">Target Audience Gender</p>
+                    <p className="font-medium dark:text-white">Target Audience Gender</p>
                     <p className="text-gray-600">
                       {(campaign?.targetGender &&
                         campaign.targetGender
@@ -174,7 +174,7 @@ export default function DetailsModal({
                   </div>
 
                   <div>
-                    <p className="font-medium"> Target Audience Location</p>
+                    <p className="font-medium dark:text-white"> Target Audience Location</p>
                     <p className="text-gray-600">
                       {campaign.targetLocation
                         ? campaign.targetLocation
@@ -185,7 +185,7 @@ export default function DetailsModal({
                   </div>
 
                   <div>
-                    <p className="font-medium"> Target Audience Interests</p>
+                    <p className="font-medium dark:text-white"> Target Audience Interests</p>
                     <p className="text-gray-600">
                       {campaign.targetInterests
                         ? campaign.targetInterests

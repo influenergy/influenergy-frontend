@@ -27,11 +27,10 @@ const GenderInput = ({ field }: { field: Field }) => {
             {...register(fieldName, {
               required: "Please select a gender",
             })}
-            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
-              error
-                ? "border-red-500 focus:ring-red-500"
-                : "border-gray-300 focus:ring-primary"
-            } focus:outline-none focus:ring-2 appearance-none`}
+            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:ring-primary"
+              } focus:outline-none focus:ring-2 appearance-none`}
           >
             <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
               Select Gender
@@ -68,11 +67,10 @@ const GenderInput = ({ field }: { field: Field }) => {
                     ? "This field is required"
                     : true,
               })}
-              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 ${
-                otherGenderError
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-primary"
-              }`}
+              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 ${otherGenderError
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-primary"
+                }`}
             />
           </div>
         )}

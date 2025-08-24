@@ -1,10 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { Button } from "../ui/button";
 // import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { MarqueeLogos } from "../magicui/marquee";
+import { useEffect, useRef, useState } from "react";
 // import DemoVideo from "../../../public/demo.mp4"
 
 export default function HeroSection() {
@@ -21,6 +21,33 @@ export default function HeroSection() {
     { logo: "/landing/marquee/company9.png" },
     { logo: "/landing/marquee/company10.jpg" },
   ];
+
+
+  const videos = [
+    "/video1.mp4",
+    "/video2.mov",
+    "/video3.mov",
+    "/video4.mov",
+  ];
+
+  const [mainIndex, setMainIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Auto rotate main video every 8 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMainIndex((prev) => (prev + 1) % videos.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [videos.length]);
+
+  // Auto-play the video when mainIndex changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => { });
+    }
+  }, [mainIndex]);
 
   return (
     <div className="relative w-full h-[500px] sm:h-[650px] md:h-[600px] flex items-center justify-center text-center">
@@ -78,16 +105,47 @@ export default function HeroSection() {
           {/* Gradient background fading from white to transparent */}
           <div className="absolute inset-0 z-50 bg-fade-gradient pointer-events-none h-[100%] " />
 
-          <Image src="/hero.jpg" alt="Hero Image" width={600} height={600} className="absolute inset-0 object-cover w-full h-full rounded-lg z-0" />
-          {/* Video Element */}
-          {/* <video
-            width="100%"
-            height="100%"
-            className="relative z-10 rounded-lg w-full h-full bg-transparent"
-          >
-            <source src="/demo.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video> */}
+          {/* <Image src="/hero.jpg" alt="Hero Image" width={600} height={600} className="absolute inset-0 object-cover w-full h-full rounded-lg z-0" /> */}
+          <div className="flex w-full max-w-2xl gap-4 max-h-[500px]">
+          {/* Main Video */}
+          <div className="flex flex-col gap-3 w-40">
+            {videos
+              .filter((_, idx) => idx !== mainIndex)
+              .map((video) => {
+                const actualIndex = videos.findIndex((v) => v === video);
+                return (
+                  <motion.div
+                    key={video}
+                    className="flex-1 rounded-xl overflow-hidden cursor-pointer"
+                    whileHover={{ scale: 1.05 }}
+                    onClick={() => setMainIndex(actualIndex)}
+                  >
+                    <video
+                      src={video}
+                      className="w-full h-full object-cover"
+                      muted
+                    />
+                  </motion.div>
+                );
+              })}
+          </div>
+          <div className="flex-1 rounded-xl overflow-hidden">
+            <video
+              ref={videoRef}
+              key={mainIndex}
+              src={videos[mainIndex]}
+              className="w-full h-full object-cover rounded-xl aspect-[9/16] max-h-[500px]"
+              controls={false}
+              muted
+              autoPlay
+              playsInline
+            />
+          </div>
+
+          {/* Side Thumbnails */}
+          
+        </div>
+        
         </div>
       </div>
 

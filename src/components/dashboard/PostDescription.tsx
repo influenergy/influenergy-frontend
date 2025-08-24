@@ -197,11 +197,11 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
   }, [data]);
 
   return (
-    <div className="bg-white rounded-lg p-6 relative space-y-4 mb-4 md:mb-8 lg:mb-10">
+    <div className="bg-white rounded-lg p-6 relative space-y-4 mb-4 md:mb-8 lg:mb-10 dark:bg-background">
       <button
         type="button"
         onClick={() => router.back()}
-        className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1"
+        className="text-gray-600 hover:text-gray-900 transition-colors dark:text-gray-300 dark:hover:text-white duration-200 flex items-center gap-1"
       >
         <ChevronsLeft className="h-5 w-5" />
         Back
@@ -293,7 +293,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
                         </div>
                       </div>
                   
-                      <div className="flex items-start flex-col flex-1 justify-between text-sm text-gray-500 dark:text-gray-300">
+                      <div className="flex items-start flex-col flex-1 justify-between text-sm text-gray-500">
                         <div className="flex gap-2">
                           {Array.isArray(creator?.profile?.category) &&
                             creator.profile.category.length > 0 &&
@@ -302,7 +302,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
                                 idx <= 1 && (
                                   <span
                                     key={idx}
-                                    className="text-xs p-1 bg-gray-300 rounded-lg"
+                                    className="text-xs p-1 bg-gray-300 rounded-lg text-black"
                                   >
                                     {data}
                                   </span>
@@ -318,7 +318,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
                                 width={16}
                                 height={16}
                               />
-                              <span>Verified</span>
+                              <span className="text-sm text-gray-600 dark:text-gray-400">Verified</span>
                             </div>
                             {city && (
                               <div className="flex gap-1 items-center">

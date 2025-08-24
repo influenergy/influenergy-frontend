@@ -235,6 +235,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                                             rel="noopener noreferrer"
                                                             className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
                                                             title={`Primary: ${creator.profile.socialLinks.primary.platform}`}
+                                                            onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
+
                                                         >
                                                             {getSocialMediaIcon(creator.profile.socialLinks.primary.platform)}
                                                         </a>
@@ -248,6 +250,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                                             rel="noopener noreferrer"
                                                             className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
                                                             title={`Secondary: ${creator.profile.socialLinks.secondary.platform}`}
+                                                            onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
+
                                                         >
                                                             {getSocialMediaIcon(creator.profile.socialLinks.secondary.platform)}
                                                         </a>
@@ -307,7 +311,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
             </div>
             <div className="grid grid-cols-1">
                 <Card className="p-6 ">
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <PieChart
                             data={regionAnalysis?.cityData as DataItem[]}
                             labelKey="city"

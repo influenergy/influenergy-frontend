@@ -29,7 +29,7 @@ export default function Page() {
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="ai" onValueChange={handleTabChange} className="dark:bg-gray-100">
+      <Tabs defaultValue="ai" onValueChange={handleTabChange} className="dark:bg-gray-100 h-full">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full bg-secondary ">
             <TabsTrigger

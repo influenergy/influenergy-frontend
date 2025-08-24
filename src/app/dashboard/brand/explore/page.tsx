@@ -2,39 +2,55 @@
 "use client";
 import { useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect, useState } from "react";
-import { userApi } from "@/services/userServices"; // ✅ using your API wrapper
+import { userApi } from "@/services/userServices";
 import Image from "next/image";
-import { Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, Heart } from "lucide-react";
+import {
+    Instagram,
+    Youtube,
+    Twitter,
+    Facebook,
+    Linkedin,
+    Mail,
+    Share2,
+    Heart,
+    SlidersHorizontal,
+    X
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToggleFavorite } from "@/hooks/usePost";
 import Link from "next/link";
 import SkeletonCard from "@/components/Skeletons/ExploreCreatorsSkeleton";
 
+// Filters data
+const FollowerRanges = [
+    "Less than 1,000",
+    "1,000 - 10,000",
+    "10,000 - 100,000",
+    "100,000 - 1,000,000",
+    "More than 1,000,000",
+];
 
+const Platforms = ["Facebook", "Instagram", "LinkedIn", "Newsletter", "Pinterest", "TikTok", "Twitch", "Twitter / X", "Youtube", "Youtube Reel"];
+const Niches = ["AI", "Beauty & Care", "Business & Finance", "Events", "Fashion & Style", "Food & Drinks", "Foodie", "Gaming", "Hair", "Health & Wellness", "Homemade", "Home & Garden", "Jewellery", "Kids & Parenting", "Lifestyle", "Makeup", "Music", "Nutrition", "Outdoors & Nature", "Pet", "Photography", "Restaurants", "Skincare", "Sports & Fitness", "Tech", "Travel", "Yoga", "Others"];
 
-
-
-// Helper function to get social media icon based on platform name
+// Social media icon resolver
 const getSocialMediaIcon = (platform: string) => {
     switch (platform?.toLowerCase()) {
-        case 'instagram':
+        case "instagram":
             return <Instagram className="w-5 h-5" />;
-        case 'youtube':
-        case 'youtube reel':
+        case "youtube":
+        case "youtube reel":
             return <Youtube className="w-5 h-5" />;
-        case 'twitter':
-        case 'twitter / x':
+        case "twitter":
+        case "twitter / x":
             return <Twitter className="w-5 h-5" />;
-        case 'facebook':
+        case "facebook":
             return <Facebook className="w-5 h-5" />;
-        case 'linkedin':
+        case "linkedin":
             return <Linkedin className="w-5 h-5" />;
-        case 'newsletter':
+        case "newsletter":
             return <Mail className="w-5 h-5" />;
-        case 'pinterest':
-        case 'tiktok':
-        case 'twitch':
         default:
             return <Share2 className="w-5 h-5" />;
     }
@@ -46,18 +62,15 @@ type Creator = {
     profileIcon?: string;
     isFavorite: boolean;
     profile?: {
-        category?: string[], aboutYourself: string, city: string, fullName: string, _id: string, socialLinks: {
-            primary: {
-                platform: string,
-                link: string,
-                followers: string
-            },
-            secondary: {
-                platform: string,
-                link: string,
-                followers: string
-            }
-        }
+        category?: string[];
+        aboutYourself: string;
+        city: string;
+        fullName: string;
+        _id: string;
+        socialLinks: {
+            primary: { platform: string; link: string; followers: string };
+            secondary: { platform: string; link: string; followers: string };
+        };
     };
 };
 
@@ -68,39 +81,79 @@ type ExploreResponse = {
     creators: Creator[];
 };
 
-const fetchCreators = async ({ pageParam = 1 }: { pageParam?: number }): Promise<ExploreResponse> => {
-    const res = await userApi.getExploredCreators(pageParam, 12);
-    return res; // { page, total, totalPages, creators }
+// API fetch with filters
+const fetchCreators = async ({
+    pageParam = 1,
+    filters,
+}: {
+    pageParam?: number;
+    filters: Record<string, string>;
+}): Promise<ExploreResponse> => {
+    const res = await userApi.getExploredCreators(pageParam, 12, filters);
+    return res;
 };
 
 export default function ExploreCreators() {
-
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+    const [isOpen, setIsOpen] = useState(false);
+    const [platforms, setPlatforms] = useState<string[]>([]);
+    const [niches, setNiches] = useState<string[]>([]);
+    const [followers, setFollowers] = useState<string[]>([]);
+    const [filters, setFilters] = useState({
+        sort: "", // "recentlyCollaborated" | "favorites"
+        platform: "",
+        followers: "",
+        niche: "",
+    });
+    const togglePlatform = (p: string) => {
+        setPlatforms((prev) =>
+            prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
+        );
+    };
 
+    const toggleNiche = (n: string) => {
+        setNiches((prev) =>
+            prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n]
+        );
+    };
+
+    const toggleFollowers = (n: string) => {
+        setFollowers((prev) =>
+            prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n]
+        );
+        console.log(followers,'followers')
+    };
+
+    const clearFilters = () => {
+        setPlatforms([]);
+        setNiches([]);
+    };
     const queryClient = useQueryClient();
-
 
     const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite({
         onSuccess: () => {
-            // Re-fetch creators list after favorite toggle
-            queryClient.invalidateQueries({ queryKey: ["exploreCreators"] });
+            queryClient.invalidateQueries({ queryKey: ["exploreCreators", filters] });
         },
     });
+
     const toggleExpand = (id: string) => {
         setExpanded((prev) => ({
             ...prev,
             [id]: !prev[id],
         }));
     };
+
+    // Infinite query with filters
     const {
         data,
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
         status,
+        refetch,
     } = useInfiniteQuery({
-        queryKey: ["exploreCreators"],
-        queryFn: fetchCreators,
+        queryKey: ["exploreCreators", filters],
+        queryFn: ({ pageParam = 1 }) => fetchCreators({ pageParam, filters }),
         initialPageParam: 1,
         getNextPageParam: (lastPage: ExploreResponse) => {
             if (lastPage.page < lastPage.totalPages) {
@@ -110,7 +163,7 @@ export default function ExploreCreators() {
         },
     });
 
-    // infinite scroll observer
+    // infinite scroll
     const loadMoreRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         if (!hasNextPage) return;
@@ -128,15 +181,149 @@ export default function ExploreCreators() {
         };
     }, [fetchNextPage, hasNextPage]);
 
+    // filter handlers
+    const handleSort = (sort: string) => {
+        if(sort === filters.sort){
+            setFilters((prev)=>({...prev,sort:""}))
+        }
+        else setFilters((prev) => ({ ...prev, sort }));
+        refetch();
+    };
+
     if (status === "pending") return <SkeletonCard />;
     if (status === "error") return <p>Failed to load creators</p>;
-    const handleSelecteCreatorForCampaign = (creatorId:string)=>{
-        console.log(creatorId,'storing in creatorId')
-        localStorage.setItem("selected-creator-campaign",creatorId)
-    }
+
+    const handleSelecteCreatorForCampaign = (creatorId: string) => {
+        localStorage.setItem("selected-creator-campaign", creatorId);
+    };
+// console.log(data,'data')
     return (
-        <div className="p-6">
+        <div className="relative p-6">
             <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
+
+            {/* Filter Options */}
+            <div className="my-4 space-y-3">
+                <div className="flex gap-3 items-center">
+                    <Button onClick={() => setIsOpen(true)}>
+                        <SlidersHorizontal className="w-4 h-4" />
+                        Filter
+                    </Button>
+
+                    <div className="flex gap-3 items-center pl-3 border-l-2">
+                        <p>Sort:</p>
+                        <Button
+                            onClick={() => handleSort("recentlyCollaborated")}
+                            className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "recentlyCollaborated"
+                                ? "border-blue-500 text-blue-500"
+                                : "border-gray-300 text-gray-500"
+                                }`}
+                        >
+                            Recently Collaborated
+                        </Button>
+                        <Button
+                            onClick={() => handleSort("favorites")}
+                            className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "favorites"
+                                ? "border-blue-500 text-blue-500"
+                                : "border-gray-300 text-gray-500"
+                                }`}
+                        >
+                            Favorites
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            {isOpen && (
+                <div className="absolute top-0 left-0 w-72 bg-white shadow-lg z-50 p-4 overflow-y-auto dark:text-black">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-semibold">Filter</h2>
+                        <button onClick={() => setIsOpen(false)}>
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+
+                    {/* Platforms */}
+                    <div className="mb-4">
+                        <h3 className="font-medium mb-2">Select Platform</h3>
+                        <div className="h-40 overflow-auto">
+
+                            {Platforms.map((p) => (
+                                <label key={p} className="block">
+                                    <input
+                                        type="checkbox"
+                                        checked={platforms.includes(p)}
+                                        onChange={() => togglePlatform(p)}
+                                        className="mr-2"
+                                    />
+                                    {p}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Followers range */}
+                    <div className="mb-4">
+                        <h3 className="font-medium mb-2">Range of Followers</h3>
+                        {FollowerRanges.map((p) => (
+                            <label key={p} className="block">
+                                <input
+                                    type="checkbox"
+                                    checked={followers.includes(p)}
+                                    onChange={() => toggleFollowers(p)}
+                                    className="mr-2"
+                                />
+                                {p}
+                            </label>
+                        ))}
+                    </div>
+
+                    {/* Niches */}
+                    <div className="mb-4">
+                        <h3 className="font-medium mb-2">Select Niche</h3>
+                        <div className="h-40 overflow-auto">
+
+                            {Niches.map((n) => (
+                                <label key={n} className="block">
+                                    <input
+                                        type="checkbox"
+                                        checked={niches.includes(n)}
+                                        onChange={() => toggleNiche(n)}
+                                        className="mr-2"
+                                    />
+                                    {n}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-between">
+                        <button
+                            onClick={clearFilters}
+                            className="px-4 py-2 bg-gray-200 rounded-md"
+                        >
+                            Clear Filter
+                        </button>
+                        <button
+                            onClick={() => {
+                                setFilters({
+                                    ...filters,
+                                    platform: platforms.join(","), // send comma-separated
+                                    niche: niches.join(","),
+                                    followers: followers.join("&"),
+                                });
+                                setIsOpen(false);
+                                refetch();
+                            }}
+                            className="px-4 py-2 bg-purple-600 text-white rounded-md"
+                        >
+                            Apply Filter
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Creator Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {data?.pages.flatMap((page) =>
                     page.creators.map((creator: Creator) => {
@@ -147,7 +334,7 @@ export default function ExploreCreators() {
                         return (
                             <Card
                                 key={creator._id}
-                                className="flex flex-col items-stretch p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600  dark:text-white shadow hover:scale-105 transition"
+                                className="flex flex-col items-stretch p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow hover:scale-105 transition"
                             >
                                 {/* IMAGE */}
                                 <Image
@@ -163,17 +350,11 @@ export default function ExploreCreators() {
                                     {/* NAME + SOCIALS */}
                                     <div className="flex w-full justify-between">
                                         <span className="text-base font-semibold text-gray-900 dark:text-white">
-                                            {(() => {
-                                                if (!creator.fullName) return "";
-                                                const parts = creator.fullName.trim().split(" ");
-                                                const firstName = parts[0];
-                                                const lastInitial = parts.length > 1 ? parts[parts.length - 1][0] : "";
-                                                return `${firstName} ${lastInitial && lastInitial + "."}`;
-                                            })()}
+                                            {creator.fullName}
                                         </span>
                                         <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
-                                            {/* Primary */}
-                                            {creator?.profile?.socialLinks?.primary?.platform &&
+                                             {/* Primary */}
+                                             {creator?.profile?.socialLinks?.primary?.platform &&
                                                 creator?.profile?.socialLinks?.primary?.link && (
                                                     <a
                                                         href={creator.profile.socialLinks.primary.link}
@@ -208,50 +389,28 @@ export default function ExploreCreators() {
                                                         <span className="text-xs text-gray-400">N/A</span>
                                                     </div>
                                                 )}
+
                                         </div>
                                     </div>
 
-                                    {/* CATEGORIES + CITY */}
-                                    <div className="flex items-start flex-col gap-4 text-sm text-gray-500">
-                                        <div className="flex gap-2">
-                                            {Array.isArray(creator?.profile?.category) &&
-                                                creator.profile.category.slice(0, 2).map((data, idx) => (
-                                                    <span
-                                                        key={idx}
-                                                        className="text-xs p-1 bg-gray-300 rounded-lg"
-                                                    >
-                                                        {data}
-                                                    </span>
-                                                ))}
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <div className="flex gap-1 items-center">
-                                                <Image
-                                                    src="/verified.png"
-                                                    alt="Verified"
-                                                    width={24}
-                                                    height={24}
-                                                />
-                                                <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                    Verified
+                                    {/* CATEGORIES */}
+                                    <div className="flex gap-2 flex-wrap">
+                                        {Array.isArray(creator?.profile?.category) &&
+                                            creator.profile.category.slice(0, 2).map((c, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="text-xs p-1 bg-gray-300 rounded-lg"
+                                                >
+                                                    {c}
                                                 </span>
-                                            </div>
-                                            {creator.profile?.city && (
-                                                <div className="flex gap-1 items-center">
-                                                    <span className="text-sm">📍</span>
-                                                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                        {creator.profile.city}
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </div>
+                                            ))}
                                     </div>
 
                                     {/* BIO */}
                                     <div>
                                         <h4 className="font-semibold">Bio</h4>
                                         <p
-                                            className={`text-gray-700 dark:text-gray-200 text-sm leading-snug transition-all ${isExpanded ? "" : "line-clamp-2"
+                                            className={`text-gray-700 dark:text-gray-200 text-sm leading-snug ${isExpanded ? "" : "line-clamp-2"
                                                 }`}
                                         >
                                             {creator.profile?.aboutYourself}
@@ -267,28 +426,32 @@ export default function ExploreCreators() {
                                     </div>
                                 </div>
 
+                                {/* ACTIONS */}
                                 <div className="flex items-center justify-between mt-auto">
-                                    <Link href="/dashboard/brand/create-post" onClick={()=>handleSelecteCreatorForCampaign(creator._id)}>
+                                    <Link
+                                        href="/dashboard/brand/create-post"
+                                        onClick={() =>
+                                            handleSelecteCreatorForCampaign(creator._id)
+                                        }
+                                    >
                                         <Button className="bg-primary px-5 py-2 rounded-xl">
-                                            Create Your Campaign
+                                            Create Campaign
                                         </Button>
                                     </Link>
 
-                                    <div className="flex justify-end items-center">
-                                        <span className="border dark:border-gray-50 rounded-md p-3 group cursor-pointer" onClick={() => {
-
-                                            toggleFavorite({
-                                                creatorId: creator._id,
-                                            })
+                                    <span
+                                        className="border rounded-md p-3 cursor-pointer"
+                                        onClick={() =>
+                                            toggleFavorite({ creatorId: creator._id })
                                         }
-                                        }>
-                                            <Heart
-                                                className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110
-      ${creator.isFavorite ? "text-red-500 fill-red-500" : "text-gray-600 dark:text-gray-50 "}  ${isToggling ? "animate-pulse" : ""}`}
-                                            />
-                                        </span>
-
-                                    </div>
+                                    >
+                                        <Heart
+                                            className={`w-5 h-5 ${creator.isFavorite
+                                                ? "text-red-500 fill-red-500"
+                                                : "text-gray-600"
+                                                } ${isToggling ? "animate-pulse" : ""}`}
+                                        />
+                                    </span>
                                 </div>
                             </Card>
                         );
@@ -297,11 +460,8 @@ export default function ExploreCreators() {
             </div>
 
             {/* Load More */}
-            <div
-                ref={loadMoreRef}
-                className="h-10 flex justify-center items-center mt-4"
-            >
-                {isFetchingNextPage ? <p>Loading more...</p> : null}
+            <div ref={loadMoreRef} className="h-10 flex justify-center items-center mt-4">
+                {isFetchingNextPage && <p>Loading more...</p>}
             </div>
         </div>
     );

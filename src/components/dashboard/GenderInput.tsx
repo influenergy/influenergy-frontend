@@ -23,16 +23,16 @@ export const GenderInput = ({ field }: { field: Field }) => {
   return (
     <div>
       <div className="flex items-center gap-2">
-        <div className="relative w-full">
+        <div className="relative w-full dark:text-black">
           <select
             {...register(fieldName)}
-            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins ${
+            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${
               error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-primary"
             } focus:outline-none focus:ring-2 appearance-none`}
           >
-            <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+            <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-black">
               {field.placeholder || "Select"}
             </option>
             {field.options?.map((option) => (
@@ -40,6 +40,7 @@ export const GenderInput = ({ field }: { field: Field }) => {
                 key={option}
                 value={option}
                 style={{ fontFamily: "Poppins, sans-serif" }}
+                className="dark:text-black"
               >
                 {option}
               </option>

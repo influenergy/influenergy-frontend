@@ -109,7 +109,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
             <div className="my-4 flex justify-between flex-col flex-1 gap-4">
               <div>
 
-                <h3 className="text-black text-xs mb-1 font-thin">Description</h3>
+                <h3 className="text-black dark:text-black text-xs mb-1 font-thin">Description</h3>
                 <p
                   className={`text-black text-sm leading-snug transition-all ${expanded ? "" : "line-clamp-2"}`}
                 >
@@ -185,7 +185,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
                 </div>
 
                 <div className="flex flex-col items-start gap-2 md:gap-4">
-                  <h2 className="font-semibold text-sm md:text-base">Campaign Description</h2>
+                  <h2 className="font-semibold text-sm md:text-base dark:text-black">Campaign Description</h2>
                   <p className="text-gray-500 text-sm md:text-base font-normal">
                     {data.campaignId.campaignDescription}
                   </p>

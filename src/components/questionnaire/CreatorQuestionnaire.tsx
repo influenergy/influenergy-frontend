@@ -243,7 +243,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
               <Button
                 variant="outline"
                 onClick={() => setCurrentStep(steps[steps.length - 1])}
-                className="p-6  rounded-lg border-primary text-primary"
+                className="p-6  rounded-lg border-primary text-primary dark:bg-transparent"
                 type="button"
                 disabled={isSubmitting}
               >
@@ -294,7 +294,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
                 <Button
                   variant="outline"
                   onClick={handlePrevious}
-                  className="w-full sm:w-auto p-4 sm:p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-base sm:text-lg"
+                  className="w-full sm:w-auto p-4 sm:p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-base sm:text-lg dark:bg-white dark:text-primary dark:border-primary"
                   type="button"
                 >
                   <MoveLeft size={20} />
@@ -303,7 +303,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
               ) : (
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto p-4 sm:p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-base sm:text-lg"
+                  className="w-full sm:w-auto p-4 sm:p-6 rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-base sm:text-lg dark:bg-white dark:text-primary dark:border-primary "
                   type="button"
                   onClick={() => router.push("/dashboard")}
                 >

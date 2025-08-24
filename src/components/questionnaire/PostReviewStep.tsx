@@ -69,7 +69,7 @@ const PostReviewStep = ({ onEdit }: ReviewStepProps) => {
   return (
     <div className="w-full mx-auto py-8 px-4 relative ">
       <div className="mb-8 flex flex-col justify-center items-center">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl text font-bold mt-4 mb-2">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl text font-bold mt-4 mb-2 dark:text-black">
           We Would Love to Know More About You
         </h2>
         <p className="text-gray-600 font-light">

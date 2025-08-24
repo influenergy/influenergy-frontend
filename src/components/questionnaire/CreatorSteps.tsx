@@ -159,7 +159,7 @@ const FormField = ({ field }: { field: Field }) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins ${error
+          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-300 focus:ring-primary"
             } focus:outline-none focus:ring-2 appearance-none`}
@@ -172,6 +172,7 @@ const FormField = ({ field }: { field: Field }) => {
               key={option}
               value={option}
               style={{ fontFamily: "Poppins, sans-serif" }}
+              className="dark:text-black"
             >
               {option}
             </option>
@@ -203,6 +204,7 @@ const FormField = ({ field }: { field: Field }) => {
             setValue(fieldName, values, { shouldValidate: true });
           }}
           classNamePrefix="react-select"
+          className="dark:text-black"
         />
       </div>
     );
@@ -216,7 +218,7 @@ const FormField = ({ field }: { field: Field }) => {
           placeholder={field.placeholder}
           cols={30}
           rows={10}
-          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 focus:outline-none focus:ring-2"
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 dark:text-black focus:outline-none focus:ring-2"
         ></textarea>
       </div>
     );
@@ -278,7 +280,7 @@ const FormField = ({ field }: { field: Field }) => {
       type={field.category}
       placeholder={field.placeholder}
       {...register(fieldName)}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 ${error
+      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
         ? "border-red-500 focus:ring-red-500"
         : "border-gray-300 focus:ring-primary"
         } focus:outline-none focus:ring-2`}
@@ -368,7 +370,7 @@ export const Step = ({ fields }: StepProps) => {
       <div className="">
         {primaryAudienceFields.length > 0 && (
           <div className="p-2 sm:p-4 rounded-lg">
-            <h3 className="text-lg font-light mb-2 ">Your primary audience demography *</h3>
+            <h3 className="text-lg font-light mb-2 dark:text-black">Your primary audience demography *</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-2 md:gap-4">
               <StepComponent fields={primaryAudienceFields} />
             </div>
@@ -376,7 +378,7 @@ export const Step = ({ fields }: StepProps) => {
         )}
         {secondaryAudienceFields.length > 0 && (
           <div className="p-2 sm:p-4 rounded-lg">
-            <h3 className="text-lg font-light mb-2">Your secondary audience demography </h3>
+            <h3 className="text-lg font-light mb-2 dark:text-black">Your secondary audience demography </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center gap-2 md:gap-4">
               <StepComponent fields={secondaryAudienceFields} />
             </div>
@@ -426,7 +428,7 @@ const DateInput = ({ field }: { field: Field }) => {
         }}
         dateFormat="MM/dd/yyyy"
         placeholderText="mm/dd/yyyy"
-        className="w-full p-3 border rounded-lg transition-all duration-200"
+        className="w-full p-3 border rounded-lg transition-all duration-200 dark:text-black"
       />
     </div>
   );

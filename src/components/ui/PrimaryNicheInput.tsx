@@ -165,6 +165,7 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
             handleSelectChange(selected as { value: string; label: string }[])
           }
           classNamePrefix="react-select"
+          className="dark:text-black"
         />
 
         {hasOthersOption && (
@@ -174,7 +175,7 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
               placeholder="Please specify your niche"
               value={otherNicheValue}
               onChange={handleOtherNicheChange}
-              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 ${
+              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 dark:text-black ${
                 otherNicheError
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-primary"

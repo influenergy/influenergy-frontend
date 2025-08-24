@@ -82,7 +82,7 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
   return (
     <div className="w-full mx-auto py-4 px-2 sm:py-8 sm:px-4 relative ">
       <div className="mb-6 flex flex-col justify-center items-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-4 mb-2 text-center">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-4 mb-2 text-center dark:text-black">
           We Would Love to Know More About You
         </h2>
         <p className="text-gray-600 font-light text-center">

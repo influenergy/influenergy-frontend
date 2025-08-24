@@ -94,12 +94,18 @@ export const userApi = {
     const respose = await api.get("/random-creators");
     return respose.data
   },
-  getExploredCreators: async (page: number, limit: number) => {
+  getExploredCreators: async (page: number, limit: number, filters: Record<string,string> = {}) => {
     const response = await api.get("/brand/explore-creators", {
-      params: { page, limit }
+      params: {
+        page,
+        limit,
+        ...filters, // ✅ spread filters into query params
+      },
     });
+  
     // API returns { status, message, data }
     return response.data.data;
   }
+  
 
 };
