@@ -19,17 +19,15 @@ export default function ProfileMatch() {
     isError,
     isFetched
   } = useFindAiCampaign(campaignId as string, localStorage.getItem("selected-creator-campaign") || "");
-  console.log(creatorsData, 'creatorsData')
+
   const creators: CreatorAPIResponse[] = creatorsData?.data?.matchedCreators || [];
   const favCreators: CreatorAPIResponse[] = creatorsData?.data?.favoriteCreators || [];
   const selectedCreator: CreatorAPIResponse = creatorsData?.data?.selectedCreator || {};
-  console.log(creators, favCreators, selectedCreator)
+
   if (isLoading) {
     return (
-      <div className="h-[50vh] flex items-center justify-center">
+      <div className="h-full flex items-center justify-center">
         <div className="text-center space-y-4">
-          {/* <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-          <p className="text-gray-600">Loading creators...</p> */}
           <Loader />
         </div>
       </div>

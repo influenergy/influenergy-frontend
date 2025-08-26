@@ -17,7 +17,7 @@ export const Step1 = ({ fields }: StepProps) => {
     <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-6">
       {fields.map((field) => (
         <div key={field.title} className="space-y-2 mt-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
             {field.title}
             <span className="text-red-500 ml-1">*</span>
           </label>
@@ -28,12 +28,12 @@ export const Step1 = ({ fields }: StepProps) => {
             })}
             className={`w-full p-3 border rounded-lg transition-all duration-200
               ${errors[field.slug as keyof BrandFormData]
-                ? "border-red-500 focus:ring-red-500"
-                : "border-gray-300 focus:ring-primary"
+                ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+                : "border-gray-300 focus:ring-primary dark:border-gray-700"
               } 
               focus:outline-none focus:ring-2 focus:border-transparent
-              disabled:bg-gray-50 disabled:text-gray-500
-              placeholder:text-gray-400`}
+              disabled:bg-gray-50 disabled:text-gray-500 dark:disabled:bg-gray-800 dark:disabled:text-gray-400
+              placeholder:text-gray-400 dark:bg-gray-900 dark:text-gray-100`}
             placeholder={`Enter ${field.title.toLowerCase()}`}
           />
           {errors[field.slug as keyof BrandFormData] && (
@@ -42,7 +42,7 @@ export const Step1 = ({ fields }: StepProps) => {
             </p>
           )}
           {field.slug === "companyWebsite" && (
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Please include http:// or https:// in your URL
             </p>
           )}

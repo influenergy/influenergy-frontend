@@ -31,7 +31,7 @@ const FollowerRanges = [
     "More than 1,000,000",
 ];
 
-const Platforms = ["Facebook", "Instagram", "LinkedIn", "Newsletter", "Pinterest", "TikTok", "Twitch", "Twitter / X", "Youtube", "Youtube Reel"];
+const Platforms = ["Facebook", "Instagram", "LinkedIn", "Newsletter", "Pinterest", "TikTok", "Twitch", "Twitter / X", "Youtube", "Youtube Shorts"];
 const Niches = ["AI", "Beauty & Care", "Business & Finance", "Events", "Fashion & Style", "Food & Drinks", "Foodie", "Gaming", "Hair", "Health & Wellness", "Homemade", "Home & Garden", "Jewellery", "Kids & Parenting", "Lifestyle", "Makeup", "Music", "Nutrition", "Outdoors & Nature", "Pet", "Photography", "Restaurants", "Skincare", "Sports & Fitness", "Tech", "Travel", "Yoga", "Others"];
 
 // Social media icon resolver
@@ -121,7 +121,7 @@ export default function ExploreCreators() {
         setFollowers((prev) =>
             prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n]
         );
-        console.log(followers,'followers')
+        console.log(followers, 'followers')
     };
 
     const clearFilters = () => {
@@ -183,8 +183,8 @@ export default function ExploreCreators() {
 
     // filter handlers
     const handleSort = (sort: string) => {
-        if(sort === filters.sort){
-            setFilters((prev)=>({...prev,sort:""}))
+        if (sort === filters.sort) {
+            setFilters((prev) => ({ ...prev, sort: "" }))
         }
         else setFilters((prev) => ({ ...prev, sort }));
         refetch();
@@ -196,7 +196,7 @@ export default function ExploreCreators() {
     const handleSelecteCreatorForCampaign = (creatorId: string) => {
         localStorage.setItem("selected-creator-campaign", creatorId);
     };
-// console.log(data,'data')
+    // console.log(data,'data')
     return (
         <div className="relative p-6">
             <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
@@ -353,8 +353,8 @@ export default function ExploreCreators() {
                                             {creator.fullName}
                                         </span>
                                         <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
-                                             {/* Primary */}
-                                             {creator?.profile?.socialLinks?.primary?.platform &&
+                                            {/* Primary */}
+                                            {creator?.profile?.socialLinks?.primary?.platform &&
                                                 creator?.profile?.socialLinks?.primary?.link && (
                                                     <a
                                                         href={creator.profile.socialLinks.primary.link}

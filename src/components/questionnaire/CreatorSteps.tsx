@@ -159,12 +159,12 @@ const FormField = ({ field }: { field: Field }) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-primary"
+          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
-          <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-900">
             {field.placeholder || "Select"}
           </option>
           {field.options?.map((option) => (
@@ -172,7 +172,7 @@ const FormField = ({ field }: { field: Field }) => {
               key={option}
               value={option}
               style={{ fontFamily: "Poppins, sans-serif" }}
-              className="dark:text-black"
+              className="dark:text-gray-900"
             >
               {option}
             </option>
@@ -204,7 +204,7 @@ const FormField = ({ field }: { field: Field }) => {
             setValue(fieldName, values, { shouldValidate: true });
           }}
           classNamePrefix="react-select"
-          className="dark:text-black"
+          className="dark:bg-gray-900 dark:text-gray-100"
         />
       </div>
     );
@@ -218,7 +218,7 @@ const FormField = ({ field }: { field: Field }) => {
           placeholder={field.placeholder}
           cols={30}
           rows={10}
-          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 dark:text-black focus:outline-none focus:ring-2"
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 dark:border-gray-700 focus:ring-primary text-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2"
         ></textarea>
       </div>
     );
@@ -280,9 +280,9 @@ const FormField = ({ field }: { field: Field }) => {
       type={field.category}
       placeholder={field.placeholder}
       {...register(fieldName)}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
-        ? "border-red-500 focus:ring-red-500"
-        : "border-gray-300 focus:ring-primary"
+      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
+        ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+        : "border-gray-300 focus:ring-primary dark:border-gray-700"
         } focus:outline-none focus:ring-2`}
     />
   );
@@ -320,7 +320,7 @@ const StepComponent = ({ fields }: StepProps) => {
         ) {
           return (
             <div key={field.title} className="space-y-2 mt-4">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                 {field.title}
                 {required && <span className="text-red-500 ml-1">*</span>}
               </label>
@@ -339,7 +339,7 @@ const StepComponent = ({ fields }: StepProps) => {
           <div key={field.title} className="space-y-2 mt-4 w-full">
             {primaryAudience ||
               (!secondaryAudience && (
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
                   {field.title}
                   {required && <span className="text-red-500 ml-1">*</span>}
                 </label>
@@ -428,7 +428,7 @@ const DateInput = ({ field }: { field: Field }) => {
         }}
         dateFormat="MM/dd/yyyy"
         placeholderText="mm/dd/yyyy"
-        className="w-full p-3 border rounded-lg transition-all duration-200 dark:text-black"
+        className="w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700"
       />
     </div>
   );

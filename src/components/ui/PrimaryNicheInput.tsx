@@ -165,7 +165,7 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
             handleSelectChange(selected as { value: string; label: string }[])
           }
           classNamePrefix="react-select"
-          className="dark:text-black"
+          className="dark:bg-gray-900 dark:text-gray-100"
         />
 
         {hasOthersOption && (

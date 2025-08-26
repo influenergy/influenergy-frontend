@@ -97,7 +97,7 @@ export const GenderInput = ({ field }: { field: Field }) => {
               : "border-gray-300 focus:ring-primary"
               } focus:outline-none focus:ring-2 appearance-none`}
           >
-            <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-black">
+            <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-black dark:bg-gray-200">
               {field.placeholder || "Select"}
             </option>
             {field.options?.map((option) => (
@@ -182,12 +182,12 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-primary"
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
-          <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-200 dark:bg-gray-900">
             Select
           </option>
           {field.options?.map((option) => (
@@ -195,7 +195,7 @@ export const FormField = ({ field }: FormFieldProps) => {
               key={option}
               value={option}
               style={{ fontFamily: "Poppins, sans-serif" }}
-              className="dark:text-black"
+              className="dark:text-gray-200 dark:bg-gray-900"
             >
               {option}
             </option>
@@ -226,7 +226,7 @@ export const FormField = ({ field }: FormFieldProps) => {
             setValue(fieldName, values, { shouldValidate: true });
           }}
           classNamePrefix="react-select"
-          className="dark:text-black"
+          className="dark:bg-gray-900 dark:text-gray-100"
         />
       </div>
     );
@@ -236,14 +236,25 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-primary"
+          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
-          <option value="" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-900">
             Select
           </option>
+          {/* Ensure current value is visible even if not part of predefined options */}
+          {(() => {
+            const currentValue = watch(fieldName) as unknown as string | undefined;
+            const allOptions = (field.groups || []).flatMap((g) => g.options);
+            const hasCurrent = currentValue && allOptions.includes(currentValue);
+            return !hasCurrent && currentValue ? (
+              <option value={currentValue} style={{ fontFamily: "Poppins, sans-serif" }}>
+                {currentValue}
+              </option>
+            ) : null;
+          })()}
           {field.groups?.map((group) => (
             <optgroup key={group.label} label={group.label}>
               {group.options.map((option: string) => (
@@ -278,7 +289,7 @@ export const FormField = ({ field }: FormFieldProps) => {
           placeholder={field.placeholder}
           cols={3}
           rows={3}
-          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 focus:ring-primary text-gray-700 dark:text-black focus:outline-none focus:ring-2"
+          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 dark:border-gray-700 focus:ring-primary text-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2"
         ></textarea>
       </div>
     );
@@ -295,7 +306,7 @@ export const FormField = ({ field }: FormFieldProps) => {
         <div className="flex flex-col gap-2">
           {(isImage || isUploadedImage) ? (
             <div
-              className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden"
+              className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden dark:border-gray-700"
               onClick={() => inputRef.current?.click()}
               title="Click to upload a new image"
               style={{ maxHeight: 200 }}
@@ -304,13 +315,13 @@ export const FormField = ({ field }: FormFieldProps) => {
               <img
                 src={value}
                 alt="Campaign Post Preview"
-                className="object-contain w-full h-48 bg-gray-100"
+                className="object-contain w-full h-48 bg-gray-100 dark:bg-gray-800"
                 style={{ objectFit: "contain" }}
               />
             </div>
           ) : (
             <div
-              className="w-full p-3 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 text-gray-400"
+              className="w-full p-3 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-300"
               onClick={() => inputRef.current?.click()}
               title="Click to upload an image"
               style={{ maxHeight: 200 }}
@@ -356,9 +367,9 @@ export const FormField = ({ field }: FormFieldProps) => {
             };
           }
         }}
-        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-primary"
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
+          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+          : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
       />
     );
@@ -410,7 +421,7 @@ export const FormField = ({ field }: FormFieldProps) => {
     <input
       type={field.category}
       {...register(fieldName)}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
+      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
         ? "border-red-500 focus:ring-red-500"
         : "border-gray-300 focus:ring-primary"
         } focus:outline-none focus:ring-2`}
@@ -432,7 +443,7 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
 
         return (
           <div key={field.title} className="md:space-y-2 md:mt-4">
-            <label className="block text-sm font-light text-black dark:text-black">
+            <label className="block text-sm font-light text-black dark:text-gray-200">
               {field.title}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
@@ -475,9 +486,9 @@ const DateInput = ({ field }: { field: Field }) => {
           });
         }}
         dateFormat="MM/dd/yyyy"
-        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:text-black ${error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-primary"
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
+          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+          : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
         placeholderText="Select date"
       />

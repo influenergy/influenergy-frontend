@@ -3,16 +3,21 @@
 @tailwind utilities;
 
 .bg-fade-gradient {
-  background: linear-gradient(to right, #ffffff 0%, rgb(255 255 255 / 75%) 10%, rgb(255 255 255 / 35%) 18%, rgb(255 255 255 / 20%) 24%, rgba(255, 255, 255, 12%) 28%);
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    rgb(255 255 255 / 75%) 10%,
+    rgb(255 255 255 / 35%) 18%,
+    rgb(255 255 255 / 20%) 24%,
+    rgba(255, 255, 255, 12%) 28%
+  );
 }
-
 
 html {
   scroll-behavior: smooth;
 }
 @layer base {
   :root {
-
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -34,7 +39,6 @@ html {
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
   }
-
 
   .dark {
     --background: 222.2 84% 4.9%;
@@ -122,4 +126,31 @@ html {
 }
 .react-select__multi-value__remove {
   @apply hover:bg-red-500 hover:text-white p-1 cursor-pointer;
+}
+
+/* Dark mode for react-select */
+.dark .react-select__control {
+  @apply bg-gray-900 border-gray-700 text-gray-100;
+}
+.dark .react-select__value-container,
+.dark .react-select__input-container {
+  @apply text-gray-100;
+}
+.dark .react-select__menu {
+  @apply bg-gray-900 border-gray-700;
+}
+.dark .react-select__option {
+  @apply text-gray-100 hover:bg-gray-800;
+}
+.dark .react-select__option--is-selected {
+  @apply bg-primary text-white;
+}
+.dark .react-select__multi-value {
+  @apply bg-gray-800;
+}
+.dark .react-select__multi-value__label {
+  @apply text-gray-200;
+}
+.dark .react-select__multi-value__remove {
+  @apply text-gray-300 hover:bg-red-500 hover:text-white;
 }

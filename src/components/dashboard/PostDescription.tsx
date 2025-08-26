@@ -103,7 +103,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
     if (!isCampaignResponse(data)) return data as PostData;
 
     const campaign = data;
-
+    console.log(campaign.catchPhrase,'campaign.catchPhrase')
     return {
       id: campaign._id,
       image: campaign?.campaignPost,
@@ -176,7 +176,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
 
       "content-type": data.contentType,
       "video-duration": data.videoDuration,
-      "catch-phrase": data.catchPhrase,
+      "catch-phrase": data.catchPhrase[0],
       "key-message": data.keyMessage,
       "tone-style": data.toneStyle,
       "creator-type": data.creatorType,
@@ -347,7 +347,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
       <div className="flex flex-col gap-10 ">
         <div className="flex w-full items-center justify-between ">
           <p className="text-2xl font-semibold">Campaing Details</p>
-          {!collaborations && <Button className="bg-primary px-5 py-2 rounded-xl" onClick={() => setOpen(true)}>
+          {collaborations.length===0 && <Button className="bg-primary px-5 py-2 rounded-xl" onClick={() => setOpen(true)}>
             Edit Brief
           </Button>}
         </div>

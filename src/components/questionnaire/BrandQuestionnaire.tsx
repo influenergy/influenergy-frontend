@@ -99,11 +99,11 @@ const BrandQuestionnaire = () => {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-5xl w-full min-h-screen p-2 sm:p-6 flex flex-col items-center justify-evenly"
+        className="max-w-5xl w-full min-h-screen p-2 sm:p-6 flex flex-col items-center justify-evenly dark:text-gray-100"
       >
         <div className="mb-6 sm:mb-8 flex flex-col items-center w-full px-2 sm:px-0">
-          <h2 className="text-2xl font-bold mb-2 text-center">{questions.step1.title}</h2>
-          <p className="text-gray-600 text-center">{questions.step1.description}</p>
+          <h2 className="text-2xl font-bold mb-2 text-center dark:text-gray-100">{questions.step1.title}</h2>
+          <p className="text-gray-600 dark:text-gray-300 text-center">{questions.step1.description}</p>
         </div>
 
         <motion.div
@@ -120,7 +120,7 @@ const BrandQuestionnaire = () => {
             type="button"
             variant="outline"
             onClick={handleSkip}
-            className="w-full sm:w-1/3 px-4 sm:px-6 py-4 sm:py-5 hover:bg-gray-50"
+            className="w-full sm:w-1/3 px-4 sm:px-6 py-4 sm:py-5 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
             disabled={isSubmitting}
           >
             Skip

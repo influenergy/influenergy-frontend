@@ -29,9 +29,9 @@ export default function Page() {
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="ai" onValueChange={handleTabChange} className="dark:bg-gray-100 h-full">
+      <Tabs defaultValue="ai" onValueChange={handleTabChange} className="dark:bg-background h-full">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
-          <TabsList className="w-full bg-secondary ">
+          <TabsList className="w-full ">
             <TabsTrigger
               value="ai"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
@@ -62,25 +62,25 @@ export default function Page() {
         </div>
 
         {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="ai" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-gray-100">
+        <TabsContent value="ai" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-background">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "ai" && <AIFindTab />}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="active" className="w-full mt-0 bg-gray-50 pt-5 md:pt-8 mb-5 md:mb-10">
+        <TabsContent value="active" className="w-full mt-0  pt-5 md:pt-8 mb-5 md:mb-10 dark:bg-background">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "active" && <ActiveCollaborationTab />}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="pending" className="w-full mt-0 bg-gray-50 pt-5 md:pt-8 mb-5 md:mb-10">
+        <TabsContent value="pending" className="w-full mt-0 dark:bg-background pt-5 md:pt-8 mb-5 md:mb-10">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "pending" && <PendingCollaborationTab />}
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="completed" className="w-full mt-0 bg-gray-50 pt-5 md:pt-8 mb-5 md:mb-10">
+        <TabsContent value="completed" className="w-full mt-0 dark:bg-background pt-5 md:pt-8 mb-5 md:mb-10">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "completed" && <CompletedCollaborationTab />}
           </Suspense>

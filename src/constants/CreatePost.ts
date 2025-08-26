@@ -2,23 +2,23 @@ import { LucideIcon, User, Book, ChartPie, Share2, Users } from "lucide-react";
 export interface Field {
   title: string;
   category:
-    | "text"
-    | "number"
-    | "date"
-    | "dropdown"
-    | "email"
-    | "text"
-    | "textarea"
-    | "multiselect"
-    | "file"
-    | "grouped-dropdown"
-    | "range";
+  | "text"
+  | "number"
+  | "date"
+  | "dropdown"
+  | "email"
+  | "text"
+  | "textarea"
+  | "multiselect"
+  | "file"
+  | "grouped-dropdown"
+  | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
-  groups?:{
-    label:string,
-    options:string[]
+  groups?: {
+    label: string,
+    options: string[]
   }[]
 }
 
@@ -374,7 +374,7 @@ export const CREATE_POST: Questions = {
           "Twitch",
           "Twitter / X",
           "Youtube",
-          "Youtube Reel",
+          "Youtube Shorts",
         ],
       },
       {

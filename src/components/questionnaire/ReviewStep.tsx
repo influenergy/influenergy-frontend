@@ -80,12 +80,12 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
   });
 
   return (
-    <div className="w-full mx-auto py-4 px-2 sm:py-8 sm:px-4 relative ">
+    <div className="w-full mx-auto py-4 px-2 sm:py-8 sm:px-4 relative dark:text-gray-100 ">
       <div className="mb-6 flex flex-col justify-center items-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-4 mb-2 text-center dark:text-black">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-4 mb-2 text-center dark:text-gray-100">
           We Would Love to Know More About You
         </h2>
-        <p className="text-gray-600 font-light text-center">
+        <p className="text-gray-600 dark:text-gray-300 font-light text-center">
           This helps fine tune your brand matches
         </p>
       </div>
@@ -106,13 +106,13 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 rounded-lg shadow-sm border p-3 sm:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 rounded-lg shadow-sm border dark:border-gray-700 p-3 sm:p-6">
               {section.fields.map((field) => (
                 <div key={field.slug} className="space-y-1">
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-300">
                     {field.label}
                   </p>
-                  <p className="text-base text-gray-900 break-words">{field.value}</p>
+                  <p className="text-base text-gray-900 dark:text-gray-100 break-words">{field.value}</p>
                 </div>
               ))}
             </div>

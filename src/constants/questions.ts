@@ -3,24 +3,24 @@ import { LucideIcon, User, Book, ChartPie, Share2, Users } from "lucide-react";
 export interface Field {
   title: string;
   category:
-    | "text"
-    | "number"
-    | "date"
-    | "dropdown"
-    | "email"
-    | "text"
-    | "multiselect"
-    | "textarea"
-    | "file"
-    | "grouped-dropdown"
-    | "range";
+  | "text"
+  | "number"
+  | "date"
+  | "dropdown"
+  | "email"
+  | "text"
+  | "multiselect"
+  | "textarea"
+  | "file"
+  | "grouped-dropdown"
+  | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
   placeholder?: string;
-  groups?:{
-    label:string,
-    options:string[]
+  groups?: {
+    label: string,
+    options: string[]
   }[]
 }
 
@@ -245,7 +245,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Twitch",
           "Twitter / X",
           "Youtube",
-          "Youtube Reel",
+          "Youtube Shorts",
         ],
         placeholder: "Select primary platform",
       },
@@ -283,7 +283,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Twitch",
           "Twitter / X",
           "Youtube",
-          "Youtube Reel",
+          "Youtube Shorts",
         ],
         placeholder: "Select secondary platform (optional)",
       },
@@ -571,7 +571,7 @@ export const CREATOR_QUESTIONS: Questions = {
         options: ["Yes", "No", "Gifted", "Affiliate Marketing", "Other"],
         placeholder: "Select",
       },
-      
+
       {
         title: "Add Method Of Payment",
         slug: "payment-method",

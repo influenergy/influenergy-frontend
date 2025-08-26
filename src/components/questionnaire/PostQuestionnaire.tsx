@@ -49,10 +49,12 @@ const schemas: StepSchemas = {
 const PostQuestionnaire = ({
   mode = "create",
   defaultValues = {},
+  startAtReview = false,
 }: {
   mode?: "create" | "edit";
   defaultValues?: Partial<PostQuestionnaireData>;
   onClose?: () => void;
+  startAtReview?: boolean;
 }) => {
   const [currentStep, setCurrentStep] = useState<
     keyof typeof questions | "review"
@@ -67,7 +69,7 @@ const PostQuestionnaire = ({
   const router = useRouter();
   const [formData, setFormData] = useState<Partial<PostQuestionnaireData>>({});
 
-  const [campaingId,setCampaignId] = useState<string>("");
+  const [campaingId, setCampaignId] = useState<string>("");
 
   const steps = Object.keys(questions) as (keyof typeof questions)[];
   const currentStepIndex = steps.indexOf(currentStep);
@@ -106,12 +108,22 @@ const PostQuestionnaire = ({
     defaultValues: mode === "edit" ? defaultValues : formData,
   });
 
-  const { handleSubmit, trigger, clearErrors, getValues } = methods;
+  const { handleSubmit, trigger, clearErrors, getValues, reset } = methods;
 
   useEffect(() => {
     clearErrors();
   }, [currentStep, clearErrors]);
 
+
+  // If instructed to start at review (e.g., after AI data prefill),
+  // load provided defaults into the form and jump to review step
+  useEffect(() => {
+    if (startAtReview && defaultValues && Object.keys(defaultValues).length > 0) {
+      setFormData(defaultValues);
+      reset(defaultValues as PostQuestionnaireData);
+      setCurrentStep("review");
+    }
+  }, [startAtReview, defaultValues, reset]);
 
 
 
@@ -236,7 +248,7 @@ const PostQuestionnaire = ({
                   </Button>
                 </DialogTrigger>
                 {/* Apply styling similar to DeleteModal */}
-                <DialogContent className="sm:max-w-sm bg-white rounded-lg p-6">
+                <DialogContent className="sm:max-w-sm bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg p-6">
                   {dialogStep === "confirm" ? mode === "edit" ? (
                     <>
                       <DialogHeader className="flex flex-col items-center gap-4 text-center">
@@ -248,7 +260,7 @@ const PostQuestionnaire = ({
                             alt="Confirmation"
                           />
                         </DialogTitle>
-                        <DialogDescription className="text-base text-black">
+                        <DialogDescription className="text-base text-gray-800 dark:text-gray-100">
                           Do you want to update the existing post, or create a new post with this data?
                         </DialogDescription>
                       </DialogHeader>
@@ -285,7 +297,7 @@ const PostQuestionnaire = ({
                               alt="Confirmation"
                             />
                           </DialogTitle>
-                          <DialogDescription className="text-base text-black">
+                          <DialogDescription className="text-base text-gray-800 dark:text-gray-100">
                             Are you sure you want to submit? Once you complete this step, you will be able to make further edits.
                           </DialogDescription>
                         </DialogHeader>
@@ -322,7 +334,7 @@ const PostQuestionnaire = ({
                             alt="Success"
                           />
                         </DialogTitle>
-                        <DialogDescription className="text-base text-black">
+                        <DialogDescription className="text-base text-gray-800 dark:text-gray-100">
                           Your post is successfully created. Go to AI find tab
                           to match your post with creators.
                         </DialogDescription>
@@ -352,16 +364,16 @@ const PostQuestionnaire = ({
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(() => handleNext())}
-            className="max-w-7xl w-full h-full p-2 flex flex-col items-center justify-evenly"
+            className="max-w-7xl w-full h-full p-2 flex flex-col items-center justify-evenly dark:text-gray-100"
           >
             <div className="md:mb-8 flex flex-col items-center">
-              <h2 className="text-2xl font-bold mb-2">
+              <h2 className="text-2xl font-bold mb-2 dark:text-gray-100">
                 {questions[currentStep as keyof typeof questions]?.title}
               </h2>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 {questions[currentStep as keyof typeof questions]?.description}
               </p>
-              <div className="mt-4 text-sm text-gray-500">
+              <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                 Step {currentStepIndex + 1} of {steps.length}
               </div>
             </div>

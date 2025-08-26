@@ -30,7 +30,7 @@ export default function AIFindTab() {
   }
 
   return (
-    <div className="h-full w-full px-2 sm:px-4 flex-1">
+    <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
       {campaigns?.campaigns?.length === 0 ? (
         <>
           <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">

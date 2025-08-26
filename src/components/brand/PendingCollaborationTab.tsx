@@ -129,26 +129,26 @@ export default function PendingCollaborationTab() {
   }
 
   return (
-    <div className="w-full px-2 sm:px-4 bg-gray-50 mb-3 md:mb-10">
+    <div className="w-full px-2 sm:px-4 mb-3 md:mb-10 dark:bg-background">
       {data.campaigns.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-gray-500">No pending collaborations available</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-5 md:gap-10">
+        <div className="grid grid-cols-1 gap-5 md:gap-10 dark:bg-background">
           {data.campaigns.map((campaign: CollabInterface) => {
             return (
-              <div key={campaign._id} className="relative flex flex-col">
+              <div key={campaign._id} className="relative flex flex-col ">
                 <div className="flex ">
-                  <p className="text-gray-500 bg-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
+                  <p className="text-gray-500 bg-white dark:bg-gray-700 dark:text-gray-200  text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
                     {campaign.campaignName}
                   </p>
 
                 </div>
-                <div className="-mt-2 shadow-lg bg-white py-6 px-4 flex flex-col gap-2 md:gap-6 rounded-lg">
+                <div className="-mt-2 shadow-lg bg-white dark:bg-gray-700 py-6 px-4 flex flex-col gap-2 md:gap-6 rounded-lg">
                   <section className="flex flex-col items-start gap-2 md:gap-4">
                     <h2 className="font-semibold text-sm md:text-base">Campaign Description</h2>
-                    <p className="text-gray-500 text-sm md:text-base font-normal">{campaign.campaignDescription}</p>
+                    <p className="text-gray-500 text-sm md:text-base dark:text-gray-100 font-normal">{campaign.campaignDescription}</p>
                   </section>
                   <section className="flex flex-col items-start w-full gap-2 md:gap-6">
                     <h2 className="font-semibold text-sm md:text-base border-b-2 text-primary px-2 border-primary cursor-pointer" onClick={() => {
@@ -262,9 +262,9 @@ export default function PendingCollaborationTab() {
 
                                   </div>
                                   <div className="flex justify-end items-center">
-                                    <span className="border rounded-md p-3 cursor-not-allowed group" >
+                                    <span className="border rounded-md p-3 cursor-not-allowed group dark:border-gray-300" >
                                       <Heart
-                                        className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110
+                                        className={`w-5 h-5 transition-transform duration-200 group-hover:scale-110 
       ${collab.isFavorite ? "text-red-500 fill-red-500" : "text-gray-600"}`}
                                       />
                                     </span>
@@ -282,7 +282,7 @@ export default function PendingCollaborationTab() {
                                     </p>
                                   </div>
                                   <div>
-                                    <Button className="text-red-500 bg-transparent border-none hover:bg-transparent hover:text-red-500 hover:scale-105" disabled={isPending}
+                                    <Button className="text-red-500 bg-transparent border-none hover:bg-transparent hover:text-red-500 hover:scale-105 dark:bg-gray-600" disabled={isPending}
                                       onClick={() => handleCollabDelete(collab.collaborationId)}>{isPending ? "Deleting..." : "Delete Rejected Request"}</Button>
                                   </div>
 

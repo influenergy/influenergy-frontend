@@ -130,26 +130,26 @@ export default function CompletedCollaborationTab() {
   }
 
   return (
-    <div className="w-full px-2 sm:px-4">
+    <div className="w-full px-2 sm:px-4  dark:bg-background">
       {data.campaigns.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-gray-500">No completed collaborations available</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-5 md:gap-10">
+        <div className="grid grid-cols-1 gap-5 md:gap-10 dark:bg-background">
           {data.campaigns.map((campaign: CollabInterface) => {
             return (
               <div key={campaign._id} className="relative flex flex-col">
                 <div className="flex ">
-                  <p className="text-gray-500 bg-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
+                  <p className="text-gray-500 dark:bg-gray-700 dark:text-gray-200 bg-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
                     {campaign.campaignName}
                   </p>
 
                 </div>
-                <div className="-mt-2 shadow-[0px_10px_20px_5px_rgba(0,0,0,0.1)]  bg-white py-6 px-4 flex flex-col gap-2 md:gap-6 rounded-lg">
+                <div className="-mt-2 shadow-[0px_10px_20px_5px_rgba(0,0,0,0.1)]  bg-white dark:bg-gray-700 py-6 px-4 flex flex-col gap-2 md:gap-6 rounded-lg">
                   <section className="flex flex-col items-start gap-2 md:gap-4">
                     <h2 className="font-semibold text-sm md:text-base">Campaign Description</h2>
-                    <p className="text-gray-500 text-sm md:text-base font-normal">{campaign.campaignDescription}</p>
+                    <p className="text-gray-500 dark:text-gray-100 text-sm md:text-base font-normal">{campaign.campaignDescription}</p>
                   </section>
                   <section className="flex flex-col items-start w-full gap-2 md:gap-6">
                     <h2 className="font-semibold text-sm md:text-base border-b-2 text-primary px-2 border-primary cursor-pointer" onClick={() => {
@@ -263,7 +263,7 @@ export default function CompletedCollaborationTab() {
 
                                   </div>
                                   <div className="flex justify-end items-center">
-                                    <span className="border rounded-md p-3 cursor-pointer group" onClick={() => {
+                                    <span className="border rounded-md p-3 cursor-pointer group dark:border-gray-300" onClick={() => {
                                     
                                       toggleFavorite({
                                         creatorId: collab.creatorId,

@@ -198,7 +198,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             Favorite Creators :
                         </h2>
 
-                        <div className="flex flex-col gap-4 overflow-auto">
+                        <div className="flex flex-col gap-4 overflow-auto max-h-[400px]">
                             {
                                 favCreators.length > 0 && favCreators.map((creator, idx) => {
                                     const avatar = creator?.profileIcon || "/user1.jpg";

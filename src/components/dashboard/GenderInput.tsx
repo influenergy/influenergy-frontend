@@ -30,9 +30,9 @@ export const GenderInput = ({ field }: { field: Field }) => {
               error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-primary"
-            } focus:outline-none focus:ring-2 appearance-none`}
+              } focus:outline-none focus:ring-2 appearance-none`}
           >
-            <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-black">
+            <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-900">
               {field.placeholder || "Select"}
             </option>
             {field.options?.map((option) => (
@@ -40,7 +40,7 @@ export const GenderInput = ({ field }: { field: Field }) => {
                 key={option}
                 value={option}
                 style={{ fontFamily: "Poppins, sans-serif" }}
-                className="dark:text-black"
+                className="dark:text-gray-900"
               >
                 {option}
               </option>
@@ -62,11 +62,10 @@ export const GenderInput = ({ field }: { field: Field }) => {
                     ? "This field is required"
                     : true,
               })}
-              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 ${
-                otherGenderError
+              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 ${otherGenderError
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-primary"
-              }`}
+                }`}
             />
           </div>
         )}

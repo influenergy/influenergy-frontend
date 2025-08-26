@@ -11,7 +11,7 @@ const Loader = () => {
         height={300}
         className="object-cover w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/3"
       />
-      <p className="text-black text-center text-xl sm:text-2xl font-semibold">
+      <p className="text-black dark:text-white text-center text-xl sm:text-2xl font-semibold">
         AI magic is happening. We are matching your requirements with the
         desired creators!
       </p>

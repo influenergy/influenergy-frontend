@@ -95,7 +95,7 @@ export const step4Schema = yup.object().shape({
         "Twitch",
         "Twitter / X",
         "Youtube",
-        "Youtube Reel",
+        "Youtube Shorts",
       ],
       "Please select a valid social media platform"
     )

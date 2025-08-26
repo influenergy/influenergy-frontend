@@ -206,7 +206,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
     } catch (err) {
       console.error("Failed to save progress:", err);
     }
-  }, [user?._id, currentStepIndex,currentStep]);
+  }, [user?._id, currentStepIndex, currentStep]);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
@@ -233,7 +233,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
   return (
     <>
       {currentStep === "review" ? (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full dark:text-gray-100">
           <FormProvider {...methods}>
             <ReviewStep
               onBack={() => setCurrentStep(steps[steps.length - 1])}
@@ -243,7 +243,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
               <Button
                 variant="outline"
                 onClick={() => setCurrentStep(steps[steps.length - 1])}
-                className="p-6  rounded-lg border-primary text-primary dark:bg-transparent"
+                className="p-6  rounded-lg border-primary text-primary dark:bg-transparent dark:text-primary"
                 type="button"
                 disabled={isSubmitting}
               >
@@ -265,16 +265,16 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(handleNext)}
-            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly"
+            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly dark:text-gray-100"
           >
             <div className="md:mb-8 flex flex-col items-center w-full px-2 sm:px-0">
-              <h2 className="text-2xl font-bold mb-2 text-center">
+              <h2 className="text-2xl font-bold mb-2 text-center dark:text-gray-100">
                 Lets Create Your Profile
               </h2>
-              <p className="text-gray-600 text-center">
+              <p className="text-gray-600 dark:text-gray-300 text-center">
                 In order to match you with the right brands, we need a few more details
               </p>
-              <div className="mt-4 text-sm text-gray-500">
+              <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
                 Step {currentStepIndex + 1} of {steps.length}
               </div>
             </div>
