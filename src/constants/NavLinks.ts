@@ -8,7 +8,6 @@ import {
   LucideIcon,
   Mail,
   WandSparkles,
-  FileText,
   UserRoundSearch
   // ChartNoAxesCombined,
 } from "lucide-react";
@@ -88,12 +87,7 @@ const brandNav: NavItem[] = [
     slug: "explore",
     
   },
-  {
-    href: "/dashboard/feedback",
-    icon: FileText,
-    label: "Feedback",
-    slug: "feedback",
-  },
+
 ];
 
 const creatorProfileNav: NavItem[] = [

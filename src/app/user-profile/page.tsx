@@ -112,7 +112,7 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] flex flex-col items-center px-4 sm:px-8 py-5 overflow-y-auto">
+    <div className="min-h-[calc(100vh-80px)] flex flex-col items-center px-4 sm:px-8 py-5 overflow-y-auto dark:bg-background">
       <div className="w-full max-w-7xl">
         {/* first section */}
         <div className="flex justify-start">

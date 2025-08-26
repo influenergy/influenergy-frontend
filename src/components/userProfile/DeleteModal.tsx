@@ -62,7 +62,7 @@ export default function DeleteModal() {
               alt="logo"
             />
           </DialogTitle>
-          <DialogDescription className="text-lg text-center text-black">
+          <DialogDescription className="text-lg text-center text-black dark:text-white">
             Are you sure you want to delete <br /> the account permanently?
           </DialogDescription>
         </DialogHeader>

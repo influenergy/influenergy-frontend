@@ -73,12 +73,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        <h2 className="text-xl font-bold text-gray-900">Add Payment Details</h2>
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 dark:bg-background">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Add Payment Details</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mt-3">
-            <Label className="text-sm font-medium text-gray-700">
+            <Label className="text-sm font-medium text-gray-700 dark:text-white">
               Full Name
             </Label>
             <Input
@@ -94,7 +94,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
 
           <div className="mt-3">
-            <Label className="text-sm font-medium text-gray-700">
+            <Label className="text-sm font-medium text-gray-700 dark:text-white">
               Email (For contact)
             </Label>
             <Input
@@ -137,7 +137,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
           {selectedMethod && (
             <div className="mt-4">
-              <Label className="text-sm font-medium text-gray-700">
+              <Label className="text-sm font-medium text-gray-700 dark:text-white">
                 {paymentMethods.find((pm) => pm.key === selectedMethod)?.label}{" "}
                 Details
               </Label>

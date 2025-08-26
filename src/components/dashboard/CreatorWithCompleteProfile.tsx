@@ -135,7 +135,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
               Recently Worked With:
             </h2>
-            <div className="flex flex-col gap-4 flex-1 overflow-hidden">
+            <div className="flex flex-col gap-4 flex-1 overflow-auto max-h-[400px]">
               {collaborations.map((collab) => (
                collab.status === "Completed" && <div key={collab._id} className="flex items-center gap-4 mt-2">
                   <Image src={collab.campaignPost || "/brandIcon.jpg"} alt={collab.brandName} width={70} height={70} className="rounded-full" />

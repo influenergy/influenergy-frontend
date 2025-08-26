@@ -89,10 +89,10 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
 
   return (
-    <div className="relative flex flex-col">
+    <div className="relative flex flex-col dark:bg-background">
       {
         status === "Completed" || status === "Payment" ?
-          <Card className="bg-white rounded-2xl shadow-md p-4 flex flex-col transition hover:shadow-lg h-full">
+          <Card className="bg-white rounded-2xl shadow-md p-4 flex flex-col transition hover:shadow-lg h-full dark:bg-background">
             <h1 className="mb-2 ">
               {data.campaignId.campaignName.length > 50
                 ? data.campaignId.campaignName.slice(0, 50) + "..."
@@ -109,9 +109,9 @@ const InboxCard: React.FC<InboxCardProps> = ({
             <div className="my-4 flex justify-between flex-col flex-1 gap-4">
               <div>
 
-                <h3 className="text-black dark:text-black text-xs mb-1 font-thin">Description</h3>
+                <h3 className="text-black dark:text-white text-xs mb-1 font-thin">Description</h3>
                 <p
-                  className={`text-black text-sm leading-snug transition-all ${expanded ? "" : "line-clamp-2"}`}
+                  className={`text-black text-sm leading-snug dark:text-gray-200 transition-all ${expanded ? "" : "line-clamp-2"}`}
                 >
                   {data.campaignId.campaignDescription}
                 </p>
@@ -168,12 +168,11 @@ const InboxCard: React.FC<InboxCardProps> = ({
           </Card> :
           <>
             <div className="flex ">
-              <p className="text-gray-500 bg-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
+              <p className="text-gray-500 bg-white dark:bg-gray-700 dark:text-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
                 {data.campaignId.campaignName}
               </p>
-
             </div>
-            <div className="-mt-2 shadow-lg bg-white py-6 px-4 flex flex-col gap-4 md:gap-6 rounded-lg">
+            <div className="-mt-2 shadow-lg bg-white dark:bg-gray-700  py-6 px-4 flex flex-col gap-4 md:gap-6 rounded-lg">
               <section className="flex flex-col md:flex-row items-start gap-4 md:gap-4">
                 <div className="w-[300px] relative rounded-xl aspect-video">
                   <Image
@@ -185,8 +184,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
                 </div>
 
                 <div className="flex flex-col items-start gap-2 md:gap-4">
-                  <h2 className="font-semibold text-sm md:text-base dark:text-black">Campaign Description</h2>
-                  <p className="text-gray-500 text-sm md:text-base font-normal">
+                  <h2 className="font-semibold text-sm md:text-base dark:text-white">Campaign Description</h2>
+                  <p className="text-gray-500 text-sm md:text-base font-normal dark:text-gray-200">
                     {data.campaignId.campaignDescription}
                   </p>
                 </div>
@@ -217,10 +216,10 @@ const InboxCard: React.FC<InboxCardProps> = ({
                   )}
 
                   {status === "Active" && (
-                    <div className="bg-white  flex justify-end gap-4 md:w-1/2">
+                    <div className="flex justify-end gap-4 md:w-1/2">
                       <Button
                         onClick={() => setIsStatusModalOpen(true)}
-                        className="w-full px-4 py-2 text-sm font-medium  border rounded-lg transition border-primary text-primary bg-white hover:bg-primary hover:text-white"
+                        className="w-full px-4 py-2 text-sm font-medium rounded-lg transition text-white bg-primary hover:bg-primary hover:text-white"
                       >
                         Update Status
                       </Button>

@@ -399,7 +399,7 @@ export default function ExploreCreators() {
                                             creator.profile.category.slice(0, 2).map((c, idx) => (
                                                 <span
                                                     key={idx}
-                                                    className="text-xs p-1 bg-gray-300 rounded-lg"
+                                                    className="text-xs p-1 bg-gray-300 rounded-lg dark:text-black"
                                                 >
                                                     {c}
                                                 </span>

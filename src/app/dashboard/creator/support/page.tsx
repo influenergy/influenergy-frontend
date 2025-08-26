@@ -43,10 +43,10 @@ function Page() {
         <section className="">
           <Card className='p-6'>
 
-            <h2 className="text-xl font-semibold mb-2 text-gray-700">
+            <h2 className="text-xl font-semibold mb-2 text-gray-700 dark:text-white">
               For any other queries, write to us!
             </h2>
-            <p className="text-gray-500 mb-4 ">
+            <p className="text-gray-500 mb-4 dark:text-white">
               Our team will get back to you within 48 hours.
             </p>
             <hr className="mt-2 mb-6 opacity-60" />
@@ -56,7 +56,7 @@ function Page() {
                 rows={6}
                 placeholder="Enter your message here..."
                 required
-                className="border rounded-lg p-2 focus:ring focus:outline-none resize-none"
+                className="border rounded-lg p-2 focus:ring focus:outline-none resize-none dark:bg-gray-300 dark:text-gray-700"
               />
               <button
                 type="submit"
@@ -72,14 +72,14 @@ function Page() {
         <section className="">
           <Card className='p-6'>
 
-            <h2 className="text-xl font-semibold mb-2 text-gray-700">FAQs</h2>
+            <h2 className="text-xl font-semibold mb-2 text-gray-700 dark:text-white">FAQs</h2>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <div key={index} className="border rounded-lg">
                   <button
                     type="button"
                     onClick={() => toggleFaq(index)}
-                    className="flex justify-between items-center w-full p-4 text-left font-medium text-gray-700"
+                    className="flex justify-between items-center w-full p-4 text-left font-medium text-gray-700 dark:text-white"
                   >
                     {faq.question}
                     {faq.open ? (
@@ -89,7 +89,7 @@ function Page() {
                     )}
                   </button>
                   {faq.open && (
-                    <div className="px-4 pb-4 text-gray-600">{faq.answer}</div>
+                    <div className="px-4 pb-4 text-gray-600 dark:text-white">{faq.answer}</div>
                   )}
                 </div>
               ))}

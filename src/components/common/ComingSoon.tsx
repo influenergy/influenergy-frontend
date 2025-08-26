@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const ComingSoon = () => {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center relative bg-white p-4">
+    <div className="w-full h-full flex flex-col items-center justify-center relative bg-white p-4 dark:bg-background">
       <div className="flex justify-center mb-4 md:mb-8">
         <div className="relative h-[200px] w-[200px] md:h-[300px] md:w-[300px] rounded-full flex items-center justify-center">
           <Image
@@ -15,7 +15,7 @@ const ComingSoon = () => {
           />
         </div>
       </div>
-      <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 text-center">
+      <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-3 md:mb-4 text-center dark:text-gray-100">
         Coming Soon
       </h2>
       <div className="text-center max-w-3xl px-2 md:px-4 mt-2 md:mt-3">
@@ -25,7 +25,7 @@ const ComingSoon = () => {
           Stay tuned! Exciting features on the way.
         </p>
         <Link
-          href="/"
+          href="/dashboard"
           className="inline-flex items-center text-primary hover:text-secondary transition-colors font-medium"
         >
           Back to Home

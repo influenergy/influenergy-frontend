@@ -7,7 +7,7 @@ import { navLinks } from "@/constants/NavLinks";
 import Image from "next/image";
 import { selectUser, useAppSelector, useAppDispatch } from "@/store";
 import { useRouter } from "next/navigation";
-import { LucideIcon, MessageSquareQuote, UserRoundCog, LogOut } from "lucide-react";
+import { LucideIcon, UserRoundCog, LogOut, FileText } from "lucide-react";
 import { logout } from "@/store/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authApi } from "@/services/authServices";
@@ -43,8 +43,8 @@ const commonLinks: NavItem[] = [
     slug: "support",
   },
   {
-    href: "/dashboard/creator/feedback",
-    icon: MessageSquareQuote,
+    href: "/dashboard/feedback",
+    icon: FileText,
     label: "Feedback",
     slug: "feedback",
   },

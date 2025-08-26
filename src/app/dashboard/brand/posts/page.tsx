@@ -13,18 +13,18 @@ const Page = () => {
 
   // Extract campaigns from the response and provide a default empty array
   const campaigns: Campaign[] = data?.campaigns || [];
-if(isLoading){
- 
-  return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">My Ad Briefs</h1>
-        <div className="w-36 h-10 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+  if (isLoading) {
+
+    return (
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">My Ad Briefs</h1>
+          <div className="w-36 h-10 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+        </div>
+        <CampaignSkeleton />
       </div>
-      <CampaignSkeleton />
-    </div>
-  );
-}
+    );
+  }
   return (
     <div className="p-4">
       <div className="mb-4">
@@ -33,7 +33,7 @@ if(isLoading){
             <h1 className="text-2xl font-bold mb-2">My Ad Briefs</h1>
             <Link href="/dashboard/brand/create-post">
               <Button className="bg-primary px-5 py-2 rounded-xl">
-              Add New Ad Brief
+                Add New Ad Brief
               </Button>
             </Link>
           </div>
@@ -57,7 +57,7 @@ if(isLoading){
               className="object-cover"
             />
             <p className="text-4xl font-semibold text-center mt-4 leading-normal dark:text-gray-200">
-             
+
               Welcome to the brief section!<br />Create your campaign brief and let our AI Find tool match <br />you with the perfect creators.
             </p>
             <Link href="/dashboard/brand/create-post">

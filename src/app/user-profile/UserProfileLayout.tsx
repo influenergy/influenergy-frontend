@@ -17,7 +17,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = ({ children }) => {
       </div>
       {/* <Sidebar type="profile" className="" /> */}
       <main className="w-full flex flex-col">
-        <div className="flex items-center h-16 px-4 border-b bg-white">
+        <div className="flex items-center h-16 px-4 border-b bg-white dark:bg-background">
           {/* Hamburger menu for mobile */}
           <div className="md:hidden mr-2">
             <MobileSidebar type="dashboard" />
@@ -26,7 +26,7 @@ const UserProfileLayout: React.FC<UserProfileLayoutProps> = ({ children }) => {
             <Header />
           </div>
         </div>
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 dark:bg-background">{children}</div>
       </main>
     </div>
 

@@ -143,7 +143,7 @@ export function EditBrandProfileModal({
             <Input
               id="email"
               value={email}
-              className="w-full text-gray-800"
+              className="w-full text-gray-800 dark:text-gray-200"
               disabled
             />
           </div>
@@ -156,7 +156,7 @@ export function EditBrandProfileModal({
               id="company"
               {...register("companyName")}
               placeholder="Enter your company name"
-              className="w-full text-gray-800"
+              className="w-full text-gray-800 dark:text-gray-200"
             />
             {errors.companyName && (
               <p className="text-sm text-red-500 mt-1">
@@ -172,8 +172,8 @@ export function EditBrandProfileModal({
             <Input
               id="website"
               {...register("companyWebsite")}
-              placeholder="Enter your company website"
-              className="w-full text-gray-800"
+              placeholder="Enter your company website "
+              className="w-full text-gray-800 dark:text-gray-200"
             />
             {errors.companyWebsite && (
               <p className="text-sm text-red-500 mt-1">
