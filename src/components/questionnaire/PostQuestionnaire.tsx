@@ -133,14 +133,56 @@ const PostQuestionnaire = ({
       formData,
     };
 
+    // Build helpers for mapping fields -> step for error redirection
+    const fieldToStepMap: Record<string, keyof typeof questions> = (Object.keys(questions) as (keyof typeof questions)[])
+      .reduce((acc, stepKey) => {
+        questions[stepKey].fields.forEach((field: Field) => {
+          acc[field.slug] = stepKey;
+        });
+        return acc;
+      }, {} as Record<string, keyof typeof questions>);
+
     try {
       const stepFields = fields.map((field: Field) => field.slug) as Array<
         keyof PostQuestionnaireData
       >;
 
-      const isValid = await trigger(stepFields);
+      let isValid = true;
+      if (currentStep === "review") {
+        // Validate the entire form across all schemas while on review
+        const values = getValues() as Partial<PostQuestionnaireData>;
+        try {
+          for (const schema of Object.values(schemas)) {
+            await schema.validate(values, { abortEarly: false });
+          }
+          isValid = true;
+        } catch (e) {
+          // Determine the first error field and redirect to its step
+          const err = e as unknown as { inner?: Array<{ path?: string }>; path?: string };
+          const firstPath = err?.inner?.[0]?.path || err?.path;
+          const stepKey = firstPath ? fieldToStepMap[firstPath] : undefined;
+          toast({
+            title: "Please fill required fields",
+            description: "Some required fields are missing. ",
+            variant: "destructive",
+          });
+          if (stepKey) {
+            setIsDialogOpen(false);
+            setCurrentStep(stepKey);
+          }
+          return;
+        }
+      } else {
+        isValid = await trigger(stepFields);
+      }
 
       if (!isValid) {
+        toast({
+          title: "Please fill required fields",
+          description: "You need to fill the required fields to create a brief.",
+          variant: "destructive",
+        })
+        console.log("Validation failed");
         return;
       }
 
@@ -314,7 +356,10 @@ const PostQuestionnaire = ({
                           <Button
                             className="bg-primary text-white px-6" // Adjusted styling
                             size="lg"
-                            onClick={() => handleSubmit(() => handleNext())()}
+                            onClick={() => {
+                              handleSubmit(() => handleNext())()
+                              console.log("clickedd")
+                            }}
                             disabled={isSubmitting}
                             type="button"
                           >

@@ -135,6 +135,7 @@ export default function WhyWeDoIt() {
                   width={32}
                   height={32}
                   alt="Data Insights Icon"
+                  className="w-auto h-auto"
                 />
               </div>
               <div>

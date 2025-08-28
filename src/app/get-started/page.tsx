@@ -48,9 +48,9 @@ export default function GetStarted() {
               className="flex flex-col gap-4 sm:flex-row sm:gap-4 px-4 sm:px-6 md:px-10 w-full"
             >
               <Link
-                href="/login"
+                href={`/register?role=brand`}
                 className="group w-full sm:w-auto"
-                onClick={() => handleUserTypeSelection("brand", "/login")}
+                onClick={() => handleUserTypeSelection("brand", `/register?role=brand`)}
               >
                 <div className="flex cursor-pointer h-40 sm:h-48 w-full sm:w-52 flex-col justify-between rounded-2xl bg-[#F2F2FF] p-4 sm:p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
@@ -69,9 +69,9 @@ export default function GetStarted() {
                 </div>
               </Link>
               <Link
-                href="/login"
+                href={`/register?role=creator`}
                 className="group w-full sm:w-auto"
-                onClick={() => handleUserTypeSelection("creator", "/login")}
+                onClick={() => handleUserTypeSelection("creator", `/register?role=creator`)}
               >
                 <div className="flex cursor-pointer h-40 sm:h-48 w-full sm:w-52 flex-col justify-between rounded-2xl bg-[#F2F2FF] p-4 sm:p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image

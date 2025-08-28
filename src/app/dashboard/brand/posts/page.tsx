@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Post from "@/components/dashboard/Post";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -7,10 +7,28 @@ import { useCampaigns } from "@/hooks/useQueryCampaigns";
 import { Campaign } from "@/types/PostQuestionnaire";
 import Image from "next/image";
 import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
+import { Sparkles } from "lucide-react";
+import { ProductUrlModal } from "@/components/questionnaire/ProductUrlModal";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   const { data, isLoading, error } = useCampaigns();
+  const [showUrlModal, setShowUrlModal] = useState(false);
+  // Local state not needed; data is passed via sessionStorage for cross-page handoff
 
+  const handleURLModalClose = () => {
+    setShowUrlModal(false);
+    // setShowQuestionnaire(true);
+  };
+  const handleAIGenerationSuccess = (campaignData: Record<string, unknown>) => {
+    console.log(campaignData);
+    try {
+      sessionStorage.setItem("aiGeneratedCampaign", JSON.stringify(campaignData));
+    } catch { }
+    setShowUrlModal(false);
+    router.push("/dashboard/brand/create-post");
+  };
   // Extract campaigns from the response and provide a default empty array
   const campaigns: Campaign[] = data?.campaigns || [];
   if (isLoading) {
@@ -27,16 +45,31 @@ const Page = () => {
   }
   return (
     <div className="p-4">
-      <div className="mb-4">
+      <div className="mb-8">
         {campaigns.length != 0 && (
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold mb-2">My Ad Briefs</h1>
-            <Link href="/dashboard/brand/create-post">
-              <Button className="bg-primary px-5 py-2 rounded-xl">
-                Add New Ad Brief
+            <div>
+              <h1 className="text-2xl font-bold mb-1">My Ad Briefs</h1>
+              <p className="text-gray-600 text-sm max-w-md dark:text-white">
+                You can create your brief using AI, but we recommend creating it manually
+                for more accurate creator matches.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Button className="bg-white text-primary px-5 py-2 rounded-xl hover:text-white" onClick={() => {
+                setShowUrlModal(true)
+              }}>
+                <Sparkles className="h-8 w-8 " />
+                Create Brief using AI
               </Button>
-            </Link>
+              <Link href="/dashboard/brand/create-post">
+                <Button className="bg-primary px-5 py-2 rounded-xl">
+                  Add New Ad Brief
+                </Button>
+              </Link>
+            </div>
           </div>
+
         )}
       </div>
 
@@ -74,6 +107,12 @@ const Page = () => {
           ))
         )}
       </div>
+
+      <ProductUrlModal
+        isOpen={showUrlModal}
+        onClose={handleURLModalClose}
+        onSuccess={handleAIGenerationSuccess}
+      />
     </div>
   );
 };

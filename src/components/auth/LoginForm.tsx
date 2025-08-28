@@ -160,7 +160,7 @@ export default function LoginForm() {
   }, [mainIndex]);
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col overflow-hidden ">
+    <div className="relative w-full min-h-screen flex flex-col  ">
       <div className="w-full">
         {/* Form container, ensure it's above the background */}
         <motion.div
@@ -172,7 +172,7 @@ export default function LoginForm() {
           <section className="flex w-full flex-col">
             <div className=" top-4 flex items-center px-4 mb-4">
 
-              <Link href="/get-started">
+              <Link href="/">
                 <motion.button
                   className="text-sm flex items-center space-x-2 text-muted-foreground"
                   initial={{ opacity: 0, x: -20 }}
