@@ -105,6 +105,10 @@ export const userApi = {
   
     // API returns { status, message, data }
     return response.data.data;
+  },
+  getStats: async () => {
+    const response = await api.get(`/stats`);
+    return response.data; // return only the data payload
   }
   
 
