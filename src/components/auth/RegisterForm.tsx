@@ -16,8 +16,7 @@ import { RegisterFormInput } from "./FormInput";
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/authServices";
 import Footer from "../home/Footer";
-import creatorHeroImg from "../../../public/Rectangle 4587.png";
-import sittingImg from "../../../public/sitting.png";
+
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
@@ -195,7 +194,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
                         I accept all{" "}
                         <a
 
-                          href="/Influenergy - Terms of Service.pdf"
+                          href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="underline text-primary hover:text-[#6564d8] transition-colors"
@@ -204,7 +203,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
                         </a>{" "}
                         and{" "}
                         <a
-                          href="/Influenergy - Privacy Policy.pdf"
+                          href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="underline text-primary hover:text-[#6564d8] transition-colors"
@@ -265,7 +264,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
               >
                 <div className="relative w-full h-full hidden md:block rounded-[7%] overflow-hidden bg-transparent hover:scale-[1.02] transition fade-in-out duration-300">
                   <Image
-                    src={creatorHeroImg}
+                    src={"https://d20cf3kfv1a9jn.cloudfront.net/images/Rectangle 4587.png"}
                     alt={`${userType} login background`}
                     fill
                     className="object-fill bg-transparent z-0"
@@ -287,7 +286,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
         >
           <div className="relative w-full">
             <Image
-              src="/images/register.webp"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/register.webp"
               alt="Register illustration"
               fill
               className="object-cover object-center"
@@ -321,7 +320,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
             {/* Image */}
             <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
               <Image
-                src={sittingImg}
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
                 alt="Creator Success Stories"
                 fill
                 className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"

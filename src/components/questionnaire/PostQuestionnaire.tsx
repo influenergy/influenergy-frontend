@@ -296,7 +296,7 @@ const PostQuestionnaire = ({
                       <DialogHeader className="flex flex-col items-center gap-4 text-center">
                         <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
                           <Image
-                            src="/images/icons/message.png" // Confirmation Icon
+                            src="https://d20cf3kfv1a9jn.cloudfront.net/images/message.png" // Confirmation Icon
                             width={40}
                             height={40}
                             alt="Confirmation"
@@ -333,7 +333,7 @@ const PostQuestionnaire = ({
                         <DialogHeader className="flex flex-col items-center gap-4 text-center">
                           <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
                             <Image
-                              src="/images/icons/message.png" // Confirmation Icon
+                              src="https://d20cf3kfv1a9jn.cloudfront.net/images/message.png" // Confirmation Icon
                               width={40}
                               height={40}
                               alt="Confirmation"
@@ -373,7 +373,7 @@ const PostQuestionnaire = ({
                       <DialogHeader className="flex flex-col items-center gap-4 text-center">
                         <DialogTitle className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
                           <Image
-                            src="/images/icons/window.png" // Success Icon
+                            src="https://d20cf3kfv1a9jn.cloudfront.net/images/window.png" // Success Icon
                             width={40}
                             height={40}
                             alt="Success"

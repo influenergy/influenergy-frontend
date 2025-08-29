@@ -79,7 +79,9 @@ export default function Home() {
 
           <Stats />
           </div>
+          <div id="we-empower-brand">
           <WeEmpowerBrand />
+          </div>
         </Suspense>
 
         <Suspense fallback={<Loader />}>

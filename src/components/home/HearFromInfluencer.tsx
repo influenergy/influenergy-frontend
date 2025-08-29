@@ -99,7 +99,7 @@ export default function HearFromInfluencer() {
             Our Influencers
           </h1>
           <p className="text-gray-700 text-base font-light ">
-            Collaborate, create, and grow with top influenecers
+            Collaborate, create, and grow with top influencers
           </p>
         </div>
       </motion.h1>

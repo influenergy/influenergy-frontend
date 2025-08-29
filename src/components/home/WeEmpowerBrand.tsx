@@ -23,7 +23,7 @@ export default function WeEmpowerBrand() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Image
-              src="/landing/sandy.jpg"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/sandy.jpg"
               alt="Sandeep Ashdir"
               width={500}
               height={300}
@@ -62,7 +62,7 @@ export default function WeEmpowerBrand() {
           </h2>
 
           <p className="text-gray-700 text-lg leading-normal text-justify">
-            When I launched Influenergy, I noticed two major issues in influencer marketing: brands spent endless hours searching for the right creators, and creators faced unclear briefs, slow payments, and frustrating back-and-forth. The process was time consuming and both sides feel short.
+            When I launched Influenergy, I noticed two major issues in influencer marketing: brands spent endless hours searching for the right creators, and creators faced unclear briefs, slow payments, and frustrating back-and-forth. The process was time-consuming, and both sides fell short.
             <br />
             {/* <br /> */}
             Influenergy is built to fix that. Our AI-Find tool instantly connects brands with vetted creators who perfectly match their niche, while our built-in contracts, payment options, and streamlined briefs make campaigns simple and efficient.

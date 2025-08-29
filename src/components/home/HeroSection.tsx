@@ -1,33 +1,31 @@
 "use client";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
-// import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { MarqueeLogos } from "../magicui/marquee";
 import { useEffect, useRef, useState } from "react";
-// import DemoVideo from "../../../public/demo.mp4"
 
 export default function HeroSection() {
   const router = useRouter();
   const imageList = [
-    { logo: "/landing/marquee/company1.png" },
-    { logo: "/landing/marquee/company2.png" },
-    { logo: "/landing/marquee/company3.png" },
-    { logo: "/landing/marquee/company-4.png" },
-    { logo: "/landing/marquee/company5.png" },
-    { logo: "/landing/marquee/company6.png" },
-    { logo: "/landing/marquee/company7.png" },
-    { logo: "/landing/marquee/company8.png" },
-    { logo: "/landing/marquee/company9.png" },
-    { logo: "/landing/marquee/company10.jpg" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company1.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company2.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company3.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company-4.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company5.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company6.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company7.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company8.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company9.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company10.jpg" },
   ];
 
 
   const videos = [
-    "/video1.mp4",
-    "/video2.mov",
-    "/video3.mov",
-    "/video4.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video1.mp4",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video2.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video3.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video4.mov",
   ];
 
   const [mainIndex, setMainIndex] = useState(0);
@@ -107,45 +105,45 @@ export default function HeroSection() {
 
           {/* <Image src="/hero.jpg" alt="Hero Image" width={600} height={600} className="absolute inset-0 object-cover w-full h-full rounded-lg z-0" /> */}
           <div className="flex w-full max-w-2xl gap-4 max-h-[500px]">
-          {/* Main Video */}
-          <div className="flex flex-col gap-3 w-40">
-            {videos
-              .filter((_, idx) => idx !== mainIndex)
-              .map((video) => {
-                const actualIndex = videos.findIndex((v) => v === video);
-                return (
-                  <motion.div
-                    key={video}
-                    className="flex-1 rounded-xl overflow-hidden cursor-pointer"
-                    whileHover={{ scale: 1.05 }}
-                    onClick={() => setMainIndex(actualIndex)}
-                  >
-                    <video
-                      src={video}
-                      className="w-full h-full object-cover"
-                      muted
-                    />
-                  </motion.div>
-                );
-              })}
-          </div>
-          <div className="flex-1 rounded-xl overflow-hidden">
-            <video
-              ref={videoRef}
-              key={mainIndex}
-              src={videos[mainIndex]}
-              className="w-full h-full object-cover rounded-xl aspect-[9/16] max-h-[500px]"
-              controls={false}
-              muted
-              autoPlay
-              playsInline
-            />
+            {/* Main Video */}
+            <div className="flex flex-col gap-3 w-40">
+              {videos
+                .filter((_, idx) => idx !== mainIndex)
+                .map((video) => {
+                  const actualIndex = videos.findIndex((v) => v === video);
+                  return (
+                    <motion.div
+                      key={video}
+                      className="flex-1 rounded-xl overflow-hidden cursor-pointer"
+                      whileHover={{ scale: 1.05 }}
+                      onClick={() => setMainIndex(actualIndex)}
+                    >
+                      <video
+                        src={video}
+                        className="w-full h-full object-cover"
+                        muted
+                      />
+                    </motion.div>
+                  );
+                })}
+            </div>
+            <div className="flex-1 rounded-xl overflow-hidden">
+              <video
+                ref={videoRef}
+                key={mainIndex}
+                src={videos[mainIndex]}
+                className="w-full h-full object-cover rounded-xl aspect-[9/16] max-h-[500px]"
+                controls={false}
+                muted
+                autoPlay
+                playsInline
+              />
+            </div>
+
+            {/* Side Thumbnails */}
+
           </div>
 
-          {/* Side Thumbnails */}
-          
-        </div>
-        
         </div>
       </div>
 

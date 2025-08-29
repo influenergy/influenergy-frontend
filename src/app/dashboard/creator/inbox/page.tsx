@@ -37,7 +37,7 @@ const Page = () => {
               value="Pending"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Pending Collaboration
+              New Opportunities
             </TabsTrigger>
             <TabsTrigger
               value="Active"
@@ -61,24 +61,24 @@ const Page = () => {
         </div>
 
         {activeTab == "" && (
-        <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center dark:bg-background flex-1">
-          <Image
-            src="/images/Inbox/intro.png"
-            alt=""
-            width={280}
-            height={280}
-            className="mx-auto"
-            priority
-          />
-          <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
-            <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200">
-              Welcome to the inbox. <br /> Collaboration opportunities from
-              brands will appear here.
-            </h3>
+          <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center dark:bg-background flex-1">
+            <Image
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+              alt=""
+              width={280}
+              height={280}
+              className="mx-auto"
+              priority
+            />
+            <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
+              <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200">
+                Welcome to the inbox. <br /> Collaboration opportunities from
+                brands will appear here.
+              </h3>
+            </div>
           </div>
-        </div>
-      )}
-      
+        )}
+
         {/* Use Suspense with lazy loaded components */}
         <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
           <Suspense fallback={<TabLoading />}>
@@ -109,7 +109,7 @@ const Page = () => {
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   <Image
-                    src="/images/Inbox/intro.png"
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
                     height={280}
@@ -154,7 +154,7 @@ const Page = () => {
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   <Image
-                    src="/images/Inbox/intro.png"
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
                     height={280}
@@ -199,7 +199,7 @@ const Page = () => {
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   <Image
-                    src="/images/Inbox/intro.png"
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
                     height={280}
@@ -244,7 +244,7 @@ const Page = () => {
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">
                   <Image
-                    src="/images/Inbox/intro.png"
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
                     height={280}
@@ -261,7 +261,7 @@ const Page = () => {
         </TabsContent>
       </Tabs>
 
-      
+
     </AnimatePresence>
   );
 };

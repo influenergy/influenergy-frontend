@@ -88,7 +88,7 @@ export default function StatusModal({
           <div className="relative mb-8 pl-12">
             <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
               <Image
-                src={"/images/Inbox/collab.svg"}
+                src={"https://d20cf3kfv1a9jn.cloudfront.net/images/collab.svg"}
                 alt={""}
                 width={20}
                 height={20}
@@ -103,7 +103,7 @@ export default function StatusModal({
           <div className="relative mb-8 pl-12">
             <div className="absolute left-0 w-8 h-8 text-gray-400 bg-secondary rounded-full flex items-center justify-center z-10">
               {/* <Image
-                src={"/images/Inbox/videos.svg"}
+                src={"https://d20cf3kfv1a9jn.cloudfront.net/images/videos.svg"}
                 alt={""}
                 width={20}
                 height={20}
@@ -139,20 +139,19 @@ export default function StatusModal({
               {data.length > 0 && (
                 <div className="mt-2">
                   <p
-                    className={`text-xs italic ${
-                      data[0].status == "Pending"
-                        ? "text-yellow-500"
-                        : data[0].status == "Declined"
+                    className={`text-xs italic ${data[0].status == "Pending"
+                      ? "text-yellow-500"
+                      : data[0].status == "Declined"
                         ? "text-red-500"
                         : "text-green-500"
-                    }`}
+                      }`}
                   >
                     {data[0].status == "Pending"
                       ? "Pending Approval"
                       : data[0].status == "Declined"
-                      ? data[0]?.reason ||
+                        ? data[0]?.reason ||
                         "Video modification requested . Please Check Your Email for More Details"
-                      : "Approved"}{" "}
+                        : "Approved"}{" "}
                   </p>
                 </div>
               )}
@@ -162,27 +161,24 @@ export default function StatusModal({
           {/* Step 3 - Inactive */}
           <div className="relative mb-8 pl-12">
             <div
-              className={`absolute left-0 w-8 h-8 ${
-                status == "Completed" ? "bg-secondary" : "bg-gray-100"
-              } text-gray-400 rounded-full flex items-center justify-center z-10`}
+              className={`absolute left-0 w-8 h-8 ${status == "Completed" ? "bg-secondary" : "bg-gray-100"
+                } text-gray-400 rounded-full flex items-center justify-center z-10`}
             >
               {/* <Image
-                src={"/images/Inbox/video.svg"}
+                src={"https://d20cf3kfv1a9jn.cloudfront.net/images/video.svg"}
                 alt={""}
                 width={20}
                 height={20}
               /> */}
               <Award
-                className={`${
-                  status == "Completed" ? "text-primary" : "text-gray-400"
-                }`}
+                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
+                  }`}
               />
             </div>
             <div className="">
               <p
-                className={`${
-                  status == "Completed" ? "text-primary" : "text-gray-400"
-                }`}
+                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
+                  }`}
               >
                 Video accepted by Brand
               </p>
@@ -192,21 +188,18 @@ export default function StatusModal({
           {/* Step 4 - Inactive */}
           <div className="relative pl-12 mt-10">
             <div
-              className={`absolute left-0  w-8 h-8 ${
-                status == "Completed" ? "bg-secondary" : "bg-gray-100"
-              } text-gray-400 rounded-full flex items-center justify-center z-10`}
+              className={`absolute left-0  w-8 h-8 ${status == "Completed" ? "bg-secondary" : "bg-gray-100"
+                } text-gray-400 rounded-full flex items-center justify-center z-10`}
             >
               <CheckCircle
-                className={`${
-                  status == "Completed" ? "text-primary" : "text-gray-400"
-                }`}
+                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
+                  }`}
               />
             </div>
             <div className="">
               <p
-                className={`${
-                  status == "Completed" ? "text-primary" : "text-gray-400"
-                }`}
+                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
+                  }`}
               >
                 Collaboration Completed
               </p>
@@ -221,7 +214,7 @@ export default function StatusModal({
           <div className="flex flex-col items-center">
             <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
               <Image
-                src="/images/AIFind/film.png"
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/film.png"
                 width={50}
                 height={50}
                 alt="logo"

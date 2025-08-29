@@ -70,7 +70,7 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link href="/about" className="hover:text-primary transition-colors">
+            <Link href="/#we-empower-brand" className="hover:text-primary transition-colors">
               About Us
             </Link>
           </li>

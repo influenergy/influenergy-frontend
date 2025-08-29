@@ -78,7 +78,7 @@ export default function RegistrationSuccess() {
             className="absolute inset-0 flex items-center justify-center z-10"
           >
             <Image
-              src="/auth/celebration.png"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/celebration.png"
               alt="Celebration"
               width={400}
               height={400}
@@ -92,7 +92,7 @@ export default function RegistrationSuccess() {
             className="relative w-full h-full flex justify-center items-center z-20"
           >
             <Image
-              src="/auth/brand.webp"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/brand.webp"
               alt="Brand logo"
               height={200}
               width={200}

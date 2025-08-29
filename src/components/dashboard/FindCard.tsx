@@ -22,7 +22,7 @@ const FindCard: FC<FindCardProps> = ({
   creator = {
     id: "1",
     name: "John Doe",
-    image: "/images/register.webp",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/register.webp",
     price: 300,
     categories: ["Travel", "Lifestyle", "Outdoors"],
     engagementRate: 10,

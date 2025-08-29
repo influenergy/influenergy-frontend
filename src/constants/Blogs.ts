@@ -1,34 +1,34 @@
 export const blogs = [
   {
-    image: "/landing/blog/newblog1.png",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog1.png",
     date: "23 Nov 24",
     title:
       "We caught up with the brilliant and insightful Sandeep Asdhir a few weeks ago and have shared our conversation below.",
     link: "https://boldjourney.com/meet-sandeep-asdhir/",
   },
   {
-    image: "/landing/blog/newblog2.jpeg",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog2.jpeg",
     date: "25 Oct 2024",
-    title: "A Introduction To Influencer Marketing Part One",
+    title: "An Introduction To Influencer Marketing Part One",
     slug: "Influencer-marketing-intro",
     link: "/blogs/Influencer-marketing-intro",
   },
   {
-    image: "/landing/blog/newblog3.jpeg",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog3.jpeg",
     date: "25 Oct 2024",
     title: "How Influencers Can Help Market Brands?",
     slug: "how-influencers-can-help-market-brand",
     link: "/blogs/how-influencers-can-help-market-brand",
   },
   {
-    image: "/landing/blog/newblog4.jpg",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog4.jpg",
     date: "18 Oct 2024",
     title: "Why Influenergy Pivoted to an AI-Focused Marketing Agency",
-    slug:"why-influenergy-pivoted-to-ai-focused-marketing-agency",
+    slug: "why-influenergy-pivoted-to-ai-focused-marketing-agency",
     link: "/blogs/why-influenergy-pivoted-to-ai-focused-marketing-agency",
   },
   {
-    image: "/landing/blog/newblog5.jpeg",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog5.jpeg",
     date: "11 Oct 2024",
     title:
       "FEATURE: Exploring Life &amp; Business with Sandeep Asdhir of Influenergy Marketing",
@@ -39,8 +39,8 @@ export const blogs = [
 export const BlogContent = [
   {
     id: "Influencer-marketing-intro",
-    title: "A Introduction To Influencer Marketing Part One",
-    image: "/landing/blog/newblog2.jpeg", // replace with actual path
+    title: "An Introduction To Influencer Marketing Part One",
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog2.jpeg", // replace with actual path
     date: "Oct 25",
     publishedInfo: "PUBLISHED FRI OCT 25 2024 10:00 AM PST by Sandeep Asdhir",
     content: [
@@ -120,7 +120,7 @@ export const BlogContent = [
   {
     id: "how-influencers-can-help-market-brand",
     title: "How Influencers Can Help Market Brands?",
-    image: "/landing/blog/newblog3.jpeg", // replace with actual path
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog3.jpeg", // replace with actual path
     date: "Oct 25",
     publishedInfo: "PUBLISHED FRI OCT 25 2024 10:00 AM PST by Sandeep Asdhir",
     content: [
@@ -188,7 +188,7 @@ export const BlogContent = [
   {
     id: "why-influenergy-pivoted-to-ai-focused-marketing-agency",
     title: "How Influencers Can Help Market Brands?",
-    image: "/landing/blog/newblog4.jpg", // replace with actual path
+    image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog4.jpg", // replace with actual path
     date: "Oct 25",
     publishedInfo: "PUBLISHED FRI OCT 25 2024 10:00 AM PST by Sandeep Asdhir",
     content: [

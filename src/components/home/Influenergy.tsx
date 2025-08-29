@@ -15,7 +15,7 @@ export default function InfluEnergySection() {
         className="relative w-full max-w-2xl aspect-[16/9] mb-10"
       >
         <Image
-          src="/group.svg"
+          src="https://d20cf3kfv1a9jn.cloudfront.net/images/group.svg"
           alt="Influenergy Group"
           fill
           priority

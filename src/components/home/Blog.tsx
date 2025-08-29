@@ -17,7 +17,7 @@ export default function Blog() {
   const blogPosts: BlogPost[] = [
     {
       id: 1,
-      image: "/landing/blog/newblog1.png",
+      image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog1.png",
       author: "John Doe",
       date: "23 Nov 24",
       title: "We caught up with the brilliant and insightful Sandeep Asdhir a few weeks ago and have shared our conversation below.",
@@ -26,16 +26,16 @@ export default function Blog() {
     },
     {
       id: 2,
-      image: "/landing/blog/newblog2.jpeg",
+      image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog2.jpeg",
       author: "Sarah Johnson",
       date: "25 Oct 2024",
-      title: "A Introduction To Influencer Marketing Part One",
+      title: "An Introduction To Influencer Marketing Part One",
       description:
         "Mental models are simple expressions of complex processes or relationships.",
     },
     {
       id: 3,
-      image: "/landing/blog/newblog3.jpeg",
+      image: "https://d20cf3kfv1a9jn.cloudfront.net/images/newblog3.jpeg",
       author: "Michael Chen",
       date: "25 Oct 2024",
       title: "How Influencers Can Help Market Brands?",
@@ -131,7 +131,7 @@ export default function Blog() {
 
                   {/* Blog title with arrow icon */}
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold pr-4">{post.title.slice(0,55)+"..."}</h3>
+                    <h3 className="text-xl font-bold pr-4">{post.title.slice(0, 55) + "..."}</h3>
                     <MoveUpRight
                       size={16}
                       className="text-black mt-1 flex-shrink-0"
@@ -149,4 +149,3 @@ export default function Blog() {
     </motion.div>
   );
 }
-   

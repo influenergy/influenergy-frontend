@@ -177,9 +177,9 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     <div className="w-full flex flex-col">
                         <div className="flex flex-col gap-4 justify-between h-full">
                             {[
-                                { label: "Ongoing Collaboration", count: collaborationCount.ongoing },
+                                { label: "Ongoing Collaborations", count: collaborationCount.ongoing },
                                 { label: "Pending Opportunities", count: collaborationCount.pending },
-                                { label: "Completed Collaboration", count: collaborationCount.completed },
+                                { label: "Completed Collaborations", count: collaborationCount.completed },
                             ].map((item, idx) => (
                                 <Card
                                     key={idx}
@@ -195,7 +195,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
                     <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300 rounded-2xl shadow-sm">
                         <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
-                            Favorite Creators :
+                            Favorite Creators:
                         </h2>
 
                         <div className="flex flex-col gap-4 overflow-auto max-h-[400px]">

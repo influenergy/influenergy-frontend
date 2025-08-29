@@ -8,7 +8,7 @@ const ComingSoon = () => {
       <div className="flex justify-center mb-4 md:mb-8">
         <div className="relative h-[200px] w-[200px] md:h-[300px] md:w-[300px] rounded-full flex items-center justify-center">
           <Image
-            src="/images/comingsoon.png"
+            src="https://d20cf3kfv1a9jn.cloudfront.net/images/comingsoon.png"
             fill
             alt="Coming soon icon"
             priority

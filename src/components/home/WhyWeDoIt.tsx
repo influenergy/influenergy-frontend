@@ -43,7 +43,7 @@ export default function WhyWeDoIt() {
               transition={{ repeat: Infinity, duration: 2 }}
             >
               <Image
-                src="/landing/whywedo/arrow1.png"
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/arrow1.png"
                 width={80}
                 height={80}
                 alt="Arrow"
@@ -58,7 +58,7 @@ export default function WhyWeDoIt() {
             >
               <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/landing/whywedo/sparkle.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/sparkle.png"
                   width={35}
                   height={35}
                   alt="AI Recommendations Icon"
@@ -66,7 +66,7 @@ export default function WhyWeDoIt() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold mb-2">
-                  AI-Powered Recommendations
+                AI-Powered Solution
                 </h3>
                 <p className="text-gray-600 text-base">
                   AI-powered platform that connects brands, UGC creators, and
@@ -88,7 +88,7 @@ export default function WhyWeDoIt() {
             >
               <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/landing/whywedo/user.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/user.png"
                   width={35}
                   height={35}
                   alt="Brand-Creator Icon"
@@ -111,7 +111,7 @@ export default function WhyWeDoIt() {
               transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
             >
               <Image
-                src="/landing/whywedo/arrow2.png"
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/arrow2.png"
                 width={80}
                 height={80}
                 alt="Arrow"
@@ -131,7 +131,7 @@ export default function WhyWeDoIt() {
             >
               <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/landing/whywedo/box1.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/box1.png"
                   width={32}
                   height={32}
                   alt="Data Insights Icon"
@@ -168,7 +168,7 @@ export default function WhyWeDoIt() {
           <div className="mt-6">
             <p className="text-xl leading-relaxed mb-8">
               Today’s consumers trust real stories from real creators. We
-              empower brands to partner with Influencer & UGC creators
+              empower brands to partner with Influencers & UGC creators
             </p>
 
             <motion.div

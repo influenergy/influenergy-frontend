@@ -14,7 +14,7 @@ export default function BlogDetails() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
         <Image
-          src="/images/MyPost/empty.png"
+          src="https://d20cf3kfv1a9jn.cloudfront.net/images/empty.png"
           width={400}
           height={400}
           alt="Blog Not Found"

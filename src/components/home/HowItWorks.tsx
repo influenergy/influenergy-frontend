@@ -25,7 +25,7 @@ export default function HowItWorks() {
           How It Works
         </h1>
         <p className="text-gray-700 text-base font-light ">
-        Tell us what you need - your goals, product, and target audience and let AI curate your brief
+          Tell us what you need - your goals, product, and target audience and let AI curate your brief
         </p>
       </div>
       <div className="grid lg:grid-cols-2 w-full gap-8 lg:gap-12 items-stretch  ">
@@ -53,7 +53,7 @@ export default function HowItWorks() {
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
                 <Image
-                  src="/landing/howitworks/user.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/user.png"
                   alt="Create Account Icon"
                   height={35}
                   width={35}
@@ -75,15 +75,8 @@ export default function HowItWorks() {
               variants={item}
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
-                {/* <Image
-                  src="/landing/howitworks/image.png"
-                  alt="Post Ads Icon"
-                  height={45}
-                  width={45}
-                  quality={100}
-                /> */}
                 <Image
-                  src="/landing/howitworks/sparkle.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/sparkle.png"
                   alt="AI Feature Icon"
                   height={40}
                   width={40}
@@ -94,7 +87,7 @@ export default function HowItWorks() {
                 AI Powered Matching
               </h2>
               <p className="text-base  mt-2 text-gray-600">
-              Our AI-Find matches your brand with verified creators that fit your brand
+                Our AI-Find matches your brand with verified creators that fit your brand
               </p>
             </motion.div>
 
@@ -105,7 +98,7 @@ export default function HowItWorks() {
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
                 <Image
-                  src="/landing/howitworks/review.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/review.png"
                   alt="AI Feature Icon"
                   height={40}
                   width={40}
@@ -113,7 +106,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-              Review & Approve
+                Review & Approve
               </h2>
               <p className="text-base  mt-2 text-gray-600">
                 Browse curated matches, review content examples, and approve
@@ -128,7 +121,7 @@ export default function HowItWorks() {
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
                 <Image
-                  src="/landing/howitworks/Group.png"
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/Group.png"
                   alt="Collaboration Icon"
                   height={45}
                   width={45}

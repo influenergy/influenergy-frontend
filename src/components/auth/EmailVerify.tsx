@@ -7,7 +7,7 @@ const EmailVerify = ({ email }: { email: string }) => {
     <div className="w-full h-screen flex flex-col items-center justify-center relative">
       <div className="flex justify-center mb-4">
         <Image
-          src="/images/emailVerification.png"
+          src="https://d20cf3kfv1a9jn.cloudfront.net/images/emailVerification.png"
           width={300}
           height={300}
           alt="Email icon"

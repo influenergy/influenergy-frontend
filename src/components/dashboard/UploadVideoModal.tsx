@@ -243,7 +243,7 @@ const UploadVideoModal: React.FC<UploadVideoModalProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center justify-start gap-2">
             <Image
-              src="/images/icons/video.svg"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/video.svg"
               alt=""
               width={20}
               height={20}

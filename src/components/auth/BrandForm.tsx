@@ -15,7 +15,6 @@ import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/authServices";
 import RegistrationSuccess from "./RegistrationSucess";
 import { useState } from "react";
-import sittingImg from "../../../public/sitting.png";
 import Footer from "../home/Footer";
 
 type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
@@ -197,7 +196,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                       I accept all{" "}
                       <a
 
-                        href="/Influenergy - Terms of Service.pdf"
+                        href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline text-primary hover:text-[#6564d8] transition-colors"
@@ -206,7 +205,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                       </a>{" "}
                       and{" "}
                       <a
-                        href="/Influenergy - Privacy Policy.pdf"
+                        href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline text-primary hover:text-[#6564d8] transition-colors"
@@ -298,7 +297,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
             {/* Image */}
             <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
               <Image
-                src={sittingImg}
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
                 alt="Creator Success Stories"
                 fill
                 className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"

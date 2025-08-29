@@ -29,7 +29,7 @@ export const CollaborationContractModal: React.FC<
         </p>
         <div className="mt-4">
           <a
-            href={userType === "creator" ? "/Influenergy - Master Brand Deal Contract (Creators).pdf" : "/Influenergy - Master Brand Deal Contract (Brands).pdf"}
+            href={userType === "creator" ? "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Master Brand Deal Contract (Creators).pdf" : "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Master Brand Deal Contract (Brands).pdf"}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 text-sm underline"

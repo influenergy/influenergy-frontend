@@ -6,21 +6,21 @@ import { Card } from "../ui/card";
 export default function WhatWeDo() {
   const cardData = [
     {
-      icon: "/landing/whatwedo/sparkle.png",
+      icon: "https://d20cf3kfv1a9jn.cloudfront.net/images/sparkle.png",
       title: "AI Powered Solution",
       description:
         "Our AI-Find tool saves days connecting brands with the best creators for UGC and influencer marketing campaigns",
       delay: 0.2,
     },
     {
-      icon: "/landing/whatwedo/bulb.png",
+      icon: "https://d20cf3kfv1a9jn.cloudfront.net/images/bulb.png",
       title: "Verified Creators & Streamlined Briefs",
       description:
         "Work with a curated network of vetted creators and share clear, standardized briefs that save time and drive better campaign results",
       delay: 0.4,
     },
     {
-      icon: "/landing/whatwedo/payment.png",
+      icon: "https://d20cf3kfv1a9jn.cloudfront.net/images/payment.png",
       title: "Fast & Secure Payments",
       description:
         "With flexible payment options and built-in transaction tools, you can pay creators securely, on your terms, and get fast deliverables for your brand",

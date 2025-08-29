@@ -55,7 +55,7 @@ export default function StatusDialog({
 
   const { mutate: handleApproveVideo, isPending: isApproving } =
     useAcceptOrDeclineVideo({
-          onSuccess: () => {
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["campaigns"] });
         onClose();
       },
@@ -63,7 +63,7 @@ export default function StatusDialog({
 
   const { mutate: handleDeclineVideo, isPending: isDeclining } =
     useAcceptOrDeclineVideo({
-     
+
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["campaigns"] });
         onClose();
@@ -99,9 +99,8 @@ export default function StatusDialog({
             {/* Step 1 - Completed */}
             <div className="relative mb-8 pl-12">
               <div
-                className={`absolute left-0  w-8 h-8 ${
-                  status == "Active" ? "bg-secondary" : "bg-gray-100"
-                } text-gray-400 rounded-full flex items-center justify-center z-10`}
+                className={`absolute left-0  w-8 h-8 ${status == "Active" ? "bg-secondary" : "bg-gray-100"
+                  } text-gray-400 rounded-full flex items-center justify-center z-10`}
               >
                 <CircleCheck className="text-primary" />
               </div>
@@ -111,20 +110,18 @@ export default function StatusDialog({
             {/* Step 2 - Current */}
             <div className="relative mb-8 pl-12">
               <div
-                className={`absolute left-0  w-8 h-8 ${
-                  videoUploadStatus ? "bg-secondary" : "bg-gray-100"
-                } text-gray-400 rounded-full flex items-center justify-center z-10`}
+                className={`absolute left-0  w-8 h-8 ${videoUploadStatus ? "bg-secondary" : "bg-gray-100"
+                  } text-gray-400 rounded-full flex items-center justify-center z-10`}
               >
                 {/* <Image
-                  src={"/images/Inbox/videos.svg"}
+                  src={"https://d20cf3kfv1a9jn.cloudfront.net/images/videos.svg"}
                   alt={""}
                   width={20}
                   height={20}
                 /> */}
                 <Clapperboard
-                  className={`${
-                    videoUploadStatus ? "text-primary" : "text-gray-400"
-                  }`}
+                  className={`${videoUploadStatus ? "text-primary" : "text-gray-400"
+                    }`}
                 />
               </div>
               <div className="flex items-center justify-between w-full">
@@ -147,18 +144,16 @@ export default function StatusDialog({
             {/* Step 3 - Current */}
             <div className="relative mb-8 pl-12">
               <div
-                className={`absolute left-0 w-8 h-8 ${
-                  isVideoDeclined && videoUploadStatus
-                    ? "bg-secondary"
-                    : "bg-gray-100"
-                } rounded-full flex items-center justify-center z-10`}
+                className={`absolute left-0 w-8 h-8 ${isVideoDeclined && videoUploadStatus
+                  ? "bg-secondary"
+                  : "bg-gray-100"
+                  } rounded-full flex items-center justify-center z-10`}
               >
                 <Info
-                  className={`${
-                    isVideoDeclined && videoUploadStatus
-                      ? "text-primary"
-                      : "text-gray-400"
-                  } `}
+                  className={`${isVideoDeclined && videoUploadStatus
+                    ? "text-primary"
+                    : "text-gray-400"
+                    } `}
                 />
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
@@ -199,9 +194,8 @@ export default function StatusDialog({
             <div className="relative pl-12">
               <div className="absolute left-0 w-8 h-8 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center z-10">
                 <CircleCheck
-                  className={`${
-                    status == "Completed" ? "text-primary" : "text-gray-400"
-                  }`}
+                  className={`${status == "Completed" ? "text-primary" : "text-gray-400"
+                    }`}
                 />
               </div>
               <div className="">
@@ -220,7 +214,7 @@ export default function StatusDialog({
           <DialogHeader className="flex flex-col items-center gap-4">
             <DialogTitle className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
               <Image
-                src="/images/AIFind/Video.png"
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/Video.png"
                 width={50}
                 height={50}
                 alt="logo"
@@ -239,7 +233,7 @@ export default function StatusDialog({
                   videoId: campaign?.collaborationData?.videos[0]?._id,
                   status: "Approved",
                   message: "test",
-                 
+
                 });
                 setApproveDialogOpen(false);
               }}
@@ -293,7 +287,7 @@ export default function StatusDialog({
                   videoId: campaign?.collaborationData?.videos[0]?._id,
                   status: "Declined",
                   message: requestMessage,
-                 
+
                 });
                 setRequestChangesDialogOpen(false);
               }}

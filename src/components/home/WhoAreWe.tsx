@@ -9,7 +9,7 @@ export default function WhoAreWe() {
   
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-between w-full px-6 md:px-16 lg:px-24 py-10 gap-10 md:mt-4 items-center max-w-[1440px] mx-auto font-poppins">
+    <div className="grid grid-cols-1 lg:grid-cols-2 justify-between w-full px-6 md:px-16 lg:px-24 py-10 gap-10 md:mt-4 items-center max-w-[1440px] mx-auto font-poppins">
       {/* Video Section */}
       <motion.div
         className="flex justify-start h-full relative"
@@ -18,12 +18,12 @@ export default function WhoAreWe() {
         transition={{ duration: 0.7 }}
         viewport={{ once: true, amount: 0.3 }}
       >
-          <Image src="/hero.jpg" alt="Hero Image" width={600} height={600} className="absolute inset-0 object-cover w-full h-full rounded-lg z-0" />
+          <Image src="https://d20cf3kfv1a9jn.cloudfront.net/images/hero.png" alt="Hero Image" width={600} height={600} className=" inset-0 object-fill w-full h-full rounded-lg z-0" />
       </motion.div>
 
       {/* Text Section */}
       <motion.div
-        className="flex flex-col justify-center space-y-8 h-full "
+        className="flex flex-col justify-center space-y-8 h-full lg:py-24"
         initial={{ opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}

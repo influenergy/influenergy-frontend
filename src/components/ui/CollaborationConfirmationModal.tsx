@@ -25,7 +25,7 @@ export const CollaborationConfirmationModal: React.FC<
         <DialogHeader className="flex flex-col items-center gap-4">
           <DialogTitle className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
             <Image
-              src="/images/AIFind/message.png"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/message.png"
               width={50}
               height={50}
               alt="logo"

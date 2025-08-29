@@ -47,7 +47,7 @@ const GetInTouch = () => {
             Get Started
           </h3>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 leading-tight">
-            Get in touch with us. We are <br className="hidden md:block" />
+            Get in touch with us.<br className="hidden md:block" /> We are 
             here to assist you.
           </h2>
         </motion.div>

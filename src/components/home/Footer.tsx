@@ -197,14 +197,14 @@ export default function Footer() {
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
-              href="/Influenergy - Privacy Policy.pdf"
+              href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
               target="_blank"
               className="text-gray-400 text-sm hover:text-primary transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
-              href="/Influenergy - Terms of Service.pdf"
+              href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
               target="_blank"
               className="text-gray-400 text-sm hover:text-primary transition-colors"
             >

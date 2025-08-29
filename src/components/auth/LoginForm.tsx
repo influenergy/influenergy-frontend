@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import sittingImg from "../../../public/sitting.png";
 import Footer from "../home/Footer";
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
@@ -134,10 +133,10 @@ export default function LoginForm() {
   };
 
   const videos = [
-    "/video1.mp4",
-    "/video2.mov",
-    "/video3.mov",
-    "/video4.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video1.mp4",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video2.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video3.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video4.mov",
   ];
 
   const [mainIndex, setMainIndex] = useState(0);
@@ -412,7 +411,7 @@ export default function LoginForm() {
             {/* Image */}
             <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
               <Image
-                src={sittingImg}
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
                 alt="Creator Success Stories"
                 fill
                 className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
@@ -489,7 +488,7 @@ export default function LoginForm() {
               {/* Image */}
               <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
                 <Image
-                  src={sittingImg}
+                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
                   alt="Creator Success Stories"
                   fill
                   className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"

@@ -35,7 +35,7 @@ export default function AIFindTab() {
         <>
           <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
             <Image
-              src="/images/AIFind/image.png"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/image.png"
               alt="No campaigns"
               width={180}
               height={180}

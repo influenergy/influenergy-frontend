@@ -51,8 +51,7 @@ const Page = () => {
             <div>
               <h1 className="text-2xl font-bold mb-1">My Ad Briefs</h1>
               <p className="text-gray-600 text-sm max-w-md dark:text-white">
-                You can create your brief using AI, but we recommend creating it manually
-                for more accurate creator matches.
+                Our AI helps you create a brief quickly, and you can refine it manually to get the most accurate creator matches.
               </p>
             </div>
             <div className="flex gap-3">
@@ -83,7 +82,7 @@ const Page = () => {
         {campaigns.length === 0 ? (
           <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-16rem)]  gap-5 ">
             <Image
-              src="/images/MyPost/empty.png"
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/empty.png"
               width={400}
               height={400}
               alt="Empty"

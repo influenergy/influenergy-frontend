@@ -54,7 +54,7 @@ export default function GetStarted() {
               >
                 <div className="flex cursor-pointer h-40 sm:h-48 w-full sm:w-52 flex-col justify-between rounded-2xl bg-[#F2F2FF] p-4 sm:p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
-                    src="/images/Home/icon.png"
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/icon.png"
                     alt="Brand Icon"
                     width={50}
                     height={50}
@@ -75,7 +75,7 @@ export default function GetStarted() {
               >
                 <div className="flex cursor-pointer h-40 sm:h-48 w-full sm:w-52 flex-col justify-between rounded-2xl bg-[#F2F2FF] p-4 sm:p-6 transition-all hover:bg-[#7C3AED] hover:text-white">
                   <Image
-                    src="/images/Home/icon1.png"
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/icon1.png"
                     alt="Brand Icon"
                     width={50}
                     height={50}
@@ -96,7 +96,7 @@ export default function GetStarted() {
           <motion.div className="relative bg-primary h-full hidden lg:block">
             <div className="absolute -left-20 xl:-left-28 top-1/3 -translate-y-1/2">
               <Image
-                src="/images/Home/image.png"
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/image.png"
                 alt="Influencer"
                 width={200}
                 height={200}
@@ -107,7 +107,7 @@ export default function GetStarted() {
 
             <div className="flex flex-col justify-end items-center h-full w-full ml-4 xl:ml-10 ">
               <Image
-                src="/images/Home/image2.png"
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/image2.png"
                 alt="Influencer"
                 width={180}
                 height={180}

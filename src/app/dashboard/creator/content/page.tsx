@@ -34,7 +34,7 @@ const Page = () => {
       {!user?.isAccountVerified ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
-            src="/images/MyPost/empty.png"
+            src="https://d20cf3kfv1a9jn.cloudfront.net/images/empty.png"
             width={400}
             height={400}
             alt="Profile Incomplete"
@@ -57,7 +57,7 @@ const Page = () => {
       ) : isError ? (
         <div className="w-full flex flex-col items-center justify-center h-[calc(100vh-16rem)] gap-5">
           <Image
-            src="/images/MyPost/empty.png"
+            src="https://d20cf3kfv1a9jn.cloudfront.net/images/empty.png"
             width={400}
             height={400}
             alt="Error"
@@ -70,7 +70,7 @@ const Page = () => {
       ) : shouldShowContent && posts?.data?.videos.length <= 0 ? (
         <div className="w-full flex flex-col items-center justify-center h-full gap-5">
           <Image
-            src="/images/MyPost/my-video-empty.png"
+            src="https://d20cf3kfv1a9jn.cloudfront.net/images/my-video-empty.png"
             width={400}
             height={400}
             alt="Empty"
