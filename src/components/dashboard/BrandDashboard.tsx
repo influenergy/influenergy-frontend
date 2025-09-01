@@ -155,7 +155,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             Welcome Back, {fullName || "Brand"}!
                         </h2>
                         <p className="text-muted-foreground">
-                            Your brand dashboard is ready. Start connecting with creators!
+                            Your brand dashboard is ready. <br />Start connecting with creators!
                         </p>
                     </div>
                     <div className="mt-6 flex-1">

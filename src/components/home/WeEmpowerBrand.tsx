@@ -62,13 +62,10 @@ export default function WeEmpowerBrand() {
           </h2>
 
           <p className="text-gray-700 text-lg leading-normal text-justify">
-            When I launched Influenergy, I noticed two major issues in influencer marketing: brands spent endless hours searching for the right creators, and creators faced unclear briefs, slow payments, and frustrating back-and-forth. The process was time-consuming, and both sides fell short.
-            <br />
-            {/* <br /> */}
-            Influenergy is built to fix that. Our AI-Find tool instantly connects brands with vetted creators who perfectly match their niche, while our built-in contracts, payment options, and streamlined briefs make campaigns simple and efficient.
-            {/* <br /> */}
-            <br />
-            Whether you’re a brand aiming to scale campaigns or a creator seeking consistent work, we’re here to make success faster, easier, and stress-free.
+          Sandeep Asdhir isn’t afraid to roll up his sleeves and make things happen — from automating YouTube channels to designing apparel lines, to navigating multi-million-dollar ventures in the business world. With a unique blend of creativity and strategic insight, he brings a proven track record in content creation, trend forecasting, and building scalable solutions.
+          <br />
+          <br />
+          As a passionate entrepreneur, Sandeep’s mission is to empower brands through innovative tools, data-driven strategies, and authentic creator partnerships that deliver measurable results.
           </p>
         </motion.div>
       </div>

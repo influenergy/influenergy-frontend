@@ -93,7 +93,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_2fr] gap-6 w-full">
         <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
           <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            AI Profile Recommendation
+            AI Recommendations
           </h2>
 
           <div className="mt-6 bg-purple-gradient flex rounded-xl p-6 text-white flex-col gap-8 flex-1">
@@ -107,7 +107,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
               </div>
             </div>
             <div className="flex gap-4 flex-col">
-              <h1 className="font-medium text-lg">How to Improve</h1>
+              <h1 className="font-medium text-lg">How You Can Improve</h1>
               <span>
                 {improvementLoading ? (
                   <span>Loading suggestions...</span>
