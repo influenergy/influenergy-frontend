@@ -43,7 +43,7 @@ export default function AIFindTab() {
               priority
             />
             <div className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
-              <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900">
+              <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100">
                 Welcome to AI Find.
                 <br />
                 Here you can match your created post with your desired creator

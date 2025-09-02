@@ -49,7 +49,7 @@ export const authApi = {
   setPassword: async (token: string, password: string) => {
     const response = await api.post(`/set-password/${token}`, {
       password,
-    });
+    }, { withCredentials: false });
     return response.data;
   },
   forgotPassword: async (email: string, userType: string) => {
