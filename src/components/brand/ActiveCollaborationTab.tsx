@@ -368,7 +368,7 @@ export default function ActiveCollaborationTab() {
                       <DialogTitle>Write Your Message to Creator</DialogTitle>
                     </DialogHeader>
                     <textarea
-                      className="w-full border border-gray-300 rounded-md p-2 mt-2"
+                      className="w-full border border-gray-300 rounded-md p-2 mt-2 dark:bg-gray-700 dark:text-gray-100"
                       rows={4}
                       placeholder="Enter your message here..."
                       value={requestMessage}
