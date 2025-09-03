@@ -67,7 +67,7 @@ export default function Stats() {
                     stats?.typeStats.map((stat, index) => (
                         <div key={index} className="flex flex-col items-center">
                             <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stat.percentage}%</h3>
-                            <p className="text-sm text-gray-700 font-semibold">Average {stat.type === "Average Creator"?"Influencers":"UGC Creators"}</p>
+                            <p className="text-sm text-gray-700 font-semibold">{stat.type === "Creator"?"Influencers":"UGC Creators"}</p>
                         </div>
                     ))
                 }

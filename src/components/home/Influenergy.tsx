@@ -33,8 +33,8 @@ export default function InfluEnergySection() {
       >
         <p className="font-semibold text-black leading-normal text-[clamp(1.5rem,4vw,1.8rem)] px-2">
           OUR POWERFUL
-          <span className="text-primary"> AI-FIND TOOL</span> 
-           CONNECTS
+          <span className="text-primary"> AI-FIND TOOL </span> 
+          CONNECTS
           CREATORS AND BRANDS UNLOCKING PARTNERSHIPS 
           THAT <span className="text-primary"> DELIVER RESULTS</span>
         </p>
