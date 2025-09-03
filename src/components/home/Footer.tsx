@@ -76,7 +76,7 @@ export default function Footer() {
     { name: "Who We Are", href: "/#who-we-are", section: "who-we-are" },
     { name: "What We Do", href: "/#what-we-do", section: "what-we-do" },
     { name: "How It Works", href: "/#how-it-works", section: "how-it-works" },
-    { name: "Why We do It", href: "/#why-we-do-it", section: "why-we-do-it" },
+    { name: "Why We Do It", href: "/#why-we-do-it", section: "why-we-do-it" },
     { name: "Blogs", href: "/#blog", section: "blog" },
     { name: "Contact", href: "/#get-in-touch", section: "get-in-touch" },
   ];

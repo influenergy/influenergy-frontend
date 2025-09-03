@@ -298,7 +298,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
       </div>
 
       {/* SUCCESS STORIES SECTION */}
-      <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
+      {/* <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -317,7 +317,6 @@ export default function RegisterForm({ userType }: { userType: string }) {
             whileHover={{ scale: 1.02 }}
             className="flex flex-col sm:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-dashed border-[#c8c8f1]"
           >
-            {/* Image */}
             <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
               <Image
                 src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
@@ -327,7 +326,6 @@ export default function RegisterForm({ userType }: { userType: string }) {
               />
             </div>
 
-            {/* Content */}
             <div className="flex flex-col justify-between p-6 w-full">
               <div className="flex flex-col sm:flex-row gap-6 mb-4 ">
                 <div>
@@ -354,10 +352,10 @@ export default function RegisterForm({ userType }: { userType: string }) {
             </div>
           </motion.div>
         </motion.div>
-      </section>
+      </section> */}
 
       {/* METRICS ROW */}
-      <div className="w-full py-12 px-4 text-center grid grid-cols-1 sm:grid-cols-3 gap-6 bg-white max-w-6xl mx-auto">
+      {/* <div className="w-full py-12 px-4 text-center grid grid-cols-1 sm:grid-cols-3 gap-6 bg-white max-w-6xl mx-auto">
         <div className="flex flex-col items-center">
           <p className="text-sm text-gray-700">Trusted by brands</p>
           <h3 className="text-6xl font-bold text-[#8055FE]">100+</h3>
@@ -373,7 +371,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
             <span className="text-sm font-bold text-[#8055FE]">per annum</span>
           </h3>
         </div>
-      </div>
+      </div> */}
 
       <Footer />
     </div>

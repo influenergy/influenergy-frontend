@@ -84,7 +84,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                AI Powered Matching
+                AI-Powered Matching
               </h2>
               <p className="text-base  mt-2 text-gray-600">
                 Our AI-Find matches your brand with verified creators that fit your brand

@@ -84,7 +84,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             Welcome Back, {fullName || "Creator"}!
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Your creator dashboard is ready. Start exploring opportunities!
+            Your creator dashboard is ready.<br /> Start exploring opportunities!
           </p>
         </div>
       </Card>

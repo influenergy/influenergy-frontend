@@ -36,7 +36,7 @@ export default function WhoAreWe() {
           We’re Influenergy — an AI-powered platform that bridges the gap
           between brands and creators. Our platform streamlines Influencer
           collaborations through smart automation, saving time, maximizing
-          campaign success, and ultimately delivering the best ROI.
+          campaign success, and ultimately delivering the best ROI
         </p>
         <motion.div
           className="flex items-center relative"

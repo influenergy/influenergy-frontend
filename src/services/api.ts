@@ -3,6 +3,7 @@ import { safeNavigate } from "@/utils/navigation";
 import { store } from "@/store";
 const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/v1/api";
 
+
 export const api = axios.create({
   baseURL,
   headers: {
@@ -32,13 +33,31 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     // console.log('errors',error)
     if (error.response) {
       // Handle unauthorized access
       if (error.response.status === 401) {
-        // Use safeNavigate for navigation that works in both client and server environments
-        safeNavigate('/login');
+        const userType = localStorage.getItem("userType"); // or from your auth state
+        console.log("40111")
+
+        store.dispatch({ type: "auth/logout" });
+
+        try {
+          // Call logout without triggering interceptor again
+          await api.post("/logout", { userType });
+          localStorage.removeItem("userType");
+        } catch (e: unknown) {
+          if (e instanceof Error) {
+            console.warn("Auto logout API failed:", e.message);
+          } else {
+            console.warn("Auto logout API failed:", e);
+          }
+        }
+
+        if (window.location.pathname !== "/login") {
+          safeNavigate("/login");
+        }
       }
 
       // Handle rate limiting
