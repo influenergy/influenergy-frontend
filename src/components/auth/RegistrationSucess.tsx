@@ -62,7 +62,7 @@ export default function RegistrationSuccess() {
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center px-4 py-8 overflow-hidden bg-white">
       <motion.div
-        className="relative z-10 flex flex-col items-center gap-6 text-center max-w-md mx-auto"
+        className="relative z-10 flex flex-col items-center gap-6 text-center max-w-xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -113,9 +113,13 @@ export default function RegistrationSuccess() {
           className="text-center text-gray-700 text-base sm:text-lg md:text-xl px-4"
           variants={itemVariants}
         >
-          Registration Successful! We will get back to you soon.
+          {/* Registration Successful! We will get back to you soon.
           <br />
-          Till then explore more.
+          Till then explore more. */}
+          Registration Successful! 🎉 We’ve sent you an email to set your password.
+          <br />
+          Please check your inbox and follow the link to complete your registration.
+
         </motion.p>
 
         <motion.div

@@ -66,7 +66,8 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
     onSuccess: () => {
       toast({
         title: "Registration successful 🎉",
-        description: "We will verify your details and get back to you soon. 😀",
+        // description: "We will verify your details and get back to you soon. 😀",
+        description: "We have sent you an email to set your password. 📧",
       });
       reset();
       setShowSuccess(true);
