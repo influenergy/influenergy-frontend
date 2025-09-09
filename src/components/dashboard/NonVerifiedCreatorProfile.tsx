@@ -46,7 +46,7 @@ function NonVerifiedCreatorProfile({ fullName, isProfileCompleted, profileIcon }
 
             </Card>
             <Card className='p-6 flex-1 h-full'>
-                <div className='bg-purple-gradient px-4 md:px-6  rounded-lg text-start text-white h-full flex flex-col items-start justify-center gap-4'>
+                <div className='bg-purple-gradient p-4 md:p-6  rounded-lg text-start text-white h-full flex flex-col items-start justify-center gap-4'>
                     <h1 className='text-2xl mb-3 md:mb-5 lg:mb-10'>Let&apos;s get you discovered!</h1>
 
                     {!isProfileCompleted && !profileIcon && <div className="">
