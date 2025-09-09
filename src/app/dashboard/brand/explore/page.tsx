@@ -121,7 +121,7 @@ export default function ExploreCreators() {
         setFollowers((prev) =>
             prev.includes(n) ? prev.filter((x) => x !== n) : [...prev, n]
         );
-        console.log(followers, 'followers')
+        // console.log(followers, 'followers')
     };
 
     const clearFilters = () => {

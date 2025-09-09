@@ -22,7 +22,6 @@ const Page = () => {
     // setShowQuestionnaire(true);
   };
   const handleAIGenerationSuccess = (campaignData: Record<string, unknown>) => {
-    console.log(campaignData);
     try {
       sessionStorage.setItem("aiGeneratedCampaign", JSON.stringify(campaignData));
     } catch { }

@@ -39,7 +39,6 @@ api.interceptors.response.use(
       // Handle unauthorized access
       if (error.response.status === 401) {
         const userType = localStorage.getItem("userType"); // or from your auth state
-        console.log("40111")
 
         store.dispatch({ type: "auth/logout" });
 

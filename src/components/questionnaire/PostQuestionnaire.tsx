@@ -358,7 +358,6 @@ const PostQuestionnaire = ({
                             size="lg"
                             onClick={() => {
                               handleSubmit(() => handleNext())()
-                              console.log("clickedd")
                             }}
                             disabled={isSubmitting}
                             type="button"

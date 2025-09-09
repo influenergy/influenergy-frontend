@@ -103,7 +103,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
     if (!isCampaignResponse(data)) return data as PostData;
 
     const campaign = data;
-    console.log(campaign.catchPhrase,'campaign.catchPhrase')
+
     return {
       id: campaign._id,
       image: campaign?.campaignPost,

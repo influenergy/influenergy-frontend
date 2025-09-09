@@ -18,7 +18,6 @@ export default function Header() {
 
 
   const handleUserTypeSelection = (type: string, link: string) => {
-    console.log(type, link);
     setLoginDropdownOpen(false);
     router.push(`${link}`);
     dispatch(setUserType(type));

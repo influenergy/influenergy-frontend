@@ -19,7 +19,6 @@ export default function Stats() {
     const [stats, setStats] = React.useState<StatsProps | null>(null);
     useEffect(() => {
         userApi.getStats().then(res => {
-            console.log(res, 'res');
             setStats(res.data);
         });
     }, []);

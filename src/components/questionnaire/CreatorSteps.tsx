@@ -112,10 +112,8 @@ const FormField = ({ field }: { field: Field }) => {
         secondaryFollowers,
       })
         .then((res: PriceRangeResponse) => {
-          // console.log(res?.data?.data.range?.min, res?.data?.data.range?.max)
           if (res?.data?.range?.min != null && res?.data?.range?.max != null) {
             setPriceRange(`$${res.data.range.min} - $${res.data.range.max}`);
-            console.log(`$${res.data.range.min} - $${res.data.range.max}`, "Price Range Response");
             // } else if (res?.data?.range) {
             //   setPriceRange(res.data.range);
           } else {

@@ -64,7 +64,6 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const handleCollectPayment = async (payload: FormData) => {
     setIsLoading(true);
     try {
-      // console.log("Collecting payment with payload:", payload);
       await postApi.paymentCollect(data._id || "", payload);
       // Handle success, e.g., show a success message
       

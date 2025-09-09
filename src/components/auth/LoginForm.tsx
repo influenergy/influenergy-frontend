@@ -97,7 +97,7 @@ useEffect(() => {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    console.log(userType,'userType',data)
+    // console.log(userType,'userType',data)
     loginMutation.mutate(data);
   };
 

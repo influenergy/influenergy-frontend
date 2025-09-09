@@ -27,7 +27,6 @@ const Page = () => {
 
   // Use the API data only if the user's profile is completed
   const shouldShowContent = user?.isProfileCompleted && posts?.data?.videos;
-  // console.log('shouldShowContent', shouldShowContent);
 
   return (
     <div className="p-4 h-[calc(100vh - 200px)]">
