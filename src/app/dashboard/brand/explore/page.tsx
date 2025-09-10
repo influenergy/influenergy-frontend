@@ -17,6 +17,7 @@ import {
     X
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToggleFavorite } from "@/hooks/usePost";
 import Link from "next/link";
@@ -127,6 +128,7 @@ export default function ExploreCreators() {
     const clearFilters = () => {
         setPlatforms([]);
         setNiches([]);
+        setFollowers([]);
     };
     const queryClient = useQueryClient();
 
@@ -197,6 +199,8 @@ export default function ExploreCreators() {
         localStorage.setItem("selected-creator-campaign", creatorId);
     };
     // console.log(data,'data')
+    const selectedFiltersCount = platforms.length + niches.length + followers.length;
+
     return (
         <div className="relative p-6">
             <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
@@ -204,10 +208,20 @@ export default function ExploreCreators() {
             {/* Filter Options */}
             <div className="my-4 space-y-3">
                 <div className="flex gap-3 items-center">
-                    <Button onClick={() => setIsOpen(true)}>
-                        <SlidersHorizontal className="w-4 h-4" />
-                        Filter
-                    </Button>
+                    <div className="relative inline-flex items-center">
+                        <Button onClick={() => setIsOpen(true)}>
+                            <SlidersHorizontal className="w-4 h-4" />
+                            Filter
+                        </Button>
+                        {selectedFiltersCount > 0 && (
+                            <Badge
+                                variant="secondary"
+                                className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] leading-none"
+                            >
+                                {selectedFiltersCount}
+                            </Badge>
+                        )}
+                    </div>
 
                     <div className="flex gap-3 items-center pl-3 border-l-2">
                         <p>Sort:</p>
@@ -234,93 +248,100 @@ export default function ExploreCreators() {
             </div>
 
             {isOpen && (
-                <div className="absolute top-0 left-0 w-72 bg-white shadow-lg z-50 p-4 overflow-y-auto dark:text-black">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-lg font-semibold">Filter</h2>
-                        <button onClick={() => setIsOpen(false)}>
-                            <X className="w-5 h-5" />
-                        </button>
-                    </div>
+                <>
+                    {/* Overlay to capture outside clicks */}
+                    <div
+                        className="fixed inset-0 bg-black/30 z-40"
+                        onClick={() => setIsOpen(false)}
+                    />
+                    <div className="absolute top-0 left-0 w-72 bg-white shadow-lg z-50 p-4 overflow-y-auto dark:text-black rounded-lg">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-semibold">Filter</h2>
+                            <button onClick={() => setIsOpen(false)}>
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
 
-                    {/* Platforms */}
-                    <div className="mb-4">
-                        <h3 className="font-medium mb-2">Select Platform</h3>
-                        <div className="h-40 overflow-auto">
+                        {/* Platforms */}
+                        <div className="mb-4">
+                            <h3 className="font-medium mb-2">Select Platform</h3>
+                            <div className="h-40 overflow-auto">
 
-                            {Platforms.map((p) => (
+                                {Platforms.map((p) => (
+                                    <label key={p} className="block">
+                                        <input
+                                            type="checkbox"
+                                            checked={platforms.includes(p)}
+                                            onChange={() => togglePlatform(p)}
+                                            className="mr-2"
+                                        />
+                                        {p}
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Followers range */}
+                        <div className="mb-4">
+                            <h3 className="font-medium mb-2">Range of Followers</h3>
+                            {FollowerRanges.map((p) => (
                                 <label key={p} className="block">
                                     <input
                                         type="checkbox"
-                                        checked={platforms.includes(p)}
-                                        onChange={() => togglePlatform(p)}
+                                        checked={followers.includes(p)}
+                                        onChange={() => toggleFollowers(p)}
                                         className="mr-2"
                                     />
                                     {p}
                                 </label>
                             ))}
                         </div>
-                    </div>
 
-                    {/* Followers range */}
-                    <div className="mb-4">
-                        <h3 className="font-medium mb-2">Range of Followers</h3>
-                        {FollowerRanges.map((p) => (
-                            <label key={p} className="block">
-                                <input
-                                    type="checkbox"
-                                    checked={followers.includes(p)}
-                                    onChange={() => toggleFollowers(p)}
-                                    className="mr-2"
-                                />
-                                {p}
-                            </label>
-                        ))}
-                    </div>
+                        {/* Niches */}
+                        <div className="mb-4">
+                            <h3 className="font-medium mb-2">Select Niche</h3>
+                            <div className="h-40 overflow-auto">
 
-                    {/* Niches */}
-                    <div className="mb-4">
-                        <h3 className="font-medium mb-2">Select Niche</h3>
-                        <div className="h-40 overflow-auto">
+                                {Niches.map((n) => (
+                                    <label key={n} className="block">
+                                        <input
+                                            type="checkbox"
+                                            checked={niches.includes(n)}
+                                            onChange={() => toggleNiche(n)}
+                                            className="mr-2"
+                                        />
+                                        {n}
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
 
-                            {Niches.map((n) => (
-                                <label key={n} className="block">
-                                    <input
-                                        type="checkbox"
-                                        checked={niches.includes(n)}
-                                        onChange={() => toggleNiche(n)}
-                                        className="mr-2"
-                                    />
-                                    {n}
-                                </label>
-                            ))}
+                        {/* Actions */}
+                        <div className="flex justify-between">
+                            <button
+                                onClick={clearFilters}
+                                className="px-4 py-2 bg-gray-200 rounded-md"
+                            >
+                                Clear Filter
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setFilters({
+                                        ...filters,
+                                        platform: platforms.join(","), // send comma-separated
+                                        niche: niches.join(","),
+                                        followers: followers.join("&"),
+                                    });
+                                    setIsOpen(false);
+                                    refetch();
+                                }}
+                                className="px-4 py-2 bg-purple-600 text-white rounded-md"
+                            >
+                                Apply Filter
+                            </button>
                         </div>
                     </div>
-
-                    {/* Actions */}
-                    <div className="flex justify-between">
-                        <button
-                            onClick={clearFilters}
-                            className="px-4 py-2 bg-gray-200 rounded-md"
-                        >
-                            Clear Filter
-                        </button>
-                        <button
-                            onClick={() => {
-                                setFilters({
-                                    ...filters,
-                                    platform: platforms.join(","), // send comma-separated
-                                    niche: niches.join(","),
-                                    followers: followers.join("&"),
-                                });
-                                setIsOpen(false);
-                                refetch();
-                            }}
-                            className="px-4 py-2 bg-purple-600 text-white rounded-md"
-                        >
-                            Apply Filter
-                        </button>
-                    </div>
-                </div>
+                </>
             )}
 
             {/* Creator Grid */}

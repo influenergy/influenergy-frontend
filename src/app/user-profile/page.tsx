@@ -4,6 +4,7 @@
 import { Label } from "@/components/ui/label";
 import DeleteModal from "@/components/userProfile/DeleteModal";
 import ProfileActions from "@/components/userProfile/ProfileActions";
+
 import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
 import { ChevronsLeft, PenLine } from "lucide-react";
@@ -29,6 +30,7 @@ export default function Page() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const fetchAccountDetails = async () => {
     if (!userType) return;
 
@@ -133,7 +135,7 @@ export default function Page() {
               }
               alt="Profile picture"
               fill
-              className={`w-full h-full object-cover rounded-full ${isUploading ? "opacity-50" : ""
+              className={`w-full h-full object-cover rounded-full cursor-pointer ${isUploading ? "opacity-50" : ""
                 }`}
               onError={(e) => {
                 // Fallback to default image if S3 image fails to load
@@ -142,17 +144,19 @@ export default function Page() {
               }}
               sizes="100px"
               priority
+              onClick={() => setIsPreviewOpen(true)}
             />
-            <ProfileActions />
+            <ProfileActions className="cusrsor-pointer" />
             <input
               type="file"
               id="image"
               name="image"
               accept="image/png, image/jpeg"
-              className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+              className="absolute bottom-1 right-3 w-8 h-8 opacity-0 z-20"
               onChange={handleImageUpload}
               disabled={isUploading}
             />
+            {/* <PenLine /> */}
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
@@ -237,6 +241,32 @@ export default function Page() {
           <ProfileInfo user={user} userType={userType} />
         )}
       </div>
+      {isPreviewOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setIsPreviewOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-lg aspect-square"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={user?.profileIcon || "https://avatar.iran.liara.run/public/boy"}
+              alt="Profile preview"
+              fill
+              className="object-contain rounded-lg"
+              sizes="(max-width: 768px) 100vw, 512px"
+              priority
+            />
+            <button
+              className="absolute -top-3 -right-3 bg-white text-black rounded-full px-3 py-1 shadow"
+              onClick={() => setIsPreviewOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       {userType == "brand" ? (
         <EditBrandProfileModal
           isOpen={isEditModalOpen}
