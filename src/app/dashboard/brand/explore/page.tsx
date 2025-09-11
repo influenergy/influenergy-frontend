@@ -14,7 +14,8 @@ import {
     Share2,
     Heart,
     SlidersHorizontal,
-    X
+    X,
+    
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { useToggleFavorite } from "@/hooks/usePost";
 import Link from "next/link";
 import SkeletonCard from "@/components/Skeletons/ExploreCreatorsSkeleton";
+import TikTokIcon from "@/components/icons/tiktok";
 
 // Filters data
 const FollowerRanges = [
@@ -52,6 +54,8 @@ const getSocialMediaIcon = (platform: string) => {
             return <Linkedin className="w-5 h-5" />;
         case "newsletter":
             return <Mail className="w-5 h-5" />;
+        case "tiktok":
+            return <TikTokIcon />;
         default:
             return <Share2 className="w-5 h-5" />;
     }

@@ -60,7 +60,7 @@ const SocialMediaInput = ({ field }: { field: Field }) => {
               type="text"
               placeholder={`Enter your ${selectedPlatform} profile link`}
               {...register(linkFieldName)}
-              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 dark:text-black ${linkError
+              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 dark:text-gray-200 ${linkError
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-primary"
                 }`}

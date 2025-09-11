@@ -6,7 +6,8 @@ import { useAppSelector } from "@/store";
 import { useUserDetails } from "@/hooks/useUser";
 import { Loader } from "@/components/common/Loader";
 
-import React  from "react";
+import React from "react";
+import { isAxiosError } from "axios";
 import CreatorWithCompleteProfile from "@/components/dashboard/CreatorWithCompleteProfile";
 import NonVerifiedCreatorProfile from "@/components/dashboard/NonVerifiedCreatorProfile";
 import BrandDashboard from "@/components/dashboard/BrandDashboard";
@@ -33,17 +34,40 @@ export default function DashboardPage() {
   }
 
   if (error) {
+    console.log(error, "❌ Axios Error");
+
+    const hasMessageField = (value: unknown): value is { message: string } => {
+      return (
+        typeof value === "object" &&
+        value !== null &&
+        typeof (value as Record<string, unknown>).message === "string"
+      );
+    };
+
+    let errorMessage: string;
+    if (isAxiosError(error)) {
+      const data = error.response?.data;
+      if (typeof data === "string") {
+        errorMessage = data;
+      } else if (hasMessageField(data)) {
+        errorMessage = data.message;
+      } else {
+        errorMessage = error.message;
+      }
+    } else {
+      errorMessage = (error as Error).message || "Failed to load user details. Please try again later.";
+    }
+
     return (
       <div className="min-h-screen p-2">
         <Card className="p-6 bg-red-100 border border-red-400 text-black">
           <h2 className="text-xl font-semibold mb-2">Error</h2>
-          <p className="text-muted-foreground">
-            Failed to load user details. Please try again later.
-          </p>
+          <p className="text-muted-foreground">{errorMessage}</p>
         </Card>
       </div>
     );
   }
+
 
   return (
     <div className="p-2 px-5 flex flex-col h-full">

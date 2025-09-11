@@ -265,7 +265,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
         <FormProvider {...methods}>
           <form
             onSubmit={handleSubmit(handleNext)}
-            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly dark:text-gray-100"
+            className="max-w-7xl w-full h-screen p-2 flex flex-col items-center justify-evenly dark:text-gray-100 dark:bg-gray-900"
           >
             <div className="md:mb-8 flex flex-col items-center w-full px-2 sm:px-0">
               <h2 className="text-2xl font-bold mb-2 text-center dark:text-gray-100">

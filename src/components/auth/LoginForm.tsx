@@ -48,7 +48,8 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    // reset,
+    setValue
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
     defaultValues: {
@@ -57,14 +58,22 @@ export default function LoginForm() {
   });
 
   // 🔑 When userType changes in Redux, update the form values
+// useEffect(() => {
+//   if (userType) {
+//     reset((prev) => ({
+//       ...prev,
+//       userType: userType as "creator" | "brand",
+//     }));
+//   }
+// }, [userType,reset]);
+
 useEffect(() => {
   if (userType) {
-    reset((prev) => ({
-      ...prev,
-      userType: userType as "creator" | "brand",
-    }));
+    setValue("userType", userType as "creator" | "brand", {
+      shouldValidate: true,
+    });
   }
-}, [userType,reset]);
+}, [userType, setValue]);
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {

@@ -23,10 +23,10 @@ export const GenderInput = ({ field }: { field: Field }) => {
   return (
     <div>
       <div className="flex items-center gap-2">
-        <div className="relative w-full dark:text-black">
+        <div className="relative w-full dark:text-gray-200">
           <select
             {...register(fieldName)}
-            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-black ${
+            className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:text-gray-200 ${
               error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300 focus:ring-primary"

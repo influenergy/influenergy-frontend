@@ -162,6 +162,19 @@ export const FormField = ({ field }: FormFieldProps) => {
   const error = errors[fieldName];
   // Always call useRef at the top level to avoid conditional hook call
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const contentType = watch("content-type");
+
+  // If content type is Long form and duration selected is invalid, clear it
+  React.useEffect(() => {
+    if (
+      fieldName === "video-duration" &&
+      contentType === "Long form videos" &&
+      watch(fieldName) === "Less than 1 minute"
+    ) {
+      setValue(fieldName, "", { shouldValidate: true, shouldTouch: true, shouldDirty: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contentType]);
 
   if (fieldName === "target-interests" || fieldName === "target-gender") {
     return <PrimaryNicheInput field={field} />;
@@ -190,16 +203,23 @@ export const FormField = ({ field }: FormFieldProps) => {
           <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-200 dark:bg-gray-900">
             Select
           </option>
-          {field.options?.map((option) => (
-            <option
-              key={option}
-              value={option}
-              style={{ fontFamily: "Poppins, sans-serif" }}
-              className="dark:text-gray-200 dark:bg-gray-900"
-            >
-              {option}
-            </option>
-          ))}
+          {field.options?.map((option) => {
+            const disableShortForLongForm =
+              fieldName === "video-duration" &&
+              contentType === "Long form videos" &&
+              option === "Less than 1 minute";
+            return (
+              <option
+                key={option}
+                value={option}
+                style={{ fontFamily: "Poppins, sans-serif" }}
+                className="dark:text-gray-200 dark:bg-gray-900"
+                disabled={disableShortForLongForm}
+              >
+                {option}
+              </option>
+            );
+          })}
         </select>
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
           <ChevronDown size={20} />
@@ -236,7 +256,7 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
+          className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
             ? "border-red-500 focus:ring-red-500 dark:border-red-500"
             : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}

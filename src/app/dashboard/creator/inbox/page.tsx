@@ -116,7 +116,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
                     Welcome to the inbox. <br /> No ongoing collaborations
                     found.
                   </h3>
@@ -206,7 +206,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
                     Welcome to the inbox. <br /> No completed collaborations
                     found.
                   </h3>
@@ -251,7 +251,7 @@ const Page = () => {
                     className="mx-auto"
                     priority
                   />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
                     Welcome to the inbox. <br /> No payment collaborations
                     found.
                   </h3>

@@ -94,7 +94,7 @@ const ReviewStep = ({ onEdit }: ReviewStepProps) => {
         {sections.map((section) => (
           <div key={section.title}>
             <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-200 flex items-center gap-2">
                 <section.icon className="text-primary" /> {section.title}
               </h3>
               <Button
