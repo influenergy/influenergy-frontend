@@ -99,10 +99,6 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const handleCloseModal = () => {
-    setOpen(false);
-  }
-
   const processedData: PostData = useMemo(() => {
     if (!isCampaignResponse(data)) return data as PostData;
 

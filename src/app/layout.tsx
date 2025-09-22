@@ -24,7 +24,7 @@ export default function RootLayout({
     >
       <body className={`${poppins.className} font-poppins`}>
         <Providers>
-          <GoogleProvider clientId="191954085957-hs1bg892il2ke90mpss5qbs30gho0vqp.apps.googleusercontent.com">
+          <GoogleProvider>
             {children}
           </GoogleProvider>
         </Providers>
