@@ -307,7 +307,7 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
                   type="button"
                   onClick={() => router.push("/dashboard")}
                 >
-                  Skip
+                  Cancel
                 </Button>
               )}
               <Button

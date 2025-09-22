@@ -24,6 +24,10 @@ export const authApi = {
     const response = await api.post("/login", credentials);
     return response.data;
   },
+  googleAuth: async (token: string, userType: string) => {
+    const response = await api.post("/google-auth", { token, userType });
+    return response.data;
+  },
   brandRegister: async (userData: BrandUserData) => {
     const response = await api.post("/brand/register", userData);
     return response.data;

@@ -77,7 +77,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       console.error("Registration error:", error);
       toast({
         variant: "destructive",
-        title: "Something went wrong",
+        title: "Registeration failed",
         description:
           (error as { response?: { data?: { message?: string } } })?.response
             ?.data?.message || "Failed to register. Please try again.",

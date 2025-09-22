@@ -59,7 +59,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
       console.error("Registration error:", error);
       toast({
         variant: "destructive",
-        title: "Something went wrong",
+        title: "Registration Failed",
         description:
           (error as { response?: { data?: { message?: string } } })?.response
             ?.data?.message || "Failed to register. Please try again.",

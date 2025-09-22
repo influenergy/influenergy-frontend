@@ -3,6 +3,8 @@ import { Providers } from "./providers";
 import { poppins, monaSans, catamaran, nirmala } from "./fonts";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import GoogleProvider from "./GoogleProvider";
+
 
 export const metadata: Metadata = {
   title: "Influenergy - AI-Powered Influencer Marketing Connecting Brands With Creators",
@@ -21,7 +23,11 @@ export default function RootLayout({
       className={`${poppins.variable} ${monaSans.variable} ${catamaran.variable} ${nirmala.variable}`}
     >
       <body className={`${poppins.className} font-poppins`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <GoogleProvider clientId="191954085957-hs1bg892il2ke90mpss5qbs30gho0vqp.apps.googleusercontent.com">
+            {children}
+          </GoogleProvider>
+        </Providers>
         <Toaster />
       </body>
     </html>

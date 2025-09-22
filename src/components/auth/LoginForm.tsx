@@ -28,6 +28,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Footer from "../home/Footer";
+import GoogleAuth from "./GoogleAuth";
+import { AxiosError } from "axios";
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export default function LoginForm() {
@@ -87,20 +89,23 @@ useEffect(() => {
             user: data?.data,
           })
         );
-
-        // Clear browser history and replace current URL with dashboard
-        // This prevents going back to login page
         router.replace("/dashboard");
       }
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       console.error("Login error:", error);
+
+      let message = "Failed to login. Please try again.";
+  
+      if (error instanceof AxiosError) {
+        const data = (error.response?.data as { message?: string } | undefined);
+        message = data?.message || message;
+      }
+  
       toast({
         variant: "destructive",
-        title: "Something went wrong",
-        description:
-          (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || "Failed to register. Please try again.",
+        title: "Login Failed",
+        description: message,
       });
     },
   });
@@ -346,6 +351,8 @@ useEffect(() => {
                     </form>
                   </DialogContent>
                 </Dialog>
+
+<GoogleAuth />
 
                 <p className="text-center text-sm sm:text-base text-muted-foreground font-light mt-10">
                   Don&apos;t have an account?{" "}

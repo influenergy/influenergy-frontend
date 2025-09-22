@@ -43,7 +43,7 @@ export const Step1 = ({ fields }: StepProps) => {
           )}
           {field.slug === "companyWebsite" && (
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Please include http:// or https:// in your URL
+              Include a valid URL, e.g., example.com or https://example.com
             </p>
           )}
         </div>

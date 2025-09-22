@@ -29,7 +29,15 @@ const editProfileSchema = yup.object({
     .min(2, "Name must be at least 2 characters")
     .required("Name is required"),
   companyName: yup.string().min(0).nullable().optional(),
-  companyWebsite: yup.string().url().min(0).nullable().optional(),
+  companyWebsite: yup
+  .string()
+  .nullable()
+  .optional()
+  .matches(
+    /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i,
+    "Please provide a valid company website URL, e.g., example.com or https://example.com"
+  )
+
 });
 
 type FormData = yup.InferType<typeof editProfileSchema>;

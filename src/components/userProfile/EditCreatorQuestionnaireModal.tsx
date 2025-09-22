@@ -90,7 +90,7 @@ const EditCreatorQuestionnaireModal = ({ isOpen, onClose }: EditCreatorQuestionn
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-2xl md:max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Edit Profile Questionnaire</DialogTitle>
                 </DialogHeader>

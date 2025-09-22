@@ -50,6 +50,7 @@ const PostQuestionnaire = ({
   mode = "create",
   defaultValues = {},
   startAtReview = false,
+  onClose = () => {},
 }: {
   mode?: "create" | "edit";
   defaultValues?: Partial<PostQuestionnaireData>;
@@ -448,9 +449,11 @@ const PostQuestionnaire = ({
                   variant="outline"
                   className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
                   type="button"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => mode ==="edit"? onClose():router.back()
+                    // console.log("Closed")}
+                  }
                 >
-                  Skip
+                  Cancel
                 </Button>
               )}
               <Button

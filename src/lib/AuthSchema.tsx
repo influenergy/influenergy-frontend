@@ -37,25 +37,51 @@ export const brandRegisterSchema = yup.object({
     .matches(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed")
     .min(2, "Full name must be at least 2 characters")
     .required("Required"),
-  companyEmail: yup
-    .string()
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-      "Invalid email format"
-    )
-    .required("Required"),
+  // companyEmail: yup
+  //   .string()
+  //   .matches(
+  //     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+  //     "Invalid email format"
+  //   )
+  //   .required("Required"),
   companyName: yup
     .string()
     .min(2, "Company name must be at least 2 characters")
     .nullable()
     .transform((value) => (value === "" ? null : value)),
+  companyEmail: yup
+    .string()
+    .required("Company email is required")
+    .test("is-valid-email", "Invalid email format", (value) => {
+      if (!value) return false;
+
+      // 1️⃣ check basic structure
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) {
+        throw new yup.ValidationError("Email must be in format name@domain.tld");
+      }
+
+      // 2️⃣ check TLD length
+      const tld = value.split(".").pop() ?? "";
+      if (tld.length < 2) {
+        throw new yup.ValidationError("TLD must be at least 2 characters");
+      }
+
+      // 3️⃣ (optional) block personal domains
+      // const blocked = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com"];
+      // if (blocked.includes(value.split("@")[1])) {
+      //   throw new yup.ValidationError("Please use your company email, not a personal email");
+      // }
+
+      return true;
+    }),
   companyWebsite: yup
     .string()
     .matches(
-      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/.*)?$/,
-      "Invalid website URL"
+      /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/i,
+      { message: "Please enter a valid website URL, e.g., example.com or https://www.example.com" }
     )
     .nullable()
+    .optional()
     .transform((value) => (value === "" ? null : value)),
   terms: yup
     .boolean()

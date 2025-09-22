@@ -82,7 +82,7 @@ const PostReviewStep = ({ onEdit }: ReviewStepProps) => {
           <div key={section.title}>
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200 flex items-center gap-2">
-                <section.icon className="text-primary" /> {section.title}
+                <section.icon className="text-primary " /> {section.title}
               </h3>
               <Button
                 variant="ghost"

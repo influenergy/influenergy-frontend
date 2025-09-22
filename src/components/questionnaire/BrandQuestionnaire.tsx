@@ -123,7 +123,7 @@ const BrandQuestionnaire = () => {
             className="w-full sm:w-1/3 px-4 sm:px-6 py-4 sm:py-5 hover:bg-gray-50 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
             disabled={isSubmitting}
           >
-            Skip
+            Cancel
           </Button>
 
           <Button

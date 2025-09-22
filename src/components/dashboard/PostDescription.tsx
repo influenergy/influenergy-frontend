@@ -99,6 +99,10 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
+  const handleCloseModal = () => {
+    setOpen(false);
+  }
+
   const processedData: PostData = useMemo(() => {
     if (!isCampaignResponse(data)) return data as PostData;
 
@@ -176,7 +180,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
 
       "content-type": data.contentType,
       "video-duration": data.videoDuration,
-      "catch-phrase": data.catchPhrase[0],
+      "catch-phrase": data.catchPhrase,
       "key-message": data.keyMessage,
       "tone-style": data.toneStyle,
       "creator-type": data.creatorType,
@@ -570,7 +574,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
 
       {/* Edit Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl w-full max-h-screen overflow-y-auto">
+        <DialogContent className="sm:max-w-2xl md:max-w-4xl w-full max-h-screen overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Campaign Brief</DialogTitle>
           </DialogHeader>

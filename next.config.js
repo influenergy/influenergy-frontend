@@ -6,7 +6,8 @@ const nextConfig = {
       "influenergy.s3.ap-south-1.amazonaws.com",
       "influenergybucket.s3.us-west-1.amazonaws.com",
       "d20cf3kfv1a9jn.cloudfront.net",
-      "via.placeholder.com"
+      "via.placeholder.com",
+      "lh3.googleusercontent.com"
     ],
   },
 };
