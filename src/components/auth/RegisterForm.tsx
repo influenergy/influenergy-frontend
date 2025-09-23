@@ -16,6 +16,7 @@ import { RegisterFormInput } from "./FormInput";
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/authServices";
 import Footer from "../home/Footer";
+import GoogleAuth from "./GoogleAuth";
 
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
@@ -242,6 +243,22 @@ export default function RegisterForm({ userType }: { userType: string }) {
                       )}
                     </Button>
 
+                 
+                  </motion.div>
+                </form>
+
+                <motion.div
+                    className="space-y-4 sm:space-y-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                  >
+                   
+
+                    <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
+
+<GoogleAuth />
+
                     <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
                       Already have an account?{" "}
                       <Link
@@ -252,7 +269,6 @@ export default function RegisterForm({ userType }: { userType: string }) {
                       </Link>
                     </p>
                   </motion.div>
-                </form>
               </div>
 
               {/* Image Section */}
