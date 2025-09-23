@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import { ArrowLeft, Eye, EyeOff, Loader2, Mail } from "lucide-react";
+import OTPLoginForm from "@/components/auth/OTPForm"
+
+import { ArrowLeft, Eye, EyeOff, Loader2, Mail, KeyRound } from "lucide-react";
 // import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { loginSchema } from "@/lib/AuthSchema";
@@ -23,7 +25,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,6 +41,7 @@ export default function LoginForm() {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [loginMethod, setLoginMethod] = useState("otp");
   const userType = useAppSelector((state) => state.auth.userType);
 
   if (!userType) {
@@ -60,22 +62,22 @@ export default function LoginForm() {
   });
 
   // 🔑 When userType changes in Redux, update the form values
-// useEffect(() => {
-//   if (userType) {
-//     reset((prev) => ({
-//       ...prev,
-//       userType: userType as "creator" | "brand",
-//     }));
-//   }
-// }, [userType,reset]);
+  // useEffect(() => {
+  //   if (userType) {
+  //     reset((prev) => ({
+  //       ...prev,
+  //       userType: userType as "creator" | "brand",
+  //     }));
+  //   }
+  // }, [userType,reset]);
 
-useEffect(() => {
-  if (userType) {
-    setValue("userType", userType as "creator" | "brand", {
-      shouldValidate: true,
-    });
-  }
-}, [userType, setValue]);
+  useEffect(() => {
+    if (userType) {
+      setValue("userType", userType as "creator" | "brand", {
+        shouldValidate: true,
+      });
+    }
+  }, [userType, setValue]);
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {
@@ -96,12 +98,12 @@ useEffect(() => {
       console.error("Login error:", error);
 
       let message = "Failed to login. Please try again.";
-  
+
       if (error instanceof AxiosError) {
         const data = (error.response?.data as { message?: string } | undefined);
         message = data?.message || message;
       }
-  
+
       toast({
         variant: "destructive",
         title: "Login Failed",
@@ -221,96 +223,99 @@ useEffect(() => {
                   Log In To Your {userType} Account
                 </motion.h3>
 
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-5 sm:space-y-5 "
-                >
-                  <motion.div
-                    className="space-y-4 sm:space-y-5"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
+                {
+                  loginMethod === "password" ? <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="space-y-5 sm:space-y-5 "
                   >
-                    <div>
-                      <Label
-                        htmlFor="email"
-                        className="text-sm sm:text-base mb-1 block"
-                      >
-                        Email
-                      </Label>
-                      <LoginFormInput
-                        type="email"
-                        placeholder="Enter Email Address"
-                        register={register}
-                        name="email"
-                        error={errors.email}
-                        icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
-                      />
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="password"
-                        className="text-sm sm:text-base mb-1 block"
-                      >
-                        Password
-                      </Label>
-                      <LoginFormInput
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter Password"
-                        register={register}
-                        name="password"
-                        autoComplete="current-password"
-                        error={errors.password}
-                        icon={
-                          showPassword ? (
-                            <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-                          ) : (
-                            <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-                          )
-                        }
-                        showPassword={showPassword}
-                        onTogglePassword={() => setShowPassword(!showPassword)}
-                      />
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    className="space-y-4 sm:space-y-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    <Button
-                      type="submit"
-                      className="w-full bg-primary hover:bg-primary transition-all py-4 sm:py-5 text-white text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest disabled:opacity-70"
-                      disabled={loginMutation.isPending}
+                    <motion.div
+                      className="space-y-4 sm:space-y-5"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
                     >
-                      {loginMutation.isPending ? (
-                        <div className="flex items-center justify-center gap-2">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Loading...</span>
-                        </div>
-                      ) : (
-                        "Continue"
-                      )}
-                    </Button>
-                  </motion.div>
-                </form>
+                      <div>
+                        <Label
+                          htmlFor="email"
+                          className="text-sm sm:text-base mb-1 block"
+                        >
+                          Email
+                        </Label>
+                        <LoginFormInput
+                          type="email"
+                          placeholder="Enter Email Address"
+                          register={register}
+                          name="email"
+                          error={errors.email}
+                          icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
+                        />
+                      </div>
 
-                {/* Moved Dialog outside of the form to prevent form submission */}
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <div className="w-full flex justify-end items-center">
-                    <DialogTrigger asChild>
+                      <div>
+                        <Label
+                          htmlFor="password"
+                          className="text-sm sm:text-base mb-1 block"
+                        >
+                          Password
+                        </Label>
+                        <LoginFormInput
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter Password"
+                          register={register}
+                          name="password"
+                          autoComplete="current-password"
+                          error={errors.password}
+                          icon={
+                            showPassword ? (
+                              <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                            ) : (
+                              <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                            )
+                          }
+                          showPassword={showPassword}
+                          onTogglePassword={() => setShowPassword(!showPassword)}
+                        />
+                      </div>
+                    </motion.div>
+                    {/* Forgot Password link below password input */}
+                    <div className="flex justify-end -mt-2">
                       <Button
                         variant="link"
                         type="button"
-                        className="inline-flex"
+                        className="px-0"
+                        onClick={() => setIsDialogOpen(true)}
                       >
                         Forgot Password?
                       </Button>
-                    </DialogTrigger>
-                  </div>
+                    </div>
+
+                    <motion.div
+                      className="space-y-4 sm:space-y-6"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                    >
+                      <Button
+                        type="submit"
+                        className="w-full bg-primary hover:bg-primary transition-all py-4 sm:py-5 text-white text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest disabled:opacity-70"
+                        disabled={loginMutation.isPending}
+                      >
+                        {loginMutation.isPending ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span>Loading...</span>
+                          </div>
+                        ) : (
+                          "Continue"
+                        )}
+                      </Button>
+                    </motion.div>
+                  </form> :
+                    <OTPLoginForm />
+                }
+
+                {/* Dialog for Forgot Password */}
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                       <DialogTitle>Forgot Password</DialogTitle>
@@ -352,9 +357,22 @@ useEffect(() => {
                   </DialogContent>
                 </Dialog>
 
-<GoogleAuth />
+                <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
 
-                <p className="text-center text-sm sm:text-base text-muted-foreground font-light mt-10">
+                <div className="flex justify-center gap-4">
+                  {loginMethod === "password" ?
+                    <button className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500" onClick={() => setLoginMethod("otp")}>
+                      <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500" /> <span>OTP</span>
+                    </button> :
+                    <button className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500" onClick={() => setLoginMethod("password")}>
+                      <KeyRound className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500" /> <span>Password</span>
+                    </button>
+                  }
+                  <GoogleAuth />
+                </div>
+
+
+                <p className="text-center text-sm sm:text-base text-muted-foreground font-light mt-5">
                   Don&apos;t have an account?{" "}
                   <Link
                     href={`/register?role=${userType}`}

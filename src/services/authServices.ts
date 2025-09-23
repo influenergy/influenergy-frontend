@@ -28,6 +28,14 @@ export const authApi = {
     const response = await api.post("/google-auth", { token, userType });
     return response.data;
   },
+  sendOtp: async (email: string, userType: string) => {
+    const response = await api.post("/send-login-otp", { email, userType });
+    return response.data;
+  },
+  verifyLoginOtp: async (email: string, otp: string, userType: string) => {
+    const response = await api.post("/verify-login-otp", { email, otp, userType });
+    return response.data;
+  },
   brandRegister: async (userData: BrandUserData) => {
     const response = await api.post("/brand/register", userData);
     return response.data;
