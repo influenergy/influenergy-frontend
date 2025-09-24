@@ -28,7 +28,7 @@ export default function DeleteModal() {
   }, [userType]);
 
   const handleDelete = async () => {
-    if(!userType){
+    if (!userType) {
       return;
     }
     try {
@@ -39,13 +39,29 @@ export default function DeleteModal() {
       });
 
       setShow(true);
-    } catch (error) {
-      console.log("error", error);
+    } catch (error: unknown) {
+      // console.error("❌ Account delete error:", error);
+
+      // Try to extract message from API response safely
+      let errorMessage = "We couldn’t process your account deletion. Please try again later.";
+
+      if (typeof error === "object" && error !== null) {
+        const maybeAxiosError = error as {
+          response?: { data?: { message?: string } };
+          message?: string;
+        };
+        errorMessage =
+          maybeAxiosError.response?.data?.message ||
+          maybeAxiosError.message ||
+          errorMessage;
+      }
+
       toast({
         variant: "destructive",
-        title: "Account Delete Request Failed",
-        description: "Please try after sometimes",
+        title: "Failed to submit request",
+        description: errorMessage,
       });
+
       setOpen(false);
     }
   };
@@ -112,7 +128,7 @@ export default function DeleteModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline"  className="text-gray-700 bg-gray-300">
+        <Button variant="outline" className="text-gray-700 bg-gray-300">
           <Trash2 />
           Delete Account
         </Button>

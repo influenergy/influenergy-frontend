@@ -7,14 +7,14 @@ const CreatorSocialMedia = ({ creator }:UserProfile) => {
   const { socialLinks } = creator.profile;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4">
+    <div className="bg-white rounded-lg shadow-sm p-4 dark:bg-gray-900 mt-4">
       <h2 className="text-lg md:text-xl font-bold mb-4 flex gap-2 items-center">
         <Share2 className="text-primary h-5 w-5" />
         Creator&apos;s Social Media
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border rounded-lg p-4">
         <div>
-          <p className="text-xs md:text-sm text-gray-600 font-light">
+          <p className="text-xs md:text-sm text-gray-600 font-light dark:text-gray-200">
             Primary Social Media Platform
           </p>
           <p className="text-base md:text-lg">
@@ -22,7 +22,7 @@ const CreatorSocialMedia = ({ creator }:UserProfile) => {
           </p>
         </div>
         <div>
-          <p className="text-xs md:text-sm text-gray-600 font-light">
+          <p className="text-xs md:text-sm text-gray-600 font-light dark:text-gray-200">
             Primary social media profile link
           </p>
           <Link
@@ -36,14 +36,14 @@ const CreatorSocialMedia = ({ creator }:UserProfile) => {
         </div>
 
         <div>
-          <p className="text-xs md:text-sm text-gray-600 font-light">
+          <p className="text-xs md:text-sm text-gray-600 font-light dark:text-gray-200">
             Secondary Social Media Platform
           </p>
           <p className="text-base md:text-lg">{socialLinks?.secondary?.platform || "Not Available"}</p>
         </div>
 
         <div>
-          <p className="text-xs md:text-sm text-gray-600 font-light">
+          <p className="text-xs md:text-sm text-gray-600 font-light dark:text-gray-200">
             Secondary social media profile link
           </p>
           <Link
@@ -56,7 +56,7 @@ const CreatorSocialMedia = ({ creator }:UserProfile) => {
           </Link>
         </div>
         <div>
-          <p className="text-xs md:text-sm text-gray-600 font-light">
+          <p className="text-xs md:text-sm text-gray-600 font-light dark:text-gray-200">
             Primary Social Media Platform Followers
           </p>
           <p className="text-base md:text-lg">
@@ -64,7 +64,7 @@ const CreatorSocialMedia = ({ creator }:UserProfile) => {
           </p>
         </div>
         <div>
-          <p className="text-xs md:text-sm text-gray-600 font-light">
+          <p className="text-xs md:text-sm text-gray-600 font-light dark:text-gray-200">
             Secondary Social Media Platform Followers
           </p>
           <p className="text-base md:text-lg">{socialLinks?.secondary?.followers || "Not Available"}</p>

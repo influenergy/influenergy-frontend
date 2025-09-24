@@ -71,6 +71,21 @@ export const userApi = {
     const response = await api.get(`/${userType}/account_details`);
     return response.data;
   },
+  submitSupportRequest: async (data: {
+    message: string;
+    userType: string;
+  }) => {
+    const response = await api.post(`/support`, data);
+    return response.data;
+  },
+  submitFeedback: async (data: {
+    suggestion: string;
+    rating: number;
+    userType: string;
+  }) => {
+    const response = await api.post(`/feedback`, data);
+    return response.data;
+  },
   getImprovementText: async () => {
     const response = await api.get(`/ai/create-improvement-text`);
     return response.data;
@@ -94,7 +109,7 @@ export const userApi = {
     const respose = await api.get("/random-creators");
     return respose.data
   },
-  getExploredCreators: async (page: number, limit: number, filters: Record<string,string> = {}) => {
+  getExploredCreators: async (page: number, limit: number, filters: Record<string, string> = {}) => {
     const response = await api.get("/brand/explore-creators", {
       params: {
         page,
@@ -102,7 +117,7 @@ export const userApi = {
         ...filters, // ✅ spread filters into query params
       },
     });
-  
+
     // API returns { status, message, data }
     return response.data.data;
   },
@@ -110,6 +125,6 @@ export const userApi = {
     const response = await api.get(`/stats`);
     return response.data; // return only the data payload
   }
-  
+
 
 };

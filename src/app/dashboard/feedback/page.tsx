@@ -3,31 +3,43 @@ import { Card } from "@/components/ui/card";
 import { useAppSelector } from "@/store";
 import { Star } from "lucide-react";
 import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { userApi } from "@/services/userServices";
+import { useToast } from "@/hooks/use-toast";
+import type { AxiosError } from "axios";
 
 export default function FeedbackPage() {
-  const user = useAppSelector((state) => state.auth.user);
+  const userType = useAppSelector((state) => state.auth.userType) as string | null;
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [suggestion, setSuggestion] = useState("");
+  const { toast } = useToast();
+
+  const { mutate: submitFeedback, isPending } = useMutation({
+    mutationFn: (payload: { suggestion: string; rating: number; userType: string }) =>
+      userApi.submitFeedback(payload),
+    onSuccess: () => {
+      toast({ title: "Thank you!", description: "Your feedback has been submitted." });
+      setSuggestion("");
+      setRating(0);
+    },
+    onError: (error: AxiosError<{ message?: string }>) => {
+      const description = error.response?.data?.message || "Please try again later.";
+      toast({ variant: "destructive", title: "Submission failed", description });
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!user?.fullName || !user?.email) {
-      alert("Please log in to submit feedback.");
+    if (!userType) {
+      toast({ variant: "destructive", title: "User type missing", description: "Please log in again." });
       return;
     }
-
-    const name = user.fullName;
-    const email = user.email;
-
-    const subject = encodeURIComponent("User Feedback");
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nRating: ${rating}/5\n\nFeedback:\n${suggestion}`
-    );
-
-    // Trigger default mail client
-    window.location.href = `mailto:support@influenergy.co?subject=${subject}&body=${body}`;
+    if (!suggestion.trim() || rating <= 0) {
+      toast({ variant: "destructive", title: "All fields required", description: "Provide rating and feedback." });
+      return;
+    }
+    submitFeedback({ suggestion: suggestion.trim(), rating, userType });
   };
 
   return (
@@ -44,11 +56,10 @@ export default function FeedbackPage() {
             <Star
               key={star}
               size={28}
-              className={`cursor-pointer transition-colors ${
-                (hover || rating) >= star
-                  ? "fill-primary stroke-primary"
-                  : "stroke-primary/50 fill-transparent"
-              }`}
+              className={`cursor-pointer transition-colors ${(hover || rating) >= star
+                ? "fill-primary stroke-primary"
+                : "stroke-primary/50 fill-transparent"
+                }`}
               onClick={() => setRating(star)}
               onMouseEnter={() => setHover(star)}
               onMouseLeave={() => setHover(0)}
@@ -76,9 +87,10 @@ export default function FeedbackPage() {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 rounded-lg transition"
+              disabled={isPending}
+              className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 rounded-lg transition disabled:opacity-70"
             >
-              Submit Feedback
+              {isPending ? "Submitting..." : "Submit Feedback"}
             </button>
           </div>
         </form>

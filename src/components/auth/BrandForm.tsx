@@ -129,7 +129,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  Create To Your {userType} Account
+                  Create Your {userType} Account
                 </motion.h3>
 
                 <form

@@ -424,9 +424,67 @@ const DateInput = ({ field }: { field: Field }) => {
             shouldValidate: true,
           });
         }}
+        
+        popperClassName="z-50"
         dateFormat="MM/dd/yyyy"
         placeholderText="mm/dd/yyyy"
         className="w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700"
+
+        renderCustomHeader={({
+          date,
+          changeYear,
+          changeMonth,
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        }) => (
+          <div className="flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-200 rounded-t-lg">
+            <button
+              onClick={decreaseMonth}
+              disabled={prevMonthButtonDisabled}
+              className="px-2 py-1 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+            >
+              {"<"}
+            </button>
+            <div className="flex items-center gap-4">
+              <select
+                value={date.getFullYear()}
+                onChange={({ target: { value } }) => changeYear(Number(value))}
+                className="rounded border border-gray-400 p-1 text-sm bg-white dark:bg-gray-200 "
+              >
+                {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map(
+                  (year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  )
+                )}
+              </select>
+              <select
+                value={date.getMonth()}
+                onChange={({ target: { value } }) => changeMonth(Number(value))}
+                className="rounded border p-1 text-sm border-gray-400 bg-white dark:bg-gray-200"
+              >
+                {[
+                  "Jan","Feb","Mar","Apr","May","Jun",
+                  "Jul","Aug","Sep","Oct","Nov","Dec"
+                ].map((month, index) => (
+                  <option key={month} value={index}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              onClick={increaseMonth}
+              disabled={nextMonthButtonDisabled}
+              className="px-2 py-1 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+            >
+              {">"}
+            </button>
+          </div>
+        )}
       />
     </div>
   );

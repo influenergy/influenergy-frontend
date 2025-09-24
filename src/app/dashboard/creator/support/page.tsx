@@ -2,6 +2,11 @@
 import React, { useState } from 'react';
 import { UserCog, ChevronDown, ChevronUp } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { useMutation } from '@tanstack/react-query';
+import { userApi } from '@/services/userServices';
+import { useToast } from '@/hooks/use-toast';
+import { useAppSelector } from '@/store';
+import type { AxiosError } from 'axios';
 
 function Page() {
   const [faqs, setFaqs] = useState([
@@ -30,6 +35,38 @@ function Page() {
     );
   };
 
+  // const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const userType = useAppSelector((state) => state.auth.userType) as string | null;
+  const { toast } = useToast();
+
+  const { mutate: submitSupport, isPending } = useMutation({
+    mutationFn: (payload: { message: string; userType: string }) =>
+      userApi.submitSupportRequest(payload),
+    onSuccess: () => {
+      toast({ title: "Request submitted", description: "We'll get back within 48 hours." });
+      // setSubject("");
+      setMessage("");
+    },
+    onError: (error: AxiosError<{ message?: string }>) => {
+      const description = error.response?.data?.message || "Please try again later.";
+      toast({ variant: "destructive", title: "Submission failed", description });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userType) {
+      toast({ variant: "destructive", title: "User type missing", description: "Please log in again." });
+      return;
+    }
+    if (!message.trim()) {
+      toast({ variant: "destructive", title: "All fields required", description: "Enter message." });
+      return;
+    }
+    submitSupport({ message: message.trim(), userType });
+  };
+
   return (
     <div className="p-6  mx-auto">
       {/* Header */}
@@ -50,19 +87,30 @@ function Page() {
               Our team will get back to you within 48 hours.
             </p>
             <hr className="mt-2 mb-6 opacity-60" />
-            <form className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              {/* <input
+                type="text"
+                placeholder="Subject"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                required
+                className="border rounded-lg p-2 focus:ring focus:outline-none dark:bg-gray-300 dark:text-gray-700"
+              /> */}
 
               <textarea
                 rows={6}
                 placeholder="Enter your message here..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 required
                 className="border rounded-lg p-2 focus:ring focus:outline-none resize-none dark:bg-gray-300 dark:text-gray-700"
               />
               <button
                 type="submit"
-                className="bg-primary text-white py-2 rounded-lg  transition"
+                disabled={isPending}
+                className="bg-primary text-white py-2 rounded-lg  transition disabled:opacity-70"
               >
-                Submit
+                {isPending ? "Submitting..." : "Submit"}
               </button>
             </form>
           </Card>

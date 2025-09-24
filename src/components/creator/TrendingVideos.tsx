@@ -40,7 +40,7 @@ const TrendingVideos: React.FC<{ creatorId: string }> = ({ creatorId }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4">
+    <div className="bg-white rounded-lg shadow-sm p-4 dark:bg-gray-900 my-4">
       <h2 className="text-lg md:text-xl font-bold mb-4 flex items-center gap-2">
         <Play className="text-primary h-5 w-5" />
         Creator&apos;s Trending Videos
@@ -71,7 +71,7 @@ const TrendingVideos: React.FC<{ creatorId: string }> = ({ creatorId }) => {
             </Link>
           ))
         ) : (
-          <div className="text-center py-10">
+          <div className="text-center py-10 dark:bg-gray-600 rounded-xl">
             <p className="text-red-500">No videos found</p>
           </div>
         )}
