@@ -17,6 +17,7 @@ import RegistrationSuccess from "./RegistrationSucess";
 import { useState } from "react";
 import Footer from "../home/Footer";
 import GoogleAuth from "./GoogleAuth";
+import { isAxiosError } from "axios";
 
 type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
 
@@ -71,6 +72,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       return authApi.brandRegister(obj);
     },
     onSuccess: (data) => {
+      console.log(data, 'data')
       toast({
         title: "Registration successful 🎉",
         // description: "We will verify your details and get back to you soon. 😀",
@@ -80,14 +82,15 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       setShowSuccess(true);
       //   router.push("/verify-email");
     },
-    onError: (error: Error) => {
+    onError: (error: unknown) => {
       console.error("Registration error:", error);
+      const description = isAxiosError(error)
+        ? error.response?.data?.message
+        : (error as Error)?.message;
       toast({
         variant: "destructive",
         title: "Registeration failed",
-        description:
-          (error as { response?: { data?: { message?: string } } })?.response
-            ?.data?.message || "Failed to register. Please try again.",
+        description: description || "Failed to register. Please try again.",
       });
     },
   });

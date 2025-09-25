@@ -21,7 +21,6 @@ import Link from "next/link";
 import EditCreatorQuestionnaireModal from "@/components/userProfile/EditCreatorQuestionnaireModal";
 // import Link from "next/link";
 import { authApi } from "@/services/authServices";
-import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 
 export default function Page() {
@@ -38,7 +37,6 @@ export default function Page() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const searchParams = useSearchParams();
 
   // Password validation to match backend Joi rules
   const passwordRules = {
@@ -70,22 +68,24 @@ export default function Page() {
       dispatch(
         setCredentials({
           user: ({
-            ...(user as any),
+            ...user,
             isPasswordSet: true,
             isProfileCompleted: user?.isProfileCompleted ?? false,
             isEmailVerified: user?.isEmailVerified ?? false,
             isAccountVerified: user?.isAccountVerified ?? false,
-          } as any),
+          }),
         })
       );
       setNewPassword("");
       setConfirmPassword("");
       toast({ title: "Password set successfully" });
     },
-    onError: (err: any) => {
+    onError: (error) => {
       toast({
         title: "Failed to set password",
-        description: err?.response?.data?.message || err?.message || "",
+        description:
+          (error as { response?: { data?: { message?: string } } })?.response
+            ?.data?.message || "Failed to set password. Please try again.",
         variant: "destructive",
       });
     },

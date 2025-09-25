@@ -7,7 +7,7 @@ import { navLinks } from "@/constants/NavLinks";
 import Image from "next/image";
 import { selectUser, useAppSelector, useAppDispatch } from "@/store";
 import { useRouter } from "next/navigation";
-import { LucideIcon, UserRoundCog, LogOut, FileText, Dot } from "lucide-react";
+import { LucideIcon, UserRoundCog, LogOut, FileText } from "lucide-react";
 import { logout } from "@/store/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
