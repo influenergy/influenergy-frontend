@@ -243,32 +243,32 @@ export default function RegisterForm({ userType }: { userType: string }) {
                       )}
                     </Button>
 
-                 
+
                   </motion.div>
                 </form>
 
                 <motion.div
-                    className="space-y-4 sm:space-y-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                   
+                  className="space-y-4 sm:space-y-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
 
-                    <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
 
-<GoogleAuth />
+                  <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
 
-                    <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
-                      Already have an account?{" "}
-                      <Link
-                        href={`/login?role=${userType}`}
-                        className="font-medium text-primary hover:text-[#6564d8] transition-colors"
-                      >
-                        Login
-                      </Link>
-                    </p>
-                  </motion.div>
+                  <GoogleAuth />
+
+                  <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
+                    Already have an account?{" "}
+                    <Link
+                      href={`/login?role=${userType}`}
+                      className="font-medium text-primary hover:text-[#6564d8] transition-colors"
+                    >
+                      Login
+                    </Link>
+                  </p>
+                </motion.div>
               </div>
 
               {/* Image Section */}

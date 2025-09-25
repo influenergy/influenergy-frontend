@@ -17,6 +17,7 @@ interface BrandUserData {
   companyName?: string;
   companyEmail: string;
   companyWebsite?: string;
+  password: string;
 }
 
 export const authApi = {
@@ -36,6 +37,10 @@ export const authApi = {
     const response = await api.post("/verify-login-otp", { email, otp, userType });
     return response.data;
   },
+  setPasswordFromProfile: async (password: string, userType: string) => {
+    const response = await api.post("/set-password-profile", { password, userType });
+    return response.data;
+  },
   brandRegister: async (userData: BrandUserData) => {
     const response = await api.post("/brand/register", userData);
     return response.data;
@@ -45,7 +50,7 @@ export const authApi = {
     return response.data;
   },
   logout: async (userType: string) => {
-    const response = await api.post("/logout",{ userType });
+    const response = await api.post("/logout", { userType });
     return response.data;
   },
   resendVerificationEmail: async (email: string) => {

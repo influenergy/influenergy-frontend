@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Globe, Loader2, Mail, UserRound } from "lucide-react";
+import { ArrowLeft, Globe, Loader2, Mail, UserRound, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
@@ -25,11 +25,14 @@ interface BrandRegister {
   companyEmail: string;
   companyName?: string;
   companyWebsite?: string;
+  password: string;
 }
 
 export default function BrandRegisterForm({ userType }: { userType: string }) {
   const { toast } = useToast();
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -44,6 +47,8 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
     defaultValues: {
       companyName: "",
       companyWebsite: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -55,6 +60,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       const obj: BrandRegister = {
         fullName: data.fullName,
         companyEmail: data.companyEmail,
+        password: data.password,
       };
       if (data.companyName) {
         obj["companyName"] = data.companyName;
@@ -64,7 +70,7 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       }
       return authApi.brandRegister(obj);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Registration successful 🎉",
         // description: "We will verify your details and get back to you soon. 😀",
@@ -178,6 +184,34 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                       icon={<Globe className="h-5 w-5 sm:h-6 sm:w-6" />}
                     />
 
+                    <RegisterFormInput
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      register={register}
+                      name="password"
+                      error={errors.password}
+                      icon={showPassword ? (
+                        <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                      ) : (
+                        <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                      )}
+                      onTogglePassword={() => setShowPassword((p) => !p)}
+                    />
+
+                    <RegisterFormInput
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm Password"
+                      register={register}
+                      name="confirmPassword"
+                      error={errors.confirmPassword}
+                      icon={showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                      ) : (
+                        <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                      )}
+                      onTogglePassword={() => setShowConfirmPassword((p) => !p)}
+                    />
+
                     <motion.div
                       className="flex items-start sm:items-center gap-2 text-gray-500 mt-2"
                       initial={{ opacity: 0 }}
@@ -249,27 +283,27 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                 </form>
 
                 <motion.div
-                    className="space-y-4 sm:space-y-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-            
+                  className="space-y-4 sm:space-y-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
 
-                    <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
 
-                      <GoogleAuth />
+                  <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
 
-                    <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
-                      Already have an account?{" "}
-                      <Link
-                        href={`/login?role=${userType}`}
-                        className="font-medium text-primary hover:text-[#6564d8] transition-colors"
-                      >
-                        Login
-                      </Link>
-                    </p>
-                  </motion.div>
+                  <GoogleAuth />
+
+                  <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
+                    Already have an account?{" "}
+                    <Link
+                      href={`/login?role=${userType}`}
+                      className="font-medium text-primary hover:text-[#6564d8] transition-colors"
+                    >
+                      Login
+                    </Link>
+                  </p>
+                </motion.div>
               </div>
             </motion.div>
 

@@ -83,6 +83,25 @@ export const brandRegisterSchema = yup.object({
     .nullable()
     .optional()
     .transform((value) => (value === "" ? null : value)),
+  // Optional password fields (backend sends separate set-password email for brands)
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+      "Password must contain at least one uppercase letter, one number, and one special character"
+    )
+    .nullable()
+    .transform((value) => (value === "" ? null : value))
+    .required(),
+  confirmPassword: yup
+    .string()
+    .nullable()
+    .transform((value) => (value === "" ? null : value))
+    .required()
+    .when("password", (password, schema) =>
+      password ? schema.oneOf([yup.ref("password")], "Passwords must match") : schema
+    ),
   terms: yup
     .boolean()
     .oneOf([true], "You must accept the terms")

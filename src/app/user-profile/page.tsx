@@ -7,7 +7,7 @@ import ProfileActions from "@/components/userProfile/ProfileActions";
 
 import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
-import { ChevronsLeft, PenLine } from "lucide-react";
+import { ChevronsLeft, PenLine, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { selectUser, useAppSelector } from "@/store";
@@ -20,6 +20,9 @@ import ProfileInfo from "@/components/profile/ProfileInfo";
 import Link from "next/link";
 import EditCreatorQuestionnaireModal from "@/components/userProfile/EditCreatorQuestionnaireModal";
 // import Link from "next/link";
+import { authApi } from "@/services/authServices";
+import { useSearchParams } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 export default function Page() {
   const user = useAppSelector(selectUser);
@@ -31,6 +34,63 @@ export default function Page() {
   const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const searchParams = useSearchParams();
+
+  // Password validation to match backend Joi rules
+  const passwordRules = {
+    minLen: 6,
+    maxLen: 18,
+  } as const;
+
+  const passwordCriteria = (pwd: string) => ({
+    lengthOk: pwd.length >= passwordRules.minLen && pwd.length <= passwordRules.maxLen,
+    hasLower: /[a-z]/.test(pwd),
+    hasUpper: /[A-Z]/.test(pwd),
+    hasNumber: /\d/.test(pwd),
+    hasSpecial: /[!@#$%^&*]/.test(pwd),
+  });
+
+  const isPasswordValid = (pwd: string) => {
+    const c = passwordCriteria(pwd);
+    return c.lengthOk && c.hasLower && c.hasUpper && c.hasNumber && c.hasSpecial;
+  };
+
+  const setPasswordMutation = useMutation({
+    mutationFn: async () => {
+      if (!userType) {
+        throw new Error("User type missing");
+      }
+      return await authApi.setPasswordFromProfile(newPassword, userType!);
+    },
+    onSuccess: () => {
+      dispatch(
+        setCredentials({
+          user: ({
+            ...(user as any),
+            isPasswordSet: true,
+            isProfileCompleted: user?.isProfileCompleted ?? false,
+            isEmailVerified: user?.isEmailVerified ?? false,
+            isAccountVerified: user?.isAccountVerified ?? false,
+          } as any),
+        })
+      );
+      setNewPassword("");
+      setConfirmPassword("");
+      toast({ title: "Password set successfully" });
+    },
+    onError: (err: any) => {
+      toast({
+        title: "Failed to set password",
+        description: err?.response?.data?.message || err?.message || "",
+        variant: "destructive",
+      });
+    },
+  });
+
   const fetchAccountDetails = async () => {
     if (!userType) return;
 
@@ -112,6 +172,7 @@ export default function Page() {
       setIsUploading(false);
     }
   };
+
 
   return (
     <div className="min-h-[calc(100vh-80px)] flex flex-col items-center px-4 sm:px-8 py-5 overflow-y-auto dark:bg-background">
@@ -235,6 +296,140 @@ export default function Page() {
             )}
           </div>
         </div>
+
+        {!user?.isPasswordSet && (
+          <div className="p-4 border border-yellow-300 bg-yellow-50 rounded-md text-sm text-yellow-800">
+            <p className="font-semibold mb-3">🔒 Password Not Set</p>
+
+            <div className="grid gap-3 max-w-md">
+              <div className="flex flex-col gap-1">
+                <Label className="text-xs">New Password</Label>
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    className={`w-full border rounded-md px-3 py-2 pr-10 text-black ${newPassword && !isPasswordValid(newPassword) ? "border-red-500" : "border-gray-300"
+                      }`}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                  />
+                  <button
+                    type="button"
+                    aria-label={showNewPassword ? "Hide password" : "Show password"}
+                    className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+                    onClick={() => setShowNewPassword((p) => !p)}
+                  >
+                    {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {newPassword && (
+                  <div className="text-[12px] mt-1 text-gray-700">
+                    <p className="mb-1">Password must include:</p>
+                    {(() => {
+                      const c = passwordCriteria(newPassword);
+                      const Item = ({ ok, text }: { ok: boolean; text: string }) => (
+                        <div className={`flex items-center gap-2 ${ok ? "text-green-700" : "text-red-600"}`}>
+                          <span className={`inline-block w-2 h-2 rounded-full ${ok ? "bg-green-600" : "bg-red-600"}`} />
+                          <span>{text}</span>
+                        </div>
+                      );
+                      return (
+                        <div className="grid gap-1">
+                          <Item ok={c.lengthOk} text="6–18 characters" />
+                          <Item ok={c.hasLower} text="one lowercase letter" />
+                          <Item ok={c.hasUpper} text="one uppercase letter" />
+                          <Item ok={c.hasNumber} text="one number" />
+                          <Item ok={c.hasSpecial} text="one special (!@#$%^&*)" />
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label className="text-xs">Confirm Password</Label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    className={`w-full border rounded-md px-3 py-2 pr-10 text-black ${confirmPassword && newPassword !== confirmPassword ? "border-red-500" : "border-gray-300"
+                      }`}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter new password"
+                  />
+                  <button
+                    type="button"
+                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+                    onClick={() => setShowConfirmPassword((p) => !p)}
+                  >
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {confirmPassword && newPassword && newPassword !== confirmPassword && (
+                  <span className="text-[12px] text-red-600">Passwords do not match</span>
+                )}
+              </div>
+              <div>
+                <button
+                  className="px-4 py-2 bg-purple-600 text-white rounded-md disabled:opacity-60"
+                  disabled={
+                    setPasswordMutation.isPending ||
+                    !newPassword ||
+                    !confirmPassword ||
+                    newPassword !== confirmPassword || !isPasswordValid(newPassword) ||
+                    !userType
+                  }
+                  onClick={async () => {
+                    if (newPassword.length < 6) {
+                      toast({
+                        title: "Password too short",
+                        description: "Password must be at least 6 characters",
+                        variant: "destructive",
+                      });
+                      return;
+                    }
+                    if (newPassword.length > 18) {
+                      toast({
+                        title: "Password too long",
+                        description: "Password must be 18 characters or fewer",
+                        variant: "destructive",
+                      });
+                      return;
+                    }
+                    if (!/[a-z]/.test(newPassword)) {
+                      toast({ title: "Missing lowercase letter", variant: "destructive" });
+                      return;
+                    }
+                    if (!/[A-Z]/.test(newPassword)) {
+                      toast({ title: "Missing uppercase letter", variant: "destructive" });
+                      return;
+                    }
+                    if (!/\d/.test(newPassword)) {
+                      toast({ title: "Missing number", variant: "destructive" });
+                      return;
+                    }
+                    if (!/[!@#$%^&*]/.test(newPassword)) {
+                      toast({ title: "Missing special character (!@#$%^&*)", variant: "destructive" });
+                      return;
+                    }
+                    if (newPassword !== confirmPassword) {
+                      toast({
+                        title: "Passwords do not match",
+                        variant: "destructive",
+                      });
+                      return;
+                    }
+                    await setPasswordMutation.mutateAsync();
+                  }}
+                >
+                  {setPasswordMutation.isPending ? "Setting..." : "Set Password"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
 
         {/* Complete Profile Section */}
         {user && userType !== null && (

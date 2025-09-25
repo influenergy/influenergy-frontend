@@ -93,9 +93,9 @@ const GoogleAuth = () => {
         <span>Google</span>
       </button>
 
-      {googleAuthMutation.isPending && (
+      {/* {googleAuthMutation.isPending && (
         <p className="text-sm text-gray-500 mt-2">Logging you in...</p>
-      )}
+      )} */}
     </div>
   );
 };

@@ -11,6 +11,7 @@ export interface User {
   isAccountVerified: boolean;
   companyName?: string;
   companyWebsite?: string;
+  isPasswordSet?: boolean;
 }
 
 interface AuthState {

@@ -49,7 +49,7 @@ export const RegisterFormInput = <T extends object>({
       {onTogglePassword ? (
         <div
           onClick={onTogglePassword}
-          className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors duration-300 p-2"
+          className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors duration-300"
         >
           {icon}
         </div>

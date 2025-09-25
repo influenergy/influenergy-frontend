@@ -7,9 +7,10 @@ import { navLinks } from "@/constants/NavLinks";
 import Image from "next/image";
 import { selectUser, useAppSelector, useAppDispatch } from "@/store";
 import { useRouter } from "next/navigation";
-import { LucideIcon, UserRoundCog, LogOut, FileText } from "lucide-react";
+import { LucideIcon, UserRoundCog, LogOut, FileText, Dot } from "lucide-react";
 import { logout } from "@/store/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { authApi } from "@/services/authServices";
 
 
@@ -61,7 +62,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
   const navItems = (navLinks as NavLinks)[user][type];
 
   const handleLogout = async () => {
-    try{
+    try {
 
       document.documentElement.classList.remove("dark");
       await authApi.logout(user);
@@ -76,7 +77,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
       }
     }
   };
-
+  console.log(userProfile, 'userProfile')
 
   return (
     <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className}`}>
@@ -111,7 +112,15 @@ export default function Sidebar({ type, className }: { type: string, className: 
             <p className="text-white text-xs sm:text-sm md:text-base truncate max-w-full">
               {userProfile?.fullName}
             </p>
-            <button className="bg-transparent text-white border-gray-300 border rounded-lg text-nowrap text-[10px] py-1 px-1 leading-snug font-extralight hover:bg-transparent flex" onClick={() => router.push("/user-profile")}>View Profile</button>
+            <button className="bg-transparent text-white border-gray-300 border rounded-lg text-nowrap text-[10px] py-1 px-1 leading-snug font-extralight hover:bg-transparent flex items-center gap-1" onClick={() => router.push("/user-profile")}>
+              View Profile
+              {!userProfile?.isPasswordSet && (
+                <Badge variant="destructive" className="text-[12px] px-1 py-0 h-4">
+                  !
+                </Badge>
+              )}
+            </button>
+
           </div>
         </div>
 
