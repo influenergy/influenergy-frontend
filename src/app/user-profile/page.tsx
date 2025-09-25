@@ -297,7 +297,7 @@ export default function Page() {
           </div>
         </div>
 
-        {!user?.isPasswordSet && (
+        {user && user.isPasswordSet === false && (
           <div className="p-4 border border-yellow-300 bg-yellow-50 rounded-md text-sm text-yellow-800">
             <p className="font-semibold mb-3">🔒 Password Not Set</p>
 

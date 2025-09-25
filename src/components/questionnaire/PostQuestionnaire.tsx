@@ -50,7 +50,7 @@ const PostQuestionnaire = ({
   mode = "create",
   defaultValues = {},
   startAtReview = false,
-  onClose = () => {},
+  onClose = () => { },
 }: {
   mode?: "create" | "edit";
   defaultValues?: Partial<PostQuestionnaireData>;
@@ -279,7 +279,12 @@ const PostQuestionnaire = ({
                 Previous
               </Button>
 
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <Dialog open={isDialogOpen} onOpenChange={(open) => {
+                setIsDialogOpen(open);
+                if (!open && dialogStep === "success") {
+                  router.push("/dashboard/brand/posts");
+                }
+              }}>
                 <DialogTrigger asChild>
                   <Button
                     className="ml-auto p-6 bg-primary text-white rounded-lg"
@@ -449,7 +454,7 @@ const PostQuestionnaire = ({
                   variant="outline"
                   className="p-6  rounded-lg flex items-center justify-center gap-2 text-primary border-primary text-lg"
                   type="button"
-                  onClick={() => mode ==="edit"? onClose():router.back()
+                  onClick={() => mode === "edit" ? onClose() : router.back()
                     // console.log("Closed")}
                   }
                 >

@@ -114,7 +114,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
             </p>
             <button className="bg-transparent text-white border-gray-300 border rounded-lg text-nowrap text-[10px] py-1 px-1 leading-snug font-extralight hover:bg-transparent flex items-center gap-1" onClick={() => router.push("/user-profile")}>
               View Profile
-              {!userProfile?.isPasswordSet && (
+              {userProfile?.isPasswordSet === false && (
                 <Badge variant="destructive" className="text-[12px] px-1 py-0 h-4">
                   !
                 </Badge>

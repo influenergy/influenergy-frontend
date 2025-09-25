@@ -28,6 +28,9 @@ const OTPLoginForm = () => {
     const userType = useAppSelector((state) => state.auth.userType);
     const dispatch = useDispatch();
 
+    // simple realtime email validation
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
     const sendOtpMutation = useMutation({
         mutationFn: async ({ email, userType }: { email: string; userType: string }) => {
             if (!userType) throw new Error("Please select a user type before sending OTP.");
@@ -78,7 +81,7 @@ const OTPLoginForm = () => {
 
     // first-time send
     const handleSendOtp = () => {
-        if (!email) return;
+        if (!email || !isEmailValid) return;
         setMessage(null);
         setError(null);
         sendOtpMutation.mutate({ email, userType: userType || "" });
@@ -140,19 +143,23 @@ const OTPLoginForm = () => {
                                 id="email"
                                 type="email"
                                 placeholder="Enter Email Address"
-                                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary"
+                                className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-1 ${email && !isEmailValid ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"}`}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                aria-invalid={!!email && !isEmailValid}
                                 disabled={sendOtpMutation.isPending || isOtpSent}
                             />
                             <Mail className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            {email && !isEmailValid && (
+                                <p className="mt-1 text-xs text-red-600">Enter a valid email address</p>
+                            )}
                         </div>
                     </div>
                     <button
                         type="button"
                         className="mt-6 h-10 whitespace-nowrap px-4 rounded-lg border bg-primary text-white disabled:opacity-70"
                         onClick={handleSendOtp}
-                        disabled={sendOtpMutation.isPending || !email || isOtpSent}
+                        disabled={sendOtpMutation.isPending || !email || !isEmailValid || isOtpSent}
                     >
                         {sendOtpMutation.isPending ? "Sending..." : isOtpSent ? "Sent" : "Send OTP"}
                     </button>

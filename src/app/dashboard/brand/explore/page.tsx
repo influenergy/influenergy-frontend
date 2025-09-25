@@ -367,7 +367,7 @@ export default function ExploreCreators() {
                                     height={200}
                                     src={creator.profileIcon || "/default-avatar.png"}
                                     alt={creator.fullName}
-                                    className="w-full h-40 object-cover rounded-xl mb-2"
+                                    className="w-full h-40 object-contain rounded-xl mb-2"
                                 />
 
                                 {/* CONTENT */}
