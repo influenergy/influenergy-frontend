@@ -13,11 +13,13 @@ import { brandRegisterSchema } from "@/lib/AuthSchema";
 import { RegisterFormInput } from "./FormInput";
 import { useToast } from "@/hooks/use-toast";
 import { authApi } from "@/services/authServices";
-import RegistrationSuccess from "./RegistrationSucess";
 import { useState } from "react";
 import Footer from "../home/Footer";
 import GoogleAuth from "./GoogleAuth";
 import { isAxiosError } from "axios";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/store/features/authSlice";
+import { useRouter } from "next/navigation";
 
 type BrandRegisterFormData = yup.InferType<typeof brandRegisterSchema>;
 
@@ -31,10 +33,12 @@ interface BrandRegister {
 
 export default function BrandRegisterForm({ userType }: { userType: string }) {
   const { toast } = useToast();
-  const [showSuccess, setShowSuccess] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const dispatch = useDispatch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -73,14 +77,9 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
     },
     onSuccess: (data) => {
       console.log(data, 'data')
-      toast({
-        title: "Registration successful 🎉",
-        // description: "We will verify your details and get back to you soon. 😀",
-        description: "We have sent you an email to set your password. 📧",
-      });
+      dispatch(setCredentials({ user: data?.data }))
+      router.replace("/dashboard");
       reset();
-      setShowSuccess(true);
-      //   router.push("/verify-email");
     },
     onError: (error: unknown) => {
       console.error("Registration error:", error);
@@ -105,185 +104,166 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
 
   return (
     <>
-      {showSuccess ? (
-        <RegistrationSuccess />
-      ) : (
-        <div className="relative w-full min-h-screen flex flex-col overflow-hidden ">
 
-          <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden relative">
+      <div className="relative w-full min-h-screen flex flex-col overflow-hidden ">
+        {registerMutation.isPending && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
+            <div className="flex items-center gap-3 text-primary">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span className="font-medium">Creating account...</span>
+            </div>
+          </div>
+        )}
 
-            <motion.div
-              className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+        <div className="w-full min-h-screen flex flex-col md:flex-row overflow-hidden relative">
+
+          <motion.div
+            className="flex-1 flex justify-center items-center px-4 py-6 sm:py-8 md:p-12 lg:p-16 relative min-h-[70vh] md:min-h-screen"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
 
 
-              <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
-                <Link href="/get-started">
-                  <motion.button
-                    className="text-sm flex items-center space-x-2 mb-4 text-muted-foreground"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    <span>Back</span>
-                  </motion.button>
-                </Link>
-                <motion.h3
-                  className="text-primary font-bold text-2xl sm:text-3xl text-left capitalize"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+            <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-lg space-y-6 md:space-y-8">
+              <Link href="/get-started">
+                <motion.button
+                  className="text-sm flex items-center space-x-2 mb-4 text-muted-foreground"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                  Create Your {userType} Account
-                </motion.h3>
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back</span>
+                </motion.button>
+              </Link>
+              <motion.h3
+                className="text-primary font-bold text-2xl sm:text-3xl text-left capitalize"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                Create Your {userType} Account
+              </motion.h3>
 
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-8 sm:space-y-10"
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="space-y-8 sm:space-y-10"
+              >
+                <motion.div
+                  className="space-y-4 sm:space-y-5"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
                 >
+                  <RegisterFormInput
+                    type="text"
+                    placeholder="Full Name*"
+                    register={register}
+                    name="fullName"
+                    error={errors.fullName}
+                    icon={<UserRound className="h-5 w-5 sm:h-6 sm:w-6" />}
+                  />
+
+                  <RegisterFormInput
+                    type="text"
+                    placeholder="Company Name"
+                    register={register}
+                    name="companyName"
+                    error={errors.companyName}
+                    icon={<UserRound className="h-5 w-5 sm:h-6 sm:w-6" />}
+                  />
+
+                  <RegisterFormInput
+                    type="email"
+                    placeholder="Company Email Address*"
+                    register={register}
+                    name="companyEmail"
+                    error={errors.companyEmail}
+                    icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
+                  />
+
+                  <RegisterFormInput
+                    type="text"
+                    placeholder="Company Website"
+                    register={register}
+                    name="companyWebsite"
+                    error={errors.companyWebsite}
+                    icon={<Globe className="h-5 w-5 sm:h-6 sm:w-6" />}
+                  />
+
+                  <RegisterFormInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    register={register}
+                    name="password"
+                    error={errors.password}
+                    icon={showPassword ? (
+                      <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                    ) : (
+                      <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                    )}
+                    onTogglePassword={() => setShowPassword((p) => !p)}
+                  />
+
+                  <RegisterFormInput
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    register={register}
+                    name="confirmPassword"
+                    error={errors.confirmPassword}
+                    icon={showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                    ) : (
+                      <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                    )}
+                    onTogglePassword={() => setShowConfirmPassword((p) => !p)}
+                  />
+
                   <motion.div
-                    className="space-y-4 sm:space-y-5"
+                    className="flex items-start sm:items-center gap-2 text-gray-500 mt-2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
                   >
-                    <RegisterFormInput
-                      type="text"
-                      placeholder="Full Name*"
-                      register={register}
-                      name="fullName"
-                      error={errors.fullName}
-                      icon={<UserRound className="h-5 w-5 sm:h-6 sm:w-6" />}
-                    />
-
-                    <RegisterFormInput
-                      type="text"
-                      placeholder="Company Name"
-                      register={register}
-                      name="companyName"
-                      error={errors.companyName}
-                      icon={<UserRound className="h-5 w-5 sm:h-6 sm:w-6" />}
-                    />
-
-                    <RegisterFormInput
-                      type="email"
-                      placeholder="Company Email Address*"
-                      register={register}
-                      name="companyEmail"
-                      error={errors.companyEmail}
-                      icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
-                    />
-
-                    <RegisterFormInput
-                      type="text"
-                      placeholder="Company Website"
-                      register={register}
-                      name="companyWebsite"
-                      error={errors.companyWebsite}
-                      icon={<Globe className="h-5 w-5 sm:h-6 sm:w-6" />}
-                    />
-
-                    <RegisterFormInput
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      register={register}
-                      name="password"
-                      error={errors.password}
-                      icon={showPassword ? (
-                        <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-                      ) : (
-                        <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-                      )}
-                      onTogglePassword={() => setShowPassword((p) => !p)}
-                    />
-
-                    <RegisterFormInput
-                      type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Confirm Password"
-                      register={register}
-                      name="confirmPassword"
-                      error={errors.confirmPassword}
-                      icon={showConfirmPassword ? (
-                        <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
-                      ) : (
-                        <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
-                      )}
-                      onTogglePassword={() => setShowConfirmPassword((p) => !p)}
-                    />
-
-                    <motion.div
-                      className="flex items-start sm:items-center gap-2 text-gray-500 mt-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                    >
-                      <Checkbox
-                        className="mt-1 sm:mt-0 text-primary bg-white border-primary 
+                    <Checkbox
+                      className="mt-1 sm:mt-0 text-primary bg-white border-primary 
                   data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                        checked={watch("terms") ?? false}
-                        onCheckedChange={async (checked) => {
-                          setValue("terms", Boolean(checked));
-                          await trigger("terms"); // Trigger validation for 'terms' field
-                        }}
-                      />
+                      checked={watch("terms") ?? false}
+                      onCheckedChange={async (checked) => {
+                        setValue("terms", Boolean(checked));
+                        await trigger("terms"); // Trigger validation for 'terms' field
+                      }}
+                    />
 
-                      <p className="text-xs sm:text-sm font-light">
-                        I accept all{" "}
-                        <a
+                    <p className="text-xs sm:text-sm font-light">
+                      I accept all{" "}
+                      <a
 
-                          href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline text-primary hover:text-[#6564d8] transition-colors"
-                        >
-                          terms of use
-                        </a>{" "}
-                        and{" "}
-                        <a
-                          href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline text-primary hover:text-[#6564d8] transition-colors"
-                        >
-                          privacy policy
-                        </a>
-                      </p>
-                    </motion.div>
-                    {errors.terms && (
-                      <p className="text-xs sm:text-sm text-red-500 mt-1">
-                        {errors.terms.message}
-                      </p>
-                    )}
+                        href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline text-primary hover:text-[#6564d8] transition-colors"
+                      >
+                        terms of use
+                      </a>{" "}
+                      and{" "}
+                      <a
+                        href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline text-primary hover:text-[#6564d8] transition-colors"
+                      >
+                        privacy policy
+                      </a>
+                    </p>
                   </motion.div>
-
-                  <motion.div
-                    className="space-y-4 sm:space-y-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    <Button
-                      type="submit"
-                      className="w-full bg-primary hover:bg-[#6564d8] transition-all py-6 sm:py-7 text-white 
-                  text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest 
-                  disabled:opacity-70"
-                      disabled={registerMutation.isPending}
-                    >
-                      {registerMutation.isPending ? (
-                        <div className="flex items-center justify-center gap-2">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Loading...</span>
-                        </div>
-                      ) : (
-                        "Sign Up"
-                      )}
-                    </Button>
-                  </motion.div>
-                </form>
+                  {errors.terms && (
+                    <p className="text-xs sm:text-sm text-red-500 mt-1">
+                      {errors.terms.message}
+                    </p>
+                  )}
+                </motion.div>
 
                 <motion.div
                   className="space-y-4 sm:space-y-6"
@@ -291,44 +271,69 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
                 >
-
-
-                  <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
-
-                  <GoogleAuth />
-
-                  <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
-                    Already have an account?{" "}
-                    <Link
-                      href={`/login?role=${userType}`}
-                      className="font-medium text-primary hover:text-[#6564d8] transition-colors"
-                    >
-                      Login
-                    </Link>
-                  </p>
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-[#6564d8] transition-all py-6 sm:py-7 text-white 
+                  text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest 
+                  disabled:opacity-70"
+                    disabled={registerMutation.isPending}
+                  >
+                    {registerMutation.isPending ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading...</span>
+                      </div>
+                    ) : (
+                      "Sign Up"
+                    )}
+                  </Button>
                 </motion.div>
-              </div>
-            </motion.div>
+              </form>
 
-            <motion.div
-              className="hidden md:flex md:w-[45%] lg:w-[40%] relative bg-gray-50"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="relative w-full">
-                <Image
-                  src={`https://d20cf3kfv1a9jn.cloudfront.net/images/register_brand1.webp`}
-                  alt=""
-                  fill
-                  className="object-cover object-center"
-                  // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 40vw"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </div>
-          {/* <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
+              <motion.div
+                className="space-y-4 sm:space-y-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+
+
+                <p className="text-center my-5 text-gray-400 font-[400]">Or continue with</p>
+
+                <GoogleAuth />
+
+                <p className="text-center text-sm sm:text-base text-muted-foreground font-light">
+                  Already have an account?{" "}
+                  <Link
+                    href={`/login?role=${userType}`}
+                    className="font-medium text-primary hover:text-[#6564d8] transition-colors"
+                  >
+                    Login
+                  </Link>
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="hidden md:flex md:w-[45%] lg:w-[40%] relative bg-gray-50"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="relative w-full">
+              <Image
+                src={`https://d20cf3kfv1a9jn.cloudfront.net/images/register_brand1.webp`}
+                alt=""
+                fill
+                className="object-cover object-center"
+                // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 45vw, 40vw"
+                priority
+              />
+            </div>
+          </motion.div>
+        </div>
+        {/* <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -383,9 +388,9 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
             </motion.div>
           </section> */}
 
-          <Footer />
-        </div>
-      )}
+        <Footer />
+      </div>
+
     </>
   );
 }
