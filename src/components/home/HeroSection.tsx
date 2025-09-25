@@ -47,6 +47,28 @@ export default function HeroSection() {
     }
   }, [mainIndex]);
 
+  const handleClick = () => {
+    const bookingUrl = "https://calendly.com/influenergy-support/30min";
+    if (typeof window !== "undefined" && window.Calendly) {
+      try {
+        if (typeof window.Calendly.closePopupWidget === "function") {
+          window.Calendly.closePopupWidget();
+        }
+        if (typeof window.Calendly.initPopupWidget === "function") {
+          // Defer to next tick to avoid race conditions inside Calendly widget.js
+          setTimeout(() => {
+            window.Calendly.initPopupWidget({ url: bookingUrl });
+          }, 0);
+          return;
+        }
+      } catch {
+        // Fallback below
+      }
+    }
+    window.open(bookingUrl, "_blank", "noopener,noreferrer");
+  };
+
+
   return (
     <div className="relative w-full h-[500px] sm:h-[650px] md:h-[600px] flex items-center justify-center text-center">
 
@@ -73,14 +95,19 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="text-start flex items-start"
+              className="text-start flex items-start gap-4 justify-center"
             >
               <Button
-                className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-9 py-7 text-lg"
+                className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl px-9 py-7 text-lg border-primary border-2"
                 onClick={() => router.push("/get-started")}
               >
                 Start Free Campaign
               </Button>
+             
+                <Button className="mt-8 text-primary hover:bg-primary/90 bg-transparent border-primary border-2 hover:text-white rounded-xl px-10 py-7 text-lg" onClick={handleClick}>
+                  Get a Demo
+                </Button>
+
             </motion.div>
           </motion.div>
 

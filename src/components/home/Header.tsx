@@ -36,6 +36,27 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  
+  const handleClick = () => {
+    const bookingUrl = "https://calendly.com/influenergy-support/30min";
+    if (typeof window !== "undefined" && window.Calendly) {
+      try {
+        if (typeof window.Calendly.closePopupWidget === "function") {
+          window.Calendly.closePopupWidget();
+        }
+        if (typeof window.Calendly.initPopupWidget === "function") {
+          // Defer to next tick to avoid race conditions inside Calendly widget.js
+          setTimeout(() => {
+            window.Calendly.initPopupWidget({ url: bookingUrl });
+          }, 0);
+          return;
+        }
+      } catch {
+        // Fallback below
+      }
+    }
+    window.open(bookingUrl, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <header className="flex flex-wrap justify-between items-center w-full h-auto py-4 px-6 shadow-md relative z-50">
@@ -78,6 +99,15 @@ export default function Header() {
 
       {/* Button */}
       <div className="hidden md:flex justify-center items-center gap-3">
+        <div>
+          <Button
+            className="bg-transparent text-primary border-0 shadow-none hover:text-white"
+            onClick={handleClick}
+          >
+            Get a Demo
+          </Button>
+
+        </div>
         <div className="relative" ref={dropdownRef}>
           <Button
             className="text-primary bg-transparent rounded-xl px-6 py-3 hover:text-white hover:bg-primary transition-colors flex items-center gap-1"
@@ -116,15 +146,17 @@ export default function Header() {
       </div>
 
       {/* Mobile button */}
-      {menuOpen && (
-        <div className="w-full md:hidden mt-4">
-          <Link href="/get-started">
-            <Button className="w-full bg-primary text-white rounded-xl py-3">
-              Start For Free
-            </Button>
-          </Link>
-        </div>
-      )}
-    </header>
+      {
+        menuOpen && (
+          <div className="w-full md:hidden mt-4">
+            <Link href="/get-started">
+              <Button className="w-full bg-primary text-white rounded-xl py-3">
+                Start For Free
+              </Button>
+            </Link>
+          </div>
+        )
+      }
+    </header >
   );
 }

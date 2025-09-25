@@ -4,6 +4,7 @@ import { poppins, monaSans, catamaran, nirmala } from "./fonts";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import GoogleProvider from "./GoogleProvider";
+import Script from "next/script";
 
 
 export const metadata: Metadata = {
@@ -22,6 +23,17 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${monaSans.variable} ${catamaran.variable} ${nirmala.variable}`}
     >
+      <head>
+        <link
+          href="https://assets.calendly.com/assets/external/widget.css"
+          rel="stylesheet"
+        />
+      </head>
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="afterInteractive"
+      />
+
       <body className={`${poppins.className} font-poppins`}>
         <Providers>
           <GoogleProvider>
