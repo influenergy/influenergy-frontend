@@ -75,6 +75,11 @@ export const step2Schema = yup.object().shape({
     .of(yup.string())
     .min(1, "Select at least one niche")
     .required("Primary niche is required"),
+  "primary-niche-other": yup.string().when("primary-niche", {
+    is: (value: string) => value === "Others",
+    then: (schema) => schema.required("Please specify your Niche"),
+    otherwise: (schema) => schema.optional(),
+  }),
 }) as Schema;
 
 export const step3Schema = yup.object().shape({

@@ -183,7 +183,6 @@ const PostQuestionnaire = ({
           description: "You need to fill the required fields to create a brief.",
           variant: "destructive",
         })
-        console.log("Validation failed");
         return;
       }
 

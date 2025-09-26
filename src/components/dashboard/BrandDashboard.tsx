@@ -171,7 +171,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     </div>
                 </Card>
                 {/* Recently Worked With + Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_2.5fr] gap-6 w-full h-full">
+                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_2.5fr] ${favCreators.length >0 ? 'lg:grid-cols-[1.5fr_2.5fr]':'lg:grid-cols-1' } gap-6 w-full h-full`}>
 
 
                     <div className="w-full flex flex-col">
@@ -193,7 +193,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     </div>
 
 
-                    <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300 rounded-2xl shadow-sm">
+                    {favCreators.length > 0 && <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300 rounded-2xl shadow-sm">
                         <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
                             Favorite Creators:
                         </h2>
@@ -205,107 +205,107 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     const city = creator?.profile?.city
                                     const name = creator?.profile.fullName || "Creator";
 
-                                    return <Link  key={idx} href={"/dashboard/brand/explore"}>
-                                    <div className="flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-white"
-                                    >
-                                        {/* Left: Profile */}
-                                        <div className="flex items-center">
-                                            <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600">
-                                                <Image
-                                                    src={avatar}
-                                                    alt={name}
-                                                    fill
-                                                    className="object-cover hover:scale-105 transition-transform duration-300 ease-in-out"
-                                                />
-                                            </div>
-                                        </div>
-                                        {/* Right: Social Icons */}
-                                        <div className=" flex flex-col h-full  w-full gap-2">
-                                            <div className="flex w-full justify-between">
-                                                <span className="text-base font-semibold text-gray-900 dark:text-white">
-                                                    {name}
-                                                </span>
-
-                                                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
-                                                    {/* Primary Social Media */}
-                                                    {creator?.profile?.socialLinks?.primary?.platform && creator?.profile?.socialLinks?.primary?.link && (
-                                                        <a
-                                                            href={creator.profile.socialLinks.primary.link}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
-                                                            title={`Primary: ${creator.profile.socialLinks.primary.platform}`}
-                                                            onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
-
-                                                        >
-                                                            {getSocialMediaIcon(creator.profile.socialLinks.primary.platform)}
-                                                        </a>
-                                                    )}
-
-                                                    {/* Secondary Social Media */}
-                                                    {creator?.profile?.socialLinks?.secondary?.platform && creator?.profile?.socialLinks?.secondary?.link && (
-                                                        <a
-                                                            href={creator.profile.socialLinks.secondary.link}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
-                                                            title={`Secondary: ${creator.profile.socialLinks.secondary.platform}`}
-                                                            onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
-
-                                                        >
-                                                            {getSocialMediaIcon(creator.profile.socialLinks.secondary.platform)}
-                                                        </a>
-                                                    )}
-
-                                                    {/* Fallback if no social media data */}
-                                                    {!creator?.profile?.socialLinks?.primary?.platform && !creator?.profile?.socialLinks?.secondary?.platform && (
-                                                        <div className="flex items-center gap-1" title="No social media data">
-                                                            <Share2 className="w-5 h-5" />
-                                                            <span className="text-xs text-gray-400">N/A</span>
-                                                        </div>
-                                                    )}
+                                    return <Link key={idx} href={"/dashboard/brand/explore"}>
+                                        <div className="flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-white"
+                                        >
+                                            {/* Left: Profile */}
+                                            <div className="flex items-center">
+                                                <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600">
+                                                    <Image
+                                                        src={avatar}
+                                                        alt={name}
+                                                        fill
+                                                        className="object-cover hover:scale-105 transition-transform duration-300 ease-in-out"
+                                                    />
                                                 </div>
                                             </div>
-                                            <div className="flex items-start flex-col justify-between h-full text-sm text-gray-500 dark:text-black">
-                                                <div className="flex gap-2">
+                                            {/* Right: Social Icons */}
+                                            <div className=" flex flex-col h-full  w-full gap-2">
+                                                <div className="flex w-full justify-between">
+                                                    <span className="text-base font-semibold text-gray-900 dark:text-white">
+                                                        {name}
+                                                    </span>
 
-                                                    {Array.isArray(creator?.profile?.category) && creator.profile.category.length > 0 &&
-                                                        creator.profile.category.map((data, idx) => (
-                                                            idx <= 1 && <span key={idx} className="text-xs p-1 bg-gray-300 rounded-lg">{data}</span>
-                                                        ))
-                                                    }
-                                                </div>
+                                                    <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
+                                                        {/* Primary Social Media */}
+                                                        {creator?.profile?.socialLinks?.primary?.platform && creator?.profile?.socialLinks?.primary?.link && (
+                                                            <a
+                                                                href={creator.profile.socialLinks.primary.link}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
+                                                                title={`Primary: ${creator.profile.socialLinks.primary.platform}`}
+                                                                onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
 
-                                                <div className="flex gap-2">
-                                                    <div className="flex gap-1 items-center">
-                                                        <Image
-                                                            src="/verified.png"
-                                                            alt="Verified"
-                                                            width={16}
-                                                            height={16}
-                                                        />
-                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Verified</span>
+                                                            >
+                                                                {getSocialMediaIcon(creator.profile.socialLinks.primary.platform)}
+                                                            </a>
+                                                        )}
 
+                                                        {/* Secondary Social Media */}
+                                                        {creator?.profile?.socialLinks?.secondary?.platform && creator?.profile?.socialLinks?.secondary?.link && (
+                                                            <a
+                                                                href={creator.profile.socialLinks.secondary.link}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
+                                                                title={`Secondary: ${creator.profile.socialLinks.secondary.platform}`}
+                                                                onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
+
+                                                            >
+                                                                {getSocialMediaIcon(creator.profile.socialLinks.secondary.platform)}
+                                                            </a>
+                                                        )}
+
+                                                        {/* Fallback if no social media data */}
+                                                        {!creator?.profile?.socialLinks?.primary?.platform && !creator?.profile?.socialLinks?.secondary?.platform && (
+                                                            <div className="flex items-center gap-1" title="No social media data">
+                                                                <Share2 className="w-5 h-5" />
+                                                                <span className="text-xs text-gray-400">N/A</span>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    {city && (
+                                                </div>
+                                                <div className="flex items-start flex-col justify-between h-full text-sm text-gray-500 dark:text-black">
+                                                    <div className="flex gap-2">
+
+                                                        {Array.isArray(creator?.profile?.category) && creator.profile.category.length > 0 &&
+                                                            creator.profile.category.map((data, idx) => (
+                                                                idx <= 1 && <span key={idx} className="text-xs p-1 bg-gray-300 rounded-lg">{data}</span>
+                                                            ))
+                                                        }
+                                                    </div>
+
+                                                    <div className="flex gap-2">
                                                         <div className="flex gap-1 items-center">
-                                                            <span className="text-sm">📍</span>
-                                                            <span className="text-sm text-gray-600 dark:text-gray-400">{city}</span>
+                                                            <Image
+                                                                src="/verified.png"
+                                                                alt="Verified"
+                                                                width={16}
+                                                                height={16}
+                                                            />
+                                                            <span className="text-sm text-gray-600 dark:text-gray-400">Verified</span>
+
                                                         </div>
-                                                    )}
+                                                        {city && (
+                                                            <div className="flex gap-1 items-center">
+                                                                <span className="text-sm">📍</span>
+                                                                <span className="text-sm text-gray-600 dark:text-gray-400">{city}</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
                                                 </div>
 
+
                                             </div>
-
-
                                         </div>
-                                    </div>
-                                    </Link> 
+                                    </Link>
                                 }
                                 )
                             }
                         </div>
-                    </Card>
+                    </Card>}
 
                 </div>
             </div>
@@ -327,7 +327,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     </div>
                 </Card>
             </div>
-            <Card className="p-6">
+            {completedCollabs.length > 0 && <Card className="p-6">
                 <h1 className="text-lg mb-4 text-gray-600 font-normal">Completed Collaboration</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {completedCollabs.map((item) => {
@@ -373,7 +373,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         );
                     })}
                 </div>
-            </Card>
+            </Card>}
 
         </div>
     )

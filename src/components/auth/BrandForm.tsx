@@ -76,7 +76,6 @@ export default function BrandRegisterForm({ userType }: { userType: string }) {
       return authApi.brandRegister(obj);
     },
     onSuccess: (data) => {
-      console.log(data, 'data')
       dispatch(setCredentials({ user: data?.data }))
       router.replace("/dashboard");
       reset();

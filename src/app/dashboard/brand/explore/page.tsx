@@ -15,7 +15,7 @@ import {
     Heart,
     SlidersHorizontal,
     X,
-    
+
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +35,7 @@ const FollowerRanges = [
 ];
 
 const Platforms = ["Facebook", "Instagram", "LinkedIn", "Newsletter", "Pinterest", "TikTok", "Twitch", "Twitter / X", "Youtube", "Youtube Shorts"];
-const Niches = ["AI", "Beauty & Care", "Business & Finance", "Events", "Fashion & Style", "Food & Drinks", "Foodie", "Gaming", "Hair", "Health & Wellness", "Homemade", "Home & Garden", "Jewellery", "Kids & Parenting", "Lifestyle", "Makeup", "Music", "Nutrition", "Outdoors & Nature", "Pet", "Photography", "Restaurants", "Skincare", "Sports & Fitness", "Tech", "Travel", "Yoga", "Others"];
+const Niches = ["AI", "Beauty & Care", "Business & Finance", "Events", "Fashion & Style", "Food & Drinks", "Foodie", "Gaming", "Hair", "Health & Wellness", "Homemade", "Home & Garden", "Jewellery", "Kids & Parenting", "Lifestyle", "Makeup", "Music", "Nutrition", "Outdoors & Nature", "Pet", "Photography", "Restaurants", "Skincare", "Sports & Fitness", "Tech", "Travel", "Yoga"];
 
 // Social media icon resolver
 const getSocialMediaIcon = (platform: string) => {
@@ -76,6 +76,7 @@ type Creator = {
             primary: { platform: string; link: string; followers: string };
             secondary: { platform: string; link: string; followers: string };
         };
+        budget: string;
     };
 };
 
@@ -100,6 +101,7 @@ const fetchCreators = async ({
 
 export default function ExploreCreators() {
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+    const [activeCardId, setActiveCardId] = useState<string | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [niches, setNiches] = useState<string[]>([]);
@@ -115,6 +117,8 @@ export default function ExploreCreators() {
             prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
         );
     };
+
+
 
     const toggleNiche = (n: string) => {
         setNiches((prev) =>
@@ -142,11 +146,19 @@ export default function ExploreCreators() {
         },
     });
 
-    const toggleExpand = (id: string) => {
-        setExpanded((prev) => ({
-            ...prev,
-            [id]: !prev[id],
-        }));
+    const toggleBio = (id: string) => {
+        const willExpand = !expanded[id];
+        if (willExpand) {
+            setActiveCardId(id);
+            setTimeout(() => {
+                setExpanded((prev) => ({ ...prev, [id]: true }));
+            }, 150);
+        } else {
+            setExpanded((prev) => ({ ...prev, [id]: false }));
+            setTimeout(() => {
+                setActiveCardId((current) => (current === id ? null : current));
+            }, 150);
+        }
     };
 
     // Infinite query with filters
@@ -181,9 +193,10 @@ export default function ExploreCreators() {
             },
             { threshold: 1 }
         );
-        if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+        const node = loadMoreRef.current;
+        if (node) observer.observe(node);
         return () => {
-            if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
+            if (node) observer.unobserve(node);
         };
     }, [fetchNextPage, hasNextPage]);
 
@@ -204,6 +217,7 @@ export default function ExploreCreators() {
     };
     // console.log(data,'data')
     const selectedFiltersCount = platforms.length + niches.length + followers.length;
+
 
     return (
         <div className="relative p-6">
@@ -355,20 +369,37 @@ export default function ExploreCreators() {
                         const isLongDescription =
                             (creator.profile?.aboutYourself?.length || 0) > 120;
                         const isExpanded = expanded[creator._id] || false;
+                        const isActive = activeCardId === creator._id;
+                        const someActive = !!activeCardId;
 
                         return (
                             <Card
                                 key={creator._id}
-                                className="flex flex-col items-stretch p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow hover:scale-105 transition"
+                                className={`flex flex-col items-stretch p-2 pt-0  gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow transition-all duration-300 ${isActive
+                                    ? "scale-105 ring-2 ring-primary z-20"
+                                    : someActive
+                                        ? "opacity-40"
+                                        : "hover:scale-105"
+                                    }`}
                             >
+                                <div className="relative w-full p-2">
+                                    <Image
+                                        width={300}
+                                        height={200}
+                                        src={creator.profileIcon || "/default-avatar.png"}
+                                        alt={creator.fullName}
+                                        className="w-full h-40 object-contain rounded-xl mb-2"
+                                    />
+
+                                    {/* Budget badge */}
+                                    {creator.profile?.budget && (
+                                        <span className="absolute top-1 right-1 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                                            {creator.profile.budget} $
+                                        </span>
+                                    )}
+                                </div>
+
                                 {/* IMAGE */}
-                                <Image
-                                    width={300}
-                                    height={200}
-                                    src={creator.profileIcon || "/default-avatar.png"}
-                                    alt={creator.fullName}
-                                    className="w-full h-40 object-contain rounded-xl mb-2"
-                                />
 
                                 {/* CONTENT */}
                                 <div className="flex flex-col gap-2">
@@ -442,7 +473,7 @@ export default function ExploreCreators() {
                                         </p>
                                         {isLongDescription && (
                                             <button
-                                                onClick={() => toggleExpand(creator._id)}
+                                                onClick={() => toggleBio(creator._id)}
                                                 className="text-blue-500 hover:underline text-xs mt-1"
                                             >
                                                 {isExpanded ? "View Less" : "View More"}

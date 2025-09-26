@@ -175,6 +175,7 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
               placeholder="Please specify your niche"
               value={otherNicheValue}
               onChange={handleOtherNicheChange}
+              required
               className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 dark:text-black ${
                 otherNicheError
                   ? "border-red-500 focus:ring-red-500"

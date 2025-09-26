@@ -77,7 +77,6 @@ export default function Sidebar({ type, className }: { type: string, className: 
       }
     }
   };
-  console.log(userProfile, 'userProfile')
 
   return (
     <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className}`}>

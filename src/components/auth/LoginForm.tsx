@@ -41,7 +41,7 @@ export default function LoginForm() {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
-  const [loginMethod, setLoginMethod] = useState("otp");
+  const [loginMethod, setLoginMethod] = useState("password");
   const userType = useAppSelector((state) => state.auth.userType);
 
   if (!userType) {
