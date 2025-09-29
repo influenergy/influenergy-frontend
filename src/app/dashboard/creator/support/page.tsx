@@ -103,7 +103,7 @@ function Page() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required
-                className="border rounded-lg p-2 focus:ring focus:outline-none resize-none dark:bg-gray-300 dark:text-gray-700"
+                className="border rounded-lg p-2 focus:ring focus:outline-none resize-none dark:bg-gray-100 dark:text-gray-900"
               />
               <button
                 type="submit"

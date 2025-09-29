@@ -449,6 +449,17 @@ export default function ExploreCreators() {
                                         </div>
                                     </div>
 
+                                    <div className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        <span>
+                                            {creator.profile?.socialLinks?.primary?.followers} followers
+                                        </span>
+                                        {creator.profile?.socialLinks?.secondary?.followers && creator.profile?.socialLinks?.secondary?.link && (
+                                            <span>
+                                                {creator.profile.socialLinks.secondary.followers} followers
+                                            </span>
+                                        )}
+                                    </div>
+
                                     {/* CATEGORIES */}
                                     <div className="flex gap-2 flex-wrap">
                                         {Array.isArray(creator?.profile?.category) &&

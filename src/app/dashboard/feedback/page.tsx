@@ -82,7 +82,7 @@ export default function FeedbackPage() {
             required
             value={suggestion}
             onChange={(e) => setSuggestion(e.target.value)}
-            className="border rounded-lg p-2 focus:ring focus:outline-none resize-none w-full dark:bg-gray-300 dark:text-gray-700"
+            className="border rounded-lg p-2 focus:ring focus:outline-none resize-none w-full dark:bg-gray-100 dark:text-gray-900"
           />
           <div className="flex justify-end">
             <button

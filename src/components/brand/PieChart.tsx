@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { PieChart as MUIPieChart } from "@mui/x-charts/PieChart";
 import { Card } from "../ui/card";
+import { labelMarkClasses } from '@mui/x-charts/ChartsLabel';
 
 type DataItem = {
   city?: string;
@@ -101,13 +102,16 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
 
   return (
     <Card className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 w-full">
-      <style jsx>{`
+      <style jsx global>{`
         .pie-chart-container .MuiChartsLegend-label {
+        fill: #374151 !important; /* light mode (gray-700) */
           color: #374151 !important;
           font-size: ${isMobile ? '12px' : '14px'} !important;
         }
         .dark .pie-chart-container .MuiChartsLegend-label {
           color: #ffffff !important;
+              fill: #ffffff !important; /* white in dark mode */
+
         }
       `}</style>
       <div className="flex flex-col items-center justify-center w-full">
@@ -118,9 +122,12 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
         </div>
         <div className="flex items-center justify-center w-full">
           <MUIPieChart
+          
             series={[
               {
                 data: chartData,
+                valueFormatter: (item: { value: number }) => `${item.value}%`,
+                
               },
             ]}
             width={getChartWidth()}
@@ -130,6 +137,22 @@ const PieChart: React.FC<PieChartProps> = ({ data, labelKey, title }) => {
                 position: isMobile
                   ? { vertical: "bottom", horizontal: "center" }
                   : { vertical: "middle", horizontal: "end" },
+                  sx: {
+                    fontSize: 14,
+                    // light mode color
+                    color: '#374151',
+                    // target the little color marks next to labels
+                    // [`.${labelMarkClasses.fill}`]: {
+                    //   fill: '#374151',
+                    // },
+                    // override for dark mode (when Tailwind `.dark` class is present)
+                    '.dark &': {
+                      color: '#ffffff',
+                      [`.${labelMarkClasses.mask}`]: {
+                        fill: '#ffffff',
+                      },
+                    }
+                  }
               },
             }}
             className="pie-chart-container"
