@@ -74,14 +74,14 @@ export const CREATOR_QUESTIONS: Questions = {
     description: "Tell us a bit about your audience.",
     fields: [
       {
-        title: "Choose Your Gender",
+        title: "What's Your Gender",
         slug: "gender",
         category: "dropdown",
         options: ["Male", "Female", "Non-binary", "Prefer not to say"],
         placeholder: "Select your gender",
       },
       {
-        title: "What country do you operate out of?",
+        title: "What country are you based in?",
         slug: "country",
         category: "dropdown",
         options: [
@@ -173,7 +173,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select languages (max 3)",
       },
       {
-        title: "What is primary niche?",
+        title: "What is main niche?",
         slug: "primary-niche",
         category: "multiselect",
         options: [
@@ -189,7 +189,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Health & Wellness",
           "Homemade",
           "Home & Garden",
-          "Jewellery",
+          "Jewelry",
           "Kids & Parenting",
           "Lifestyle",
           "Makeup",
@@ -232,7 +232,7 @@ export const CREATOR_QUESTIONS: Questions = {
     description: "Tell us a bit about your social media presence.",
     fields: [
       {
-        title: "What primary social media platform you operate from ?",
+        title: "What’s your main platform for creating content?",
         slug: "primary-social-media",
         category: "dropdown",
         options: [
@@ -250,7 +250,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select primary platform",
       },
       {
-        title: "Enter your primary social media profile link",
+        title: "Enter your main social media profile link",
         slug: "primary-social-media-link",
         category: "text",
         dependsOn: "primary-social-media",
@@ -270,7 +270,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select follower count",
       },
       {
-        title: "What social media platforms do you operate from 2nd most?",
+        title: "Which social platform do you use the second most to create content?",
         slug: "secondary-social-media",
         category: "dropdown",
         options: [
@@ -316,7 +316,7 @@ export const CREATOR_QUESTIONS: Questions = {
     description: "",
     fields: [
       {
-        title: "Primary Audience Location",
+        title: "What’s your primary audience demography",
         slug: "primary-audience-location",
         category: "dropdown",
         options: [
@@ -383,7 +383,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Age group",
       },
       {
-        title: "Secondary Audience Location",
+        title: "What’s your secondary audience demography",
         slug: "secondary-audience-location",
         category: "dropdown",
         options: [
@@ -539,7 +539,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select top age brackets",
       },
       {
-        title: "What are the average views of your last 8 reels?",
+        title: "What's the average view count of your last 8 reels?",
         slug: "average-views",
         category: "dropdown",
         options: [
@@ -558,14 +558,14 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Enter your favorite brands",
       },
       {
-        title: "Have you worked with AI consumer apps before?",
+        title: "Have you collaborated with AI & Tech consumer apps before?",
         slug: "worked-with-ai",
         category: "dropdown",
         options: ["Yes", "No"],
         placeholder: "Select",
       },
       {
-        title: "Do you have any experience in paid campaigns?",
+        title: "Have you worked on paid campaigns before?",
         slug: "paid-campaigns",
         category: "dropdown",
         options: ["Yes", "No", "Gifted", "Affiliate Marketing", "Other"],
@@ -579,13 +579,11 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select payment method",
         options: [
           "Apple Pay",
-          "Amazon Pay",
           "Cash App",
           "Google Pay",
           "Stripe",
           "Paypal",
-          "Venmo",
-          "Zelle"
+          "WISE"
         ],
       },
       {

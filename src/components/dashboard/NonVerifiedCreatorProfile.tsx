@@ -53,7 +53,7 @@ function NonVerifiedCreatorProfile({ fullName, isProfileCompleted, profileIcon }
 
                         <p className="mb-3 md:mb-5 lg:mb-10 text-lg font-normal">
                             Please complete the questionnaire and upload a profile image
-                            to personalize your dashboard experience and help us match
+                            to personalize your dashboard and help us match
                             you with the right brands.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 mt-4">
@@ -67,7 +67,7 @@ function NonVerifiedCreatorProfile({ fullName, isProfileCompleted, profileIcon }
 
                         <p className="mb-3 md:mb-5 lg:mb-10 text-lg font-normal">
                             Please complete the questionnaire to personalize your
-                            dashboard experience and help us match you with the right
+                            dashboard and help us match you with the right
                             brands.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 mt-4">

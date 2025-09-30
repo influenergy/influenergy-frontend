@@ -51,7 +51,7 @@ export default function ProfileMatch() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1 mb-5"
+          className="text-gray-600  transition-colors duration-200 flex items-center gap-1 mb-5"
         >
           <ChevronsLeft className="h-5 w-5" />
           Back
@@ -65,7 +65,7 @@ export default function ProfileMatch() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1 mb-5"
+        className="text-gray-600 hover:text-gray-900 transition-colors dark:text-gray-300 dark:hover:text-white duration-200 flex items-center gap-1 mb-5"
       >
         <ChevronsLeft className="h-5 w-5" />
         Back

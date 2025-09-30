@@ -124,7 +124,9 @@ export const userApi = {
   getStats: async () => {
     const response = await api.get(`/stats`);
     return response.data; // return only the data payload
+  },
+  getPendingCollaborationCount: async() => {
+    const response = await api.get(`/creator/collab_pending_count`);
+    return response.data; // return only the data payload
   }
-
-
 };

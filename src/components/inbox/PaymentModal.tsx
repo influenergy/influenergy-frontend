@@ -20,13 +20,14 @@ interface FormData {
 
 const paymentMethods = [
   { label: "Apple Pay", key: "applepay", value: "Apple Pay ID / Email" },
-  { label: "Amazon Pay", key: "amazonpay", value: "Amazon Pay Phone / Email" },
   { label: "Cash App", key: "cashapp", value: "Cash App $Cashtag" },
   { label: "Google Pay", key: "googlepay", value: "Google Pay UPI / Phone" },
   { label: "Stripe", key: "stripe", value: "Stripe Email" },
   { label: "PayPal", key: "paypal", value: "PayPal Email" },
-  { label: "Venmo", key: "venmo", value: "Venmo @username" },
-  { label: "Zelle", key: "zelle", value: "Zelle Email / Phone" },
+  {
+    label:"WISE", key: "wise", value: "WISE Email / Phone / Account No."
+  }
+  
 ];
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({

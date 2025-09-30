@@ -8,10 +8,12 @@ import Image from "next/image";
 import { selectUser, useAppSelector, useAppDispatch } from "@/store";
 import { useRouter } from "next/navigation";
 import { LucideIcon, UserRoundCog, LogOut, FileText } from "lucide-react";
-import { logout } from "@/store/features/authSlice";
+import { logout, setPendingCollaborationCount } from "@/store/features/authSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { authApi } from "@/services/authServices";
+import { usePendingCollaborationCount } from "@/hooks/usePost";
+import { useEffect } from "react";
 
 
 // import { useState } from "react";
@@ -53,10 +55,21 @@ const commonLinks: NavItem[] = [
 
 export default function Sidebar({ type, className }: { type: string, className: string }) {
   const user = useAppSelector((state) => state.auth.userType);
+
+
   const userProfile = useAppSelector(selectUser);
+  // console.log(userProfile, 'userProfile from sidebar')
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const { data: pendingCollaborationCount } = usePendingCollaborationCount()
+
+  useEffect(() => {
+    if (pendingCollaborationCount !== undefined) {
+      dispatch(setPendingCollaborationCount(pendingCollaborationCount));
+    }
+  }, [pendingCollaborationCount, dispatch]);
 
   if (!user) return null;
   const navItems = (navLinks as NavLinks)[user][type];
@@ -77,6 +90,8 @@ export default function Sidebar({ type, className }: { type: string, className: 
       }
     }
   };
+
+
 
   return (
     <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className}`}>
@@ -125,7 +140,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
 
         <nav className="grid items-start gap-1 md:gap-2 mt-2">
           {navItems.map((item: NavItem) => (
-            <Link key={item.slug} href={item.href || "#"}>
+            <Link key={item.slug} href={item.href || "#"} className="flex items-center relative">
               <Button
                 variant="ghost"
                 className={cn(
@@ -140,6 +155,12 @@ export default function Sidebar({ type, className }: { type: string, className: 
                 {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
                 <p className="text-sm md:block">{item.label}</p>
               </Button>
+              {item.label === "Inbox" && pendingCollaborationCount !== 0 && (
+                <Badge variant="destructive" className="absolute right-1 px-2 pointer-events-none">
+                  {pendingCollaborationCount}
+                </Badge>
+              )}
+
             </Link>
           ))}
         </nav>

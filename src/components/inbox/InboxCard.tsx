@@ -83,6 +83,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
   };
   const { mutate: acceptCollaboration, isPending: isAccepting } =
     useAcceptOrDeclineCollaboration(collaborationId, "Active");
+    
   const { mutate: declineCollaboration, isPending: declineLoading } =
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
 

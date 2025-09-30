@@ -19,6 +19,7 @@ interface AuthState {
   isAuthenticated: boolean;
   questionnaireCompleted: boolean;
   userType: string | null;
+  pendingCollaborationCount: number;
 }
 
 const initialState: AuthState = {
@@ -26,6 +27,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   questionnaireCompleted: false,
   userType: null,
+  pendingCollaborationCount: 0,
 };
 
 const authSlice = createSlice({
@@ -35,6 +37,9 @@ const authSlice = createSlice({
     setCredentials: (state, action: PayloadAction<{ user: User }>) => {
       state.user = action.payload.user;
       state.isAuthenticated = true;
+    },
+    setPendingCollaborationCount: (state, action: PayloadAction<number>) => {
+      state.pendingCollaborationCount = action.payload;
     },
     logout: (state) => {
       state.user = null;
@@ -52,6 +57,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout, completeQuestionnaire, setUserType } =
+export const { setCredentials, logout, completeQuestionnaire, setUserType, setPendingCollaborationCount } =
   authSlice.actions;
 export default authSlice.reducer;

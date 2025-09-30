@@ -4,6 +4,8 @@ import { Card } from "../ui/card";
 import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithCompleteProfileSkeleton";
+import { useAppDispatch } from "@/store";
+
 
 interface CreatorWithCompleteProfileProps {
   fullName?: string;
@@ -26,6 +28,10 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
 
   const [collaborationCount, setCollaborationCount] = useState<number>(0);
 
+  // const user = useAppSelector(selectUser);
+
+  const dispatch = useAppDispatch()
+
   const fetchImprovementText = async () => {
     try {
       const improvementText = await userApi.getImprovementText();
@@ -41,6 +47,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     fetchImprovementText().then((text) => {
       setImprovementText(text.data || "");
       setCollaborationCount(text?.collaborationCount);
+
       setImprovementLoading(false);
     });
 
@@ -48,12 +55,16 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       .getCreatorHistoryData()
       .then((res) => {
         if (res?.data) {
+    
+          // dispatch(
+          //   updatePendingCollaborationCount(res?.data.counts.Pending || 0)
+          // );
           setCollaborations(res.data.collaborations || []);
           setCounts(res.data.counts || null);
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [dispatch]);
 
   if (improvementLoading) {
     return <CreatorWithCompleteProfileSkeleton />;
@@ -115,7 +126,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
                   <ul className="list-disc pl-5 space-y-1">
                     {improvementText
                       .split("\n")
-                      .map((line) => line.replace(/^\*\s*/, "").trim())
+                      .map((line) => line.replace(/^(\*|\-|\d+\.)\s*/, "").trim())
                       .filter((line) => line.length > 0)
                       .map((line, idx) => (
                         <li key={idx}>{line}</li>
@@ -166,7 +177,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       </div>
 
       {/* Recent Videos */}
-      <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
+      {collaborations.length > 0 && <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
         <h1 className="text-gray-900 dark:text-white mb-4">Recent Videos</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {collaborations
@@ -174,7 +185,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             .slice(0, 6)
             .map((video, idx) => {
               const isVideo = video.link?.endsWith(".mp4"); // basic check for direct video files
-              
+
               return (
                 video.status === "Approved" && <div key={idx} className="relative rounded-lg overflow-hidden">
                   {video.status === "Approved" && (
@@ -206,7 +217,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             })}
         </div>
 
-      </Card>
+      </Card>}
     </div>
   );
 }

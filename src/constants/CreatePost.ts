@@ -140,7 +140,7 @@ export const CREATE_POST: Questions = {
           "Health & Wellness",
           "Homemade",
           "Home & Garden",
-          "Jewellery",
+          "Jewelry",
           "Kids & Parenting",
           "Lifestyle",
           "Makeup",
@@ -208,7 +208,7 @@ export const CREATE_POST: Questions = {
           "More than 60 minutes",
         ],
       },
-     
+
       {
         title: "Key Message & Hashtags",
         slug: "key-message",
@@ -336,8 +336,8 @@ export const CREATE_POST: Questions = {
         ]
       }
       ,
-     
-      
+
+
     ],
   },
   step5: {
@@ -403,7 +403,7 @@ export const CREATE_POST: Questions = {
           "Health & Wellness",
           "Homemade",
           "Home & Garden",
-          "Jewellery",
+          "Jewelry",
           "Kids & Parenting",
           "Lifestyle",
           "Makeup",

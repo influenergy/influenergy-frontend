@@ -8,6 +8,8 @@ import Image from "next/image";
 import { TabLoading } from "@/components/inbox/TabLoading";
 import { useCollaborationStatusDetails } from "@/hooks/useQueryCampaigns";
 import { Collaboration } from "@/types/Collaboration";
+import { pendingCollaborationCount, useAppSelector } from "@/store";
+import { Badge } from "@/components/ui/badge";
 
 const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
   ssr: false,
@@ -18,7 +20,7 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState("");
-
+  const pendingCollabCount = useAppSelector(pendingCollaborationCount);
   const {
     data: campaignsData,
     isLoading,
@@ -35,9 +37,16 @@ const Page = () => {
           <TabsList className="w-full">
             <TabsTrigger
               value="Pending"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm relative"
             >
-              New Opportunities
+              <div className="flex items-center gap-1">
+                <span>New Opportunities</span>
+                {pendingCollabCount !== 0 && (
+                  <Badge variant="destructive" className="pointer-events-none">
+                    {pendingCollabCount}
+                  </Badge>
+                )}
+              </div>
             </TabsTrigger>
             <TabsTrigger
               value="Active"

@@ -91,6 +91,7 @@ export default function LoginForm() {
             user: data?.data,
           })
         );
+        toast({ title: "Login Successful 🎉", description: "Redirecting..." });
         router.replace("/dashboard");
       }
     },
@@ -245,6 +246,7 @@ export default function LoginForm() {
                           type="email"
                           placeholder="Enter Email Address"
                           register={register}
+                          
                           name="email"
                           error={errors.email}
                           icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}

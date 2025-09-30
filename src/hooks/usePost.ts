@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
 import { useAppSelector } from "@/store";
 import { useQueryClient } from "@tanstack/react-query";
+import { userApi } from "@/services/userServices";
 
 export const queryKeys = {
   uploadPost: "uploadPost",
@@ -83,12 +84,28 @@ export const useAcceptOrDeclineCollaboration = (
         queryKey: ["collaborationStatusDetails"],
       });
 
+      queryClient.invalidateQueries({ queryKey: ["pendingCollaborationCount"] });
+
       // Call the onSuccess callback if provided
       if (options?.onSuccess) {
         options.onSuccess();
       }
     },
   });
+};
+
+export const usePendingCollaborationCount = () => {
+  const user = useAppSelector((state) => state.auth.user);
+  return useQuery({
+    queryKey: ["pendingCollaborationCount"],
+    queryFn: async () => {
+      const res = await userApi.getPendingCollaborationCount(); // implement this API
+      return res.data.pendingCollaborationCount || 0;
+    },
+    enabled: !!user?.isProfileCompleted,
+    retry: false,
+    staleTime: 60 * 1000, // optional
+  })
 };
 
 

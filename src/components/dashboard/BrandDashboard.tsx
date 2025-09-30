@@ -171,7 +171,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     </div>
                 </Card>
                 {/* Recently Worked With + Stats */}
-                <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_2.5fr] ${favCreators.length >0 ? 'lg:grid-cols-[1.5fr_2.5fr]':'lg:grid-cols-1' } gap-6 w-full h-full`}>
+                <div className={`grid grid-cols-1 md:grid-cols-2 ${favCreators.length > 0 ? 'lg:grid-cols-[1.5fr_2.5fr]' : 'lg:grid-cols-1'} gap-6 w-full h-full`}>
 
 
                     <div className="w-full flex flex-col">
