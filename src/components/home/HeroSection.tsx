@@ -50,7 +50,7 @@ export default function HeroSection() {
   }, [mainIndex]);
 
   const handleClick = () => {
-    const bookingUrl = "https://calendly.com/influenergy-support/30min";
+    const bookingUrl = "https://calendly.com/influenergy/30min";
     if (typeof window !== "undefined" && window.Calendly) {
       try {
         if (typeof window.Calendly.closePopupWidget === "function") {
@@ -105,10 +105,10 @@ export default function HeroSection() {
               >
                 Start Free Campaign
               </Button>
-             
-                <Button className="mt-8 text-primary hover:bg-primary/90 bg-transparent border-primary border-2 hover:text-white rounded-xl px-10 py-7 text-lg" onClick={handleClick}>
-                  Get a Demo
-                </Button>
+
+              <Button className="mt-8 text-primary hover:bg-primary/90 bg-transparent border-primary border-2 hover:text-white rounded-xl px-10 py-7 text-lg" onClick={handleClick}>
+                Get a Demo
+              </Button>
 
             </motion.div>
           </motion.div>

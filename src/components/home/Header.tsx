@@ -36,9 +36,9 @@ export default function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   const handleClick = () => {
-    const bookingUrl = "https://calendly.com/influenergy-support/30min";
+    const bookingUrl = "https://calendly.com/influenergy/30min";
     if (typeof window !== "undefined" && window.Calendly) {
       try {
         if (typeof window.Calendly.closePopupWidget === "function") {
