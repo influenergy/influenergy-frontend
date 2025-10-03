@@ -155,11 +155,12 @@ export default function Sidebar({ type, className }: { type: string, className: 
                 {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
                 <p className="text-sm md:block">{item.label}</p>
               </Button>
-              {item.label === "Inbox" && pendingCollaborationCount !== 0 && (
+              {item.label === "Inbox" && pendingCollaborationCount > 0 && (
                 <Badge variant="destructive" className="absolute right-1 px-2 pointer-events-none">
                   {pendingCollaborationCount}
                 </Badge>
               )}
+
 
             </Link>
           ))}
