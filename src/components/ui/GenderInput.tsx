@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect, useState } from "react"
 import { Input } from "./input";
 import { Field } from "@/constants/questions";
 import { useFormContext } from "react-hook-form";
@@ -8,18 +8,6 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import CreatableSelect from "react-select/creatable";
 import { StylesConfig } from "react-select";
 
-
-const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
-const customStyles: StylesConfig<{ label: string; value: string }, boolean> = {
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isFocused
-      ? isDark ? "#4b5563" : "#FFFFFF"
-      : isDark ? "#4b5563" : "#FFFFFF",
-    color: isDark ? "#f9fafb" : "black",
-    "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
-  }),
-};
 
 const GenderInput = ({ field }: { field: Field }) => {
   const {
@@ -35,7 +23,42 @@ const GenderInput = ({ field }: { field: Field }) => {
   const otherGenderError = errors[otherGenderFieldName];
 
   const selectedGender = (watch(fieldName) as string) || "";
-  console.log(field,'fields')
+
+
+  // ✅ Reactive dark mode detection
+  const [isDark, setIsDark] = useState(
+    typeof window !== "undefined" &&
+      document.documentElement.classList.contains("dark")
+  );
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+  
+  const customStyles: StylesConfig<{ label: string; value: string }, boolean> = {
+
+    singleValue: (provided) => ({
+      ...provided,
+      color: isDark ? "#f9fafb" : "black", // ✅ bright text in dark mode
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused
+        ? isDark ? "#4b5563" : "#FFFFFF"
+        : isDark ? "#4b5563" : "#FFFFFF",
+      color: isDark ? "#f9fafb" : "black",
+      "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
+    }),
+  };
+
 
   return (
     <div>
@@ -46,29 +69,29 @@ const GenderInput = ({ field }: { field: Field }) => {
             control={control}
             rules={{ required: "Please select a gender" }}
             render={({ field: { value, onChange } }) => ( */}
-              <CreatableSelect<{ label: string; value: string }, false>
-                options={field.options?.map((option) => ({
-                  label: option,
-                  value: option,
-                }))}
-                value={selectedGender ? { label: selectedGender, value: selectedGender } : null
-                }
-                onChange={(option) => {
-                  const value = option?.value ?? "";
-                  setValue(fieldName, value, { shouldValidate: true });
-                }}
-                placeholder="Select Gender"
-                // components={{
-                //   DropdownIndicator: () => (
-                //     <ChevronDown size={20} className="text-gray-500 mr-2" />
-                //   ),
-                //   IndicatorSeparator: () => null,
-                // }}
-                isClearable
-                styles={customStyles as unknown as StylesConfig<{ label: string; value: string }, false>}
-                classNamePrefix="react-select"
-              />
-            {/* )} */}
+          <CreatableSelect<{ label: string; value: string }, false>
+            options={field.options?.map((option) => ({
+              label: option,
+              value: option,
+            }))}
+            value={selectedGender ? { label: selectedGender, value: selectedGender } : null
+            }
+            onChange={(option) => {
+              const value = option?.value ?? "";
+              setValue(fieldName, value, { shouldValidate: true });
+            }}
+            placeholder="Select Gender"
+            // components={{
+            //   DropdownIndicator: () => (
+            //     <ChevronDown size={20} className="text-gray-500 mr-2" />
+            //   ),
+            //   IndicatorSeparator: () => null,
+            // }}
+            isClearable
+            styles={customStyles as unknown as StylesConfig<{ label: string; value: string }, false>}
+            classNamePrefix="react-select"
+          />
+          {/* )} */}
           {/* /> */}
         </div>
 

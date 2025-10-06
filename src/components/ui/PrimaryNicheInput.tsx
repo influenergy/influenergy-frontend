@@ -5,24 +5,49 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
 import * as React from "react";
 import type { StylesConfig } from 'react-select';
+import { useEffect, useState } from "react";
 
-const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
-const customStyles: StylesConfig<{ label: string; value: string }, true> = {
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isFocused
-      ? isDark ? "#4b5563" : "#FFFFFF"
-      : isDark ? "#4b5563" : "#FFFFFF",
-    color: isDark ? "#f9fafb" : "black",
-    "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
-  }),
-};
+
 const PrimaryNicheInput = ({ field }: { field: Field }) => {
   const {
     setValue,
     watch,
     formState: { errors },
   } = useFormContext<CreatorQuestionnaireData>();
+
+    // ✅ Reactive dark mode detection
+    const [isDark, setIsDark] = useState(
+      typeof window !== "undefined" &&
+        document.documentElement.classList.contains("dark")
+    );
+    useEffect(() => {
+      const observer = new MutationObserver(() => {
+        setIsDark(document.documentElement.classList.contains("dark"));
+      });
+  
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+  
+      return () => observer.disconnect();
+    }, []);
+    
+    const customStyles: StylesConfig<{ label: string; value: string }, boolean> = {
+  
+      singleValue: (provided) => ({
+        ...provided,
+        color: isDark ? "#f9fafb" : "black", // ✅ bright text in dark mode
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isFocused
+          ? isDark ? "#4b5563" : "#FFFFFF"
+          : isDark ? "#4b5563" : "#FFFFFF",
+        color: isDark ? "#f9fafb" : "black",
+        "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
+      }),
+    };
 
   const fieldName = field.slug as keyof CreatorQuestionnaireData;
   // const error = errors[fieldName];

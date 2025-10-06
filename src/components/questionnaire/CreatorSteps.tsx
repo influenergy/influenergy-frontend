@@ -4,12 +4,12 @@ import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import Select, { StylesConfig } from "react-select";
 import SocialMediaInput from "../ui/SocialMediaInput";
 import GenderInput from "../ui/GenderInput";
-import { ChevronDown } from "lucide-react";
 import * as yup from "yup";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
+
 
 import {
   step1Schema,
@@ -32,17 +32,6 @@ interface StepProps {
 }
 
 
-const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
-const customStyles: StylesConfig<{ label: string; value: string }, boolean> = {
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isFocused
-      ? isDark ? "#4b5563" : "#FFFFFF"
-      : isDark ? "#4b5563" : "#FFFFFF",
-    color: isDark ? "#f9fafb" : "black",
-    "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
-  }),
-};
 
 
 
@@ -115,6 +104,40 @@ const FormField = ({ field }: { field: Field }) => {
   const [priceRange, setPriceRange] = useState<string | null>(null);
   const [loadingRange, setLoadingRange] = useState(false);
   const [rangeError, setRangeError] = useState<string | null>(null);
+    // ✅ Reactive dark mode detection
+    const [isDark, setIsDark] = useState(
+      typeof window !== "undefined" &&
+        document.documentElement.classList.contains("dark")
+    );
+    useEffect(() => {
+      const observer = new MutationObserver(() => {
+        setIsDark(document.documentElement.classList.contains("dark"));
+      });
+  
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+  
+      return () => observer.disconnect();
+    }, []);
+    
+    const customStyles: StylesConfig<{ label: string; value: string }, boolean> = {
+  
+      singleValue: (provided) => ({
+        ...provided,
+        color: isDark ? "#f9fafb" : "black", // ✅ bright text in dark mode
+      }),
+      option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isFocused
+          ? isDark ? "#4b5563" : "#FFFFFF"
+          : isDark ? "#4b5563" : "#FFFFFF",
+        color: isDark ? "#f9fafb" : "black",
+        "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
+      }),
+    };
+  
 
   useEffect(() => {
     if (fieldName === "budget-video") {
@@ -184,37 +207,13 @@ const FormField = ({ field }: { field: Field }) => {
             setValue(fieldName, value, { shouldValidate: true });
           }}
           styles={customStyles as unknown as StylesConfig<{ label: string; value: string }, false>}
+          menuPortalTarget={document.body}
           classNamePrefix="react-select"
+          menuPosition="fixed"
+
         />
       </div>)
-    return (
-      <div className="relative w-full">
-        <select
-          {...register(fieldName)}
-          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900  dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
-            } focus:outline-none focus:ring-2 appearance-none`}
-        >
-          <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-200">
-            {field.placeholder || "Select"}
-          </option>
-          {field.options?.map((option) => (
-            <option
-              key={option}
-              value={option}
-              style={{ fontFamily: "Poppins, sans-serif" }}
-              className="dark:text-gray-200"
-            >
-              {option}
-            </option>
-          ))}
-        </select>
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
-          <ChevronDown size={20} />
-        </div>
-      </div>
-    );
+  
   }
 
   if (field.category === "multiselect") {
@@ -523,11 +522,3 @@ const DateInput = ({ field }: { field: Field }) => {
     </div>
   );
 };
-
-
-
-
-
-
-
-

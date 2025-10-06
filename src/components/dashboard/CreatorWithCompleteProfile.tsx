@@ -5,6 +5,8 @@ import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithCompleteProfileSkeleton";
 import { useAppDispatch } from "@/store";
+import FeaturedCard from "./FeaturedCard";
+import FeaturedModal from "./FeaturedModal";
 
 
 interface CreatorWithCompleteProfileProps {
@@ -27,6 +29,9 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
   const [counts, setCounts] = useState<{ Pending: number; Active: number; Completed: number } | null>(null);
 
   const [collaborationCount, setCollaborationCount] = useState<number>(0);
+
+  const [open, setOpen] = useState(false);
+
 
   // const user = useAppSelector(selectUser);
 
@@ -55,7 +60,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       .getCreatorHistoryData()
       .then((res) => {
         if (res?.data) {
-    
+
           // dispatch(
           //   updatePendingCollaborationCount(res?.data.counts.Pending || 0)
           // );
@@ -70,35 +75,43 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     return <CreatorWithCompleteProfileSkeleton />;
   }
 
+  const handleFeature = async()=>{
+    setOpen(true)
+  }
+
   return (
     <div className="flex flex-col lg:flex-col gap-6 pr-4">
       {/* Welcome Section */}
-      <Card className="p-6 w-full flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
-        <div>
-          <video
-            controls
-            width="100%"
-            height="100%"
-            style={{
-              borderRadius: "12px",
-              height: "100%",
-              maxHeight: "100px",
-              background: "#000",
-            }}
-          >
-            <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div className="flex-1 flex flex-col justify-center gap-2">
-          <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            Welcome Back, {fullName || "Creator"}!
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            Your creator dashboard is ready.<br /> Start exploring opportunities!
-          </p>
-        </div>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_2fr] gap-6 w-full">
+        <Card className="p-6 w-full flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
+          <div>
+            <video
+              controls
+              width="100%"
+              height="100%"
+              style={{
+                borderRadius: "12px",
+                height: "100%",
+                maxHeight: "100px",
+                background: "#000",
+              }}
+            >
+              <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div className="flex-1 flex flex-col justify-center gap-2">
+            <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+              Welcome Back, {fullName || "Creator"}!
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              Your creator dashboard is ready.<br /> Start exploring opportunities!
+            </p>
+          </div>
+        </Card>
+
+        <FeaturedCard handleFeature={handleFeature}  />
+      </div>
 
       {/* AI Recommendation Section */}
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_2fr] gap-6 w-full">
@@ -218,6 +231,8 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
         </div>
 
       </Card>}
+
+      <FeaturedModal isOpen={open} onClose={() => setOpen(false)} />
     </div>
   );
 }

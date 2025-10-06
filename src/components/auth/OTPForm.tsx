@@ -60,7 +60,6 @@ const OTPLoginForm = () => {
             return authApi.verifyLoginOtp(email, otp, userType);
         },
         onSuccess: (data) => {
-            console.log(data, 'data from otp')
             dispatch(setCredentials({ user: data?.data }));
             toast({ title: "Login Successful 🎉", description: "Redirecting..." });
             router.replace("/dashboard");
