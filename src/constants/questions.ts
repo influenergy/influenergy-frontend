@@ -77,7 +77,7 @@ export const CREATOR_QUESTIONS: Questions = {
         title: "What's Your Gender",
         slug: "gender",
         category: "dropdown",
-        options: ["Male", "Female", "Non-binary", "Prefer not to say"],
+        options: ["Male", "Female", "Non-binary", "Prefer not to say", "Others"],
         placeholder: "Select your gender",
       },
       {
@@ -173,7 +173,7 @@ export const CREATOR_QUESTIONS: Questions = {
         placeholder: "Select languages (max 3)",
       },
       {
-        title: "What is main niche?",
+        title: "What’s your main niche?",
         slug: "primary-niche",
         category: "multiselect",
         options: [

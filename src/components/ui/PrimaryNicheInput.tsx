@@ -4,7 +4,19 @@ import { useFormContext } from "react-hook-form";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
 import * as React from "react";
+import type { StylesConfig } from 'react-select';
 
+const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+const customStyles: StylesConfig<{ label: string; value: string }, true> = {
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused
+      ? isDark ? "#4b5563" : "#FFFFFF"
+      : isDark ? "#4b5563" : "#FFFFFF",
+    color: isDark ? "#f9fafb" : "black",
+    "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
+  }),
+};
 const PrimaryNicheInput = ({ field }: { field: Field }) => {
   const {
     setValue,
@@ -77,8 +89,8 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
       // Keep custom values if "Others" remains selected
       const customValues = Array.isArray(selectedOptions)
         ? selectedOptions.filter(
-            (opt) => !field.options?.includes(opt) && opt !== "Others"
-          )
+          (opt) => !field.options?.includes(opt) && opt !== "Others"
+        )
         : [];
 
       let newValues = values;
@@ -122,8 +134,8 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
         // Get current values excluding any previous custom values
         const baseValues = Array.isArray(selectedOptions)
           ? selectedOptions.filter(
-              (opt) => field.options?.includes(opt) || opt === "Others"
-            )
+            (opt) => field.options?.includes(opt) || opt === "Others"
+          )
           : [];
 
         if (value) {
@@ -154,6 +166,7 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
     };
   }, []);
 
+
   return (
     <div>
       <div className="space-y-2">
@@ -165,7 +178,9 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
             handleSelectChange(selected as { value: string; label: string }[])
           }
           classNamePrefix="react-select"
-          className="dark:bg-gray-900 dark:text-gray-100"
+          styles={customStyles} // your dark mode styles
+          menuPortalTarget={document.body} // optional if you want portal
+          menuPosition="fixed" // optional
         />
 
         {hasOthersOption && (
@@ -176,11 +191,10 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
               value={otherNicheValue}
               onChange={handleOtherNicheChange}
               required
-              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 dark:text-black ${
-                otherNicheError
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-primary"
-              }`}
+              className={`w-full p-3 h-12 border rounded-lg transition-all font-poppins duration-300 dark:text-black ${otherNicheError
+                ? "border-red-500 focus:ring-red-500"
+                : "border-gray-300 focus:ring-primary"
+                }`}
             />
           </div>
         )}

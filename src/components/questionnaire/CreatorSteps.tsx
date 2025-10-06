@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { Field } from "@/constants/questions";
 import { CreatorQuestionnaireData } from "@/types/Questionnaire";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import SocialMediaInput from "../ui/SocialMediaInput";
 import GenderInput from "../ui/GenderInput";
 import { ChevronDown } from "lucide-react";
@@ -25,10 +25,26 @@ import { Slider } from "../ui/slider";
 // import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
 import { userApi } from "@/services/userServices";
+import CreatableSelect from 'react-select/creatable';
 
 interface StepProps {
   fields: Field[];
 }
+
+
+const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
+const customStyles: StylesConfig<{ label: string; value: string }, boolean> = {
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused
+      ? isDark ? "#4b5563" : "#FFFFFF"
+      : isDark ? "#4b5563" : "#FFFFFF",
+    color: isDark ? "#f9fafb" : "black",
+    "&:active": { backgroundColor: isDark ? "#4b5563" : "#FFFFFF" },
+  }),
+};
+
+
 
 // Helper function to determine if a field is required based on validation schemas
 const isFieldRequired = (fieldName: string): boolean => {
@@ -153,11 +169,29 @@ const FormField = ({ field }: { field: Field }) => {
   }
 
   if (field.category === "dropdown") {
+    const selectedValue = (watch(fieldName) as string) || "";
+    return (
+      <div>
+        <CreatableSelect<{ label: string; value: string }, false>
+          isClearable
+          options={field.options?.map((option) => ({
+            label: option,
+            value: option,
+          }))}
+          value={selectedValue ? { label: selectedValue, value: selectedValue } : null}
+          onChange={(option) => {
+            const value = option?.value ?? "";
+            setValue(fieldName, value, { shouldValidate: true });
+          }}
+          styles={customStyles as unknown as StylesConfig<{ label: string; value: string }, false>}
+          classNamePrefix="react-select"
+        />
+      </div>)
     return (
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
+          className={`w-full p-3  border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900  dark:text-gray-100 ${error
             ? "border-red-500 focus:ring-red-500 dark:border-red-500"
             : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
@@ -201,8 +235,8 @@ const FormField = ({ field }: { field: Field }) => {
             const values = selected.map((opt) => opt.value);
             setValue(fieldName, values, { shouldValidate: true });
           }}
+          styles={customStyles}
           classNamePrefix="react-select"
-          className="dark:bg-gray-900 dark:text-gray-100"
         />
       </div>
     );
@@ -424,7 +458,7 @@ const DateInput = ({ field }: { field: Field }) => {
             shouldValidate: true,
           });
         }}
-        
+
         popperClassName="z-50"
         dateFormat="MM/dd/yyyy"
         placeholderText="mm/dd/yyyy"
@@ -467,8 +501,8 @@ const DateInput = ({ field }: { field: Field }) => {
                 className="rounded border p-1 text-sm border-gray-400 bg-white dark:bg-gray-200"
               >
                 {[
-                  "Jan","Feb","Mar","Apr","May","Jun",
-                  "Jul","Aug","Sep","Oct","Nov","Dec"
+                  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
                 ].map((month, index) => (
                   <option key={month} value={index}>
                     {month}
@@ -489,3 +523,11 @@ const DateInput = ({ field }: { field: Field }) => {
     </div>
   );
 };
+
+
+
+
+
+
+
+

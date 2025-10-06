@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 .bg-fade-gradient {
   background: linear-gradient(
     to right,

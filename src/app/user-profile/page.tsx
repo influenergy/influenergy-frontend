@@ -9,7 +9,7 @@ import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
 import { ChevronsLeft, PenLine, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { selectUser, useAppSelector } from "@/store";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/features/authSlice";
@@ -22,6 +22,61 @@ import EditCreatorQuestionnaireModal from "@/components/userProfile/EditCreatorQ
 // import Link from "next/link";
 import { authApi } from "@/services/authServices";
 import { useMutation } from "@tanstack/react-query";
+import Cropper from 'react-easy-crop'
+
+
+interface PixelCrop {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+async function getCroppedImg(imageSrc: string, pixelCrop: PixelCrop): Promise<Blob> {
+  const image = await createImage(imageSrc);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  if (!ctx) {
+    throw new Error("Could not get canvas context");
+  }
+
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
+
+  ctx.drawImage(
+    image as CanvasImageSource,
+    pixelCrop.x,
+    pixelCrop.y,
+    pixelCrop.width,
+    pixelCrop.height,
+    0,
+    0,
+    pixelCrop.width,
+    pixelCrop.height
+  );
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(new Error("Failed to create blob"));
+      }
+    }, "image/jpeg");
+  });
+}
+
+function createImage(url: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const image = document.createElement('img');
+    image.crossOrigin = "anonymous";
+    image.src = url;
+    image.onload = () => resolve(image);
+    image.onerror = (error) => reject(error);
+  });
+}
+
 
 export default function Page() {
   const user = useAppSelector(selectUser);
@@ -38,11 +93,17 @@ export default function Page() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<PixelCrop | null>(null);
+  const [isCropMode, setIsCropMode] = useState(false);
   // Password validation to match backend Joi rules
   const passwordRules = {
     minLen: 6,
     maxLen: 18,
   } as const;
+
 
   const passwordCriteria = (pwd: string) => ({
     lengthOk: pwd.length >= passwordRules.minLen && pwd.length <= passwordRules.maxLen,
@@ -111,7 +172,13 @@ export default function Page() {
     fetchAccountDetails();
   }, []);
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+
+  const onCropComplete = useCallback((_croppedArea: unknown, croppedPixels: unknown) => {
+    setCroppedAreaPixels(croppedPixels as PixelCrop);
+  }, []);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -136,42 +203,65 @@ export default function Page() {
       return;
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageSrc(reader.result as string);
+      setIsCropMode(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUploadToS3 = async (croppedBlob: Blob) => {
+    if (!userType) {
+      throw new Error("User type missing");
+    }
+
+    const formData = new FormData();
+    formData.append("photo", croppedBlob, "profile-image.jpg");
+
+    const response = await userApi.updateProfile(formData, userType);
+
+    dispatch(
+      setCredentials({
+        user: {
+          ...user,
+          profileIcon: response.data.profileIcon,
+          isProfileCompleted: user?.isProfileCompleted ?? false,
+          isEmailVerified: user?.isEmailVerified ?? false,
+          isAccountVerified: response.data.isAccountVerified ?? false,
+        },
+      })
+    );
+
+    toast({
+      title: "Success",
+      description: "Profile image updated successfully",
+    });
+  };
+
+  const handleCropSave = async () => {
+    if (!imageSrc || !croppedAreaPixels) return;
+    setIsUploading(true);
     try {
-      setIsUploading(true);
-      const formData = new FormData();
-      formData.append("photo", file);
-      if (!userType) {
-        return;
-      }
-
-      const response = await userApi.updateProfile(formData, userType);
-
-      dispatch(
-        setCredentials({
-          user: {
-            ...user,
-            profileIcon: response.data.profileIcon,
-            isProfileCompleted: user?.isProfileCompleted ?? false,
-            isEmailVerified: user?.isEmailVerified ?? false,
-            isAccountVerified: response.data.isAccountVerified ?? false,
-          },
-        })
-      );
-
-      toast({
-        title: "Success",
-        description: "Profile image updated successfully",
-      });
-    } catch {
+      const croppedBlob: Blob = await getCroppedImg(imageSrc, croppedAreaPixels);
+      await handleUploadToS3(croppedBlob);
+      setIsCropMode(false);
+      setImageSrc(null);
+      setCrop({ x: 0, y: 0 });
+      setZoom(1);
+      setCroppedAreaPixels(null);
+    } catch (err) {
+      console.error("Crop error:", err);
       toast({
         title: "Error",
-        description: "Failed to upload image",
+        description: "Failed to upload cropped image",
         variant: "destructive",
       });
     } finally {
       setIsUploading(false);
     }
   };
+
 
 
   return (
@@ -190,6 +280,120 @@ export default function Page() {
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 mt-3">
           <p className="hidden md:block">Edit Profile</p>
           <div className="relative w-[100px] h-[100px]">
+            {!isCropMode ? (
+              <>
+                <Image
+                  src={user?.profileIcon || "https://avatar.iran.liara.run/public/boy"}
+                  alt="Profile picture"
+                  fill
+                  className={`object-cover rounded-full cursor-pointer transition-opacity ${isUploading ? "opacity-50" : ""}`}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "https://avatar.iran.liara.run/public/boy";
+                  }}
+                  sizes="100px"
+                  priority
+                />
+
+                <ProfileActions className="cursor-pointer" />
+
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  className="absolute bottom-1 right-3 w-8 h-8 opacity-0 z-20 cursor-pointer"
+                  onChange={handleFileChange}
+                  disabled={isUploading}
+                />
+
+                {isUploading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full">
+                    <Loader2 className="h-8 w-8 animate-spin text-violet-400" />
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+                <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+                  <div className="text-center mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Crop Your Profile Image</h3>
+                    <p className="text-sm text-gray-600">Drag to position and use the slider to zoom</p>
+                  </div>
+
+                  <div className="relative w-full h-80 bg-gray-100 rounded-lg overflow-hidden mb-4">
+                    <Cropper
+                      image={imageSrc!}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={3 / 2}
+                      cropShape="rect"
+                      showGrid={true}
+                      style={{
+                        containerStyle: {
+                          width: "100%",
+                          height: "100%",
+                          position: "relative"
+                        }
+                      }}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                    />
+                  </div>
+
+                  {/* Zoom Control */}
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Zoom: {Math.round(zoom * 100)}%
+                    </label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="3"
+                      step="0.1"
+                      value={zoom}
+                      onChange={(e) => setZoom(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                      style={{
+                        background: `linear-gradient(to right, #7544DB 0%, #7544DB ${((zoom - 1) / 2) * 100}%, #e5e7eb ${((zoom - 1) / 2) * 100}%, #e5e7eb 100%)`
+                      }}
+                    />
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 justify-end">
+                    <button
+                      onClick={() => {
+                        setIsCropMode(false);
+                        setImageSrc(null);
+                        setCrop({ x: 0, y: 0 });
+                        setZoom(1);
+                        setCroppedAreaPixels(null);
+                      }}
+                      className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 text-sm font-medium hover:bg-gray-300 transition-colors"
+                      disabled={isUploading}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleCropSave}
+                      className="px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={isUploading}
+                    >
+                      {isUploading ? (
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Saving...
+                        </div>
+                      ) : (
+                        "Save & Upload"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* <div className="relative w-[100px] h-[100px]">
             <Image
               src={
                 user?.profileIcon || "https://avatar.iran.liara.run/public/boy"
@@ -199,7 +403,6 @@ export default function Page() {
               className={`w-full h-full object-cover rounded-full cursor-pointer ${isUploading ? "opacity-50" : ""
                 }`}
               onError={(e) => {
-                // Fallback to default image if S3 image fails to load
                 const target = e.target as HTMLImageElement;
                 target.src = "https://avatar.iran.liara.run/public/boy";
               }}
@@ -217,13 +420,12 @@ export default function Page() {
               onChange={handleImageUpload}
               disabled={isUploading}
             />
-            {/* <PenLine /> */}
             {isUploading && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-violet-600" />
               </div>
             )}
-          </div>
+          </div> */}
           <DeleteModal />
         </div>
         <div className="flex items-center justify-center my-8">
