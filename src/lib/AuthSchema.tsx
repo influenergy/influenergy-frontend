@@ -109,7 +109,30 @@ export const brandRegisterSchema = yup.object({
 });
 
 export const loginSchema = yup.object({
-  email: yup.string().email("Invalid email").required("Required"),
+  email: yup
+    .string()
+    .required("Email is required")
+    .test("is-valid-email", "Invalid email format", (value) => {
+      if (!value) return false;
+
+      // 1️⃣ check basic structure - must have @ and domain with TLD
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) {
+        return false;
+      }
+
+      // 2️⃣ check TLD length - must be at least 2 characters
+      const tld = value.split(".").pop() ?? "";
+      if (tld.length < 2) {
+        return false;
+      }
+
+      // 3️⃣ check for valid email pattern
+      if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+        return false;
+      }
+
+      return true;
+    }),
   password: yup.string().min(6, "Minimum 6 characters").required("Required"),
   userType: yup.string().oneOf(["creator", "brand"]).required(),
 });

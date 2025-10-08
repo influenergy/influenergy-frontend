@@ -97,7 +97,7 @@ export const LoginFormInput = <T extends object>({
           autoComplete={autoComplete}
           {...rest}
           onChange={(e) => {
-            e.target.value = e.target.value.trimStart(); // trims only leading spaces while typing
+            // e.target.value = e.target.value.trimStart(); // trims only leading spaces while typing
             onChange(e);
           }}
           onBlur={(e) => {

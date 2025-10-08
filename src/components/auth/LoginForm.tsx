@@ -59,6 +59,7 @@ export default function LoginForm() {
     defaultValues: {
       userType: userType as "creator" | "brand",
     },
+    mode: "onBlur"
   });
 
   // 🔑 When userType changes in Redux, update the form values
@@ -126,6 +127,17 @@ export default function LoginForm() {
         variant: "destructive",
         title: "Email is required",
         description: "Please enter your email to reset your password",
+      });
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(forgotPasswordEmail)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid email format",
+        description: "Please enter a valid email address",
       });
       return;
     }
@@ -246,7 +258,6 @@ export default function LoginForm() {
                           type="email"
                           placeholder="Enter Email Address"
                           register={register}
-                          
                           name="email"
                           error={errors.email}
                           icon={<Mail className="h-5 w-5 sm:h-6 sm:w-6" />}
