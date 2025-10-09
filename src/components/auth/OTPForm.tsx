@@ -144,7 +144,7 @@ const OTPLoginForm = () => {
                                 placeholder="Enter Email Address"
                                 className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-1 ${email && !isEmailValid ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"}`}
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value.trimStart())} // remove leading spaces
                                 aria-invalid={!!email && !isEmailValid}
                                 disabled={sendOtpMutation.isPending || isOtpSent}
                             />

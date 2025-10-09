@@ -89,6 +89,7 @@ type Creator = {
     profileIcon?: string;
     badge?: string;
     isFavorite: boolean;
+    badgePrice?: string;
     profile?: {
         category?: string[];
         aboutYourself: string;
@@ -405,7 +406,8 @@ export default function ExploreCreators() {
                         const someActive = !!activeCardId;
                         const badge = creator.badge
                         const level = Levels.filter(l => l.key === badge)[0]
-
+                        const badgePrice = creator.badgePrice || ""
+                        // console.log(badgePrice, 'badgePrice')
                         return (
                             <Card
                                 key={creator._id}
@@ -428,12 +430,12 @@ export default function ExploreCreators() {
                                     {/* Budget badge */}
                                     {creator.profile?.budget && (
                                         <span className="absolute top-1 right-1 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            {creator.profile.budget} $
+                                            {badgePrice ? badgePrice : creator.profile.budget} $
                                         </span>
                                     )}
                                     {level && (
                                         <div className="absolute top-1 left-1 w-8 h-8">
-                                             <Image src={level.img} alt={level.text} fill
+                                            <Image src={level.img} alt={level.text} fill
                                                 className="object-contain" />
                                         </div>
                                     )}

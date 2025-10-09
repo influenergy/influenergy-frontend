@@ -54,13 +54,13 @@ export default function FeaturedModal({ isOpen, onClose }: { isOpen: boolean; on
             key: "level_2",
             title: "Level 2 - Active Creator",
             img: "/gold-award.svg",
-            text: "Badge unlocked at $50 per video",
+            text: "Badge unlocked at $100 per video",
         },
         {
             key: "level_3",
             title: "Level 3 - Pro Creator",
             img: "/award.svg",
-            text: "Badge unlocked at $50 per video",
+            text: "Badge unlocked at $150 per video",
         },
     ];
 
