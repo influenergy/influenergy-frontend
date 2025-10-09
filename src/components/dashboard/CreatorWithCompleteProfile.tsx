@@ -4,7 +4,7 @@ import { Card } from "../ui/card";
 import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithCompleteProfileSkeleton";
-import { useAppDispatch } from "@/store";
+import { selectUser, useAppDispatch, useAppSelector } from "@/store";
 import FeaturedCard from "./FeaturedCard";
 import FeaturedModal from "./FeaturedModal";
 
@@ -12,6 +12,7 @@ import FeaturedModal from "./FeaturedModal";
 interface CreatorWithCompleteProfileProps {
   fullName?: string;
 }
+
 
 interface Collaboration {
   _id: string;
@@ -21,18 +22,19 @@ interface Collaboration {
   campaignPost?: string;
 }
 
+
 function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProps) {
   const [improvementLoading, setImprovementLoading] = useState<boolean>(false);
   const [improvementText, setImprovementText] = useState<string | null>(null);
-
   const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
-  const [counts, setCounts] = useState<{ Pending: number; Active: number; Completed: number } | null>(null);
-
+  const [counts, setCounts] = useState<{ Pending: number; Active: number; Completed: number }>({ Pending: 0, Active: 0, Completed: 0 });
   const [collaborationCount, setCollaborationCount] = useState<number>(0);
 
   const [open, setOpen] = useState(false);
 
+  const userProfile = useAppSelector(selectUser);
 
+  console.log("User Profile in CreatorWithCompleteProfile:", userProfile);
   // const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch()
@@ -65,7 +67,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
           //   updatePendingCollaborationCount(res?.data.counts.Pending || 0)
           // );
           setCollaborations(res.data.collaborations || []);
-          setCounts(res.data.counts || null);
+          setCounts(res.data.counts || { Pending: 0, Active: 0, Completed: 0 });
         }
       })
       .catch((err) => console.log(err));
@@ -75,14 +77,15 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     return <CreatorWithCompleteProfileSkeleton />;
   }
 
-  const handleFeature = async()=>{
+  const handleFeature = async () => {
     setOpen(true)
   }
 
   return (
     <div className="flex flex-col lg:flex-col gap-6 pr-4">
       {/* Welcome Section */}
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_2fr] gap-6 w-full">
+      <div className={`grid grid-cols-1  ${userProfile?.userType === "UGC" && !userProfile?.badge ? "md:grid-cols-1 lg:grid-cols-[2fr_2fr]" : "md:grid-cols-1 lg:grid-cols-1"
+        } gap-6 w-full`}>
         <Card className="p-6 w-full flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
           <div>
             <video
@@ -110,7 +113,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
           </div>
         </Card>
 
-        <FeaturedCard handleFeature={handleFeature}  />
+        {userProfile?.userType === "UGC" && !userProfile?.badge && <FeaturedCard handleFeature={handleFeature} />}
       </div>
 
       {/* AI Recommendation Section */}
@@ -154,8 +157,10 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
         </Card>
 
         {/* Recently Worked With + Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 w-full h-full">
-          <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
+        <div className={`grid grid-cols-1  ${counts?.Completed === 0 ?
+          'md:grid-cols-1 lg:grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-2'
+          } gap-6 w-full h-full`}>
+          {counts?.Completed > 0 && <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
             <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
               Recently Worked With:
             </h2>
@@ -167,7 +172,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
                 </div>
               ))}
             </div>
-          </Card>
+          </Card>}
 
           <div className="w-full flex flex-col">
             <div className="flex flex-col gap-4 justify-between h-full">

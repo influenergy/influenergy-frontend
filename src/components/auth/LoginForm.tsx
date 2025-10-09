@@ -62,15 +62,6 @@ export default function LoginForm() {
     mode: "onBlur"
   });
 
-  // 🔑 When userType changes in Redux, update the form values
-  // useEffect(() => {
-  //   if (userType) {
-  //     reset((prev) => ({
-  //       ...prev,
-  //       userType: userType as "creator" | "brand",
-  //     }));
-  //   }
-  // }, [userType,reset]);
 
   useEffect(() => {
     if (userType) {

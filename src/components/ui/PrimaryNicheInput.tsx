@@ -14,7 +14,7 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
     watch,
     formState: { errors },
   } = useFormContext<CreatorQuestionnaireData>();
-
+  
     // ✅ Reactive dark mode detection
     const [isDark, setIsDark] = useState(
       typeof window !== "undefined" &&
@@ -204,8 +204,6 @@ const PrimaryNicheInput = ({ field }: { field: Field }) => {
           }
           classNamePrefix="react-select"
           styles={customStyles} // your dark mode styles
-          menuPortalTarget={document.body} // optional if you want portal
-          menuPosition="fixed" // optional
         />
 
         {hasOthersOption && (

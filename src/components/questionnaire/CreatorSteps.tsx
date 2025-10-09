@@ -207,9 +207,9 @@ const FormField = ({ field }: { field: Field }) => {
             setValue(fieldName, value, { shouldValidate: true });
           }}
           styles={customStyles as unknown as StylesConfig<{ label: string; value: string }, false>}
-          menuPortalTarget={document.body}
+          // menuPortalTarget={document.body}
           classNamePrefix="react-select"
-          menuPosition="fixed"
+          // menuPosition="fixed"
 
         />
       </div>)

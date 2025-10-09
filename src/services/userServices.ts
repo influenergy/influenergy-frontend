@@ -128,5 +128,9 @@ export const userApi = {
   getPendingCollaborationCount: async() => {
     const response = await api.get(`/creator/collab_pending_count`);
     return response.data; // return only the data payload
+  },
+  addBadge: async () => {
+    const response = await api.post('/creator/add-badge');
+    return response.data;
   }
 };

@@ -5,6 +5,7 @@ export interface User {
   fullName?: string;
   email?: string;
   userType?: string;
+  badge?: string;
   profileIcon?: string;
   isProfileCompleted: boolean;
   isEmailVerified: boolean;
@@ -54,9 +55,14 @@ const authSlice = createSlice({
         state.user.userType = action.payload;
       }
     },
+    setUserBadge: (state, action: PayloadAction<string>) => {
+      if (state.user) {
+        state.user.badge = action.payload; // ✅ update only the badge field
+      }
+    },
   },
 });
 
-export const { setCredentials, logout, completeQuestionnaire, setUserType, setPendingCollaborationCount } =
+export const { setCredentials, logout, completeQuestionnaire, setUserType, setPendingCollaborationCount,setUserBadge } =
   authSlice.actions;
 export default authSlice.reducer;
