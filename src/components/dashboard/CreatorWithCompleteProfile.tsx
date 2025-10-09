@@ -34,7 +34,6 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
 
   const userProfile = useAppSelector(selectUser);
 
-  console.log("User Profile in CreatorWithCompleteProfile:", userProfile);
   // const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch()

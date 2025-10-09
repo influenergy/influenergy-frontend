@@ -58,7 +58,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
 
 
   const userProfile = useAppSelector(selectUser);
-  console.log(userProfile, 'userProfile from sidebar')
+
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
