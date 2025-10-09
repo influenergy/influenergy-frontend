@@ -37,6 +37,28 @@ const FollowerRanges = [
 const Platforms = ["Facebook", "Instagram", "LinkedIn", "Newsletter", "Pinterest", "TikTok", "Twitch", "Twitter / X", "Youtube", "Youtube Shorts"];
 const Niches = ["AI", "Beauty & Care", "Business & Finance", "Events", "Fashion & Style", "Food & Drinks", "Foodie", "Gaming", "Hair", "Health & Wellness", "Homemade", "Home & Garden", "Jewelry", "Kids & Parenting", "Lifestyle", "Makeup", "Music", "Nutrition", "Outdoors & Nature", "Pet", "Photography", "Restaurants", "Skincare", "Sports & Fitness", "Tech", "Travel", "Yoga"];
 
+
+const Levels = [
+    {
+        key: "level_1",
+        title: "Level 1 - Rising Creator",
+        img: "/bronze-award.svg",
+        text: "Badge unlocked at $50 per video",
+    },
+    {
+        key: "level_2",
+        title: "Level 2 - Active Creator",
+        img: "/gold-award.svg",
+        text: "Badge unlocked at $50 per video",
+    },
+    {
+        key: "level_3",
+        title: "Level 3 - Pro Creator",
+        img: "/award.svg",
+        text: "Badge unlocked at $50 per video",
+    },
+];
+
 // Social media icon resolver
 const getSocialMediaIcon = (platform: string) => {
     switch (platform?.toLowerCase()) {
@@ -65,6 +87,7 @@ type Creator = {
     _id: string;
     fullName: string;
     profileIcon?: string;
+    badge?: string;
     isFavorite: boolean;
     profile?: {
         category?: string[];
@@ -261,6 +284,15 @@ export default function ExploreCreators() {
                         >
                             Favorites
                         </Button>
+                        <Button
+                            onClick={() => handleSort("featured")}
+                            className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "featured"
+                                ? "border-blue-500 text-blue-500"
+                                : "border-gray-300 text-gray-500"
+                                }`}
+                        >
+                            Featured
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -371,6 +403,8 @@ export default function ExploreCreators() {
                         const isExpanded = expanded[creator._id] || false;
                         const isActive = activeCardId === creator._id;
                         const someActive = !!activeCardId;
+                        const badge = creator.badge
+                        const level = Levels.filter(l => l.key === badge)[0]
 
                         return (
                             <Card
@@ -397,12 +431,18 @@ export default function ExploreCreators() {
                                             {creator.profile.budget} $
                                         </span>
                                     )}
+                                    {level && (
+                                        <div className="absolute top-1 left-1 w-8 h-8">
+                                             <Image src={level.img} alt={level.text} fill
+                                                className="object-contain" />
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* IMAGE */}
 
                                 {/* CONTENT */}
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-3">
                                     {/* NAME + SOCIALS */}
                                     <div className="flex w-full justify-between">
                                         <span className="text-base font-semibold text-gray-900 dark:text-white">
@@ -472,6 +512,16 @@ export default function ExploreCreators() {
                                                 </span>
                                             ))}
                                     </div>
+
+                                    {badge && <div className="flex gap-2 flex-wrap items-center">
+                                        <div className="w-5 h-5 relative">
+
+                                            <Image src={level.img} alt={level.text} fill
+                                                className="object-contain" />
+                                        </div>
+
+                                        <p>Verified</p>
+                                    </div>}
 
                                     {/* BIO */}
                                     <div>

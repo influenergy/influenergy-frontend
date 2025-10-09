@@ -134,13 +134,16 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
               : updatedData.dob,
         };
         if (user && user._id) {
+
           await userApi.submitQuestionnaire(
             user._id,
             submitData as CreatorQuestionnaireData
           );
+          console.log("Submitted Data:", submitData);
+          console.log("updatedData:", updatedData);
           dispatch(
             setCredentials({
-              user: { ...user, isProfileCompleted: true } as User,
+              user: { ...user, isProfileCompleted: true,userType:submitData["are-you-ugc-creator"] } as User,
             })
           );
           toast({

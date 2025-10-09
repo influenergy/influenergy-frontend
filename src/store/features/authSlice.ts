@@ -45,6 +45,8 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
+      // state.userType = null;
+      state.pendingCollaborationCount = 0
     },
     completeQuestionnaire: (state) => {
       state.questionnaireCompleted = true;
@@ -63,6 +65,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout, completeQuestionnaire, setUserType, setPendingCollaborationCount,setUserBadge } =
+export const { setCredentials, logout, completeQuestionnaire, setUserType, setPendingCollaborationCount, setUserBadge } =
   authSlice.actions;
 export default authSlice.reducer;

@@ -33,7 +33,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
   const [open, setOpen] = useState(false);
 
   const userProfile = useAppSelector(selectUser);
-
+  console.log(userProfile, "userProfile");
   // const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch()
@@ -107,7 +107,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
               Welcome Back, {fullName || "Creator"}!
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
-              Your creator dashboard is ready.<br /> Start exploring opportunities!
+              Your {userProfile?.userType || 'creator'} dashboard is ready.<br /> Start exploring opportunities!
             </p>
           </div>
         </Card>
