@@ -18,13 +18,6 @@ export default function DashboardPage() {
   const userType = useAppSelector((state) => state.auth.userType);
   const { data: userDetails, isLoading, error } = useUserDetails();
 
-  // Add state for improvement text
-
-
-
-
-
-
   if (!isAuthenticated || !userType) {
     return null;
   }

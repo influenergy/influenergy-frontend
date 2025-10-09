@@ -101,7 +101,7 @@ export default function Header() {
       <div className="hidden md:flex justify-center items-center gap-3">
         <div>
           <Button
-            className="bg-transparent text-primary border-0 shadow-none hover:text-white"
+            className="bg-transparent text-primary  hover:text-white"
             onClick={handleClick}
           >
             Get a Demo
