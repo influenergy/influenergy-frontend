@@ -9,6 +9,28 @@ import { CreatorAPIResponse } from "@/types/Creator";
 import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/brand/Loader";
 
+
+const Levels = [
+  {
+    key: "level_1",
+    title: "Level 1 - Rising Creator",
+    img: "/bronze-award.svg",
+    text: "Badge unlocked at $50 per video",
+  },
+  {
+    key: "level_2",
+    title: "Level 2 - Active Creator",
+    img: "/gold-award.svg",
+    text: "Badge unlocked at $50 per video",
+  },
+  {
+    key: "level_3",
+    title: "Level 3 - Pro Creator",
+    img: "/award.svg",
+    text: "Badge unlocked at $50 per video",
+  },
+];
+
 export default function ProfileMatch() {
 
   const { campaignId } = useParams();
@@ -278,8 +300,11 @@ export default function ProfileMatch() {
       </div>
       <h2 className="text-2xl font-bold mb-4">Creators</h2>
       <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 w-full">
-        {creators?.map((data: CreatorAPIResponse) => (
-          <div
+        {creators?.map((data: CreatorAPIResponse) => {
+          const badge = data?.creator.badge
+          const level = Levels.filter(l => l.key === badge)[0]
+
+          return <div
             key={data?.creatorId}
             className="bg-white dark:bg-gray-200 rounded-lg shadow-md overflow-hidden flex flex-col h-full"
           >
@@ -288,8 +313,20 @@ export default function ProfileMatch() {
                 src={data?.creator?.profileIcon || "/images/placeholder.png"}
                 alt={data?.creator?.fullName}
                 fill
-                className="absolute top-0 left-0 object-cover"
+                className="absolute top-0 left-0 object-contain"
               />
+              {/* {data?.creator?.badge && ( */}
+              {/* <span className="absolute top-1 right-1 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                {data.creator?.badgePrice ? data.creator?.badgePrice : data.creator?.profile?.budgetVideo} $
+              </span> */}
+
+              {data?.creator.badge && (
+                <div className="absolute top-1 left-1 w-8 h-8">
+                  <Image src={level.img} alt={level.text} fill
+                    className="object-contain" />
+                </div>
+              )}
+              {/* )} */}
             </div>
             <div className="flex flex-col p-3 sm:p-4 flex-grow dark:bg-gray-300">
               <div className="flex items-start justify-between mb-2 dark:bg-gray-300">
@@ -355,7 +392,7 @@ export default function ProfileMatch() {
                   Price Per Video
                 </p>
                 <p className="text-sm sm:text-lg font-bold dark:text-black">
-                  $ {data?.creator?.profile?.budgetVideo || "N/A"}
+                  $ {data?.creator?.badge? data?.creator?.badgePrice : data?.creator?.profile?.budgetVideo || "N/A"}
                 </p>
               </div>
               <Link
@@ -372,7 +409,7 @@ export default function ProfileMatch() {
               </Link>
             </div>
           </div>
-        ))}
+        })}
       </div>
     </div>
   );

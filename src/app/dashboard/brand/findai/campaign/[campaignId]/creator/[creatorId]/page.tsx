@@ -85,7 +85,7 @@ export default function CreatorDetailsPage(){
     try {
       const response = await initiatePayment({
         campaignId: campaignId as string,
-        amount: creator?.profile?.budgetVideo || "0",
+        amount: creator?.badge? creator.badgePrice : creator?.profile?.budgetVideo || "0",
         creatorId: creatorId as string,
         similarity: similarity || "",
       });
@@ -225,7 +225,7 @@ export default function CreatorDetailsPage(){
               </>
             ) : (
               `Collaborate With This Creator For $${
-                creator?.profile?.budgetVideo || 0
+                creator?.badge ? creator.badgePrice: creator?.profile?.budgetVideo || 0
               }`
             )}
           </Button>

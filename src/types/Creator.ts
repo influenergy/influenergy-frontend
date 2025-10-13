@@ -11,6 +11,8 @@ interface Creator {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  badge?:string;
+  badgePrice?:string;
   profileIcon?: string;
   profile?: {
     _id: string;
