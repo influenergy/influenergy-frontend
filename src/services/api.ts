@@ -2,7 +2,7 @@ import axios from "axios";
 import { safeNavigate } from "@/utils/navigation";
 import { store } from "@/store";
 const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/v1/api";
-
+import {toast} from "@/hooks/use-toast"
 
 export const api = axios.create({
   baseURL,
@@ -35,6 +35,15 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     // console.log('errors',error)
+    if (!error.response) {
+      toast({
+        variant: "destructive",
+        title: "No network connection",
+        description: "Please check your internet connection and try again.",
+      });
+      return Promise.reject(error);
+    }
+
     if (error.response) {
       // Handle unauthorized access
       if (error.response.status === 401) {

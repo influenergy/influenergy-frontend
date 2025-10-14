@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import GoogleProvider from "./GoogleProvider";
 import Script from "next/script";
+import NetworkWatcher from "@/components/NetworkWatcher";
 
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className={`${poppins.className} font-poppins`}>
         <Providers>
           <GoogleProvider>
+            <NetworkWatcher />
             {children}
           </GoogleProvider>
         </Providers>
