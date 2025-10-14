@@ -43,24 +43,28 @@ export default function FeaturedModal({ isOpen, onClose }: { isOpen: boolean; on
         addBadgeMutation.mutate();
     };
 
+
     const Levels = [
         {
             key: "level_1",
             title: "Level 1 - Rising Creator",
             img: "/bronze-award.svg",
-            text: "Badge unlocked at $50 per video",
+            text: "Unlocked instantly when you join the program.",
+            price: "50"
         },
         {
             key: "level_2",
             title: "Level 2 - Active Creator",
             img: "/gold-award.svg",
-            text: "Badge unlocked at $100 per video",
+            text: "Unlock after completing 3 successful collaborations.",
+            price: "100"
         },
         {
             key: "level_3",
             title: "Level 3 - Pro Creator",
             img: "/award.svg",
-            text: "Badge unlocked at $150 per video",
+            text: "Unlock after completing 10 successful collaborations.",
+            price: "150"
         },
     ];
 
@@ -185,6 +189,7 @@ export default function FeaturedModal({ isOpen, onClose }: { isOpen: boolean; on
                                                             </div>
                                                             <h3 className="text-lg font-semibold">{lvl.title}</h3>
                                                             <p className="text-gray-600 dark:text-gray-300">{lvl.text}</p>
+                                                            <p className="bg-primary text-white px-3 py-2 rounded-xl">${lvl.price} per video</p>
                                                         </div>
                                                     </Card>
                                                 </div>

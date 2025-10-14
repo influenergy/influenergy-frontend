@@ -12,22 +12,25 @@ import Loader from "@/components/brand/Loader";
 
 const Levels = [
   {
-    key: "level_1",
-    title: "Level 1 - Rising Creator",
-    img: "/bronze-award.svg",
-    text: "Badge unlocked at $50 per video",
+      key: "level_1",
+      title: "Level 1 - Rising Creator",
+      img: "/bronze-award.svg",
+      text: "Unlocked instantly when you join the program.",
+      price: "50"
   },
   {
-    key: "level_2",
-    title: "Level 2 - Active Creator",
-    img: "/gold-award.svg",
-    text: "Badge unlocked at $50 per video",
+      key: "level_2",
+      title: "Level 2 - Active Creator",
+      img: "/gold-award.svg",
+      text: "Unlock after completing 3 successful collaborations.",
+      price: "100"
   },
   {
-    key: "level_3",
-    title: "Level 3 - Pro Creator",
-    img: "/award.svg",
-    text: "Badge unlocked at $50 per video",
+      key: "level_3",
+      title: "Level 3 - Pro Creator",
+      img: "/award.svg",
+      text: "Unlock after completing 10 successful collaborations.",
+      price: "150"
   },
 ];
 
