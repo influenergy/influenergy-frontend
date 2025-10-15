@@ -525,7 +525,7 @@ export default function ExploreCreators() {
                                                 className="object-contain" />
                                         </div>
 
-                                        <p>Verified</p>
+                                        <p>{level.title.split("-")[1]}</p>
                                     </div>}
 
                                     {/* BIO */}

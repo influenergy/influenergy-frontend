@@ -11,13 +11,37 @@ import { isAxiosError } from "axios";
 import CreatorWithCompleteProfile from "@/components/dashboard/CreatorWithCompleteProfile";
 import NonVerifiedCreatorProfile from "@/components/dashboard/NonVerifiedCreatorProfile";
 import BrandDashboard from "@/components/dashboard/BrandDashboard";
+import { Button } from "@/components/ui/button";
+import FeaturedModal from "@/components/dashboard/FeaturedModal";
+
+
+const Levels = [
+  {
+    key: "level_1",
+    title: "Level 1 - Rising Creator",
+    img: "/bronze-award.svg",
+    color: "#b1b1b1", // Bronze
+  },
+  {
+    key: "level_2",
+    title: "Level 2 - Active Creator",
+    img: "/gold-award.svg",
+    color: "#ffbe4b", // Gold
+  },
+  {
+    key: "level_3",
+    title: "Level 3 - Pro Creator",
+    img: "/diamond-award.svg",
+    color: "#32bdd8", // Diamond / Sky Blue
+  },
+];
 
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
   const userType = useAppSelector((state) => state.auth.userType);
   const { data: userDetails, isLoading, error } = useUserDetails();
-
+  const [showFeatured, setShowFeatured] = React.useState(false);
   if (!isAuthenticated || !userType) {
     return null;
   }
@@ -61,11 +85,37 @@ export default function DashboardPage() {
     );
   }
 
+  const badgeLevel =
+    userDetails?.data?.type === "UGC" && userDetails?.data?.badge
+      ? Levels.find((lvl) => lvl.key === userDetails.data.badge)
+      : null;
+
 
   return (
     <div className="relative p-2 px-5 flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 pr-4">
         <h1 className="text-3xl font-bold">Dashboard</h1>
+        {badgeLevel && (
+          <Button
+            onClick={() => setShowFeatured(true)}
+            className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border shadow-sm hover:opacity-90 transition"
+            style={{
+              color: badgeLevel.color,
+              borderColor: badgeLevel.color,
+              backgroundColor: `${badgeLevel.color}10`, // subtle tint
+            }}
+          >
+            <span
+              className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+              style={{
+                backgroundColor: `${badgeLevel.color}20`,
+                color: badgeLevel.color,
+              }}
+            >
+              {badgeLevel.title.split("-")[1]?.trim()}
+            </span>
+          </Button>
+        )}
       </div>
 
       {userType === "creator" ? (
@@ -86,6 +136,7 @@ export default function DashboardPage() {
           <BrandDashboard fullName={userDetails?.data?.fullName} />
         </div>
       )}
+      <FeaturedModal isOpen={showFeatured} onClose={() => setShowFeatured(false)} showBtn={false} />
     </div>
   );
 }

@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDispatch } from "react-redux";
 import { setUserBadge } from "@/store/features/authSlice";
 
-export default function FeaturedModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export default function FeaturedModal({ isOpen, onClose, showBtn=true }: { isOpen: boolean; onClose: () => void; showBtn?: boolean }) {
     const [showSuccess, setShowSuccess] = useState(false);
     const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
 
@@ -189,7 +189,7 @@ export default function FeaturedModal({ isOpen, onClose }: { isOpen: boolean; on
                                                             </div>
                                                             <h3 className="text-lg font-semibold">{lvl.title}</h3>
                                                             <p className="text-gray-600 dark:text-gray-300">{lvl.text}</p>
-                                                            <p className="bg-primary text-white px-3 py-2 rounded-xl">${lvl.price} per video</p>
+                                                            <p className="border-2 border-primary text-primary px-3 py-2 rounded-xl">${lvl.price} per video</p>
                                                         </div>
                                                     </Card>
                                                 </div>
@@ -223,20 +223,20 @@ export default function FeaturedModal({ isOpen, onClose }: { isOpen: boolean; on
                                             ))}
                                         </div>
 
-                                        <p className="text-gray-400 md:max-w-3xl text-base dark:text-white">
+                                       {showBtn && <p className="text-gray-400 md:max-w-3xl text-base dark:text-white">
                                             Set your UGC pricing according to your level today and{" "}
                                             <span className="text-black dark:text-white">
                                                 unlock your badge to attract more collaborations and income opportunities!
                                             </span>
-                                        </p>
+                                        </p>}
 
-                                        <Button
+                                        {showBtn && <Button
                                             onClick={handleGetFeatured}
                                             disabled={addBadgeMutation.isPending}
                                             className="bg-purple-600 text-white rounded-xl hover:bg-purple-700 px-8 disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                             {addBadgeMutation.isPending ? "Processing..." : "Get Featured"}
-                                        </Button>
+                                        </Button>}
                                     </motion.div>
                                 )}
                             </AnimatePresence>
