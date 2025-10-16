@@ -39,7 +39,7 @@ export default function WhatWeDo() {
           className="w-full"
         >
           {/* Section Heading */}
-          <div className="flex flex-col justify-start items-center mb-8">
+          <div className="flex flex-col justify-start  mb-8">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
               What We Do
             </h1>

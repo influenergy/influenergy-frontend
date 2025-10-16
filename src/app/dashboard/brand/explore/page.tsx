@@ -252,8 +252,8 @@ export default function ExploreCreators() {
 
             {/* Filter Options */}
             <div className="my-4 space-y-3">
-                <div className="flex gap-3 items-center">
-                    <div className="relative inline-flex items-center">
+                <div className="lg:flex gap-3 items-center">
+                    <div className="relative inline-flex items-center mb-2 lg:mb-0">
                         <Button onClick={() => setIsOpen(true)}>
                             <SlidersHorizontal className="w-4 h-4" />
                             Filter
@@ -270,33 +270,35 @@ export default function ExploreCreators() {
 
                     <div className="flex gap-3 items-center pl-3 border-l-2">
                         <p>Sort:</p>
-                        <Button
-                            onClick={() => handleSort("recentlyCollaborated")}
-                            className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "recentlyCollaborated"
-                                ? "border-blue-500 text-blue-500"
-                                : "border-gray-300 text-gray-500"
-                                }`}
-                        >
-                            Recently Collaborated
-                        </Button>
-                        <Button
-                            onClick={() => handleSort("favorites")}
-                            className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "favorites"
-                                ? "border-blue-500 text-blue-500"
-                                : "border-gray-300 text-gray-500"
-                                }`}
-                        >
-                            Favorites
-                        </Button>
-                        <Button
-                            onClick={() => handleSort("featured")}
-                            className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "featured"
-                                ? "border-blue-500 text-blue-500"
-                                : "border-gray-300 text-gray-500"
-                                }`}
-                        >
-                            Featured
-                        </Button>
+                        <div className="flex gap-3 md:space-x-0 md:space-y-0 items-center flex-wrap">
+                            <Button
+                                onClick={() => handleSort("recentlyCollaborated")}
+                                className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "recentlyCollaborated"
+                                    ? "border-blue-500 text-blue-500"
+                                    : "border-gray-300 text-gray-500"
+                                    }`}
+                            >
+                                Recently Collaborated
+                            </Button>
+                            <Button
+                                onClick={() => handleSort("favorites")}
+                                className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "favorites"
+                                    ? "border-blue-500 text-blue-500"
+                                    : "border-gray-300 text-gray-500"
+                                    }`}
+                            >
+                                Favorites
+                            </Button>
+                            <Button
+                                onClick={() => handleSort("featured")}
+                                className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "featured"
+                                    ? "border-blue-500 text-blue-500"
+                                    : "border-gray-300 text-gray-500"
+                                    }`}
+                            >
+                                Featured
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -399,7 +401,7 @@ export default function ExploreCreators() {
             )}
 
             {/* Creator Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {data?.pages.flatMap((page) =>
                     page.creators.map((creator: Creator) => {
                         const isLongDescription =

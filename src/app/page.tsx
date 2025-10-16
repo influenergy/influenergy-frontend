@@ -48,8 +48,10 @@ export default function Home() {
   return (
     <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
       {/* <Banner /> */}
-      <Header />
-      <HeroSection />
+      {/* <div className="w-full max-w-[1920px] mx-auto"> */}
+        <Header />
+        <HeroSection />
+      {/* </div> */}
 
       <div className="w-full max-w-[1920px] mx-auto">
         <InfluEnergySection />
@@ -77,10 +79,10 @@ export default function Home() {
           <HearFromInfluencer />
           <div id="stats">
 
-          <Stats />
+            <Stats />
           </div>
           <div id="we-empower-brand">
-          <WeEmpowerBrand />
+            <WeEmpowerBrand />
           </div>
         </Suspense>
 

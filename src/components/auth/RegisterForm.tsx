@@ -77,7 +77,7 @@ export default function RegisterForm({ userType }: { userType: string }) {
   };
 
   return (
-    <div className="realtive w-full min-h-screen flex flex-col  overflow-hidden relative">
+    <div className="relative w-full min-h-screen flex flex-col  overflow-hidden ">
       <div className="w-full">
         {/* Main content */}
         <motion.div
@@ -177,13 +177,13 @@ export default function RegisterForm({ userType }: { userType: string }) {
                     />
 
                     <motion.div
-                      className="flex items-start sm:items-center gap-2 text-gray-500 mt-2"
+                      className="flex items-center gap-2 text-gray-500 mt-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
                     >
                       <Checkbox
-                        className="mt-1 sm:mt-0 text-primary bg-white border-primary 
+                        className="text-primary bg-white border-primary 
                   data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                         checked={watch("terms") ?? false} // Ensure default value is boolean
                         onCheckedChange={(checked) =>
@@ -312,83 +312,6 @@ export default function RegisterForm({ userType }: { userType: string }) {
           </div>
         </motion.div>
       </div>
-
-      {/* SUCCESS STORIES SECTION */}
-      {/* <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex flex-col items-center max-w-5xl mx-auto"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">
-            Our creator success stories
-          </h2>
-          <p className="text-center text-gray-600 max-w-2xl mb-10">
-            Explore real-life examples of how creators are using Influenery to
-            connect with top brands and achieve their goals.
-          </p>
-
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="flex flex-col sm:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-dashed border-[#c8c8f1]"
-          >
-            <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
-              <Image
-                src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
-                alt="Creator Success Stories"
-                fill
-                className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between p-6 w-full">
-              <div className="flex flex-col sm:flex-row gap-6 mb-4 ">
-                <div>
-                  <span className="text-gray-400 block">Creator</span>
-                  <p className="font-semibold text-black">Adam</p>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Joined On</span>
-                  <p className="font-semibold text-black">12th Sep 2025</p>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Videos Created</span>
-                  <p className="font-semibold text-black">451</p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed max-w-lg">
-                Adam, a lifestyle creator from Austin, turned his passion for
-                self-care and storytelling into a thriving career. Through
-                Influenery, he connected with over 15 brands in 8 months — creating
-                authentic product videos that reached 1M+ viewers. He doubled his
-                income and landed a long-term brand deal, all while working from his
-                home studio.
-              </p>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section> */}
-
-      {/* METRICS ROW */}
-      {/* <div className="w-full py-12 px-4 text-center grid grid-cols-1 sm:grid-cols-3 gap-6 bg-white max-w-6xl mx-auto">
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-700">Trusted by brands</p>
-          <h3 className="text-6xl font-bold text-[#8055FE]">100+</h3>
-        </div>
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-700">Home to Creators</p>
-          <h3 className="text-6xl font-bold text-[#8055FE]">170+</h3>
-        </div>
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-700">Average earning </p>
-          <h3 className="text-6xl font-bold text-[#8055FE]">
-            125k{" "}
-            <span className="text-sm font-bold text-[#8055FE]">per annum</span>
-          </h3>
-        </div>
-      </div> */}
-
       <Footer />
     </div>
   );

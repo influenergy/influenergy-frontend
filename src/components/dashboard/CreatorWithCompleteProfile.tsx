@@ -85,8 +85,8 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       {/* Welcome Section */}
       <div className={`grid grid-cols-1  ${userProfile?.userType === "UGC" && !userProfile?.badge ? "md:grid-cols-1 lg:grid-cols-[2fr_2fr]" : "md:grid-cols-1 lg:grid-cols-1"
         } gap-6 w-full`}>
-        <Card className="p-6 w-full flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
-          <div>
+        <Card className="p-6 w-full md:flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
+          <div className="mb-2 md:mb-0 flex items-center">
             <video
               controls
               width="100%"

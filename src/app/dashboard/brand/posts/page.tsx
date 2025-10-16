@@ -46,22 +46,22 @@ const Page = () => {
     <div className="p-4">
       <div className="mb-8">
         {campaigns.length != 0 && (
-          <div className="flex justify-between items-center">
-            <div>
+          <div className="lg:flex justify-between items-center">
+            <div className="mb-2 lg:mb-0">
               <h1 className="text-2xl font-bold mb-1">My Ad Briefs</h1>
               <p className="text-gray-600 text-sm max-w-md dark:text-white">
                 Our AI helps you create a brief quickly, and you can refine it manually to get the most accurate creator matches.
               </p>
             </div>
             <div className="flex gap-3">
-              <Button className="bg-white text-primary px-5 py-2 rounded-xl hover:text-white" onClick={() => {
+              <Button className="bg-white text-primary px-2 md:px-5 py-2 rounded-xl hover:text-white" onClick={() => {
                 setShowUrlModal(true)
               }}>
                 <Sparkles className="h-8 w-8 " />
                 Create Brief using AI
               </Button>
               <Link href="/dashboard/brand/create-post">
-                <Button className="bg-primary px-5 py-2 rounded-xl">
+                <Button className="bg-primary px-2 md:px-5 py-2 rounded-xl">
                   Add New Ad Brief
                 </Button>
               </Link>

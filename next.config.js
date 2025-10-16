@@ -10,7 +10,8 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "hostfluencer.com",
       "www.hostfluencer.com",
-      "www.vbreathe.com"
+      "www.vbreathe.com",
+      "cdn.liznr.ai"
     ],
   },
 };

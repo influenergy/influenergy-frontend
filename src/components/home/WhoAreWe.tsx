@@ -18,7 +18,7 @@ export default function WhoAreWe() {
         transition={{ duration: 0.7 }}
         viewport={{ once: true, amount: 0.3 }}
       >
-          <Image src="https://d20cf3kfv1a9jn.cloudfront.net/images/hero.png" alt="Hero Image" width={600} height={600} className=" inset-0 object-fill w-full h-full rounded-lg z-0" />
+          <Image src="https://d20cf3kfv1a9jn.cloudfront.net/images/hero.png" alt="Hero Image" width={600} height={600} className=" inset-0 object-fill md:w-full md:h-full rounded-lg z-0" />
       </motion.div>
 
       {/* Text Section */}

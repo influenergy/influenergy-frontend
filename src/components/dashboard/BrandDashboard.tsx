@@ -171,7 +171,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     </div>
                 </Card>
                 {/* Recently Worked With + Stats */}
-                <div className={`grid grid-cols-1 md:grid-cols-2 ${favCreators.length > 0 ? 'lg:grid-cols-[1.5fr_2.5fr]' : 'lg:grid-cols-1'} gap-6 w-full h-full`}>
+                <div className={`grid grid-cols-1 ${favCreators.length > 0 ? 'lg:grid-cols-[1.5fr_2.5fr]' : 'lg:grid-cols-1'} gap-6 w-full h-full`}>
 
 
                     <div className="w-full flex flex-col">
@@ -310,8 +310,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                 </div>
             </div>
             <div className="grid grid-cols-1">
-                <Card className="p-6 ">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="lg:p-6 ">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <PieChart
                             data={regionAnalysis?.cityData as DataItem[]}
                             labelKey="city"
@@ -323,8 +323,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             title="Creator Distribution by Platform"
                         />
                     </div>
-                    <div>
-                    </div>
+
                 </Card>
             </div>
             {completedCollabs.length > 0 && <Card className="p-6">

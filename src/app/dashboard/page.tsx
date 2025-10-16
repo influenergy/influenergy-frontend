@@ -93,8 +93,8 @@ export default function DashboardPage() {
 
   return (
     <div className="relative p-2 px-5 flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4 pr-4">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+      <div className="flex justify-between items-center mb-4 pr-4 ">
+        <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
         {badgeLevel && (
           <Button
             onClick={() => setShowFeatured(true)}

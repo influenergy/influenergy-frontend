@@ -53,7 +53,7 @@ const commonLinks: NavItem[] = [
   },
 ];
 
-export default function Sidebar({ type, className }: { type: string, className: string }) {
+export default function Sidebar({ type, className, onClose }: { type: string, className: string, onClose?: () => void }) {
   const user = useAppSelector((state) => state.auth.userType);
 
 
@@ -126,7 +126,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
             <p className="text-white text-xs sm:text-sm md:text-base truncate max-w-full">
               {userProfile?.fullName}
             </p>
-            <button className="bg-transparent text-white border-gray-300 border rounded-lg text-nowrap text-[10px] py-1 px-1 leading-snug font-extralight hover:bg-transparent flex items-center gap-1" onClick={() => router.push("/user-profile")}>
+            <button className="bg-transparent text-white border-gray-300 border rounded-lg text-nowrap text-[10px] py-1 px-1 leading-snug font-extralight hover:bg-transparent flex items-center gap-1" onClick={() => { router.push("/user-profile"); onClose?.(); }}>
               View Profile
               {userProfile?.isPasswordSet === false && (
                 <Badge variant="destructive" className="text-[12px] px-1 py-0 h-4">
@@ -140,7 +140,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
 
         <nav className="grid items-start gap-1 md:gap-2 mt-2">
           {navItems.map((item: NavItem) => (
-            <Link key={item.slug} href={item.href || "#"} className="flex items-center relative">
+            <Link key={item.slug} href={item.href || "#"} className="flex items-center relative" onClick={onClose}>
               <Button
                 variant="ghost"
                 className={cn(
@@ -172,7 +172,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
         <div className=" mt-auto text-center">
           <nav className="grid items-start gap-1 md:gap-2 mt-2">
             {commonLinks.map((item: NavItem) => (
-              <Link key={item.slug} href={item.href || "#"}>
+              <Link key={item.slug} href={item.href || "#"} onClick={onClose}>
                 <Button
                   variant="ghost"
                   className={cn(
@@ -195,7 +195,7 @@ export default function Sidebar({ type, className }: { type: string, className: 
             className={cn(
               "w-full justify-center md:justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-color text-white"
             )}
-            onClick={handleLogout}
+            onClick={() => { handleLogout(); onClose?.(); }}
           >
             <LogOut className="h-4 w-4 flex-shrink-0" />
             <p className="text-sm md:block">Logout</p>
