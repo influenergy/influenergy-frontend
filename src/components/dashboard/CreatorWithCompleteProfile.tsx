@@ -31,6 +31,10 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
   const [collaborationCount, setCollaborationCount] = useState<number>(0);
 
   const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const videoSrc =
+    "https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4";
 
   const userProfile = useAppSelector(selectUser);
   console.log(userProfile, "userProfile");
@@ -86,9 +90,9 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       <div className={`grid grid-cols-1  ${userProfile?.userType === "UGC" && !userProfile?.badge ? "md:grid-cols-1 lg:grid-cols-[2fr_2fr]" : "md:grid-cols-1 lg:grid-cols-1"
         } gap-6 w-full`}>
         <Card className="p-6 w-full md:flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
-          <div className="mb-2 md:mb-0 flex items-center">
+          <div className="mb-2 md:mb-0 flex items-center cursor-pointer" onClick={() => setIsOpen(true)}>
             <video
-              controls
+            controls
               width="100%"
               height="100%"
               style={{
@@ -98,10 +102,36 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
                 background: "#000",
               }}
             >
-              <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
+              <source src={videoSrc} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
+          {/* Modal */}
+          {isOpen && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+              onClick={() => setIsOpen(false)}
+            >
+              <div
+                className="relative w-full max-w-3xl"
+                onClick={(e) => e.stopPropagation()} // prevent closing modal when clicking inside
+              >
+                <video
+                  controls
+                  autoPlay
+                  style={{ width: "100%", borderRadius: "12px" }}
+                >
+                  <source src={videoSrc} type="video/mp4" />
+                </video>
+                <button
+                  className="absolute top-2 right-2 text-white text-2xl font-bold"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          )}
           <div className="flex-1 flex flex-col justify-center gap-2">
             <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
               Welcome Back, {fullName || "Creator"}!

@@ -129,9 +129,9 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
         {/* <hr className="my-2 opacity-30" /> */}
 
         {/* Avatar section with improved responsiveness */}
-        <div className="w-full flex  items-center justify-center p-2 md:p-2 md:px-4 border-[1px] border-gray-400 rounded-lg gap-4 my-1 md:my-3 lg:my-5 ">
+        <div className="w-full flex flex-col  items-center justify-center p-2 md:p-2 md:px-4 border-[1px] border-gray-400 rounded-lg gap-2 my-1 md:my-3 lg:my-2 ">
           <div className="relative">
-            <Avatar className="h-14 w-14  transition-all duration-300 ">
+            <Avatar className="h-20 w-20  transition-all duration-300 ">
               <AvatarImage
                 src={
                   userProfile?.profileIcon ||
@@ -145,13 +145,13 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
                 {userProfile?.fullName?.substring(0, 2) || "U"}
               </AvatarFallback>
             </Avatar>
-            {badgeLevelInfo && <Image src={badgeLevelInfo?.img} alt="badge" width={22} height={22} className={`absolute top-0 left-[-5px] text-${badgeLevelInfo?.color}`} />}
+            {badgeLevelInfo && <Image src={badgeLevelInfo?.img} alt="badge" width={35} height={35} className={`absolute top-0 left-[-10px] text-${badgeLevelInfo?.color}`} />}
           </div>
           <div className="flex flex-col items-start justify-center gap-1 w-full">
             <p className="text-white text-xs sm:text-sm md:text-base truncate max-w-full">
               {userProfile?.fullName}
             </p>
-            <button className="bg-transparent text-white border-gray-300 border rounded-lg text-nowrap text-[10px] py-1 px-1 leading-snug font-extralight hover:bg-transparent flex items-center gap-1" onClick={() => { router.push("/user-profile"); onClose?.(); }}>
+            <button className="bg-transparent w-full text-white border-gray-300 border rounded-lg text-nowrap text-[12px] py-1 px-2 leading-snug font-extralight hover:bg-transparent flex items-center justify-between gap-1" onClick={() => { router.push("/user-profile"); onClose?.(); }}>
               View Profile
               {userProfile?.isPasswordSet === false && (
                 <Badge variant="destructive" className="text-[12px] px-1 py-0 h-4">
