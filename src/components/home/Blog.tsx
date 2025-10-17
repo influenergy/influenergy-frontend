@@ -83,7 +83,7 @@ export default function Blog() {
         <motion.div
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
-          className="absolute top-0 right-0"
+          className="absolute top-12 right-2 md:top-0 md:right-0"
         >
           <Link
             href="/blogs"

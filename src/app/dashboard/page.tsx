@@ -13,6 +13,7 @@ import NonVerifiedCreatorProfile from "@/components/dashboard/NonVerifiedCreator
 import BrandDashboard from "@/components/dashboard/BrandDashboard";
 import { Button } from "@/components/ui/button";
 import FeaturedModal from "@/components/dashboard/FeaturedModal";
+import Image from "next/image";
 
 
 const Levels = [
@@ -106,12 +107,13 @@ export default function DashboardPage() {
             }}
           >
             <span
-              className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+              className="inline-flex items-center justify-center rounded-full px-3 py-1 gap-1 text-xs font-semibold uppercase tracking-wide"
               style={{
                 backgroundColor: `${badgeLevel.color}20`,
                 color: badgeLevel.color,
               }}
             >
+              <Image src={badgeLevel.img} alt="badge" width={20} height={20} />
               {badgeLevel.title.split("-")[1]?.trim()}
             </span>
           </Button>

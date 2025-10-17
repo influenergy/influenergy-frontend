@@ -81,6 +81,7 @@ const OTPLoginForm = () => {
     // first-time send
     const handleSendOtp = () => {
         if (!email || !isEmailValid) return;
+        setEmail(email.trim());
         setMessage(null);
         setError(null);
         sendOtpMutation.mutate({ email, userType: userType || "" });
@@ -93,19 +94,6 @@ const OTPLoginForm = () => {
         setError(null);
         sendOtpMutation.mutate({ email, userType: userType || "" });
     };
-
-    // const handleResendOtp = () => {
-    //     if (!email) return;
-    //     setMessage(null);
-    //     setError(null);
-    //     sendOtpMutation.mutate({ email, userType: userType || "" }, {
-    //         onSuccess: () => {
-    //             setMessage("OTP resent to your email");
-    //             setError(null);
-    //             setResendSeconds(60);
-    //         }
-    //     } as never);
-    // };
 
     useEffect(() => {
         if (resendSeconds <= 0) return;
@@ -144,7 +132,16 @@ const OTPLoginForm = () => {
                                 placeholder="Enter Email Address"
                                 className={`w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-1 ${email && !isEmailValid ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"}`}
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value.trimStart())} // remove leading spaces
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/\s+/g, "").toLowerCase();
+                                    console.log("Email input changed:", value);
+                                    setEmail(value);
+                                }}
+                                onBlur={(e) => {
+                                    e.target.value = e.target.value.trim(); // trims leading & trailing spaces on blur
+                                    setEmail(e.target.value);
+                                }}
+
                                 aria-invalid={!!email && !isEmailValid}
                                 disabled={sendOtpMutation.isPending || isOtpSent}
                             />

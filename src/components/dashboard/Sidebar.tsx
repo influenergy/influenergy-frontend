@@ -17,7 +17,26 @@ import { useEffect } from "react";
 
 
 // import { useState } from "react";
-
+const Levels = [
+  {
+    key: "level_1",
+    title: "Level 1 - Rising Creator",
+    img: "/bronze-award.svg",
+    color: "#b1b1b1", // Bronze
+  },
+  {
+    key: "level_2",
+    title: "Level 2 - Active Creator",
+    img: "/gold-award.svg",
+    color: "#ffbe4b", // Gold
+  },
+  {
+    key: "level_3",
+    title: "Level 3 - Pro Creator",
+    img: "/diamond-award.svg",
+    color: "#32bdd8", // Diamond / Sky Blue
+  },
+];
 interface NavItem {
   href?: string;
   icon: LucideIcon;
@@ -55,8 +74,8 @@ const commonLinks: NavItem[] = [
 
 export default function Sidebar({ type, className, onClose }: { type: string, className: string, onClose?: () => void }) {
   const user = useAppSelector((state) => state.auth.userType);
-
-
+  const badge = useAppSelector((state) => state.auth.user?.badge);
+  
   const userProfile = useAppSelector(selectUser);
 
   const pathname = usePathname();
@@ -78,6 +97,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
     try {
 
       document.documentElement.classList.remove("dark");
+      localStorage.clear();
       await authApi.logout(user);
       dispatch(logout());
       router.push("/login");
@@ -91,12 +111,13 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
     }
   };
 
-
+  const badgeLevelInfo = Levels.find((lvl) => lvl.key === badge);
 
   return (
     <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className}`}>
       <div className=" flex h-full flex-col gap-2 p-2 md:p-4 overflow-auto">
         <Link href="/dashboard" className="flex justify-center items-center">
+
           <Image
             src="/images/logo-white.svg"
             width={180}
@@ -109,19 +130,23 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
 
         {/* Avatar section with improved responsiveness */}
         <div className="w-full flex  items-center justify-center p-2 md:p-2 md:px-4 border-[1px] border-gray-400 rounded-lg gap-4 my-1 md:my-3 lg:my-5 ">
-          <Avatar className="h-14 w-14  transition-all duration-300">
-            <AvatarImage
-              src={
-                userProfile?.profileIcon ||
-                "https://avatar.iran.liara.run/public/boy"
-              }
-              alt="@user"
-              className="object-cover"
-            />
-            <AvatarFallback>
-              {userProfile?.fullName?.substring(0, 2) || "U"}
-            </AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="h-14 w-14  transition-all duration-300 ">
+              <AvatarImage
+                src={
+                  userProfile?.profileIcon ||
+                  "https://avatar.iran.liara.run/public/boy"
+                }
+                alt="@user"
+                className="object-cover"
+              />
+             
+              <AvatarFallback>
+                {userProfile?.fullName?.substring(0, 2) || "U"}
+              </AvatarFallback>
+            </Avatar>
+            {badgeLevelInfo && <Image src={badgeLevelInfo?.img} alt="badge" width={22} height={22} className={`absolute top-0 left-[-5px] text-${badgeLevelInfo?.color}`} />}
+          </div>
           <div className="flex flex-col items-start justify-center gap-1 w-full">
             <p className="text-white text-xs sm:text-sm md:text-base truncate max-w-full">
               {userProfile?.fullName}
@@ -144,7 +169,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
               <Button
                 variant="ghost"
                 className={cn(
-                  "w-full justify-center md:justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
+                  "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
                   item.matchPaths?.some((matchPath) =>
                     pathname.startsWith(matchPath)
                   ) || pathname === item.href
@@ -176,7 +201,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-center md:justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
+                    "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
                     item.matchPaths?.some((matchPath) =>
                       pathname.startsWith(matchPath)
                     ) || pathname === item.href
@@ -193,7 +218,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-center md:justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-color text-white"
+              "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-color text-white"
             )}
             onClick={() => { handleLogout(); onClose?.(); }}
           >

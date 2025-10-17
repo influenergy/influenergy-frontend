@@ -22,7 +22,7 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
     <section className="py-16 px-4 md:px-10 lg:px-20 bg-white">
       <div className="container mx-auto">
         {/* Header with title and view all link */}
-        <div className="flex justify-between items-center mb-12">
+        <div className="md:flex justify-between items-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold">Explore Our Blogs</h2>
           <Link
             href="/blogs"

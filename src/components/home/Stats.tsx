@@ -75,8 +75,8 @@ export default function Stats() {
                     <p className="text-sm text-gray-700 font-semibold">Average Creator</p>
                 </div> */}
                 <div className="flex flex-col items-center">
-                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">US</h3>
-                    <p className="text-sm text-gray-700 font-semibold">Where are creator are from</p>
+                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">5M+</h3>
+                    <p className="text-sm text-gray-700 font-semibold">Total Followers of our Creators</p>
                 </div>
 
             </div>

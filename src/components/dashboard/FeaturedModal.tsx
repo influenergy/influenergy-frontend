@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userApi } from "@/services/userServices";
 import { useState } from "react";
 import { AxiosError } from "axios";
@@ -11,13 +11,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useDispatch } from "react-redux";
 import { setUserBadge } from "@/store/features/authSlice";
 
-export default function FeaturedModal({ isOpen, onClose, showBtn=true }: { isOpen: boolean; onClose: () => void; showBtn?: boolean }) {
+export default function FeaturedModal({ isOpen, onClose, showBtn = true }: { isOpen: boolean; onClose: () => void; showBtn?: boolean }) {
     const [showSuccess, setShowSuccess] = useState(false);
     const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
 
     const { toast } = useToast();
     const dispatch = useDispatch()
-
+    const queryClient = useQueryClient();
+    const queryKeys = {
+        userDetails: "userDetails",
+    };
     const addBadgeMutation = useMutation({
         mutationFn: () => userApi.addBadge(),
         onSuccess: (data) => {
@@ -26,6 +29,9 @@ export default function FeaturedModal({ isOpen, onClose, showBtn=true }: { isOpe
             setShowSuccess(true);
 
             dispatch(setUserBadge(badge))
+
+            queryClient.invalidateQueries({ queryKey: [queryKeys.userDetails] });
+
             // Auto close after 2.5 seconds
             setTimeout(() => {
                 setShowSuccess(false);
@@ -77,12 +83,12 @@ export default function FeaturedModal({ isOpen, onClose, showBtn=true }: { isOpe
         {
             title: "Get Verified",
             img: "/verified.svg",
-            text: "You will get Rising, Active, or Pro Creator badges.",
+            text: "Stand out and gain trust with your free verified badge to attract more brands.",
         },
         {
             title: "Attract Brands",
             img: "/verified.svg",
-            text: "Attract more brands for collaborations.",
+            text: "Kickstart more brand collaborations by setting smart, entry-level pricing.",
         },
     ];
 
@@ -223,7 +229,7 @@ export default function FeaturedModal({ isOpen, onClose, showBtn=true }: { isOpe
                                             ))}
                                         </div>
 
-                                       {showBtn && <p className="text-gray-400 md:max-w-3xl text-base dark:text-white">
+                                        {showBtn && <p className="text-gray-400 md:max-w-3xl text-base dark:text-white">
                                             Set your UGC pricing according to your level today and{" "}
                                             <span className="text-black dark:text-white">
                                                 unlock your badge to attract more collaborations and income opportunities!
