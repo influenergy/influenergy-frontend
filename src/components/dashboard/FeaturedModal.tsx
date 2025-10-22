@@ -27,7 +27,7 @@ export default function FeaturedModal({ isOpen, onClose, showBtn = true }: { isO
             const badge = data?.data?.badge || "level_1";
             setEarnedBadge(badge);
             setShowSuccess(true);
-
+            // console.log("Badge earned:", badge);
             dispatch(setUserBadge(badge))
 
             queryClient.invalidateQueries({ queryKey: [queryKeys.userDetails] });

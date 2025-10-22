@@ -14,6 +14,8 @@ import BrandDashboard from "@/components/dashboard/BrandDashboard";
 import { Button } from "@/components/ui/button";
 import FeaturedModal from "@/components/dashboard/FeaturedModal";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { setUserBadge } from "@/store/features/authSlice";
 
 
 const Levels = [
@@ -40,6 +42,7 @@ const Levels = [
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
+  const dispatch = useDispatch()
   const userType = useAppSelector((state) => state.auth.userType);
   const { data: userDetails, isLoading, error } = useUserDetails();
   const [showFeatured, setShowFeatured] = React.useState(false);
@@ -91,6 +94,10 @@ export default function DashboardPage() {
       ? Levels.find((lvl) => lvl.key === userDetails.data.badge)
       : null;
 
+    if(badgeLevel){
+      dispatch(setUserBadge(badgeLevel.key))
+    }
+  // console.log(badgeLevel, "🏅 User Badge Level");
 
   return (
     <div className="relative p-2 px-5 flex flex-col h-full">
