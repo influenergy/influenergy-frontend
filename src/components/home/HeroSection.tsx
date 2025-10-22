@@ -91,8 +91,7 @@ export default function HeroSection() {
             </h1>
 
             <p className="mt-3 md:mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.475rem)] max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.45rem] font-poppins text-center lg:text-start text-black">
-              Let’s create Influencers and UGC marketing campaigns that connect, inspire, and
-              perform—empowering brands to grow
+              Influenergy connects brands with creators for Influencer and UGC marketing campaigns
             </p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}

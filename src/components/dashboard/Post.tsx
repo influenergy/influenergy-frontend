@@ -6,6 +6,9 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { postApi } from "@/services/postServices";
+import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "@/hooks/useQueryCampaigns"; // make sure this import path is correct
+import { useToast } from "@/hooks/use-toast";
 
 const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign) => {
   const router = useRouter();
@@ -14,6 +17,9 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
   const [copying, setCopying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const isLongDescription = (campaignDescription?.length || 0) > 120;
+  const queryClient = useQueryClient();
+
+  const { toast } = useToast()
 
   const handleCardClick = () => {
     // Prevent navigation if dropdown is open or copy modal is open
@@ -40,7 +46,11 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
       setCopying(false);
       setShowCopyModal(false);
       // Optionally, show a toast or refresh list
-      alert("Campaign copied as '" + newName + "' successfully!"); // Replace with your preferred notification method
+      toast({ title: "Campaign copied", description: `Campaign copied as '${newName}' successfully!` });
+      // alert("Campaign copied as '" + newName + "' successfully!"); // Replace with your preferred notification method
+
+      await queryClient.invalidateQueries({ queryKey: [queryKeys.campaigns] });
+
     }
     catch (error) {
       console.error("Error copying campaign:", error);

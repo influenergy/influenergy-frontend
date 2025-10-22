@@ -112,7 +112,7 @@ export default function Header() {
           className={`w-full lg:w-auto ${menuOpen ? "block" : "hidden"} lg:block mt-4 md:mt-0 ${menuOpen ? "absolute left-0 top-full bg-white border-t border-gray-100 shadow-lg z-40" : ""}`}
         >
           <ul className={`text-lg font-medium ${menuOpen ? "flex flex-col gap-4 p-4 divide-y divide-gray-100" : "flex flex-col md:flex-row gap-4"}`}>
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* <div className="flex flex-col sm:flex-row gap-4">
               <li>
                 <Link href="/#blog" className="hover:text-primary transition-colors block py-2">
                   Blog
@@ -128,7 +128,7 @@ export default function Header() {
                   About Us
                 </Link>
               </li>
-            </div>
+            </div> */}
 
             {/* Mobile Buttons */}
             <div className="flex flex-col gap-2 mt-2">
@@ -156,7 +156,7 @@ export default function Header() {
         className={`w-full lg:w-auto ${menuOpen ? "block" : "hidden"} lg:block mt-4 md:mt-0 ${menuOpen ? "absolute left-0 top-full bg-white border-t border-gray-100 shadow-lg z-40" : ""}`}
       >
         <ul className={`text-lg font-medium ${menuOpen ? "flex flex-col gap-4 p-4 divide-y divide-gray-100" : "flex flex-col md:flex-row gap-4"}`}>
-          <div className="flex flex-col sm:flex-row gap-4">
+          {/* <div className="flex flex-col sm:flex-row gap-4">
             <li>
               <Link href="/#blog" className="hover:text-primary transition-colors block py-2">
                 Blog
@@ -172,7 +172,7 @@ export default function Header() {
                 About Us
               </Link>
             </li>
-          </div>
+          </div> */}
 
           {/* Mobile Buttons */}
           <div className="flex flex-col gap-2 mt-2">
