@@ -13,6 +13,7 @@ export default function HeroSection() {
     { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company3.png" },
     { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company-4.png" },
     { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/company5.png" },
+    { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/clarven_logo.png" },
     { logo: "https://www.hostfluencer.com/lovable-uploads/37dff50a-de23-4743-b5c6-803312d8f98c.png" },
     // { logo: "https://www.vbreathe.com/wp-content/uploads/2025/07/Logo-Small-1.png" },
     { logo: "https://d20cf3kfv1a9jn.cloudfront.net/images/Logo-V-Small.png" },
