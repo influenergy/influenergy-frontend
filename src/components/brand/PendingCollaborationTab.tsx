@@ -9,6 +9,7 @@ import { Campaign } from "@/types/PostQuestionnaire";
 import DetailsModal from "../inbox/DetailsModal";
 import { Button } from "../ui/button";
 import { useDeleteCollab } from "@/hooks/usePost";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 
 const getSocialMediaIcon = (platform: string) => {
   switch (platform?.toLowerCase()) {
@@ -111,7 +112,8 @@ const emptyCollaboration: Collaboration = {
 export default function PendingCollaborationTab() {
   const [campaignData, setCampaignData] = useState<Collaboration>(emptyCollaboration)
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
-
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<string | null>(null)
+  const [deletingCollabId, setDeletingCollabId] = useState<string | null>(null)
   const { data, isLoading, isError } = useFindAiCampaignsList("Pending");
   const { mutate: handleCollabDelete, isPending } = useDeleteCollab("Pending");
 
@@ -273,21 +275,72 @@ export default function PendingCollaborationTab() {
                                 </div>
                               </Card>
                               {
-                                collab.status === "Cancelled" && <div className="flex justify-between items-center gap-4 mt-6">
-                                  <div className="flex flex-col gap-4">
-                                    <h3>Status</h3>
-                                    <p className="text-red-500 font-semibold">
-                                      <span className="bg-red-500 inline-block h-3 w-3 rounded-full mr-2" />
-                                      Rejected
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <Button className="text-red-500 bg-transparent border-none hover:bg-transparent hover:text-red-500 hover:scale-105 dark:bg-gray-600" disabled={isPending}
-                                      onClick={() => handleCollabDelete(collab.collaborationId)}>{isPending ? "Deleting..." : "Delete Rejected Request"}</Button>
+                                collab.status === "Cancelled" ?
+                                  <div className="flex justify-between items-center gap-4 mt-6">
+                                    <div className="flex flex-col gap-4">
+                                      <h3>Status</h3>
+                                      <p className="text-red-500 font-semibold">
+                                        <span className="bg-red-500 inline-block h-3 w-3 rounded-full mr-2" />
+                                        Rejected
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <Button className="text-red-500 bg-transparent border-none hover:bg-transparent hover:text-red-500 hover:scale-105 dark:bg-gray-600" disabled={deletingCollabId === collab.collaborationId && isPending}
+                                        onClick={() => {
+                                          setDeletingCollabId(collab.collaborationId);
+                                          handleCollabDelete(collab.collaborationId, {
+                                            onSuccess: () => setDeletingCollabId(null),
+                                            onError: () => setDeletingCollabId(null)
+                                          });
+                                        }}>{deletingCollabId === collab.collaborationId && isPending ? "Deleting..." : "Delete Rejected Request"}</Button>
+                                    </div>
+                                  </div> :
+                                  <div className="flex justify-between items-center gap-4 mt-6">
+                                    <Button className="text-red-500 bg-transparent border-none hover:bg-transparent hover:text-red-500 hover:scale-105 dark:bg-gray-600" disabled={deletingCollabId === collab.collaborationId && isPending}
+                                      onClick={() => setOpenDeleteDialog(collab.collaborationId)}>{deletingCollabId === collab.collaborationId && isPending ? "Deleting..." : "Delete Request"}
+                                    </Button>
+                                    <Dialog
+                                      open={openDeleteDialog === collab.collaborationId}
+                                      onOpenChange={(open) => setOpenDeleteDialog(open ? collab.collaborationId : null)}
+                                    >
+                                      <DialogContent className="max-w-sm">
+                                        <DialogHeader>
+                                          <DialogTitle>Delete Request</DialogTitle>
+                                        </DialogHeader>
+                                        <DialogDescription>
+                                          Are you sure you want to delete this request?
+                                        </DialogDescription>
+                                        <div className="flex justify-end gap-4 mt-4 w-full">
+                                          <Button
+                                            className="border border-primary text-primary bg-white hover:bg-primary hover:text-white w-full"
+                                            onClick={() => {
+                                              setOpenDeleteDialog(null);
+                                            }}
+                                            disabled={deletingCollabId === collab.collaborationId && isPending}
+                                          >
+                                            Cancel
+                                          </Button>
+                                          <Button
+                                            className="bg-primary text-white w-full"
+                                            onClick={() => {
+                                              setDeletingCollabId(collab.collaborationId);
+                                              handleCollabDelete(collab.collaborationId, {
+                                                onSuccess: () => {
+                                                  setDeletingCollabId(null);
+                                                  setOpenDeleteDialog(null);
+                                                },
+                                                onError: () => setDeletingCollabId(null)
+                                              });
+                                            }}
+                                            disabled={deletingCollabId === collab.collaborationId && isPending}
+                                          >
+                                            {deletingCollabId === collab.collaborationId && isPending ? "Deleting..." : "Delete"}
+                                          </Button>
+                                        </div>
+                                      </DialogContent>
+                                    </Dialog>
                                   </div>
 
-
-                                </div>
                               }
                             </div>
                           )
