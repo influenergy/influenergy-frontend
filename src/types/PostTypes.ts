@@ -1,88 +1,31 @@
-export interface PostData {
-  id: string;
-  image: string;
-  title: string;
-  brandName?: string;
-  companyLogo?: string;
-  companyName?: string;
-  campaignObjective?: string;
-  campaignDescription?: string;
-  campaignConcept?: string;
-  campaignPost?: string;
-  yourBrief?: string;
-  campaignPdf?: string;
-  targetGroup?: {
-    age?: string[];
-    gender?: string[];
-    location?: string[];
-    interest?: string[];
-  };
-  contentVibe?: {
-    contentType?: string;
-    durationOfVideo?: string;
-    catchPhrase?: string;
-    keyMessage?: string;
-    toneStyle?: string;
-    creatorLookingFor?: string;
-  };
-  idealCreatorChecklist?: {
-    minFollowerCount?: string;
-    ugcCreatorOrInfluencer?: string;
-    preferredSocialMedia?: string[]; // ✅ Fix: string[] not string
-    pastExperience?: string;
-    preferredCreatorNiche?: string[];
-    preferredCreatorDemographics?: string;
-  };
-  compensation?: {
-    budget?: string;
-    expectedDeliverables?: string;
-    deliveryDays?: string;
-    additionalInstructions?: string;
-    campaignPdf?: string;
-  };
-  description: string;
+export interface NewCampaignResponse {
+  _id: string;
+  campaignTitle: string;
+  campaignDescription: string;
+  targetNiche: string[];
+  budgetForCampaign: string;
+  expectedDeliverables: string[];
+  brandId: string;
+  status: "DRAFT" | "PUBLISHED" | "CLOSED";
+  applicationQuestions?: string;
+  campaignPost?: string; // Image URL
   createdAt: string;
-  requirement: {
-    location: string[];
-    minFollowers: string;
-    minEngagement: string;
-  };
+  updatedAt: string;
 }
 
-export interface CampaignResponse {
-  vectorId: string;
-  status: boolean;
-  message: string;
-  _id: string;
-  campaignName: string;
-  campaignPost: string;
-  brandId: string;
-  brandName: string;
-  campaignObjective: string[];
+export interface NewPostData {
+  id: string;
+  image?: string;
+  title: string;
   campaignDescription: string;
-  campaignConcept: string;
-  yourBrief: string;
-  targetAgeGroup: string;
-  targetGender: string;
-  targetLocation: string[];
-  targetInterests: string[];
-  contentType: string;
-  videoDuration: string;
-  catchPhrase: string;
-  keyMessage: string;
-  toneStyle: string;
-  creatorType: string;
-  minimumFollowers: string;
-  creatorInfluencer: string;
-  socialMediaPlatform: string;
-  pastExperience: string;
-  preferredCreatorNiche: string[];
-  preferredCreatorDemographics: string;
+  targetNiche: string[];
   budgetForCampaign: string;
-  expectedDeliverables: string;
-  noOfDaysForDelivery: string;
-  additionalInstructions: string;
-  campaignPdf: string;
+  expectedDeliverables: string[];
+  status: "DRAFT" | "PUBLISHED" | "CLOSED";
+  applicationQuestions?: string;
+  createdAt: string;
+  updatedAt?: string;
+  brandId?: string;
 }
 
 // New types for the updated API structure
@@ -146,11 +89,11 @@ export interface CollaborationsData {
 }
 
 export interface NewCampaignResponse {
-  campaignData: CampaignResponse;
+  campaignData: NewCampaignResponse;
   collaborations: CollaborationsData;
 }
 
 export interface PostDescriptionProps {
-  data: CampaignResponse,
+  data: NewCampaignResponse,
   collaborations: Collaboration[]
 }

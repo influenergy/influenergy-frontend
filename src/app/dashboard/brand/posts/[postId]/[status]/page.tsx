@@ -37,7 +37,7 @@ const Page = () => {
   if (!campaignData) {
     return <div>Campaign not found</div>;
   }
-
+  
   return <>
 
     <PostDescription data={campaignData} collaborations={collaborations} />

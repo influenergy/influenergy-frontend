@@ -77,7 +77,7 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       if (userType !== null) {
-        // Store authentication state
+        // Store authentication state 
         dispatch(
           setCredentials({
             user: data?.data,

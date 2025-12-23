@@ -1,6 +1,6 @@
 import { transformPostData } from "@/utils/transformQuestionnaire";
 import { api } from "./api";
-import { PostQuestionnaireData } from "@/types/Questionnaire";
+import { PostQuestionnaireData, CampaignQuestionnaireData  } from "@/types/Questionnaire";
 
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
@@ -10,6 +10,20 @@ export const postApi = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error creating ad post:", error);
+      throw error;
+    }
+  },
+  createCampaign: async (formData: CampaignQuestionnaireData) => {
+    // const transformedData = transformPostData(formData);
+    try {
+      const response = await api.post("/brand/add-new-campaign", formData, {
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
       });
       return response.data;
     } catch (error) {
@@ -45,9 +59,9 @@ export const postApi = {
   },
 
   // Get a single campaign by ID
-  getCampaignById: async (id: string, status: string) => {
+  getCampaignById: async (id: string, status: string = "Completed") => {
     try {
-      const response = await api.get(`/brand/campaign/${id}/${status}`);
+      const response = await api.get(`/brand/campaign/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Error fetching campaign with ID ${id}:`, error);

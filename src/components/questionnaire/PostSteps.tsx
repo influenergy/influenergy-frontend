@@ -85,11 +85,9 @@ export const FormField = ({ field }: FormFieldProps) => {
 
   const fieldName = field.slug as keyof PostQuestionnaireData;
   const error = errors[fieldName];
-  // Always call useRef at the top level to avoid conditional hook call
   const inputRef = React.useRef<HTMLInputElement>(null);
   const contentType = watch("content-type");
 
-  // If content type is Long form and duration selected is invalid, clear it
   React.useEffect(() => {
     if (
       fieldName === "video-duration" &&
@@ -98,26 +96,25 @@ export const FormField = ({ field }: FormFieldProps) => {
     ) {
       setValue(fieldName, "", { shouldValidate: true, shouldTouch: true, shouldDirty: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentType]);
 
   if (fieldName === "target-interests" || fieldName === "target-gender") {
     return <PrimaryNicheInput field={field} />;
   }
 
-
+  // DROPDOWN with placeholder
   if (field.category === "dropdown") {
     return (
       <div className="relative w-full">
         <select
           {...register(fieldName)}
           className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+              ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+              : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
-          <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-200 dark:bg-gray-900">
-            Select
+          <option value="" className="dark:text-gray-200 dark:bg-gray-900">
+            {field.placeholder || "Select an option"}
           </option>
           {field.options?.map((option) => {
             const disableShortForLongForm =
@@ -128,7 +125,6 @@ export const FormField = ({ field }: FormFieldProps) => {
               <option
                 key={option}
                 value={option}
-                style={{ fontFamily: "Poppins, sans-serif" }}
                 className="dark:text-gray-200 dark:bg-gray-900"
                 disabled={disableShortForLongForm}
               >
@@ -143,6 +139,8 @@ export const FormField = ({ field }: FormFieldProps) => {
       </div>
     );
   }
+
+  // MULTISELECT with placeholder
   if (field.category === "multiselect") {
     const selectedOptions = watch(fieldName) || [];
     return (
@@ -161,32 +159,34 @@ export const FormField = ({ field }: FormFieldProps) => {
             const values = selected.map((opt) => opt.value);
             setValue(fieldName, values, { shouldValidate: true });
           }}
+          placeholder={field.placeholder || "Select options..."}
           classNamePrefix="react-select"
           className="dark:bg-gray-900 dark:text-gray-100"
         />
       </div>
     );
   }
+
+  // GROUPED DROPDOWN with placeholder
   if (field.category === "grouped-dropdown") {
     return (
       <div className="relative w-full">
         <select
           {...register(fieldName)}
           className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+              ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+              : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
-          <option value="" style={{ fontFamily: "Poppins, sans-serif" }} className="dark:text-gray-900">
-            Select
+          <option value="" className="dark:text-gray-900">
+            {field.placeholder || "Select an option"}
           </option>
-          {/* Ensure current value is visible even if not part of predefined options */}
           {(() => {
             const currentValue = watch(fieldName) as unknown as string | undefined;
             const allOptions = (field.groups || []).flatMap((g) => g.options);
             const hasCurrent = currentValue && allOptions.includes(currentValue);
             return !hasCurrent && currentValue ? (
-              <option value={currentValue} style={{ fontFamily: "Poppins, sans-serif" }}>
+              <option value={currentValue}>
                 {currentValue}
               </option>
             ) : null;
@@ -194,11 +194,7 @@ export const FormField = ({ field }: FormFieldProps) => {
           {field.groups?.map((group) => (
             <optgroup key={group.label} label={group.label}>
               {group.options.map((option: string) => (
-                <option
-                  key={option}
-                  value={option}
-                  style={{ fontFamily: "Poppins, sans-serif" }}
-                >
+                <option key={option} value={option}>
                   {option}
                 </option>
               ))}
@@ -212,17 +208,18 @@ export const FormField = ({ field }: FormFieldProps) => {
     );
   }
 
-
+  // DATE with placeholder
   if (field.category === "date") {
     return <DateInput field={field} />;
   }
 
+  // TEXTAREA with placeholder
   if (field.category === "textarea") {
     return (
       <div>
         <textarea
           {...register(fieldName)}
-          placeholder={field.placeholder}
+          placeholder={field.placeholder || "Enter text..."}
           cols={3}
           rows={3}
           className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 dark:border-gray-700 focus:ring-primary text-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2"
@@ -231,8 +228,8 @@ export const FormField = ({ field }: FormFieldProps) => {
     );
   }
 
+  // FILE input
   if (field.category === "file") {
-    // Special handling for campaign-post image preview and upload
     if (fieldName === "campaign-post") {
       const value = watch(fieldName);
       const isImage = typeof value === "string" && value.startsWith("data:image");
@@ -247,7 +244,6 @@ export const FormField = ({ field }: FormFieldProps) => {
               title="Click to upload a new image"
               style={{ maxHeight: 200 }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={value}
                 alt="Campaign Post Preview"
@@ -262,7 +258,7 @@ export const FormField = ({ field }: FormFieldProps) => {
               title="Click to upload an image"
               style={{ maxHeight: 200 }}
             >
-              Click to upload an image
+              {field.placeholder || "Click to upload an image"}
             </div>
           )}
           <input
@@ -286,7 +282,7 @@ export const FormField = ({ field }: FormFieldProps) => {
         </div>
       );
     }
-    // Default file input for other file fields
+
     return (
       <input
         type="file"
@@ -304,13 +300,14 @@ export const FormField = ({ field }: FormFieldProps) => {
           }
         }}
         className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-          : "border-gray-300 focus:ring-primary dark:border-gray-700"
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
       />
     );
   }
 
+  // RANGE slider (already has display)
   if (field.category === "range") {
     const value = watch(fieldName) || 0;
 
@@ -345,21 +342,19 @@ export const FormField = ({ field }: FormFieldProps) => {
             </div>
           </div>
         </div>
-
-        {/* {error && (
-          <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
-        )} */}
       </div>
     );
   }
 
+  // DEFAULT TEXT/NUMBER INPUT with placeholder
   return (
     <input
       type={field.category}
       {...register(fieldName)}
+      placeholder={field.placeholder || `Enter ${field.title.toLowerCase()}...`}
       className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-        ? "border-red-500 focus:ring-red-500"
-        : "border-gray-300 focus:ring-primary"
+          ? "border-red-500 focus:ring-red-500"
+          : "border-gray-300 focus:ring-primary"
         } focus:outline-none focus:ring-2`}
     />
   );
@@ -372,7 +367,7 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
 
   return (
     <>
-      {fields.map((field) => {
+      {fields.map((field, index) => {
         const fieldName = field.slug as keyof PostQuestionnaireData;
         const error = errors[fieldName];
         const required = isFieldRequired(field.slug);
@@ -432,8 +427,67 @@ const DateInput = ({ field }: { field: Field }) => {
   );
 };
 
-export const Step = ({ fields, mode }: StepProps) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 items-start justify-center gap-4">
-    <StepComponent fields={fields} mode={mode} />
-  </div>
-);
+export const Step = ({ fields, mode }: StepProps) => {
+  // Group fields into rows: 2 cols for rows 0 and 2, 1 col for others
+  const rows: Field[][] = [];
+  let currentRowIndex = 0;
+  let currentRow: Field[] = [];
+
+  fields.forEach((field, index) => {
+    const isRow0or2 = currentRowIndex === 0 || currentRowIndex === 2;
+    const maxFieldsInRow = isRow0or2 ? 2 : 1;
+
+    currentRow.push(field);
+
+    if (currentRow.length === maxFieldsInRow) {
+      rows.push([...currentRow]);
+      currentRow = [];
+      currentRowIndex++;
+    }
+  });
+
+  // Add any remaining fields
+  if (currentRow.length > 0) {
+    rows.push(currentRow);
+  }
+
+  return (
+    <div className="space-y-4">
+      {rows.map((rowFields, rowIndex) => {
+        const isRow0or2 = rowIndex === 0 || rowIndex === 2;
+
+        return (
+          <div
+            key={rowIndex}
+            className={`grid gap-4 ${isRow0or2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+              }`}
+          >
+            {rowFields.map((field) => {
+              const fieldName = field.slug as keyof PostQuestionnaireData;
+              const {
+                formState: { errors },
+              } = useFormContext<PostQuestionnaireData>();
+              const error = errors[fieldName];
+              const required = isFieldRequired(field.slug);
+
+              return (
+                <div key={field.title} className="space-y-2">
+                  <label className="block text-sm font-medium text-black dark:text-gray-200">
+                    {field.title}
+                    {required && <span className="text-red-500 ml-1">*</span>}
+                  </label>
+                  <FormField field={field} mode={mode} />
+                  {error && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {error.message as string}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+};

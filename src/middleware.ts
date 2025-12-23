@@ -5,7 +5,7 @@ const AUTH_PAGES = ["/login", "/register", "/get-started"];
 
 
 const COOKIE_KEYS = [
-  "access_token_creator_dev",
+  "access_token_creator_dev", 
   "access_token_brand_dev",
   "access_token_creator",
   "access_token_brand",
@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
       break;
     }
   }
-
+    
   // If user is authenticated and trying to access login, register, or home page
   if (authToken && isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", request.url));

@@ -46,7 +46,7 @@ export interface CreatorQuestionnaireData {
   "worked-with-ai": string;
   "paid-campaigns": string;
   "budget-video": string;
-  "payment-method":string[];
+  "payment-method": string[];
 }
 
 export interface BrandQuestionnaireData {
@@ -113,3 +113,19 @@ export interface PostQuestionnaireData {
   "additional-instructions"?: string;
   "requirement-documents": string;
 }
+
+
+
+export interface CampaignQuestionnaireData {
+  campaignTitle: string;
+  brandName: string;
+  campaignDescription: string;
+  targetNiche: string[];
+  budgetForCampaign: string;
+  expectedDeliverables: string[];
+  applicationQuestions?: string;
+  status: "DRAFT" | "PUBLISHED";
+}
+
+
+
