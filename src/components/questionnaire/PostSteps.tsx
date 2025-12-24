@@ -106,33 +106,42 @@ export const FormField = ({ field }: FormFieldProps) => {
   if (field.category === "dropdown") {
     return (
       <div className="relative w-full">
-        <select
-          {...register(fieldName)}
-          className={`w-full p-3 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
-              ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-              : "border-gray-300 focus:ring-primary dark:border-gray-700"
-            } focus:outline-none focus:ring-2 appearance-none`}
-        >
-          <option value="" className="dark:text-gray-200 dark:bg-gray-900">
-            {field.placeholder || "Select an option"}
-          </option>
-          {field.options?.map((option) => {
-            const disableShortForLongForm =
+        <Select
+          options={field.options?.map((option) => ({
+            label: option,
+            value: option,
+            isDisabled:
               fieldName === "video-duration" &&
               contentType === "Long form videos" &&
-              option === "Less than 1 minute";
-            return (
-              <option
-                key={option}
-                value={option}
-                className="dark:text-gray-200 dark:bg-gray-900"
-                disabled={disableShortForLongForm}
-              >
-                {option}
-              </option>
-            );
-          })}
-        </select>
+              option === "Less than 1 minute",
+          }))}
+          placeholder={field.placeholder || "Select an option"}
+          onChange={(selected) =>
+            setValue(fieldName, selected?.value, { shouldValidate: true })
+          }
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+              border: "none",
+              boxShadow: "none",
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isFocused ? "#7544DB" : "#F3F3F5",
+              color: state.isFocused ? "#FFFFFF" : "#000000",
+              "&:hover": {
+                backgroundColor: "#7544DB",
+                color: "#FFFFFF",
+              },
+            }),
+          }}
+        />
+
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
           <ChevronDown size={20} />
         </div>
@@ -162,6 +171,46 @@ export const FormField = ({ field }: FormFieldProps) => {
           placeholder={field.placeholder || "Select options..."}
           classNamePrefix="react-select"
           className="dark:bg-gray-900 dark:text-gray-100"
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+              border: "none",
+              boxShadow: "none",
+              "&:hover": {
+                border: "none",
+              },
+            }),
+
+            menu: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+            }),
+
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isSelected
+                ? "#7544DB"
+                : "#F3F3F5",
+
+              color: state.isSelected ? "#FFFFFF" : "#000000",
+
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+
+              // 🔥 THIS IS THE KEY FIX
+              "&:hover": {
+                backgroundColor: "#7544DB",
+                color: "#FFFFFF",
+              },
+
+              // Optional but nice UX
+              "&:active": {
+                backgroundColor: "#7544DB",
+              },
+            }),
+          }}
+
         />
       </div>
     );
@@ -174,8 +223,8 @@ export const FormField = ({ field }: FormFieldProps) => {
         <select
           {...register(fieldName)}
           className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
-              ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-              : "border-gray-300 focus:ring-primary dark:border-gray-700"
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" className="dark:text-gray-900">
@@ -222,7 +271,7 @@ export const FormField = ({ field }: FormFieldProps) => {
           placeholder={field.placeholder || "Enter text..."}
           cols={3}
           rows={3}
-          className="w-full p-3 border rounded-lg transition-all duration-200 border-gray-300 dark:border-gray-700 focus:ring-primary text-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2"
+          className="w-full p-3 rounded-lg transition-all duration-200 bg-[#F3F3F5] focus:ring-primary text-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2"
         ></textarea>
       </div>
     );
@@ -300,8 +349,8 @@ export const FormField = ({ field }: FormFieldProps) => {
           }
         }}
         className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+          : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
       />
     );
@@ -352,9 +401,9 @@ export const FormField = ({ field }: FormFieldProps) => {
       type={field.category}
       {...register(fieldName)}
       placeholder={field.placeholder || `Enter ${field.title.toLowerCase()}...`}
-      className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-primary"
+      className={`w-full p-3 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error
+        ? "border-red-500 focus:ring-red-500"
+        : "focus:ring-primary"
         } focus:outline-none focus:ring-2`}
     />
   );
@@ -374,7 +423,7 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
 
         return (
           <div key={field.title} className="md:space-y-2 md:mt-4">
-            <label className="block text-sm font-light text-black dark:text-gray-200">
+            <label className="block text-sm font-medium text-black dark:text-gray-200">
               {field.title}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>

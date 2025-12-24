@@ -113,11 +113,11 @@ const CreateCampaign = ({
 
                     {/* 🔹 Title */}
                     <div className="space-y-1">
-                        <h1 className="text-2xl font-semibold dark:text-gray-100">
+                        <h1 className="text-2xl font-medium dark:text-gray-100">
                             {mode === "edit" ? "Edit Draft Campaign" : "Create New Campaign"}
                         </h1>
 
-                        <p className="text-sm text-gray-500">
+                        <p className="text-md text-gray-500">
                             {mode === "edit"
                                 ? "Update your draft campaign before publishing."
                                 : "Fill in the details below to post your campaign and connect with creators"}

@@ -35,11 +35,11 @@ const creatorNav: NavItem[] = [
     slug: "dashboard",
   },
   {
-    href: "/dashboard/creator/content",
+    href: "/dashboard/creator/browse-campaigns",
     icon: Film,
-    label: "My Videos",
-    slug: "content",
-  },
+    label: "Browse Campaigns",
+    slug: "campaigns",
+  }, 
   // {
   //   href: "/dashboard/creator/inbox",
   //   icon: Mail,
@@ -49,7 +49,7 @@ const creatorNav: NavItem[] = [
   {
     href: "/dashboard/creator/inbox",
     icon: Mail,
-    label: "Inbox",
+    label: "My Applications",
     slug: "inbox",
   },
  
@@ -85,7 +85,7 @@ const brandNav: NavItem[] = [
   },
   {
     label: "Application Inbox",
-    href: "/dashboard/brand",
+    href: "/dashboard/brand/application-inbox",
     icon: Mail,
     slug: "p",
     matchPaths: ["/dashboard/brand/xyz", "/dashboard/brand/xyz"],

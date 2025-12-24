@@ -74,7 +74,7 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
                 "$600 - $1,200",
                 "$1,200+",
             ],
-            placeholder: "e.g., $500 - $2,000"
+            placeholder: "Select a budget"
         },
         {
             title: "Requirements",
@@ -105,7 +105,7 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
                 "within next week",
                 "within a month",
             ],
-            placeholder: "within 24hrs"
+            placeholder: "Select a deadline"
         },
         {
             title: "Application Questions (Optional)",

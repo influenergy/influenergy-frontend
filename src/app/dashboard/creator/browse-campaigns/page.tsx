@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase } from 'lucide-react';
+import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase, Heart } from 'lucide-react';
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -37,7 +37,7 @@ const MyCampaignsPage = () => {
                 setLoading(true);
                 setError(null);
 
-                const response = await postApi.getCampaigns();
+                const response = await postApi.getAllCampaigns();
                 // console.log("Campaign response:", response);
 
                 if (!response || !response.status) {
@@ -95,19 +95,23 @@ const MyCampaignsPage = () => {
         campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleClick = () => {
+        console.log("giiii");
+    }
+
     return (
         <div className="w-full h-full p-[2%] dark:bg-background">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h1 className="text-xl font-semibold mb-2">My Campaigns</h1>
+                        <h1 className="text-2xl font-semibold mb-2">Discover Campaigns</h1>
                         <p className="text-muted-foreground text-md">
-                            View all active campaigns on the platform
+                            Browse and apply to campaigns that match your niche
                         </p>
                     </div>
 
-                    <button
+                    {/* <button
                         onClick={() => {
                             const basePath = pathname.split("/").slice(0, -1).join("/");
                             router.push(`${basePath}/create-campaign`);
@@ -116,7 +120,7 @@ const MyCampaignsPage = () => {
                     >
                         <span className="text-lg">+</span>
                         New Campaign
-                    </button>
+                    </button> */}
                 </div>
 
                 <div className="mb-6">
@@ -155,16 +159,7 @@ const MyCampaignsPage = () => {
                                 className="border rounded-lg p-5 cursor-pointer hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
                             >
                                 <div className="flex justify-end mb-3">
-                                    <span
-                                        className={`text-xs px-2 py-1 rounded-full ${campaign.status === "PUBLISHED"
-                                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                            : campaign.status === "DRAFT"
-                                                ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                                                : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                            }`}
-                                    >
-                                        {campaign.status}
-                                    </span>
+                                    <Heart />
                                 </div>
 
                                 <div className="flex gap-5 mb-3">
@@ -233,8 +228,8 @@ const MyCampaignsPage = () => {
 
                                 {/* Footer */}
                                 <div className="mt-4 pt-4">
-                                    <Button className="w-full">
-                                        {campaign.status === "PUBLISHED" ? "View Applications" : "Publish"}
+                                    <Button className="w-full" onClick={() => handleClick()}>
+                                        View Details and Apply
                                     </Button>
                                 </div>
                             </div>

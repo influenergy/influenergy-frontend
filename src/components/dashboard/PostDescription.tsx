@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ChevronsLeft, Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2 } from "lucide-react";
+import { ChevronsLeft, Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, CircleCheckBig, DollarSign, Calendar } from "lucide-react";
 
 const PostQuestionnaire = dynamic(
   () => import("@/components/questionnaire/PostQuestionnaire"),
@@ -77,8 +77,8 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
       campaignDescription: data.campaignDescription,
       targetNiche: Array.isArray(data.targetNiche) ? data.targetNiche : parseJsonArray(data.targetNiche),
       budgetForCampaign: data.budgetForCampaign,
-      expectedDeliverables: Array.isArray(data.expectedDeliverables) 
-        ? data.expectedDeliverables 
+      expectedDeliverables: Array.isArray(data.expectedDeliverables)
+        ? data.expectedDeliverables
         : parseJsonArray(data.expectedDeliverables),
       status: data.status || "DRAFT",
       applicationQuestions: data.applicationQuestions || "",
@@ -96,8 +96,8 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
       "campaign-description": data.campaignDescription,
       "target-niche": Array.isArray(data.targetNiche) ? data.targetNiche : parseJsonArray(data.targetNiche),
       "budget-for-campaign": data.budgetForCampaign,
-      "expected-deliverables": Array.isArray(data.expectedDeliverables) 
-        ? data.expectedDeliverables 
+      "expected-deliverables": Array.isArray(data.expectedDeliverables)
+        ? data.expectedDeliverables
         : parseJsonArray(data.expectedDeliverables),
       status: data.status,
       "application-questions": data.applicationQuestions || "",
@@ -261,7 +261,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          <div className="relative rounded-xl overflow-hidden lg:w-[550px] lg:h-[310px]">
+          <div className="relative rounded-xl overflow-hidden">
             <Image
               src={processedData.image || "/images/placeholder.png"}
               alt={processedData.title}
@@ -271,43 +271,29 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
             />
           </div>
 
-          <div className="w-full space-y-4">
-            <h3 className="text-xl font-bold">{processedData.title}</h3>
-            <div className="flex flex-col items-start gap-1">
-              <h1 className="text-lg font-normal text-gray-500">
-                Campaign Description
-              </h1>
-              <p className="text-black text-lg dark:text-white">
-                {processedData.campaignDescription}
-              </p>
-            </div>
+          <div className="w-full space-y-1">
+            <h3 className="text-3xl font-medium">{processedData.title}</h3>
+            <h3 className="text-lg text-[#364153]">{processedData.brandId}</h3>
           </div>
         </div>
 
         {/* Status Badge */}
-        <div className="flex gap-4 items-center">
-          <section className="flex flex-col gap-2">
-            <h4 className="text-lg text-gray-500">Campaign Status</h4>
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold w-fit ${
-                processedData.status === "PUBLISHED"
-                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                  : processedData.status === "DRAFT"
-                  ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                  : "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
-              }`}
-            >
-              {processedData.status}
-            </span>
-          </section>
-        </div>
+        <div className="items-center">
+          <div className="flex flex-col items-start gap-3">
+            <h1 className="text-md font-semibold text-[#000000]">
+              Campaign Description
+            </h1>
+            <p className="text-md dark:text-white text-[#364153]">
+              {processedData.campaignDescription}
+            </p>
+          </div>
 
-        <hr />
+        </div>
 
         {/* Target Niche Section */}
         {processedData.targetNiche && processedData.targetNiche.length > 0 && (
           <section className="flex flex-col gap-4">
-            <h4 className="text-xl font-semibold">Target Niche</h4>
+            <h4 className="text-md font-semibold text-[#000000]">Target Niche</h4>
             <div className="flex flex-wrap gap-2">
               {processedData.targetNiche.map((niche, idx) => (
                 <span
@@ -321,41 +307,49 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
           </section>
         )}
 
-        <hr />
 
         {/* Campaign Details Section */}
-        <section className="flex flex-col gap-4">
-          <h4 className="text-xl font-semibold">Budget & Deliverables</h4>
+        <section className="flex flex-col gap-4 px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-2">
-              <h4 className="text-lg text-gray-500 font-normal">
-                Budget for Campaign
-              </h4>
-              <p className="font-semibold text-lg">${processedData.budgetForCampaign}</p>
+            <div className="flex items-center gap-1">
+              <DollarSign className="w-8 h-8 text-primary" />
+              <div className="flex flex-col gap-2">
+                <h4 className="text-sm text-gray-500 font-normal">
+                  Budget Range
+                </h4>
+                <p className="font-semibold text-md">{processedData.budgetForCampaign}</p>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-lg text-gray-500 font-normal">
-                Expected Deliverables
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {processedData.expectedDeliverables &&
-                  processedData.expectedDeliverables.map((deliverable, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-lg text-sm font-semibold"
-                    >
-                      {deliverable}
-                    </span>
-                  ))}
+            <div className="flex items-center gap-3">
+              <Calendar className="w-8 h-8 text-primary" />
+              <div className="flex flex-col gap-1">
+                <h4 className="text-sm text-gray-500 font-normal">
+                  Application Deadline
+                </h4>
+                <p className="font-semibold text-md">{"Open for a month"}</p>
               </div>
             </div>
           </div>
         </section>
 
+
+        {processedData.applicationQuestions && (
+          <>
+            <section className="flex flex-col gap-4">
+              <h4 className="text-md font-semibold text-[#000000]">Requirements</h4>
+              <div className="flex text-green-600 gap-2">
+                <CircleCheckBig />
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                  {processedData.applicationQuestions}
+                </p>
+              </div>
+            </section>
+          </>
+        )}
+
         {/* Application Questions Section */}
         {processedData.applicationQuestions && (
           <>
-            <hr />
             <section className="flex flex-col gap-4">
               <h4 className="text-xl font-semibold">Application Questions</h4>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
@@ -365,6 +359,8 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
           </>
         )}
       </div>
+
+      <hr />
 
       {/* Edit Dialog */}
       {/* <Dialog open={open} onOpenChange={setOpen}>
@@ -384,3 +380,22 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
 };
 
 export default PostDescription;
+
+
+
+{/* <div className="flex flex-col gap-2">
+              <h4 className="text-lg text-gray-500 font-normal">
+                Expected Deliverables
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {processedData.expectedDeliverables &&
+                  processedData.expectedDeliverables.map((deliverable, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-lg text-sm font-semibold"
+                    >
+                      {deliverable}
+                    </span>
+                  ))}
+              </div>
+            </div> */}
