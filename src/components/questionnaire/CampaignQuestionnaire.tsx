@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { CREATE_CAMPAIGN_FORM } from "@/constants/CreateCampaign";
 import { createCampaignSchema } from "@/lib/CampaignSchema";
-import { CampaignQuestionnaireData } from "@/types/Questionnaire";
+import { CampaignQuestionnaireData, CreateCampaignPayload } from "@/types/Questionnaire";
 
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -71,31 +71,33 @@ const CreateCampaign = ({
     const onSubmit = async (data: CampaignQuestionnaireData) => {
         try {
             setIsSubmitting(true);
-            // console.log("data---->", data);
 
-            // if (mode === "edit") {
-            //     // await postApi.updateCampaign(data);
-            // } else {
-            // }
-            await postApi.createCampaign(data);
+            const processedData: CreateCampaignPayload = {
+                ...data,
+                requirements: data.requirements
+                    ? data.requirements
+                        .split(/\n|,/g)
+                        .map(r => r.trim())
+                        .filter(Boolean)
+                    : [],
+            };
 
-            toast({
-                title: "Campaign saved successfully 🎉",
-            });
+            await postApi.createCampaign(processedData);
 
-            onClose();
+            toast({ title: "Campaign saved successfully 🎉" });
             router.push("/dashboard/brand/my-campaigns");
+
         } catch (error: any) {
             toast({
                 title: "Error",
-                description:
-                    error?.response?.data?.message || "Something went wrong",
+                description: error?.response?.data?.message || "Something went wrong",
                 variant: "destructive",
             });
         } finally {
             setIsSubmitting(false);
         }
     };
+
 
     return (
         <div className="flex flex-col gap-4">

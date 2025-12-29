@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ChevronsLeft, Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, CircleCheckBig, DollarSign, Calendar } from "lucide-react";
+import { postApi } from "@/services/postServices";
 
 const PostQuestionnaire = dynamic(
   () => import("@/components/questionnaire/PostQuestionnaire"),
@@ -65,21 +66,84 @@ const getSocialMediaIcon = (platform: string) => {
   }
 };
 
-const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
+const isRemoteImage = (src?: string) => {
+  return !!src && src.startsWith("http");
+};
+
+
+const PostDescription = ({ data, collaborations, role }: PostDescriptionProps) => {
+  const [coverMessage, setCoverMessage] = useState("");
+  const [portfolioLink, setPortfolioLink] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const isCreator = role === "CREATOR";
+
+  const getMidAmount = (budget?: string) => {
+    if (!budget) return 0;
+
+    // Handle "1200+"
+    if (budget.includes("+")) {
+      return Number(budget.replace(/[^0-9]/g, ""));
+    }
+
+    const numbers = budget.match(/\d+/g)?.map(Number);
+    if (!numbers || numbers.length < 2) return 0;
+
+    const [min, max] = numbers;
+    return Math.round((min + max) / 2);
+  };
+
+
+  const handleSubmit = async () => {
+    const payload = {
+      brandId: data.brandId,
+      amount: Number(getMidAmount(data.budgetForCampaign)),
+      ...(coverMessage && { coverMessage }),
+      ...(portfolioLink && { portfolioLink }),
+    };
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const res = await postApi.createCollaboration(
+        data._id, // campaignId
+        payload
+      );
+
+      // Axios already throws on non-2xx
+      if (!res?.status) {
+        throw new Error(res?.message || "Something went wrong");
+      }
+
+      setShowSuccess(true); // ✅ success modal
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
   const processedData: NewPostData = useMemo(() => {
     return {
       id: data._id,
-      image: data.campaignPost || "/images/placeholder.png",
-      title: data.campaignTitle,
+      campaignImage: data.campaignImage || "/images/placeholder.png",
+      campaignTitle: data.campaignTitle,
       campaignDescription: data.campaignDescription,
+      brandName: data.brandName,
       targetNiche: Array.isArray(data.targetNiche) ? data.targetNiche : parseJsonArray(data.targetNiche),
       budgetForCampaign: data.budgetForCampaign,
       expectedDeliverables: Array.isArray(data.expectedDeliverables)
         ? data.expectedDeliverables
         : parseJsonArray(data.expectedDeliverables),
+      requirements: data.requirements,
       status: data.status || "DRAFT",
       applicationQuestions: data.applicationQuestions || "",
       createdAt: data.createdAt || "",
@@ -103,6 +167,7 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
       "application-questions": data.applicationQuestions || "",
     };
   }, [data]);
+
 
   return (
     <div className="bg-white rounded-lg p-6 relative space-y-4 mb-4 md:mb-8 lg:mb-10 dark:bg-background">
@@ -247,58 +312,68 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
         </div>
       )}
 
-      <div className="flex flex-col gap-10">
+      <div
+        className="
+    flex flex-col gap-10 rounded-2xl
+    border border-gray-200 dark:border-gray-800
+    bg-white dark:bg-gray-900
+    p-10
+  "
+      >
+        {/* Header */}
         <div className="flex w-full items-center justify-between">
-          <p className="text-2xl font-semibold">Campaign Details</p>
-          {collaborations.length === 0 && (
-            <Button
-              className="bg-primary px-5 py-2 rounded-xl"
-              onClick={() => setOpen(true)}
-            >
-              Edit Brief
-            </Button>
-          )}
+          <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            Campaign Details
+          </p>
         </div>
 
+        {/* Image + Title */}
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="relative rounded-xl overflow-hidden">
-            <Image
-              src={processedData.image || "/images/placeholder.png"}
-              alt={processedData.title}
-              width={550}
-              height={310}
-              className="object-cover aspect-[16/9] rounded-lg"
+            <img
+              src={processedData.campaignImage || "/images/placeholder.png"}
+              alt="Campaign Image"
+              className="w-36 h-36 rounded-full object-cover border border-gray-200 dark:border-gray-700"
             />
           </div>
 
           <div className="w-full space-y-1">
-            <h3 className="text-3xl font-medium">{processedData.title}</h3>
-            <h3 className="text-lg text-[#364153]">{processedData.brandId}</h3>
+            <h3 className="text-3xl font-medium text-gray-900 dark:text-gray-100">
+              {processedData.campaignTitle}
+            </h3>
+            <h3 className="text-lg text-gray-600 dark:text-gray-400">
+              {processedData.brandName}
+            </h3>
           </div>
         </div>
 
-        {/* Status Badge */}
-        <div className="items-center">
-          <div className="flex flex-col items-start gap-3">
-            <h1 className="text-md font-semibold text-[#000000]">
-              Campaign Description
-            </h1>
-            <p className="text-md dark:text-white text-[#364153]">
-              {processedData.campaignDescription}
-            </p>
-          </div>
+        {/* Description */}
+        <section className="flex flex-col gap-3">
+          <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100">
+            Campaign Description
+          </h4>
+          <p className="text-md text-gray-600 dark:text-gray-400">
+            {processedData.campaignDescription}
+          </p>
+        </section>
 
-        </div>
-
-        {/* Target Niche Section */}
-        {processedData.targetNiche && processedData.targetNiche.length > 0 && (
+        {/* Target Niche */}
+        {processedData.targetNiche?.length > 0 && (
           <section className="flex flex-col gap-4">
-            <h4 className="text-md font-semibold text-[#000000]">Target Niche</h4>
+            <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100">
+              Target Niche
+            </h4>
+
             <div className="flex flex-wrap gap-2">
               {processedData.targetNiche.map((niche, idx) => (
                 <span
                   key={idx}
-                  className="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm font-semibold"
+                  className="
+              px-4 py-2 rounded-lg text-sm font-semibold
+              bg-gray-100 text-gray-800
+              dark:bg-gray-800 dark:text-gray-200
+              border border-gray-200 dark:border-gray-700
+            "
                 >
                   {niche}
                 </span>
@@ -307,60 +382,85 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
           </section>
         )}
 
-
-        {/* Campaign Details Section */}
+        {/* Campaign Meta */}
         <section className="flex flex-col gap-4 px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-3">
               <DollarSign className="w-8 h-8 text-primary" />
-              <div className="flex flex-col gap-2">
-                <h4 className="text-sm text-gray-500 font-normal">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Budget Range
-                </h4>
-                <p className="font-semibold text-md">{processedData.budgetForCampaign}</p>
+                </p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">
+                  {processedData.budgetForCampaign}
+                </p>
               </div>
             </div>
+
             <div className="flex items-center gap-3">
               <Calendar className="w-8 h-8 text-primary" />
-              <div className="flex flex-col gap-1">
-                <h4 className="text-sm text-gray-500 font-normal">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Application Deadline
-                </h4>
-                <p className="font-semibold text-md">{"Open for a month"}</p>
+                </p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100">
+                  Open for a month
+                </p>
               </div>
             </div>
           </div>
         </section>
 
+        {/* Requirements */}
+        {processedData.requirements && processedData.requirements?.length > 0 && (
+          <section className="flex flex-col gap-4">
+            <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100">
+              Requirements
+            </h4>
 
-        {processedData.applicationQuestions && (
+            <ul className="space-y-2">
+              {processedData.requirements.map((req: string, index: number) => (
+                <li
+                  key={index}
+                  className="flex items-start gap-2 text-gray-700 dark:text-gray-300"
+                >
+                  <CircleCheckBig className="text-green-600 dark:text-green-500 mt-1" />
+                  <span>{req}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {isCreator && (
           <>
-            <section className="flex flex-col gap-4">
-              <h4 className="text-md font-semibold text-[#000000]">Requirements</h4>
-              <div className="flex text-green-600 gap-2">
-                <CircleCheckBig />
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                  {processedData.applicationQuestions}
-                </p>
-              </div>
+            <hr className="border-gray-200 dark:border-gray-700" />
+
+            <section className="space-y-6">
+              <h3 className="text-xl font-semibold">Apply to this Campaign</h3>
+
+              {/* Cover Message */}
+              <textarea
+                rows={4}
+                className="w-full rounded-xl border px-4 py-3"
+                placeholder="Write a short message..."
+              />
+
+              {/* Portfolio */}
+              <input
+                type="url"
+                className="w-full rounded-xl border px-4 py-3"
+                placeholder="Portfolio link (optional)"
+              />
+
+              <button className="w-full rounded-md bg-[#7544DB] py-3 text-white">
+                Submit Application
+              </button>
             </section>
           </>
         )}
 
-        {/* Application Questions Section */}
-        {processedData.applicationQuestions && (
-          <>
-            <section className="flex flex-col gap-4">
-              <h4 className="text-xl font-semibold">Application Questions</h4>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                {processedData.applicationQuestions}
-              </p>
-            </section>
-          </>
-        )}
       </div>
-
-      <hr />
 
       {/* Edit Dialog */}
       {/* <Dialog open={open} onOpenChange={setOpen}>
@@ -375,7 +475,35 @@ const PostDescription = ({ data, collaborations }: PostDescriptionProps) => {
           />
         </DialogContent>
       </Dialog> */}
+
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl py-10 px-10 w-[100%] max-w-xl text-center">
+            <p className="text-lg font-semibold text-gray-900 mb-2">
+              Application submitted successfully!
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              The brand will review your application.
+            </p>
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="w-full rounded-md bg-[#7544DB] py-2 text-sm font-medium text-white"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="fixed bottom-5 right-5 z-50 rounded-lg bg-red-500 px-4 py-2 text-sm text-white shadow-lg">
+          {error}
+        </div>
+      )}
+
+
     </div>
+
   );
 };
 

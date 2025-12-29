@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase } from 'lucide-react';
+import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase, CircleCheckBig, CircleX, Clock } from 'lucide-react';
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,10 @@ const MyCampaignsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+    const [applications, setApplications] = useState<any[]>([]);
+    const [loadingApps, setLoadingApps] = useState(false);
+
 
     const router = useRouter();
     const pathname = usePathname();
@@ -54,6 +58,38 @@ const MyCampaignsPage = () => {
 
         fetchCampaigns();
     }, []);
+
+
+    useEffect(() => {
+        if (!selectedCampaignId) {
+            setApplications([]);
+            return;
+        }
+
+        const fetchApplications = async () => {
+            try {
+                setLoadingApps(true);
+
+                const response = await postApi.getCollabByCampaignId(selectedCampaignId);
+                // or better naming:
+                // getCollaborationsByCampaignId(selectedCampaignId)
+
+                if (!response?.status) {
+                    throw new Error("Failed to fetch applications");
+                }
+                console.log("text-->", response.collaborations);
+
+                setApplications(response.collaborations || []);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoadingApps(false);
+            }
+        };
+
+        fetchApplications();
+    }, [selectedCampaignId]);
+
 
     // Loading state
     if (loading) {
@@ -95,6 +131,10 @@ const MyCampaignsPage = () => {
         campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCampaignId(e.target.value);
+    };
+
     return (
         <div className="w-full h-full p-[2%] dark:bg-background">
             <div className="max-w-7xl mx-auto">
@@ -108,14 +148,163 @@ const MyCampaignsPage = () => {
                     </div>
                 </div>
 
-                <div className="">
-                    <div className="relative">
-                        <h2 className="text-md text-[#0A0A0A] font-regular">Select Campaign</h2>
-                    </div>
+                <div className="mb-6">
+                    <label className="block text-sm font-medium mb-2">
+                        Select Campaign
+                    </label>
+
+                    <select
+                        value={selectedCampaignId}
+                        onChange={handleCampaignSelect}
+                        className="w-full max-w-md px-4 py-2 border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    >
+                        <option value="">-- Select a campaign --</option>
+
+                        {campaigns.map((campaign) => (
+                            <option key={campaign._id} value={campaign._id}>
+                                {campaign.campaignTitle}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
-                {/* Empty State */}
-                
+
+                {/* Applications Section */}
+                {loadingApps ? (
+                    <p className="text-sm text-muted-foreground mt-4">
+                        Loading applications...
+                    </p>
+                ) : applications.length > 0 ? (
+                    <div className="mt-6 space-y-4">
+                        {applications.map((app) => (
+                            <div
+                                key={app._id}
+                                onClick={() =>
+                                    router.push(`/dashboard/brand/creators/${app.creatorId._id}`)
+                                }
+                                className="
+        flex justify-between gap-6
+        border rounded-lg p-5
+        bg-white shadow-sm
+        cursor-pointer
+        hover:shadow-md hover:border-primary/40
+        transition
+    "
+                            >
+
+                                {/* Left section */}
+                                <div className="flex flex-col gap-2">
+                                    <h3 className="text-lg font-semibold">
+                                        {app.creatorId.fullName}
+                                    </h3>
+
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <span>
+                                            {app.creatorId.profile?.socialLinks?.primary?.followers || 0} followers
+                                        </span>
+                                        <span>•</span>
+                                        <span>
+                                            {app.creatorId.profile?.category?.[0] || "N/A"}
+                                        </span>
+                                    </div>
+
+                                    {app.coverMessage && (
+                                        <p className="text-sm text-gray-600 mt-1">
+                                            {app.coverMessage}
+                                        </p>
+                                    )}
+
+                                    {/* Actions */}
+                                    <div className="flex flex-wrap gap-3 mt-4">
+                                        {/* Shortlist */}
+                                        <button
+                                            className="
+            flex items-center gap-2
+            px-4 py-2
+            text-sm font-medium
+            rounded-md
+            bg-blue-600 text-white
+            hover:bg-blue-700
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+            transition
+        "
+                                        >
+                                            <Clock className="w-4 h-4" />
+                                            Shortlist
+                                        </button>
+
+                                        {/* Send Offer */}
+                                        <button
+                                            className="
+            flex items-center gap-2
+            px-4 py-2
+            text-sm font-medium
+            rounded-md
+            bg-primary text-white
+            hover:bg-primary/90
+            focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2
+            transition
+        "
+                                        >
+                                            <CircleCheckBig className="w-4 h-4" />
+                                            Send Offer
+                                        </button>
+
+                                        {/* Reject */}
+                                        <button
+                                            className="
+            flex items-center gap-2
+            px-4 py-2
+            text-sm font-medium
+            rounded-md
+            bg-red-600 text-white
+            hover:bg-red-700
+            focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+            transition
+        "
+                                        >
+                                            <CircleX className="w-4 h-4" />
+                                            Reject
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                {/* Right section */}
+                                <div className="flex flex-col items-end justify-between">
+                                    <span
+                                        className={`text-xs font-medium px-3 py-1 rounded-full ${app.status === "Pending"
+                                            ? "bg-yellow-100 text-yellow-700"
+                                            : app.status === "Active"
+                                                ? "bg-green-100 text-green-700"
+                                                : "bg-gray-100 text-gray-700"
+                                            }`}
+                                    >
+                                        {app.status}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="mt-10 flex flex-col items-center justify-center text-center gap-3">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                            <Briefcase className="w-6 h-6 text-primary" />
+                        </div>
+
+                        <p className="text-sm font-medium text-foreground">
+                            No applications yet
+                        </p>
+
+                        <p className="text-sm text-muted-foreground max-w-sm">
+                            Creators haven’t applied to this campaign yet.
+                            Once they do, their applications will appear here.
+                        </p>
+                    </div>
+
+                )}
+
+
             </div>
         </div>
     );

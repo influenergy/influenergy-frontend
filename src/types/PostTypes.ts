@@ -1,11 +1,14 @@
 export interface NewCampaignResponse {
   _id: string;
+  campaignImage: string,
   campaignTitle: string;
   campaignDescription: string;
+  brandName: string;
   targetNiche: string[];
   budgetForCampaign: string;
   expectedDeliverables: string[];
   brandId: string;
+  requirements: string[];
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
   campaignPost?: string; // Image URL
@@ -15,12 +18,14 @@ export interface NewCampaignResponse {
 
 export interface NewPostData {
   id: string;
-  image?: string;
-  title: string;
+  campaignImage: string,
+  campaignTitle: string;
   campaignDescription: string;
+  brandName: string;
   targetNiche: string[];
   budgetForCampaign: string;
   expectedDeliverables: string[];
+  requirements?: string[];
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
   createdAt: string;
@@ -96,4 +101,5 @@ export interface NewCampaignResponse {
 export interface PostDescriptionProps {
   data: NewCampaignResponse,
   collaborations: Collaboration[]
+  role: string
 }

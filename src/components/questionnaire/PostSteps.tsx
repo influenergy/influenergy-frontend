@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { Field } from "@/constants/questions";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Upload  } from "lucide-react";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -279,7 +279,7 @@ export const FormField = ({ field }: FormFieldProps) => {
 
   // FILE input
   if (field.category === "file") {
-    if (fieldName === "campaign-post") {
+    if (fieldName === "campaign-post" || field.slug === "campaignImage") {
       const value = watch(fieldName);
       const isImage = typeof value === "string" && value.startsWith("data:image");
       const isUploadedImage = typeof value === "string" && value.startsWith("https://");
@@ -302,13 +302,24 @@ export const FormField = ({ field }: FormFieldProps) => {
             </div>
           ) : (
             <div
-              className="w-full p-3 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-300"
+              className="w-full h-56 flex flex-col items-center justify-center gap-2
+             border-2 border-dashed border-gray-300 dark:border-gray-700
+             rounded-xl cursor-pointer bg-gray-50 dark:bg-gray-800
+             hover:border-primary transition-all"
               onClick={() => inputRef.current?.click()}
-              title="Click to upload an image"
-              style={{ maxHeight: 200 }}
+              title="Click to upload campaign image"
             >
-              {field.placeholder || "Click to upload an image"}
+              <Upload className="w-8 h-8 text-gray-400" />
+
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                Click to upload campaign image
+              </p>
+
+              <p className="text-xs text-gray-400">
+                PNG, JPG, GIF up to 10MB
+              </p>
             </div>
+
           )}
           <input
             ref={inputRef}

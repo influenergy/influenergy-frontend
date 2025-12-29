@@ -40,7 +40,7 @@ const Page = () => {
   
   return <>
 
-    <PostDescription data={campaignData} collaborations={collaborations} role="BRAND"/>
+    <PostDescription data={campaignData} collaborations={collaborations} role="CREATOR"/>
   </>
 };
 

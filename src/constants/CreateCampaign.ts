@@ -2,7 +2,7 @@ import { LucideIcon, FileText } from "lucide-react";
 
 export interface Field {
     title: string;
-    category: "text" | "textarea" | "dropdown" | "multiselect";
+    category: "text" | "textarea" | "dropdown" | "multiselect" | "file";
     slug: string;
     options?: string[];
     placeholder?: string,
@@ -108,11 +108,17 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
             placeholder: "Select a deadline"
         },
         {
-            title: "Application Questions (Optional)",
-            slug: "applicationQuestions",
-            category: "textarea",
-            placeholder: "Enter application question if any"
+            title: "Campaign Image",
+            slug: "campaignImage",
+            category: "file",
+            placeholder: "Click to upload campaign image"
         },
+        // {
+        //     title: "Application Questions (Optional)",
+        //     slug: "applicationQuestions",
+        //     category: "textarea",
+        //     placeholder: "Enter application question if any"
+        // },
     ],
 };
 

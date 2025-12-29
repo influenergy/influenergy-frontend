@@ -123,9 +123,16 @@ export interface CampaignQuestionnaireData {
   targetNiche: string[];
   budgetForCampaign: string;
   expectedDeliverables: string[];
+  requirements?: string;
   applicationQuestions?: string;
   status: "DRAFT" | "PUBLISHED";
 }
+
+export interface CreateCampaignPayload
+  extends Omit<CampaignQuestionnaireData, "requirements"> {
+  requirements: string[];         // 👈 backend expects array
+}
+
 
 
 

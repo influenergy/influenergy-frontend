@@ -13,6 +13,12 @@ const nextConfig = {
       "www.vbreathe.com",
       "cdn.liznr.ai"
     ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   },
 };
 

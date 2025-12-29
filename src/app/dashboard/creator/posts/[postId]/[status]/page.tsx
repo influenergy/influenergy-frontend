@@ -4,17 +4,17 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
-import { NewCampaignResponse, Collaboration } from "@/types/PostTypes";
+import { CampaignResponse, Collaboration } from "@/types/PostTypes";
 
 const Page = () => {
-  const { postId } = useParams();
-  const [campaignData, setCampaignData] = useState<NewCampaignResponse | null>(null);
+  const { postId,status } = useParams();
+  const [campaignData, setCampaignData] = useState<CampaignResponse | null>(null);
   const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
-  const { data, isLoading, error } = useCampaign(postId as string, 'none');
+  const { data, isLoading, error } = useCampaign(postId as string,status as string);
   useEffect(() => {
     if (data?.data) {
-      setCampaignData(data.data || {});
-      setCollaborations(data.data.collaborations || []);
+      setCampaignData(data.data.campaignData || {});
+      setCollaborations(data.data.collaborations);
     }
   }, [data]);
   if (isLoading) {
@@ -40,7 +40,7 @@ const Page = () => {
   
   return <>
 
-    <PostDescription data={campaignData} collaborations={collaborations} role="BRAND"/>
+    <PostDescription data={campaignData} collaborations={collaborations} />
   </>
 };
 

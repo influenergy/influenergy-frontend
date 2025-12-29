@@ -1,6 +1,6 @@
 import { transformPostData } from "@/utils/transformQuestionnaire";
 import { api } from "./api";
-import { PostQuestionnaireData, CampaignQuestionnaireData  } from "@/types/Questionnaire";
+import { PostQuestionnaireData, CampaignQuestionnaireData, CreateCampaignPayload } from "@/types/Questionnaire";
 
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
@@ -17,7 +17,7 @@ export const postApi = {
       throw error;
     }
   },
-  createCampaign: async (formData: CampaignQuestionnaireData) => {
+  createCampaign: async (formData: CreateCampaignPayload) => {
     // const transformedData = transformPostData(formData);
     try {
       const response = await api.post("/brand/add-new-campaign", formData, {
@@ -68,6 +68,7 @@ export const postApi = {
       throw error;
     }
   },
+
   getCollabByStatus: async (status: string) => {
     try {
       const response = await api.get(`/brand/collab/${status}`);
@@ -77,9 +78,18 @@ export const postApi = {
       throw error;
     }
   },
-  findAIMatch: async (campaignId: string,creatorId:string) => {
+  getCollabByCampaignId: async (campaignId: string) => {
     try {
-      const response = creatorId ?await api.get(`/brand/ai-find/${campaignId}?creatorId=${creatorId}`) : await api.get(`/brand/ai-find/${campaignId}`);
+      const response = await api.get(`/brand/collab/campaign/${campaignId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCollabByStatus :", error);
+      throw error;
+    }
+  },
+  findAIMatch: async (campaignId: string, creatorId: string) => {
+    try {
+      const response = creatorId ? await api.get(`/brand/ai-find/${campaignId}?creatorId=${creatorId}`) : await api.get(`/brand/ai-find/${campaignId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching campaigns:", error);
@@ -130,6 +140,21 @@ export const postApi = {
       throw error;
     }
   },
+  getCreatorProfileById: async (id: string) => {
+    try {
+      const response = await api.get(`/creator/profile/${id}`);
+
+      // Check if data exists and has the expected structure
+      if (!response.data || !response.data.data) {
+        throw new Error("Invalid response format from API");
+      }
+
+      return response.data.data;
+    } catch (error) {
+      console.error("Error fetching creator details:", error);
+      throw error;
+    }
+  },
   getVideoPost: async () => {
     try {
       const response = await api.get(`/creator/social-videos`);
@@ -166,20 +191,21 @@ export const postApi = {
   },
   createCollaboration: async (
     campaignId: string,
-    creatorId: string,
-    amount: string
+    payload: {
+      brandId: string;
+      amount: number;
+      coverMessage?: string;
+      portfolioLink?: string;
+    }
   ) => {
     try {
       const response = await api.post(
-        `/brand/create-collaboration/${campaignId}`,
-        {
-          creatorId,
-          amount,
-        }
+        `/creator/create-collaboration/${campaignId}`,
+        payload
       );
       return response.data;
     } catch (error) {
-      console.error(`Error fetching campaign with ID ${campaignId}:`, error);
+      console.error("Error creating collaboration:", error);
       throw error;
     }
   },
@@ -262,11 +288,11 @@ export const postApi = {
     const response = await api.get(`/brand/collaborations-history`);
     return response.data; // return only the data payload
   },
-  toggleFavoriteCreator :async(creatorId:string) =>{
+  toggleFavoriteCreator: async (creatorId: string) => {
     const response = await api.post(`/brand/favorite/${creatorId}`)
     return response.data
   },
-  deleteCollab:async(collabId:string) => {
+  deleteCollab: async (collabId: string) => {
     const response = await api.delete(`/brand/collab/${collabId}`)
     return response.data
   }

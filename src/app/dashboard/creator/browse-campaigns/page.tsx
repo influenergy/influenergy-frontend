@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 
 interface Campaign {
     _id: string;
+    campaignImage: string;
     campaignTitle: string;
     campaignDescription: string;
+    brandName: string;
     targetNiche: string[];
     budgetForCampaign: string;
     expectedDeliverables: string[];
@@ -154,7 +156,7 @@ const MyCampaignsPage = () => {
                             <div
                                 key={campaign._id}
                                 onClick={() =>
-                                    (window.location.href = `/dashboard/brand/posts/${campaign._id}`)
+                                    (window.location.href = `/dashboard/creator/posts/${campaign._id}`)
                                 }
                                 className="border rounded-lg p-5 cursor-pointer hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
                             >
@@ -163,8 +165,18 @@ const MyCampaignsPage = () => {
                                 </div>
 
                                 <div className="flex gap-5 mb-3">
-                                    <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600">
-                                        <Megaphone className="w-6 h-6 text-white" />
+                                    <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                                        {campaign.campaignImage ? (
+                                            <img
+                                                src={campaign.campaignImage}
+                                                alt={campaign.campaignTitle}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+                                                <Megaphone className="w-6 h-6 text-white" />
+                                            </div>
+                                        )}
                                     </div>
                                     <div>
                                         <h3 className="text-md font-medium mb-2 line-clamp-1 text-black dark:text-white">
@@ -172,7 +184,7 @@ const MyCampaignsPage = () => {
                                         </h3>
 
                                         <h4 className="text-xs font-medium mb-2 line-clamp-1 text-[#364153] dark:text-gray-400">
-                                            {campaign.brandId}
+                                            {campaign.brandName}
                                         </h4>
                                     </div>
                                 </div>
