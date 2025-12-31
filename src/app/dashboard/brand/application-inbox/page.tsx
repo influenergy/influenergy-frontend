@@ -5,6 +5,7 @@ import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Brie
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import NewCampaignButton from "@/components/brand/NewCampaignButton";
 
 interface Campaign {
     _id: string;
@@ -133,7 +134,7 @@ const MyCampaignsPage = () => {
 
     const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCampaignId(e.target.value);
-    };
+    };    
 
     return (
         <div className="w-full h-full p-[2%] dark:bg-background">
@@ -146,6 +147,8 @@ const MyCampaignsPage = () => {
                             Review and manage creator applications
                         </p>
                     </div>
+
+                    <NewCampaignButton />
                 </div>
 
                 <div className="mb-6">
@@ -183,20 +186,24 @@ const MyCampaignsPage = () => {
                                     router.push(`/dashboard/brand/creators/${app.creatorId._id}`)
                                 }
                                 className="
-        flex justify-between gap-6
-        border rounded-lg p-5
-        bg-white shadow-sm
-        cursor-pointer
-        hover:shadow-md hover:border-primary/40
-        transition
-    "
+  flex justify-between gap-6
+  border rounded-lg p-5
+  bg-white dark:bg-background
+  border-border
+  shadow-sm dark:shadow-none
+  cursor-pointer
+  hover:shadow-md hover:border-primary/40
+  dark:hover:bg-muted/50
+  transition
+"
                             >
 
                                 {/* Left section */}
                                 <div className="flex flex-col gap-2">
-                                    <h3 className="text-lg font-semibold">
+                                    <h3 className="text-lg font-semibold text-foreground">
                                         {app.creatorId.fullName}
                                     </h3>
+
 
                                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                         <span>
@@ -209,7 +216,7 @@ const MyCampaignsPage = () => {
                                     </div>
 
                                     {app.coverMessage && (
-                                        <p className="text-sm text-gray-600 mt-1">
+                                        <p className="text-sm text-muted-foreground mt-1">
                                             {app.coverMessage}
                                         </p>
                                     )}

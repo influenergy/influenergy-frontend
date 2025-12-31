@@ -193,9 +193,10 @@ export const postApi = {
     campaignId: string,
     payload: {
       brandId: string;
-      amount: number;
+      // amount: number;
       coverMessage?: string;
-      portfolioLink?: string;
+      creatorBudget?: string;
+      // portfolioLink?: string;
     }
   ) => {
     try {

@@ -24,6 +24,7 @@ import { useToggleFavorite } from "@/hooks/usePost";
 import Link from "next/link";
 import SkeletonCard from "@/components/Skeletons/ExploreCreatorsSkeleton";
 import TikTokIcon from "@/components/icons/tiktok";
+import NewCampaignButton from "@/components/brand/NewCampaignButton";
 
 // Filters data
 const FollowerRanges = [
@@ -248,7 +249,10 @@ export default function ExploreCreators() {
 
     return (
         <div className="relative p-6">
-            <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
+            <div className="flex justify-between">
+                <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
+                <NewCampaignButton/>
+            </div>
 
             {/* Filter Options */}
             <div className="my-4 space-y-3">

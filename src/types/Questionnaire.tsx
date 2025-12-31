@@ -76,6 +76,7 @@ export interface PostQuestionnaireData {
   "campaign-objective": string[];
   "campaign-description": string;
   "campaign-post": string;
+  "social-platforms": string[]
 
   // Step 2 - Target Audience & Demographics
   "target-age-group": string[];
@@ -122,6 +123,7 @@ export interface CampaignQuestionnaireData {
   campaignDescription: string;
   targetNiche: string[];
   budgetForCampaign: string;
+  socialPlatforms: string; 
   expectedDeliverables: string[];
   requirements?: string;
   applicationQuestions?: string;

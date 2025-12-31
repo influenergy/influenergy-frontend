@@ -2,14 +2,13 @@ import { LucideIcon, FileText } from "lucide-react";
 
 export interface Field {
     title: string;
-    category: "text" | "textarea" | "dropdown" | "multiselect" | "file";
+    category: "text" | "textarea" | "dropdown" | "multiselect" | "file" | "date" | "range" | "grouped-dropdown";
     slug: string;
     options?: string[];
-    placeholder?: string,
-    // 👇 OPTIONAL layout control
+    placeholder?: string;
     colSpan?: 1 | 2;
+    groups?: { label: string; options: string[] }[];
 }
-
 
 export interface SingleForm {
     title: string;
@@ -18,6 +17,14 @@ export interface SingleForm {
     fields: Field[];
 }
 
+// Platform-specific deliverables mapping
+export const PLATFORM_DELIVERABLES: Record<string, string[]> = {
+    Instagram: ["Reel", "Story", "Post", "Carousel"],
+    YouTube: ["Video", "Shorts", "Community Post"],
+    TikTok: ["Short Video", "Live Stream"],
+    Facebook: ["Post", "Story", "Video"],
+    X: ["Tweet", "Thread"],
+};
 
 export const CREATE_CAMPAIGN_FORM: SingleForm = {
     title: "Create Campaign",
@@ -61,18 +68,18 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
                 "Travel",
                 "Others",
             ],
-            placeholder: "Select a niche"
+            placeholder: "Select niche(s)"
         },
         {
             title: "Budget *",
             slug: "budgetForCampaign",
             category: "dropdown",
             options: [
-                "$50 - $120",
-                "$120 - $300",
-                "$300 - $600",
-                "$600 - $1,200",
-                "$1,200+",
+                "$50",
+                "$100",
+                "$200",
+                "$400",
+                "$500+",
             ],
             placeholder: "Select a budget"
         },
@@ -83,20 +90,27 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
             placeholder: "e.g., 10k+ followers, 3%+ engagement rate, experience in fashion niche"
         },
         {
-            title: "Deliverables",
-            slug: "expectedDeliverables",
+            title: "Social Platform *",
+            slug: "socialPlatforms",
             category: "multiselect",
             options: [
-                "Instagram Reels",
-                "YouTube Video",
-                "Story Post",
-                "Static Post",
-                "Multiple Deliverables",
+                "Instagram",
+                "YouTube",
+                "TikTok",
+                "Facebook",
+                "X",
             ],
-            placeholder: "e.g., 3 Instagram posts, 5 stories, 1 reel"
+            placeholder: "Select social platform(s)",
         },
         {
-            title: "Deadline",
+            title: "Deliverables *",
+            slug: "expectedDeliverables",
+            category: "multiselect",
+            // No options here - they're dynamically generated based on socialPlatforms
+            placeholder: "Select social platform first",
+        },
+        {
+            title: "Deadline *",
             slug: "deadline",
             category: "dropdown",
             options: [
@@ -113,12 +127,5 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
             category: "file",
             placeholder: "Click to upload campaign image"
         },
-        // {
-        //     title: "Application Questions (Optional)",
-        //     slug: "applicationQuestions",
-        //     category: "textarea",
-        //     placeholder: "Enter application question if any"
-        // },
     ],
 };
-

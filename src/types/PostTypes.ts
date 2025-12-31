@@ -9,6 +9,8 @@ export interface NewCampaignResponse {
   expectedDeliverables: string[];
   brandId: string;
   requirements: string[];
+  deadline: string,
+  socialPlatforms: string,
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
   campaignPost?: string; // Image URL
@@ -26,6 +28,8 @@ export interface NewPostData {
   budgetForCampaign: string;
   expectedDeliverables: string[];
   requirements?: string[];
+  deadline: string,
+  socialPlatforms: string,
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
   createdAt: string;

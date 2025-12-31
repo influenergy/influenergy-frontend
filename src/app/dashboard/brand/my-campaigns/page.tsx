@@ -5,6 +5,7 @@ import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Brie
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import NewCampaignButton from "@/components/brand/NewCampaignButton";
 
 interface Campaign {
     _id: string;
@@ -109,16 +110,7 @@ const MyCampaignsPage = () => {
                         </p>
                     </div>
 
-                    <button
-                        onClick={() => {
-                            const basePath = pathname.split("/").slice(0, -1).join("/");
-                            router.push(`${basePath}/create-campaign`);
-                        }}
-                        className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 flex items-center gap-2"
-                    >
-                        <span className="text-lg">+</span>
-                        New Campaign
-                    </button>
+                    <NewCampaignButton/>
                 </div>
 
                 <div className="mb-6">

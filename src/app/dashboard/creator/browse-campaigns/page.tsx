@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase, Heart } from 'lucide-react';
+import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase, Bookmark } from 'lucide-react';
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,22 @@ const MyCampaignsPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedBrand, setSelectedBrand] = useState("");
+    const [selectedBudget, setSelectedBudget] = useState("");
+
+
+
+    const [showApplyModal, setShowApplyModal] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
+
+    const [coverMessage, setCoverMessage] = useState("");
+    const [portfolioLink, setPortfolioLink] = useState("");
+    const [creatorBudget, setCreatorBudget] = useState("");
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [submitError, setSubmitError] = useState("");
+
+
 
     const router = useRouter();
     const pathname = usePathname();
@@ -97,9 +113,69 @@ const MyCampaignsPage = () => {
         campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleClick = () => {
+    const handleViewDetails = (campaign: Campaign) => {
+        (window.location.href = `/dashboard/creator/posts/${campaign._id}`)
+    }
+
+    const handleApply = () => {
         console.log("giiii");
     }
+
+    const getMidAmount = (budget?: string) => {
+        if (!budget) return 0;
+
+        // Handle "1200+"
+        if (budget.includes("+")) {
+            return Number(budget.replace(/[^0-9]/g, ""));
+        }
+
+        const numbers = budget.match(/\d+/g)?.map(Number);
+        if (!numbers || numbers.length < 2) return 0;
+
+        const [min, max] = numbers;
+        return Math.round((min + max) / 2);
+    };
+
+    const handleSubmit = async () => {
+        if (!selectedCampaign) return;
+
+        const payload = {
+            brandId: selectedCampaign.brandId,
+            // amount: Number(getMidAmount(selectedCampaign.budgetForCampaign)),
+            ...(coverMessage && { coverMessage }),
+            ...(creatorBudget && {creatorBudget}),
+            // ...(portfolioLink && { portfolioLink }),
+        };
+
+        try {
+            setSubmitLoading(true);
+            setSubmitError("");
+
+            const res = await postApi.createCollaboration(
+                selectedCampaign._id,
+                payload
+            );
+
+            if (!res?.status) {
+                throw new Error(res?.message || "Something went wrong");
+            }
+
+            // ✅ Close apply modal
+            setShowApplyModal(false);
+            setCoverMessage("");
+            // setPortfolioLink("");
+            setCreatorBudget("");
+
+            // ✅ Show success modal
+            setShowSuccess(true);
+
+        } catch (err: any) {
+            setSubmitError(err.response?.data?.message || err.message);
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
 
     return (
         <div className="w-full h-full p-[2%] dark:bg-background">
@@ -155,13 +231,13 @@ const MyCampaignsPage = () => {
                         {filteredCampaigns.map((campaign) => (
                             <div
                                 key={campaign._id}
-                                onClick={() =>
-                                    (window.location.href = `/dashboard/creator/posts/${campaign._id}`)
-                                }
-                                className="border rounded-lg p-5 cursor-pointer hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
+                                // onClick={() =>
+                                //     (window.location.href = `/dashboard/creator/posts/${campaign._id}`)
+                                // }
+                                className="border rounded-lg p-5 hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
                             >
                                 <div className="flex justify-end mb-3">
-                                    <Heart />
+                                    <Bookmark />
                                 </div>
 
                                 <div className="flex gap-5 mb-3">
@@ -239,16 +315,110 @@ const MyCampaignsPage = () => {
                                 <div className="flex-grow"></div>
 
                                 {/* Footer */}
-                                <div className="mt-4 pt-4">
-                                    <Button className="w-full" onClick={() => handleClick()}>
-                                        View Details and Apply
+                                <div className="mt-4 pt-4 flex justify-between">
+                                    <Button className="w-auto" onClick={() => handleViewDetails(campaign)}>
+                                        View Details
                                     </Button>
+                                    <Button
+                                        className="w-auto"
+                                        onClick={() => {
+                                            setSelectedCampaign(campaign);
+                                            setShowApplyModal(true);
+                                        }}
+                                    >
+                                        Apply
+                                    </Button>
+
                                 </div>
                             </div>
                         ))}
                     </div>
                 )}
             </div>
+
+            {showApplyModal && selectedCampaign && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-white dark:bg-background rounded-xl p-6 w-full max-w-lg relative">
+
+                        {/* Close */}
+                        <button
+                            onClick={() => setShowApplyModal(false)}
+                            className="absolute top-3 right-3 text-muted-foreground hover:text-foreground"
+                        >
+                            ✕
+                        </button>
+
+                        <h3 className="text-xl font-semibold mb-4">
+                            Apply to this Campaign
+                        </h3>
+
+                        <hr className="mb-4 border-gray-200 dark:border-gray-700" />
+
+                        <section className="space-y-4">
+                            {/* Error */}
+                            {submitError && (
+                                <p className="text-sm text-red-500">{submitError}</p>
+                            )}
+
+                            {/* Cover Message */}
+                            <textarea
+                                rows={4}
+                                value={coverMessage}
+                                onChange={(e) => setCoverMessage(e.target.value)}
+                                className="w-full rounded-xl border px-4 py-3 bg-background"
+                                placeholder="Write a short message..."
+                            />
+
+                            {/* Portfolio */}
+                            <input
+                                type="string"
+                                value={creatorBudget}
+                                onChange={(e) => setCreatorBudget(e.target.value)}
+                                className="w-full rounded-xl border px-4 py-3 bg-background"
+                                placeholder="tell your expected buget"
+                            />
+
+                            {/* Submit */}
+                            <button
+                                disabled={submitLoading}
+                                onClick={handleSubmit}
+                                className="
+            w-full rounded-md bg-primary py-3
+            text-white font-medium
+            flex items-center justify-center gap-2
+            disabled:opacity-60
+          "
+                            >
+                                {submitLoading && (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                )}
+                                Submit Application
+                            </button>
+                        </section>
+                    </div>
+                </div>
+            )}
+
+
+            {showSuccess && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-white dark:bg-background rounded-xl py-10 px-10 w-full max-w-xl text-center">
+                        <p className="text-lg font-semibold mb-2">
+                            Application submitted successfully!
+                        </p>
+                        <p className="text-sm text-muted-foreground mb-4">
+                            The brand will review your application.
+                        </p>
+                        <button
+                            onClick={() => setShowSuccess(false)}
+                            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

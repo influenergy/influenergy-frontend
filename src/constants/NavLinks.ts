@@ -84,7 +84,7 @@ const brandNav: NavItem[] = [
     matchPaths: ["/dashboard/brand/create-campaign", "/dashboard/brand/create-campaign"],
   },
   {
-    label: "Application Inbox",
+    label: "Inbox",
     href: "/dashboard/brand/application-inbox",
     icon: Mail,
     slug: "p",

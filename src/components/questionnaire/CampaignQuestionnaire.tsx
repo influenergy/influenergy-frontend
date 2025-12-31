@@ -54,6 +54,7 @@ const CreateCampaign = ({
             campaignDescription: "",
             targetNiche: [],
             budgetForCampaign: "",
+            socialPlatforms: "",
             expectedDeliverables: [],
             applicationQuestions: "",
             status: "DRAFT",
@@ -77,10 +78,11 @@ const CreateCampaign = ({
                 requirements: data.requirements
                     ? data.requirements
                         .split(/\n|,/g)
-                        .map(r => r.trim())
+                        .map(r => r.trim()) 
                         .filter(Boolean)
                     : [],
             };
+            
 
             await postApi.createCampaign(processedData);
 

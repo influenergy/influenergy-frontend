@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { Field } from "@/constants/questions";
 import { PostQuestionnaireData } from "@/types/Questionnaire";
 import Select from "react-select";
-import { ChevronDown, Upload  } from "lucide-react";
+import { ChevronDown, Upload } from "lucide-react";
 import * as yup from "yup";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,6 +17,7 @@ import {
 } from "@/lib/PostSchema";
 import PrimaryNicheInput from "../ui/PrimaryNicheInput";
 import { Slider } from "../ui/slider";
+import { PLATFORM_DELIVERABLES } from "@/constants/CreateCampaign";
 
 interface StepProps {
   fields: Field[];
@@ -43,18 +44,14 @@ export const isFieldRequired = (fieldName: string): boolean => {
 
     const fieldDescription = field.describe();
 
-
-    // Check if explicitly required
     const isExplicitlyRequired =
       fieldDescription.tests.some((test) => test.name === "required") ||
       fieldDescription.nullable == false;
 
-    // Handle date fields separately (if not nullable)
     const isDateRequired =
       fieldDescription.type === "date" &&
       !fieldDescription.tests.some((test) => test.name === "nullable");
 
-    // Handle array fields: required if min(1) is present
     const isArrayRequired =
       fieldDescription.type === "array" && !fieldDescription.nullable;
 
@@ -67,8 +64,6 @@ export const isFieldRequired = (fieldName: string): boolean => {
     return false;
   }
 };
-
-
 
 interface FormFieldProps {
   field: Field;
@@ -100,6 +95,141 @@ export const FormField = ({ field }: FormFieldProps) => {
 
   if (fieldName === "target-interests" || fieldName === "target-gender") {
     return <PrimaryNicheInput field={field} />;
+  }
+
+  // SPECIAL HANDLING FOR SOCIAL PLATFORMS - Single select only
+  if (fieldName === "social-platforms" || field.slug === "socialPlatforms") {
+    const selectedPlatform = watch(fieldName);
+
+    return (
+      <div className="relative w-full">
+        <Select
+          options={field.options?.map((option) => ({
+            label: option,
+            value: option,
+          }))}
+          value={
+            selectedPlatform && typeof selectedPlatform === "string"
+              ? { label: selectedPlatform, value: selectedPlatform }
+              : null
+          }
+          onChange={(selected) => {
+            setValue(fieldName, selected?.value || "", { shouldValidate: true });
+            // Clear deliverables when platform changes
+            setValue("expectedDeliverables" as keyof PostQuestionnaireData, [], {
+              shouldValidate: true,
+            });
+          }}
+          placeholder={field.placeholder || "Select a social platform"}
+          classNamePrefix="react-select"
+          className="dark:bg-gray-900 dark:text-gray-100"
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+              border: "none",
+              boxShadow: "none",
+              "&:hover": {
+                border: "none",
+              },
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isFocused ? "#7544DB" : "#F3F3F5",
+              color: state.isFocused ? "#FFFFFF" : "#000000",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                backgroundColor: "#7544DB",
+                color: "#FFFFFF",
+              },
+            }),
+          }}
+        />
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
+          <ChevronDown size={20} />
+        </div>
+      </div>
+    );
+  }
+
+  // SPECIAL HANDLING FOR DELIVERABLES - Dynamic options based on social platform
+  if (fieldName === "expected-deliverables" || field.slug === "expectedDeliverables") {
+    const socialPlatform = watch("socialPlatforms" as keyof PostQuestionnaireData);
+    const selectedOptions = watch(fieldName) || [];
+
+    // Generate options based on selected platform
+    const dynamicOptions = React.useMemo(() => {
+      if (!socialPlatform || typeof socialPlatform !== "string") {
+        return [];
+      }
+
+      const platformDeliverables = PLATFORM_DELIVERABLES[socialPlatform] || [];
+      return platformDeliverables.map((deliverable) => `${deliverable}`);
+    }, [socialPlatform]);
+
+    return (
+      <div>
+        <Select
+          isMulti
+          options={dynamicOptions.map((option) => ({
+            label: option,
+            value: option,
+          }))}
+          value={(selectedOptions as string[]).map((value: string) => ({
+            label: value,
+            value,
+          }))}
+          onChange={(selected) => {
+            const values = selected.map((opt) => opt.value);
+            setValue(fieldName, values, { shouldValidate: true });
+          }}
+          placeholder={
+            dynamicOptions.length === 0
+              ? "Select social platform first"
+              : "Select deliverables..."
+          }
+          isDisabled={dynamicOptions.length === 0}
+          classNamePrefix="react-select"
+          className="dark:bg-gray-900 dark:text-gray-100"
+          styles={{
+            control: (base, state) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+              border: "none",
+              boxShadow: "none",
+              opacity: state.isDisabled ? 0.6 : 1,
+              cursor: state.isDisabled ? "not-allowed" : "default",
+              "&:hover": {
+                border: "none",
+              },
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isSelected ? "#7544DB" : "#F3F3F5",
+              color: state.isSelected ? "#FFFFFF" : "#000000",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                backgroundColor: "#7544DB",
+                color: "#FFFFFF",
+              },
+              "&:active": {
+                backgroundColor: "#7544DB",
+              },
+            }),
+          }}
+        />
+      </div>
+    );
   }
 
   // DROPDOWN with placeholder
@@ -181,36 +311,25 @@ export const FormField = ({ field }: FormFieldProps) => {
                 border: "none",
               },
             }),
-
             menu: (base) => ({
               ...base,
               backgroundColor: "#F3F3F5",
             }),
-
             option: (base, state) => ({
               ...base,
-              backgroundColor: state.isSelected
-                ? "#7544DB"
-                : "#F3F3F5",
-
+              backgroundColor: state.isSelected ? "#7544DB" : "#F3F3F5",
               color: state.isSelected ? "#FFFFFF" : "#000000",
-
               cursor: "pointer",
               transition: "all 0.2s ease",
-
-              // 🔥 THIS IS THE KEY FIX
               "&:hover": {
                 backgroundColor: "#7544DB",
                 color: "#FFFFFF",
               },
-
-              // Optional but nice UX
               "&:active": {
                 backgroundColor: "#7544DB",
               },
             }),
           }}
-
         />
       </div>
     );
@@ -222,10 +341,11 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
-            } focus:outline-none focus:ring-2 appearance-none`}
+          className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${
+            error
+              ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+              : "border-gray-300 focus:ring-primary dark:border-gray-700"
+          } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" className="dark:text-gray-900">
             {field.placeholder || "Select an option"}
@@ -235,9 +355,7 @@ export const FormField = ({ field }: FormFieldProps) => {
             const allOptions = (field.groups || []).flatMap((g) => g.options);
             const hasCurrent = currentValue && allOptions.includes(currentValue);
             return !hasCurrent && currentValue ? (
-              <option value={currentValue}>
-                {currentValue}
-              </option>
+              <option value={currentValue}>{currentValue}</option>
             ) : null;
           })()}
           {field.groups?.map((group) => (
@@ -286,7 +404,7 @@ export const FormField = ({ field }: FormFieldProps) => {
 
       return (
         <div className="flex flex-col gap-2">
-          {(isImage || isUploadedImage) ? (
+          {isImage || isUploadedImage ? (
             <div
               className="w-full max-w-xs cursor-pointer border rounded-lg overflow-hidden dark:border-gray-700"
               onClick={() => inputRef.current?.click()}
@@ -310,16 +428,11 @@ export const FormField = ({ field }: FormFieldProps) => {
               title="Click to upload campaign image"
             >
               <Upload className="w-8 h-8 text-gray-400" />
-
               <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                 Click to upload campaign image
               </p>
-
-              <p className="text-xs text-gray-400">
-                PNG, JPG, GIF up to 10MB
-              </p>
+              <p className="text-xs text-gray-400">PNG, JPG, GIF up to 10MB</p>
             </div>
-
           )}
           <input
             ref={inputRef}
@@ -359,15 +472,16 @@ export const FormField = ({ field }: FormFieldProps) => {
             };
           }
         }}
-        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-          : "border-gray-300 focus:ring-primary dark:border-gray-700"
-          } focus:outline-none focus:ring-2`}
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${
+          error
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+        } focus:outline-none focus:ring-2`}
       />
     );
   }
 
-  // RANGE slider (already has display)
+  // RANGE slider
   if (field.category === "range") {
     const value = watch(fieldName) || 0;
 
@@ -412,10 +526,9 @@ export const FormField = ({ field }: FormFieldProps) => {
       type={field.category}
       {...register(fieldName)}
       placeholder={field.placeholder || `Enter ${field.title.toLowerCase()}...`}
-      className={`w-full p-3 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error
-        ? "border-red-500 focus:ring-red-500"
-        : "focus:ring-primary"
-        } focus:outline-none focus:ring-2`}
+      className={`w-full p-3 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${
+        error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"
+      } focus:outline-none focus:ring-2`}
     />
   );
 };
@@ -440,9 +553,7 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
             </label>
             <FormField field={field} mode={mode} />
             {error && (
-              <p className="text-red-500 text-sm mt-1">
-                {error.message as string}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
             )}
           </div>
         );
@@ -451,7 +562,6 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
   );
 };
 
-// Date input component using react-datepicker
 const DateInput = ({ field }: { field: Field }) => {
   const {
     setValue,
@@ -464,7 +574,6 @@ const DateInput = ({ field }: { field: Field }) => {
   const error = errors[fieldName];
   const value = watch(fieldName);
 
-  // Register the field but don't use the ref
   register(fieldName);
 
   return (
@@ -477,10 +586,11 @@ const DateInput = ({ field }: { field: Field }) => {
           });
         }}
         dateFormat="MM/dd/yyyy"
-        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-          : "border-gray-300 focus:ring-primary dark:border-gray-700"
-          } focus:outline-none focus:ring-2`}
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${
+          error
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+        } focus:outline-none focus:ring-2`}
         placeholderText="Select date"
       />
     </div>
@@ -488,7 +598,6 @@ const DateInput = ({ field }: { field: Field }) => {
 };
 
 export const Step = ({ fields, mode }: StepProps) => {
-  // Group fields into rows: 2 cols for rows 0 and 2, 1 col for others
   const rows: Field[][] = [];
   let currentRowIndex = 0;
   let currentRow: Field[] = [];
@@ -506,7 +615,6 @@ export const Step = ({ fields, mode }: StepProps) => {
     }
   });
 
-  // Add any remaining fields
   if (currentRow.length > 0) {
     rows.push(currentRow);
   }
@@ -519,8 +627,9 @@ export const Step = ({ fields, mode }: StepProps) => {
         return (
           <div
             key={rowIndex}
-            className={`grid gap-4 ${isRow0or2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-              }`}
+            className={`grid gap-4 ${
+              isRow0or2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+            }`}
           >
             {rowFields.map((field) => {
               const fieldName = field.slug as keyof PostQuestionnaireData;

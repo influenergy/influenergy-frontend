@@ -16,6 +16,7 @@ import FeaturedModal from "@/components/dashboard/FeaturedModal";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { setUserBadge } from "@/store/features/authSlice";
+import NewCampaignButton from "@/components/brand/NewCampaignButton";
 
 
 const Levels = [
@@ -125,6 +126,7 @@ export default function DashboardPage() {
             </span>
           </Button>
         )}
+        {userType === "brand" && <NewCampaignButton/>}
       </div>
 
       {userType === "creator" ? (
