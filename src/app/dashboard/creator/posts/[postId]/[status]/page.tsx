@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
-import { CampaignResponse, Collaboration } from "@/types/PostTypes";
+import { NewCampaignResponse, Collaboration } from "@/types/PostTypes";
 
 const Page = () => {
   const { postId,status } = useParams();
-  const [campaignData, setCampaignData] = useState<CampaignResponse | null>(null);
+  const [campaignData, setCampaignData] = useState<NewCampaignResponse | null>(null);
   const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
   const { data, isLoading, error } = useCampaign(postId as string,status as string);
   useEffect(() => {
@@ -40,7 +40,7 @@ const Page = () => {
   
   return <>
 
-    <PostDescription data={campaignData} collaborations={collaborations} />
+    <PostDescription data={campaignData} collaborations={collaborations} role="CREATOR"/>
   </>
 };
 
