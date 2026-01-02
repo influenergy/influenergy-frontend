@@ -10,6 +10,7 @@ export interface Collaboration {
   _id: string;
   brandId: string;
   campaignId: {
+    campaignTitle: string;
     campaignName: string;
     campaignPost: string;
     brandName: string;

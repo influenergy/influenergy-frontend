@@ -56,7 +56,6 @@ const MyCampaignsPage = () => {
                 setError(null);
 
                 const response = await postApi.getAllCampaigns();
-                // console.log("Campaign response:", response);
 
                 if (!response || !response.status) {
                     throw new Error("Failed to fetch campaigns");

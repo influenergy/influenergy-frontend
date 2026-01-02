@@ -34,19 +34,21 @@ export const useCampaign = (id: string, status:string) => {
   });
 };
 
+type CreateCollaborationPayload = {
+  brandId: string;
+  coverMessage?: string;
+  creatorBudget?: string;
+};
 
-export const useCreateCollaboration = (
-  id: string,
-  creatorId: string,
-  amount: string
-) => {
+export const useCreateCollaboration = (campaignId: string) => {
   return useMutation({
-    mutationKey: queryKeys.createCollaboration(id),
-    mutationFn: async () => {
-      return await postApi.createCollaboration(id, creatorId, amount);
+    mutationKey: queryKeys.createCollaboration(campaignId),
+    mutationFn: (payload: CreateCollaborationPayload) => {
+      return postApi.createCollaboration(campaignId, payload);
     },
   });
 };
+
 
 export const useCollaborationStatusDetails = (status: string) => {
   return useQuery({

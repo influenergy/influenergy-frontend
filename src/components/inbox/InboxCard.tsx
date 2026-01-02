@@ -66,7 +66,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
     try {
       await postApi.paymentCollect(data._id || "", payload);
       // Handle success, e.g., show a success message
-      
+
       refetch(); // Refetch data after payment collection
     } catch (error) {
       // Handle error, e.g., show an error message
@@ -83,10 +83,9 @@ const InboxCard: React.FC<InboxCardProps> = ({
   };
   const { mutate: acceptCollaboration, isPending: isAccepting } =
     useAcceptOrDeclineCollaboration(collaborationId, "Active");
-    
+
   const { mutate: declineCollaboration, isPending: declineLoading } =
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
-
 
   return (
     <div className="relative flex flex-col dark:bg-background">
@@ -94,14 +93,14 @@ const InboxCard: React.FC<InboxCardProps> = ({
         status === "Completed" || status === "Payment" ?
           <Card className="bg-white rounded-2xl shadow-md p-4 flex flex-col transition hover:shadow-lg h-full dark:bg-background">
             <h1 className="mb-2 ">
-              {data.campaignId.campaignName.length > 50
-                ? data.campaignId.campaignName.slice(0, 50) + "..."
-                : data.campaignId.campaignName}
+              {data.campaignId && data.campaignId.campaignTitle.length > 50
+                ? data.campaignId.campaignTitle.slice(0, 50) + "..."
+                : data.campaignId && data.campaignId.campaignTitle}
             </h1>
             <div className="aspect-video relative rounded-xl overflow-hidden mb-3">
               <Image
-                src={data.campaignId.campaignPost || "/images/placeholder.png"}
-                alt={data.campaignId.campaignName}
+                src={data.campaignId && data.campaignId.campaignPost || "/images/placeholder.png"}
+                alt={data.campaignId && data.campaignId.campaignTitle}
                 fill
                 className="object-cover rounded-xl"
               />
@@ -113,9 +112,9 @@ const InboxCard: React.FC<InboxCardProps> = ({
                 <p
                   className={`text-black text-sm leading-snug dark:text-gray-200 transition-all ${expanded ? "" : "line-clamp-2"}`}
                 >
-                  {data.campaignId.campaignDescription}
+                  {data.campaignId && data.campaignId.campaignDescription}
                 </p>
-                {data.campaignId.campaignDescription && data.campaignId.campaignDescription.length > 120 && (
+                {data.campaignId && data.campaignId.campaignDescription && data.campaignId && data.campaignId.campaignDescription.length > 120 && (
                   <button
                     onClick={(e) => { e.preventDefault(); setExpanded(!expanded); }}
                     className="text-blue-500 hover:underline text-xs mt-1"
@@ -133,8 +132,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
             <div className="mt-auto text-center flex w-full">
               {status === "Completed" ? <Button className="bg-transparent w-full shadow-none hover:bg-white border-[#7544DB] text-[#7544DB] border-2 rounded-xl font-semibold" onClick={() => setIsDetailsModalOpen(true)}>
                 View Details
-              </Button> : 
-              
+              </Button> :
+
                 {
                   Pending: (
                     <button
@@ -167,69 +166,107 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
           </Card> :
           <>
-            <div className="flex ">
+            {/* <div className="flex ">
               <p className="text-gray-500 bg-white dark:bg-gray-700 dark:text-white text-sm md:text-base shadow-[0_-2px_6px_rgba(0,0,0,0.1),2px_0_6px_rgba(0,0,0,0.1),-2px_0_6px_rgba(0,0,0,0.1)] rounded-t-lg p-4 md:px-10 ">
-                {data.campaignId.campaignName}
+                {data.campaignId && data.campaignId.campaignTitle}
               </p>
-            </div>
-            <div className="-mt-2 shadow-lg bg-white dark:bg-gray-700  py-6 px-4 flex flex-col gap-4 md:gap-6 rounded-lg">
-              <section className="flex flex-col md:flex-row items-start gap-4 md:gap-4">
-                <div className="w-[300px] relative rounded-xl aspect-video">
+            </div> */}
+            <div className="-mt-2 shadow-lg bg-white dark:bg-gray-700  py-6 px-4 flex  justify-between gap-4 md:gap-6 rounded-lg">
+
+              <div className="flex flex-col gap-2">
+                <section className="flex flex-col md:flex-row items-start gap-4 md:gap-4">
+                  {/* <div className="w-[300px] relative rounded-xl aspect-video">
                   <Image
                     src={image}
                     alt="Campaign Image"
                     fill
                     className="object-cover rounded-xl"
                   />
-                </div>
+                </div> */}
 
-                <div className="flex flex-col items-start gap-2 md:gap-4">
-                  <h2 className="font-semibold text-sm md:text-base dark:text-white">Campaign Description</h2>
-                  <p className="text-gray-500 text-sm md:text-base font-normal dark:text-gray-200">
-                    {data.campaignId.campaignDescription}
-                  </p>
-                </div>
-              </section>
-              <section className="flex flex-col items-start w-full gap-4 md:gap-6">
-                <h2 className="font-semibold text-sm md:text-base border-b-2 text-primary px-2 border-primary cursor-pointer" onClick={() => {
+                  <div className="flex flex-col items-start gap-1">
+                    {/* Campaign Title */}
+                    <p className="text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100">
+                      {data?.campaignId?.campaignTitle}
+                    </p>
 
-                  setIsDetailsModalOpen(true)
-                }} >View Campaign Details</h2>
-                <div className="flex w-full">
-                  {status == "Pending" && (
-                    <div className=" bg-white  flex justify-end gap-4 md:w-1/2">
-                      <Button
-                        className=" px-4 py-2 text-sm font-medium rounded-lg hover:bg-primary-dark transition bg-primary w-full text-white"
-                        onClick={() => handleContractModalOpen()}
-                        disabled={isAccepting || declineLoading}
-                      >
-                        {isAccepting ? "Accepting..." : "Accept"}
-                      </Button>
-                      <Button
-                        className="w-full px-4 py-2 text-sm font-medium  border rounded-lg transition border-primary text-primary bg-white hover:bg-primary hover:text-white"
-                        onClick={() => declineCollaboration()}
-                        disabled={declineLoading || isAccepting}
-                      >
-                        {declineLoading ? "Rejecting..." : "Reject"}
-                      </Button>
-                    </div>
-                  )}
+                    {/* Brand Name */}
+                    <p className="text-sm md:text-base font-medium text-gray-600 dark:text-gray-300">
+                      {data?.campaignId?.brandName}
+                    </p>
 
-                  {status === "Active" && (
-                    <div className="flex justify-end gap-4 md:w-1/2">
-                      <Button
-                        onClick={() => setIsStatusModalOpen(true)}
-                        className="w-full px-4 py-2 text-sm font-medium rounded-lg transition text-white bg-primary hover:bg-primary hover:text-white"
-                      >
-                        Update Status
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </section>
+                    {/* Applied Date */}
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                      Applied on:{" "}
+                      {data?.createdAt
+                        ? new Date(data.createdAt).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })
+                        : ""}
+                    </p>
+                  </div>
+                </section>
+                <section className="flex flex-col items-start w-full gap-4 md:gap-6">
+                  <h2 className="font-semibold text-sm md:text-base  text-primary border-primary cursor-pointer" onClick={() => {
+
+                    setIsDetailsModalOpen(true)
+                  }} >View Campaign Details</h2>
+
+                  <div className="flex w-full">
+                    {data?.status == "Pending" && (
+                      <p>Your application is under review. The brand will respond soon.</p>
+                    )}
+
+                    {data?.status == "Offered" && (
+                      <div className="flex gap-4">
+                        <Button
+                          className=" px-4 py-2 text-sm font-medium rounded-lg hover:bg-primary-dark transition bg-primary w-full text-white"
+                          onClick={() => handleContractModalOpen()}
+                          disabled={isAccepting || declineLoading}
+                        >
+                          {isAccepting ? "Accepting..." : "Accept"}
+                        </Button>
+                        <Button
+                          className="w-full px-4 py-2 text-sm font-medium  border rounded-lg transition border-primary text-primary bg-white hover:bg-primary hover:text-white"
+                          onClick={() => declineCollaboration()}
+                          disabled={declineLoading || isAccepting}
+                        >
+                          {declineLoading ? "Rejecting..." : "Reject"}
+                        </Button>
+                      </div>
+                    )}
+
+                    {status === "Active" && (
+                      <div className="">
+                        <Button
+                          onClick={() => setIsStatusModalOpen(true)}
+                          className="w-full px-4 py-2 text-sm font-medium rounded-lg transition text-white bg-primary hover:bg-primary hover:text-white"
+                        >
+                          Update Status
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </section>
+              </div>
+
+              <div className="">
+                <span
+                  className={`text-xs px-3 py-1 rounded-full ${data?.status === "Offered"
+                    ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                    : data?.status === "Pending"
+                      ? "bg-[#FEF9C2] text-[#A65F00] dark:bg-[#FEF9C2] dark:text-[#A65F00]"
+                      : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                    }`}
+                >
+                  {data?.status}
+                </span>
+              </div>
             </div></>
       }
-  
+
 
       {/* Modals */}
       <DetailsModal
@@ -268,3 +305,6 @@ const InboxCard: React.FC<InboxCardProps> = ({
 };
 
 export default InboxCard;
+
+
+{/* */ }

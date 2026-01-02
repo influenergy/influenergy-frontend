@@ -30,6 +30,16 @@ const MyCampaignsPage = () => {
     const [applications, setApplications] = useState<any[]>([]);
     const [loadingApps, setLoadingApps] = useState(false);
 
+    const [updatingId, setUpdatingId] = useState<string | null>(null);
+    const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+
+    const [modal, setModal] = useState<{
+        open: boolean;
+        type: "success" | "error";
+        message: string;
+    } | null>(null);
+
+
 
     const router = useRouter();
     const pathname = usePathname();
@@ -43,8 +53,6 @@ const MyCampaignsPage = () => {
                 setError(null);
 
                 const response = await postApi.getCampaigns();
-                console.log("Campaign response:", response);
-
                 if (!response || !response.status) {
                     throw new Error("Failed to fetch campaigns");
                 }
@@ -78,7 +86,6 @@ const MyCampaignsPage = () => {
                 if (!response?.status) {
                     throw new Error("Failed to fetch applications");
                 }
-                console.log("text-->", response.collaborations);
 
                 setApplications(response.collaborations || []);
             } catch (error) {
@@ -90,6 +97,35 @@ const MyCampaignsPage = () => {
 
         fetchApplications();
     }, [selectedCampaignId]);
+
+    const handleStatus = async (status: string, collaborationId: string) => {
+        try {
+            setUpdatingId(collaborationId);
+            setUpdatingStatus(status);
+
+            await postApi.changeCollaborationStatus(collaborationId, status);
+
+            setModal({
+                open: true,
+                type: "success",
+                message:
+                    status === "Offered"
+                        ? "Offer sent successfully."
+                        : status === "Rejected"
+                            ? "Application rejected successfully."
+                            : "Status updated successfully.",
+            });
+        } catch (error) {
+            setModal({
+                open: true,
+                type: "error",
+                message: "Something went wrong while updating the status. Please try again.",
+            });
+        } finally {
+            setUpdatingId(null);
+            setUpdatingStatus(null);
+        }
+    };
 
 
     // Loading state
@@ -134,7 +170,17 @@ const MyCampaignsPage = () => {
 
     const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCampaignId(e.target.value);
-    };    
+    };
+
+    const statusStyles: Record<string, string> = {
+        Pending: "bg-yellow-100 text-yellow-700",
+        Shortlisted: "bg-blue-100 text-blue-700",
+        Active: "bg-green-100 text-green-700",
+        Completed: "bg-purple-100 text-purple-700",
+        Offered: "bg-indigo-100 text-indigo-700",
+        Rejected: "bg-red-100 text-red-700",
+    };
+
 
     return (
         <div className="w-full h-full p-[2%] dark:bg-background">
@@ -223,73 +269,116 @@ const MyCampaignsPage = () => {
 
                                     {/* Actions */}
                                     <div className="flex flex-wrap gap-3 mt-4">
-                                        {/* Shortlist */}
-                                        <button
-                                            className="
-            flex items-center gap-2
-            px-4 py-2
-            text-sm font-medium
-            rounded-md
-            bg-blue-600 text-white
-            hover:bg-blue-700
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-            transition
-        "
-                                        >
-                                            <Clock className="w-4 h-4" />
-                                            Shortlist
-                                        </button>
+                                        {/* PENDING → all buttons */}
+                                        {app.status === "Pending" && (
+                                            <>
+                                                {/* Shortlist */}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleStatus("Shortlisted", app._id);
+                                                    }}
+                                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+                                                >
+                                                    <Clock className="w-4 h-4" />
+                                                    Shortlist
+                                                </button>
 
-                                        {/* Send Offer */}
-                                        <button
-                                            className="
-            flex items-center gap-2
-            px-4 py-2
-            text-sm font-medium
-            rounded-md
-            bg-primary text-white
-            hover:bg-primary/90
-            focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2
-            transition
-        "
-                                        >
-                                            <CircleCheckBig className="w-4 h-4" />
-                                            Send Offer
-                                        </button>
+                                                {/* Send Offer */}
+                                                <button
+                                                    disabled={updatingId === app._id}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleStatus("Offered", app._id);
+                                                    }}
+                                                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md
+    ${updatingId === app._id ? "bg-primary/70 cursor-not-allowed" : "bg-primary hover:bg-primary/90"}
+    text-white transition`}
+                                                >
+                                                    {updatingId === app._id && updatingStatus === "Offered" ? (
+                                                        <>Sending offer…</>
+                                                    ) : (
+                                                        <>
+                                                            <CircleCheckBig className="w-4 h-4" />
+                                                            Send Offer
+                                                        </>
+                                                    )}
+                                                </button>
 
-                                        {/* Reject */}
-                                        <button
-                                            className="
-            flex items-center gap-2
-            px-4 py-2
-            text-sm font-medium
-            rounded-md
-            bg-red-600 text-white
-            hover:bg-red-700
-            focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2
-            transition
-        "
-                                        >
-                                            <CircleX className="w-4 h-4" />
-                                            Reject
-                                        </button>
+
+                                                {/* Reject */}
+                                                <button
+                                                    disabled={updatingId === app._id}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleStatus("Rejected", app._id);
+                                                    }}
+                                                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md
+    ${updatingId === app._id ? "bg-red-500/70 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"}
+    text-white transition`}
+                                                >
+                                                    {updatingId === app._id && updatingStatus === "Rejected" ? (
+                                                        <>Rejecting…</>
+                                                    ) : (
+                                                        <>
+                                                            <CircleX className="w-4 h-4" />
+                                                            Reject
+                                                        </>
+                                                    )}
+                                                </button>
+
+                                            </>
+                                        )}
+
+                                        {/* SHORTLISTED → only Offer + Reject */}
+                                        {app.status === "Shortlisted" && (
+                                            <>
+                                                {/* Send Offer */}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleStatus("Offered", app._id);
+                                                    }}
+                                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md bg-primary text-white hover:bg-primary/90 transition"
+                                                >
+                                                    <CircleCheckBig className="w-4 h-4" />
+                                                    Send Offer
+                                                </button>
+
+                                                {/* Reject */}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleStatus("Rejected", app._id);
+                                                    }}
+                                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+                                                >
+                                                    <CircleX className="w-4 h-4" />
+                                                    Reject
+                                                </button>
+                                            </>
+                                        )}
+
+                                        {/* REJECTED → no buttons */}
+                                        {app.status === "Rejected" && null}
+
+                                        {/* OFFERED / ACTIVE / COMPLETED → blank for now */}
+                                        {["Offered", "Active", "Completed"].includes(app.status) && null}
                                     </div>
+
 
                                 </div>
 
                                 {/* Right section */}
                                 <div className="flex flex-col items-end justify-between">
                                     <span
-                                        className={`text-xs font-medium px-3 py-1 rounded-full ${app.status === "Pending"
-                                            ? "bg-yellow-100 text-yellow-700"
-                                            : app.status === "Active"
-                                                ? "bg-green-100 text-green-700"
-                                                : "bg-gray-100 text-gray-700"
+                                        className={`text-xs font-medium px-3 py-1 rounded-full ${statusStyles[app.status] || "bg-gray-100 text-gray-700"
                                             }`}
                                     >
                                         {app.status}
                                     </span>
                                 </div>
+
                             </div>
                         ))}
                     </div>
@@ -313,6 +402,33 @@ const MyCampaignsPage = () => {
 
 
             </div>
+
+            {modal?.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-white dark:bg-background rounded-lg p-6 w-full max-w-sm shadow-lg">
+                        <h3
+                            className={`text-lg font-semibold mb-2 ${modal.type === "success" ? "text-green-600" : "text-red-600"
+                                }`}
+                        >
+                            {modal.type === "success" ? "Success" : "Error"}
+                        </h3>
+
+                        <p className="text-sm text-muted-foreground mb-4">
+                            {modal.message}
+                        </p>
+
+                        <div className="flex justify-end">
+                            <button
+                                onClick={() => setModal(null)}
+                                className="px-4 py-2 text-sm rounded-md bg-primary text-white hover:bg-primary/90"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

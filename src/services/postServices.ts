@@ -233,6 +233,20 @@ export const postApi = {
       throw error;
     }
   },
+  changeCollaborationStatus: async (
+    collaborationId: string,
+    status: string
+  ) => {
+    try {
+      const response = await api.put(
+        `/brand/collaboration-status/${collaborationId}/${status}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCollaborationByStatus :", error);
+      throw error;
+    }
+  },
   acceptOrDeclineVideo: async (
     collaborationId: string,
     videoId: string,

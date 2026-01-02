@@ -30,6 +30,8 @@ const Page = () => {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
+
+  console.log("data--->",campaignsData);
   return (
     <AnimatePresence mode="wait">
       <Tabs defaultValue="" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
@@ -40,12 +42,12 @@ const Page = () => {
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm relative"
             >
               <div className="flex items-center gap-1">
-                <span>New Opportunities</span>
-                {pendingCollabCount !== 0 && (
+                <span>All Opportunities</span>
+                {/* {pendingCollabCount !== 0 && (
                   <Badge variant="destructive" className="pointer-events-none">
                     {pendingCollabCount}
                   </Badge>
-                )}
+                )} */}
               </div>
             </TabsTrigger>
             <TabsTrigger
@@ -100,7 +102,7 @@ const Page = () => {
                         key={collaboration._id || index}
                         status={"Active"}
                         title={
-                          collaboration?.campaignId?.campaignName || "No Title"
+                          collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
                           collaboration?.campaignId?.campaignPost ||
@@ -121,7 +123,7 @@ const Page = () => {
                     src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
-                    height={280}
+                    height={280} 
                     className="mx-auto"
                     priority
                   />
@@ -145,7 +147,7 @@ const Page = () => {
                         key={collaboration._id || index}
                         status={"Pending"}
                         title={
-                          collaboration?.campaignId?.campaignName || "No Title"
+                          collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
                           collaboration?.campaignId?.campaignPost ||
@@ -190,7 +192,7 @@ const Page = () => {
                         key={collaboration._id || index}
                         status={"Completed"}
                         title={
-                          collaboration?.campaignId?.campaignName || "No Title"
+                          collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
                           collaboration?.campaignId?.campaignPost ||
@@ -235,7 +237,7 @@ const Page = () => {
                         key={collaboration._id || index}
                         status={"Payment"}
                         title={
-                          collaboration?.campaignId?.campaignName || "No Title"
+                          collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
                           collaboration?.campaignId?.campaignPost ||
