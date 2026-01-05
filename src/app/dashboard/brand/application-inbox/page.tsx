@@ -6,6 +6,7 @@ import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
+import Page from "../findai/page";
 
 interface Campaign {
     _id: string;
@@ -188,7 +189,7 @@ const MyCampaignsPage = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-2xl font-semibold mb-2">Campaign Applications</h1>
+                        <h1 className="text-2xl font-semibold mb-2">Inbox</h1>
                         <p className="text-muted-foreground text-md">
                             Review and manage creator applications
                         </p>
@@ -197,7 +198,7 @@ const MyCampaignsPage = () => {
                     <NewCampaignButton />
                 </div>
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                     <label className="block text-sm font-medium mb-2">
                         Select Campaign
                     </label>
@@ -215,8 +216,9 @@ const MyCampaignsPage = () => {
                             </option>
                         ))}
                     </select>
-                </div>
+                </div> */}
 
+                <Page/>
 
                 {/* Applications Section */}
                 {loadingApps ? (
@@ -384,7 +386,7 @@ const MyCampaignsPage = () => {
                     </div>
                 ) : (
                     <div className="mt-10 flex flex-col items-center justify-center text-center gap-3">
-                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                        {/* <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                             <Briefcase className="w-6 h-6 text-primary" />
                         </div>
 
@@ -395,7 +397,7 @@ const MyCampaignsPage = () => {
                         <p className="text-sm text-muted-foreground max-w-sm">
                             Creators haven’t applied to this campaign yet.
                             Once they do, their applications will appear here.
-                        </p>
+                        </p> */}
                     </div>
 
                 )}

@@ -8,13 +8,13 @@ import React, { useEffect, useState } from "react";
 import CreatorCards from "./CreatorCards";
 
 
-export default function PendingCollaborationTab() {
+export default function ApplicationsReceived() {
     const router = useRouter();
     const {
         data: campaigns,
         isLoading,
         isError,
-    } = useFindAiCampaignsList("Offered");
+    } = useFindAiCampaignsList("Pending");
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
 
 
@@ -70,10 +70,10 @@ export default function PendingCollaborationTab() {
                     <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
                         <div className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
                             <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100">
-                                Select a campaign to view pending creators
+                                Select a campaign to view creators who applied for campaign
                             </h3>
                             <p className="text-sm text-muted-foreground">
-                                Choose a campaign from the dropdown above to see all the creators to who you have sent a offer for that campaign.
+                                Choose a campaign from the dropdown above to see all the creators who have been applied for that campaign.
                             </p>
                         </div>
                     </div>

@@ -11,8 +11,7 @@ export interface Collaboration {
   brandId: string;
   campaignId: {
     campaignTitle: string;
-    campaignName: string;
-    campaignPost: string;
+    campaignImage: string;
     brandName: string;
     campaignObjective: string[];
     campaignDescription: string;

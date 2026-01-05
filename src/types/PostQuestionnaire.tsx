@@ -42,7 +42,8 @@ export interface PostQuestionnaireData {
 
 export interface Campaign {
   _id: string;
-  campaignName: string;
+  campaignId: string;
+  campaignTitle: string;
   brandId: string;
   vectorId: string;
   brandName: string;
@@ -64,7 +65,7 @@ export interface Campaign {
   creatorType: string;
   minimumFollowers: string;
   creatorInfluencer: string;
-  socialMediaPlatform: string[];
+  socialPlatforms: string[];
   pastExperience: string;
   preferredCreatorNiche: string[];
   preferredCreatorDemographics: string;
@@ -72,6 +73,8 @@ export interface Campaign {
   expectedDeliverables: string;
   noOfDaysForDelivery: string;
   additionalInstructions: string;
-  campaignPost: string;
+  campaignImage: string;
+  targetNiche: string[];
+  deadline: string;
   __v?: number;
 }

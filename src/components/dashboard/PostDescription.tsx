@@ -1,6 +1,6 @@
 import { NewPostData, PostDescriptionProps } from "@/types/PostTypes";
 import Image from "next/image";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronsLeft,
@@ -14,7 +14,11 @@ import {
   CircleCheckBig,
   DollarSign,
   Calendar,
+  Loader2,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { postApi } from "@/services/postServices";
+
 
 /* ---------------- Helpers ---------------- */
 
@@ -54,6 +58,61 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
   const router = useRouter();
 
   const processedData: NewPostData = useMemo(() => { return { id: data._id, campaignImage: data.campaignImage || "/images/placeholder.png", campaignTitle: data.campaignTitle, campaignDescription: data.campaignDescription, brandName: data.brandName, targetNiche: Array.isArray(data.targetNiche) ? data.targetNiche : parseJsonArray(data.targetNiche), budgetForCampaign: data.budgetForCampaign, expectedDeliverables: Array.isArray(data.expectedDeliverables) ? data.expectedDeliverables : parseJsonArray(data.expectedDeliverables), requirements: data.requirements, status: data.status || "DRAFT", deadline: data.deadline, socialPlatforms: data.socialPlatforms, applicationQuestions: data.applicationQuestions || "", createdAt: data.createdAt || "", updatedAt: data.updatedAt || "", brandId: data.brandId, }; }, [data]);
+
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [coverMessage, setCoverMessage] = useState("");
+  const [portfolioLink, setPortfolioLink] = useState("");
+  const [creatorBudget, setCreatorBudget] = useState("");
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+
+  const handleSubmit = async () => {
+    if (!processedData) return;
+
+    if (!processedData?.brandId) {
+      setSubmitError("Brand ID is missing");
+      return;
+    }
+
+    const payload = {
+      brandId: processedData.brandId,
+      // amount: Number(getMidAmount(selectedCampaign.budgetForCampaign)),
+      ...(coverMessage && { coverMessage }),
+      ...(creatorBudget && { creatorBudget }),
+      // ...(portfolioLink && { portfolioLink }),
+    };
+
+    try {
+      setSubmitLoading(true);
+      setSubmitError("");
+
+      const res = await postApi.createCollaboration(
+        processedData.id,
+        payload
+      );
+
+      if (!res?.status) {
+        throw new Error(res?.message || "Something went wrong");
+      }
+
+      // ✅ Close apply modal
+      setShowApplyModal(false);
+      setCoverMessage("");
+      // setPortfolioLink("");
+      setCreatorBudget("");
+
+      // ✅ Show success modal
+      setShowSuccess(true);
+
+    } catch (err: any) {
+      setSubmitError(err.response?.data?.message || err.message);
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
 
   return (
     <div className="max-w-6xl mx-auto bg-white dark:bg-background rounded-xl p-8 space-y-10">
@@ -173,6 +232,98 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
             ))}
           </ul>
         </section>
+      )}
+
+      <Button
+        className="w-auto"
+        onClick={() => {
+          setShowApplyModal(true);
+        }}
+      >
+        Apply
+      </Button>
+
+      {showApplyModal && processedData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white dark:bg-background rounded-xl p-6 w-full max-w-lg relative">
+
+            {/* Close */}
+            <button
+              onClick={() => setShowApplyModal(false)}
+              className="absolute top-3 right-3 text-muted-foreground hover:text-foreground"
+            >
+              ✕
+            </button>
+
+            <h3 className="text-xl font-semibold mb-4">
+              Apply to this Campaign
+            </h3>
+
+            <hr className="mb-4 border-gray-200 dark:border-gray-700" />
+
+            <section className="space-y-4">
+              {/* Error */}
+              {submitError && (
+                <p className="text-sm text-red-500">{submitError}</p>
+              )}
+
+              {/* Cover Message */}
+              <textarea
+                rows={4}
+                value={coverMessage}
+                onChange={(e) => setCoverMessage(e.target.value)}
+                className="w-full rounded-xl border px-4 py-3 bg-background"
+                placeholder="Write a short message..."
+              />
+
+              {/* Portfolio */}
+              <input
+                type="string"
+                value={creatorBudget}
+                onChange={(e) => setCreatorBudget(e.target.value)}
+                className="w-full rounded-xl border px-4 py-3 bg-background"
+                placeholder="tell your expected buget"
+              />
+
+              {/* Submit */}
+              <button
+                disabled={submitLoading}
+                onClick={handleSubmit}
+                className="
+                  w-full rounded-md bg-primary py-3
+                  text-white font-medium
+                  flex items-center justify-center gap-2
+                  disabled:opacity-60
+                "
+              >
+                {submitLoading && (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                )}
+                Submit Application
+              </button>
+            </section>
+          </div>
+        </div>
+      )}
+
+
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white dark:bg-background rounded-xl py-10 px-10 w-full max-w-xl text-center">
+            <p className="text-lg font-semibold mb-2">
+              Application submitted successfully!
+            </p>
+            <p className="text-sm text-muted-foreground mb-4">
+              The brand will review your application.
+            </p>
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

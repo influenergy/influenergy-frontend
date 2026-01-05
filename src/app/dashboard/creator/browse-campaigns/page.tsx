@@ -116,10 +116,6 @@ const MyCampaignsPage = () => {
         (window.location.href = `/dashboard/creator/posts/${campaign._id}`)
     }
 
-    const handleApply = () => {
-        console.log("giiii");
-    }
-
     const getMidAmount = (budget?: string) => {
         if (!budget) return 0;
 

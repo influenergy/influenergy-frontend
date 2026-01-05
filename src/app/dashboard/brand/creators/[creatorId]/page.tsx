@@ -1,14 +1,16 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { postApi } from "@/services/postServices";
-import { 
+import {
     ChevronsLeft, MapPin, Users, TrendingUp, Award, ExternalLink, Tag,
-    Calendar, Globe, DollarSign, Heart, Video, User, Target, 
-    BarChart3, Languages, CreditCard, Sparkles, CheckCircle2, XCircle
+    Calendar, Globe, DollarSign, Heart, Video, User, Target,
+    BarChart3, Languages, CreditCard, Sparkles, CheckCircle2, XCircle, Clock,
+    Loader2, X
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
+
 
 interface SocialLinks {
     primary?: { platform?: string; link?: string; followers?: number | string };
@@ -72,10 +74,20 @@ interface CreatorType {
 }
 
 const CreatorDetailsPage = () => {
-    const { creatorId } = useParams();
     const [creator, setCreator] = useState<CreatorType | null>(null);
     const [loading, setLoading] = useState(true);
+    const [statusLoading, setStatusLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [modalType, setModalType] = useState<'success' | 'error'>('success');
+    const [modalMessage, setModalMessage] = useState('');
     const router = useRouter();
+
+    const { creatorId } = useParams();
+    const searchParams = useSearchParams();
+
+    const status = searchParams.get("status");
+    const collaborationId = searchParams.get('collaborationId') || '';
+
 
     useEffect(() => {
         const fetchCreator = async () => {
@@ -93,10 +105,10 @@ const CreatorDetailsPage = () => {
 
     const formatDate = (date?: string) => {
         if (!date) return "N/A";
-        return new Date(date).toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        return new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
     };
 
@@ -110,6 +122,32 @@ const CreatorDetailsPage = () => {
             age--;
         }
         return age;
+    };
+
+    const handleStatus = async (newStatus: string, collaborationId: string) => {
+        setStatusLoading(true);
+        try {
+            await postApi.changeCollaborationStatus(collaborationId, newStatus);
+            
+            setModalType('success');
+            setModalMessage(`Successfully updated status to ${newStatus}!`);
+            setShowModal(true);
+            
+            // Optional: Navigate back after delay
+            setTimeout(() => {
+                router.back();
+            }, 2000);
+        } catch (err: any) {
+            setModalType('error');
+            setModalMessage(err?.message || 'Failed to update status. Please try again.');
+            setShowModal(true);
+        } finally {
+            setStatusLoading(false);
+        }
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
     };
 
     if (loading) {
@@ -127,9 +165,6 @@ const CreatorDetailsPage = () => {
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                    <div className="w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto">
-                        <span className="text-4xl">😕</span>
-                    </div>
                     <p className="text-gray-600 dark:text-gray-300 font-medium text-lg">Creator not found</p>
                 </div>
             </div>
@@ -138,6 +173,61 @@ const CreatorDetailsPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+            {/* Status Modal */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 relative animate-in fade-in zoom-in duration-200">
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                        
+                        <div className="text-center">
+                            {modalType === 'success' ? (
+                                <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                                    <CheckCircle2 className="w-10 h-10 text-green-600 dark:text-green-400" />
+                                </div>
+                            ) : (
+                                <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+                                    <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
+                                </div>
+                            )}
+                            
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                {modalType === 'success' ? 'Success!' : 'Error'}
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-300 mb-6">
+                                {modalMessage}
+                            </p>
+                            
+                            <button
+                                onClick={closeModal}
+                                className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                                    modalType === 'success'
+                                        ? 'bg-green-600 hover:bg-green-700 text-white'
+                                        : 'bg-red-600 hover:bg-red-700 text-white'
+                                }`}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Loading Overlay */}
+            {statusLoading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 text-center">
+                        <Loader2 className="w-16 h-16 text-primary animate-spin mx-auto mb-4" />
+                        <p className="text-gray-900 dark:text-white font-semibold text-lg">Updating status...</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">Please wait</p>
+                    </div>
+                </div>
+            )}
+
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Back Button */}
                 <button
@@ -319,395 +409,41 @@ const CreatorDetailsPage = () => {
                     </div>
                 </div>
 
-                {/* Social Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Primary Social Stats Card */}
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                <Users className="h-6 w-6 text-primary" />
-                            </div>
-                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Primary Social Stats</h2>
-                        </div>
-                        <div className="space-y-4">
-                            <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Platform</p>
-                                <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    {creator.socialLinks?.primary?.platform || "N/A"}
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Followers</p>
-                                <p className="text-3xl font-bold text-primary">
-                                    {creator.socialLinks?.primary?.followers?.toLocaleString() || "0"}
-                                </p>
-                            </div>
-                            {creator.averageView && (
-                                <div className="flex items-center gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                    <TrendingUp className="h-5 w-5 text-gray-400" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Average Views</p>
-                                        <p className="text-xl font-semibold text-gray-900 dark:text-white">{creator.averageView}</p>
-                                    </div>
-                                </div>
-                            )}
-                            {creator.growthRate && (
-                                <div className="flex items-center gap-2">
-                                    <BarChart3 className="h-5 w-5 text-green-500" />
-                                    <div>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Growth Rate</p>
-                                        <p className="text-xl font-semibold text-green-600 dark:text-green-400">{creator.growthRate}</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Secondary Social Stats Card */}
-                    {creator.socialLinks?.secondary?.platform && (
-                        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-purple-500 hover:shadow-xl transition-shadow duration-300">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
-                                    <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                                </div>
-                                <h2 className="font-bold text-lg text-gray-900 dark:text-white">Secondary Social Stats</h2>
-                            </div>
-                            <div className="space-y-4">
-                                <div>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Platform</p>
-                                    <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        {creator.socialLinks.secondary.platform}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Followers</p>
-                                    <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
-                                        {creator.socialLinks.secondary.followers?.toLocaleString() || "0"}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Audience Demographics */}
-                {(creator.audienceInfo || creator.audience) && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                <Target className="h-6 w-6 text-primary" />
-                            </div>
-                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Audience Demographics</h2>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Primary Audience */}
-                            {creator.audienceInfo?.primaryAge && (
-                                <div className="p-4 bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-lg">
-                                    <h3 className="font-semibold text-primary mb-3 flex items-center gap-2">
-                                        <span className="text-xl">🎯</span> Primary Audience
-                                    </h3>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Age:</span>
-                                            <span className="font-medium text-gray-900 dark:text-white">{creator.audienceInfo.primaryAge}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Gender:</span>
-                                            <span className="font-medium text-gray-900 dark:text-white">{creator.audienceInfo.primaryGender}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Location:</span>
-                                            <span className="font-medium text-gray-900 dark:text-white">{creator.audienceInfo.primaryLocation}</span>
-                                        </div>
-                                        <div className="flex justify-between pt-2 border-t border-primary/20">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Percentage:</span>
-                                            <span className="font-bold text-primary text-lg">{creator.audienceInfo.primaryPercentage}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Secondary Audience */}
-                            {creator.audienceInfo?.secondaryAge && (
-                                <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/10 dark:to-purple-900/20 rounded-lg">
-                                    <h3 className="font-semibold text-purple-600 dark:text-purple-400 mb-3 flex items-center gap-2">
-                                        <span className="text-xl">🎯</span> Secondary Audience
-                                    </h3>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Age:</span>
-                                            <span className="font-medium text-gray-900 dark:text-white">{creator.audienceInfo.secondaryAge}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Gender:</span>
-                                            <span className="font-medium text-gray-900 dark:text-white">{creator.audienceInfo.secondaryGender}</span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Location:</span>
-                                            <span className="font-medium text-gray-900 dark:text-white">{creator.audienceInfo.secondaryLocation}</span>
-                                        </div>
-                                        <div className="flex justify-between pt-2 border-t border-purple-300 dark:border-purple-700">
-                                            <span className="text-sm text-gray-600 dark:text-gray-400">Percentage:</span>
-                                            <span className="font-bold text-purple-600 dark:text-purple-400 text-lg">{creator.audienceInfo.secondaryPercentage}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Additional Audience Info */}
-                        {creator.audience && (
-                            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {creator.audience.audienceLocations && creator.audience.audienceLocations.length > 0 && (
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Top Locations</p>
-                                        <div className="flex flex-wrap gap-1">
-                                            {creator.audience.audienceLocations.map((loc, idx) => (
-                                                <span key={idx} className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs font-medium">
-                                                    {loc}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                                {creator.audience.ageBracket && creator.audience.ageBracket.length > 0 && (
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Age Brackets</p>
-                                        <div className="flex flex-wrap gap-1">
-                                            {creator.audience.ageBracket.map((age, idx) => (
-                                                <span key={idx} className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded text-xs font-medium">
-                                                    {age}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-                                {creator.audience.usBasedPercentage && (
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">US-Based Audience</p>
-                                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{creator.audience.usBasedPercentage}</p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* Experience & Preferences */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Experience Card */}
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                <Sparkles className="h-6 w-6 text-primary" />
-                            </div>
-                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Experience</h2>
-                        </div>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                <span className="text-sm text-gray-600 dark:text-gray-400">Paid Campaigns</span>
-                                {creator.hasPaidCampaignExperience ? (
-                                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                                ) : (
-                                    <XCircle className="h-5 w-5 text-red-500" />
-                                )}
-                            </div>
-                            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                <span className="text-sm text-gray-600 dark:text-gray-400">AI Consumer Apps</span>
-                                {creator.workedWithAIConsumerApps ? (
-                                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                                ) : (
-                                    <XCircle className="h-5 w-5 text-red-500" />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Budget Card */}
-                    {creator.budgetVideo && (
-                        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                    <DollarSign className="h-6 w-6 text-primary" />
-                                </div>
-                                <h2 className="font-bold text-lg text-gray-900 dark:text-white">Budget Per Video</h2>
-                            </div>
-                            <p className="text-3xl font-bold text-primary">{creator.budgetVideo}</p>
-                        </div>
+                {/* Action Buttons */}
+                <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    {status === "Pending" && (
+                        <button
+                            onClick={() => handleStatus("Shortlisted", collaborationId)}
+                            disabled={statusLoading}
+                            className="w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                        >
+                            {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Clock className="w-5 h-5" />}
+                            Shortlist Creator
+                        </button>
                     )}
 
-                    {/* Favorite Brands Card */}
-                    {creator.favouriteBrands && (
-                        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                    <Heart className="h-6 w-6 text-primary" />
-                                </div>
-                                <h2 className="font-bold text-lg text-gray-900 dark:text-white">Favorite Brands</h2>
-                            </div>
-                            <p className="text-gray-700 dark:text-gray-300">{creator.favouriteBrands}</p>
-                        </div>
-                    )}
-
-                    {/* Badge Info Card */}
-                    {creator.badge && (
-                        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                    <Award className="h-6 w-6 text-primary" />
-                                </div>
-                                <h2 className="font-bold text-lg text-gray-900 dark:text-white">Badge Info</h2>
-                            </div>
-                            <div className="space-y-3">
-                                <div>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Badge Level</p>
-                                    <span className="inline-block mt-2 bg-gradient-to-r from-primary to-primary/70 text-white px-4 py-2 rounded-lg font-bold text-lg shadow-md">
-                                        {creator.badge}
-                                    </span>
-                                </div>
-                                {creator.badgePrice && (
-                                    <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Badge Price</p>
-                                        <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{creator.badgePrice}</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Social Videos Portfolio */}
-                {creator.socialVideos && creator.socialVideos.length > 0 && (
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                <Video className="h-6 w-6 text-primary" />
-                            </div>
-                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Video Portfolio</h2>
-                            <span className="ml-auto bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-semibold">
-                                {creator.socialVideos.length} {creator.socialVideos.length === 1 ? 'Video' : 'Videos'}
-                            </span>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {creator.socialVideos.map((video, idx) => (
-                                <div key={idx} className="group relative bg-gray-50 dark:bg-gray-700/50 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
-                                    {video.image ? (
-                                        <div className="relative aspect-video overflow-hidden">
-                                            <img
-                                                src={video.image}
-                                                alt={video.title || `Video ${idx + 1}`}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                            />
-                                            {video.isPublic && (
-                                                <div className="absolute top-2 right-2">
-                                                    {video.isPublic === 'approved' && (
-                                                        <span className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                                                            <CheckCircle2 className="h-3 w-3" />
-                                                            Approved
-                                                        </span>
-                                                    )}
-                                                    {video.isPublic === 'pending' && (
-                                                        <span className="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                                                            Pending
-                                                        </span>
-                                                    )}
-                                                    {video.isPublic === 'declined' && (
-                                                        <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                                                            <XCircle className="h-3 w-3" />
-                                                            Declined
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ) : (
-                                        <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                                            <Video className="h-12 w-12 text-primary/50" />
-                                        </div>
-                                    )}
-                                    <div className="p-4">
-                                        {video.title && (
-                                            <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
-                                                {video.title}
-                                            </h3>
-                                        )}
-                                        {video.addedAt && (
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-                                                Added: {formatDate(video.addedAt)}
-                                            </p>
-                                        )}
-                                        {video.videoLink && (
-                                            <a
-                                                href={video.videoLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm transition-colors duration-200"
-                                            >
-                                                <ExternalLink className="h-4 w-4" />
-                                                Watch Video
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Social Links Card */}
-                <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                            <ExternalLink className="h-6 w-6 text-primary" />
-                        </div>
-                        <h2 className="font-bold text-lg text-gray-900 dark:text-white">Social Links</h2>
-                    </div>
-                    <div className="flex flex-wrap gap-4">
-                        {creator.socialLinks?.primary?.link && (
-                            <a
-                                href={creator.socialLinks.primary.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:scale-105"
+                    {status === "Shortlisted" && (
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => handleStatus("Offered", collaborationId)}
+                                disabled={statusLoading}
+                                className="w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                             >
-                                <span>{creator.socialLinks.primary.platform || "Primary Profile"}</span>
-                                <ExternalLink className="h-4 w-4" />
-                            </a>
-                        )}
-                        {creator.socialLinks?.secondary?.link && (
-                            <a
-                                href={creator.socialLinks.secondary.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:scale-105"
-                            >
-                                <span>{creator.socialLinks.secondary.platform || "Secondary Profile"}</span>
-                                <ExternalLink className="h-4 w-4" />
-                            </a>
-                        )}
-                    </div>
-                </div>
+                                {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
+                                Send Offer
+                            </button>
 
-                {/* Metadata Footer */}
-                {(creator.createdAt || creator.updatedAt) && (
-                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-                        <div className="flex flex-wrap gap-6 text-sm text-gray-600 dark:text-gray-400">
-                            {creator.createdAt && (
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="h-4 w-4" />
-                                    <span>Profile Created: {formatDate(creator.createdAt)}</span>
-                                </div>
-                            )}
-                            {creator.updatedAt && (
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="h-4 w-4" />
-                                    <span>Last Updated: {formatDate(creator.updatedAt)}</span>
-                                </div>
-                            )}
+                            <button
+                                onClick={() => handleStatus("Rejected", collaborationId)}
+                                disabled={statusLoading}
+                                className="w-auto flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            >
+                                {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <XCircle className="w-5 h-5" />}
+                                Reject
+                            </button>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );

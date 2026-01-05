@@ -11,7 +11,7 @@ export default function AIFindTab() {
     data: campaigns,
     isLoading,
     isError,
-  } = useFindAiCampaignsList("Initial");
+  } = useFindAiCampaignsList("Pending");
 
   const handleFindAI = async (campaignId: string) => {
     router.push(`/dashboard/brand/findai/campaign/${campaignId}`);

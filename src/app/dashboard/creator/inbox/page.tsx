@@ -31,7 +31,7 @@ const Page = () => {
     setActiveTab(value);
   };
 
-  console.log("data--->",campaignsData);
+  // console.log("data--->",campaignsData);
   return (
     <AnimatePresence mode="wait">
       <Tabs defaultValue="" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">

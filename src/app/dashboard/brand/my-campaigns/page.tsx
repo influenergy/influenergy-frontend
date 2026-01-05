@@ -238,7 +238,7 @@ const MyCampaignsPage = () => {
                                 {/* Footer */}
                                 <div className="mt-4 pt-4">
                                     <Button className="w-full">
-                                        {campaign.status === "PUBLISHED" ? "View Applications" : "Publish"}
+                                        {campaign.status === "PUBLISHED" ? "View Details" : "Publish"}
                                     </Button>
                                 </div>
                             </div>

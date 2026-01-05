@@ -99,7 +99,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
             </h1>
             <div className="aspect-video relative rounded-xl overflow-hidden mb-3">
               <Image
-                src={data.campaignId && data.campaignId.campaignPost || "/images/placeholder.png"}
+                src={data.campaignId && data.campaignId.campaignImage || "/images/placeholder.png"}
                 alt={data.campaignId && data.campaignId.campaignTitle}
                 fill
                 className="object-cover rounded-xl"

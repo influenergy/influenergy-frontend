@@ -4,8 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, lazy, Suspense } from "react";
 // import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import Loader from "@/components/brand/Loader";
+import ShortlistedApplications from "@/components/brand/ShortlistedApplications";
 
 const AIFindTab = lazy(() => import("@/components/brand/AIFindTab"));
+const ApplicationsReceived = lazy(() => import("@/components/brand/ApplicationsReceived"));
 const ActiveCollaborationTab = lazy(
   () => import("@/components/brand/ActiveCollaborationTab")
 );
@@ -20,7 +22,7 @@ const CompletedCollaborationTab = lazy(
 const TabLoading = () => <Loader />;
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState("ai");
+  const [activeTab, setActiveTab] = useState("pending");
   // const { data: campaigns, isLoading, isError } = useFindAiCampaignsList();
 
   const handleTabChange = (value: string) => {
@@ -29,19 +31,29 @@ export default function Page() {
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="ai" onValueChange={handleTabChange} className="dark:bg-background h-full">
+      <Tabs defaultValue="pending" onValueChange={handleTabChange} className="dark:bg-background h-full">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full ">
             <TabsTrigger
-              value="ai"
+              value="pending"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
             >
               <span className="flex items-center gap-1">
-                <span>AI Find</span>
+                <span>Applications Received</span>
               </span>
             </TabsTrigger>
+
             <TabsTrigger
-              value="pending"
+              value="shortlisted"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
+            >
+              <span className="flex items-center gap-1">
+                <span>Shortlisted Collaboration</span>
+              </span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="offered"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Pending Collaboration
@@ -62,9 +74,15 @@ export default function Page() {
         </div>
 
         {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="ai" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-background">
+        <TabsContent value="pending" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-background">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "ai" && <AIFindTab />}
+            {activeTab === "pending" && <ApplicationsReceived />}
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="shortlisted" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-background">
+          <Suspense fallback={<TabLoading />}>
+            {activeTab === "shortlisted" && <ShortlistedApplications />}
           </Suspense>
         </TabsContent>
 
@@ -74,9 +92,9 @@ export default function Page() {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="pending" className="w-full mt-0 dark:bg-background pt-5 md:pt-8 mb-5 md:mb-10">
+        <TabsContent value="offered" className="w-full mt-0 dark:bg-background pt-5 md:pt-8 mb-5 md:mb-10">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "pending" && <PendingCollaborationTab />}
+            {activeTab === "offered" && <PendingCollaborationTab />}
           </Suspense>
         </TabsContent>
 
