@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase, Bookmark } from 'lucide-react';
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
+import { useAppSelector } from "@/store";
+
 import { Button } from "@/components/ui/button";
 
 interface Campaign {
@@ -18,6 +20,7 @@ interface Campaign {
     applicationQuestions?: string;
     status: string;
     brandId: string;
+    applied: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -29,8 +32,7 @@ const MyCampaignsPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
     const [selectedBudget, setSelectedBudget] = useState("");
-
-
+    const user = useAppSelector((state) => state.auth.user);
 
     const [showApplyModal, setShowApplyModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -51,6 +53,7 @@ const MyCampaignsPage = () => {
     // Fetch campaigns
     useEffect(() => {
         const fetchCampaigns = async () => {
+            if (!user?._id) return;
             try {
                 setLoading(true);
                 setError(null);
@@ -138,7 +141,7 @@ const MyCampaignsPage = () => {
             brandId: selectedCampaign.brandId,
             // amount: Number(getMidAmount(selectedCampaign.budgetForCampaign)),
             ...(coverMessage && { coverMessage }),
-            ...(creatorBudget && {creatorBudget}),
+            ...(creatorBudget && { creatorBudget }),
             // ...(portfolioLink && { portfolioLink }),
         };
 
@@ -297,14 +300,17 @@ const MyCampaignsPage = () => {
                                 )}
 
                                 {/* Deliverables */}
-                                {campaign.expectedDeliverables?.length > 0 && (
-                                    <div className="flex items-center gap-2 text-sm text-[#364153] dark:text-gray-400 text-muted-foreground mb-3">
+                                {campaign.expectedDeliverables && (
+                                    <div className="flex items-center gap-2 text-sm text-[#364153] dark:text-gray-400 mb-3">
                                         <Package className="w-4 h-4 flex-shrink-0 text-primary" />
                                         <span className="line-clamp-1">
-                                            {campaign.expectedDeliverables.join(", ")}
+                                            {Array.isArray(campaign.expectedDeliverables)
+                                                ? campaign.expectedDeliverables.join(", ")
+                                                : campaign.expectedDeliverables}
                                         </span>
                                     </div>
                                 )}
+
 
                                 {/* Spacer to push button to bottom */}
                                 <div className="flex-grow"></div>
@@ -314,15 +320,20 @@ const MyCampaignsPage = () => {
                                     <Button className="w-auto" onClick={() => handleViewDetails(campaign)}>
                                         View Details
                                     </Button>
-                                    <Button
-                                        className="w-auto"
-                                        onClick={() => {
-                                            setSelectedCampaign(campaign);
-                                            setShowApplyModal(true);
-                                        }}
-                                    >
-                                        Apply
-                                    </Button>
+                                    {campaign.applied ? (<span className="text-green-600 font-semibold">Applied</span>
+                                    ) : (
+                                        <Button
+                                            className="w-auto"
+                                            onClick={
+                                                () => {
+                                                    setSelectedCampaign(campaign);
+                                                    setShowApplyModal(true);
+                                                }
+                                            }
+                                        >
+                                            Apply
+                                        </Button>
+                                    )}
 
                                 </div>
                             </div>
@@ -331,90 +342,94 @@ const MyCampaignsPage = () => {
                 )}
             </div>
 
-            {showApplyModal && selectedCampaign && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="bg-white dark:bg-background rounded-xl p-6 w-full max-w-lg relative">
+            {
+                showApplyModal && selectedCampaign && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                        <div className="bg-white dark:bg-background rounded-xl p-6 w-full max-w-lg relative">
 
-                        {/* Close */}
-                        <button
-                            onClick={() => setShowApplyModal(false)}
-                            className="absolute top-3 right-3 text-muted-foreground hover:text-foreground"
-                        >
-                            ✕
-                        </button>
-
-                        <h3 className="text-xl font-semibold mb-4">
-                            Apply to this Campaign
-                        </h3>
-
-                        <hr className="mb-4 border-gray-200 dark:border-gray-700" />
-
-                        <section className="space-y-4">
-                            {/* Error */}
-                            {submitError && (
-                                <p className="text-sm text-red-500">{submitError}</p>
-                            )}
-
-                            {/* Cover Message */}
-                            <textarea
-                                rows={4}
-                                value={coverMessage}
-                                onChange={(e) => setCoverMessage(e.target.value)}
-                                className="w-full rounded-xl border px-4 py-3 bg-background"
-                                placeholder="Write a short message..."
-                            />
-
-                            {/* Portfolio */}
-                            <input
-                                type="string"
-                                value={creatorBudget}
-                                onChange={(e) => setCreatorBudget(e.target.value)}
-                                className="w-full rounded-xl border px-4 py-3 bg-background"
-                                placeholder="tell your expected buget"
-                            />
-
-                            {/* Submit */}
+                            {/* Close */}
                             <button
-                                disabled={submitLoading}
-                                onClick={handleSubmit}
-                                className="
+                                onClick={() => setShowApplyModal(false)}
+                                className="absolute top-3 right-3 text-muted-foreground hover:text-foreground"
+                            >
+                                ✕
+                            </button>
+
+                            <h3 className="text-xl font-semibold mb-4">
+                                Apply to this Campaign
+                            </h3>
+
+                            <hr className="mb-4 border-gray-200 dark:border-gray-700" />
+
+                            <section className="space-y-4">
+                                {/* Error */}
+                                {submitError && (
+                                    <p className="text-sm text-red-500">{submitError}</p>
+                                )}
+
+                                {/* Cover Message */}
+                                <textarea
+                                    rows={4}
+                                    value={coverMessage}
+                                    onChange={(e) => setCoverMessage(e.target.value)}
+                                    className="w-full rounded-xl border px-4 py-3 bg-background"
+                                    placeholder="Write a short message..."
+                                />
+
+                                {/* Portfolio */}
+                                <input
+                                    type="string"
+                                    value={creatorBudget}
+                                    onChange={(e) => setCreatorBudget(e.target.value)}
+                                    className="w-full rounded-xl border px-4 py-3 bg-background"
+                                    placeholder="tell your expected buget"
+                                />
+
+                                {/* Submit */}
+                                <button
+                                    disabled={submitLoading}
+                                    onClick={handleSubmit}
+                                    className="
             w-full rounded-md bg-primary py-3
             text-white font-medium
             flex items-center justify-center gap-2
             disabled:opacity-60
           "
+                                >
+                                    {submitLoading && (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                    )}
+                                    Submit Application
+                                </button>
+                            </section>
+                        </div>
+                    </div>
+                )
+            }
+
+
+            {
+                showSuccess && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                        <div className="bg-white dark:bg-background rounded-xl py-10 px-10 w-full max-w-xl text-center">
+                            <p className="text-lg font-semibold mb-2">
+                                Application submitted successfully!
+                            </p>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                The brand will review your application.
+                            </p>
+                            <button
+                                onClick={() => setShowSuccess(false)}
+                                className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
                             >
-                                {submitLoading && (
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                )}
-                                Submit Application
+                                Close
                             </button>
-                        </section>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
-
-            {showSuccess && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="bg-white dark:bg-background rounded-xl py-10 px-10 w-full max-w-xl text-center">
-                        <p className="text-lg font-semibold mb-2">
-                            Application submitted successfully!
-                        </p>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            The brand will review your application.
-                        </p>
-                        <button
-                            onClick={() => setShowSuccess(false)}
-                            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            )}
-
-        </div>
+        </div >
     );
 };
 

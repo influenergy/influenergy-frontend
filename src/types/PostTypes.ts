@@ -13,7 +13,8 @@ export interface NewCampaignResponse {
   socialPlatforms: string,
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
-  campaignPost?: string; // Image URL
+  campaignPost?: string; 
+  applied: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -32,6 +33,7 @@ export interface NewPostData {
   socialPlatforms: string,
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
+  applied: string;
   createdAt: string;
   updatedAt?: string;
   brandId?: string;

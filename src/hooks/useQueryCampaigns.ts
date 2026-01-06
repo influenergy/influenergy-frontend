@@ -22,11 +22,11 @@ export const useCampaigns = () => {
 };
 
 // Hook for fetching a single campaign by ID
-export const useCampaign = (id: string, status:string) => {
+export const useCampaign = (id: string, creatorId: string, status:string) => {
   return useQuery({
     queryKey: queryKeys.campaign(id),
     queryFn: async () => {
-      return await postApi.getCampaignById(id,status);
+      return await postApi.getCampaignById(id,creatorId,status);
     },
     enabled: !!id, // Only run query if id is provided
     // Set staleTime to 5 seconds

@@ -5,12 +5,16 @@ import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
 import { NewCampaignResponse, Collaboration } from "@/types/PostTypes";
+import { useAppSelector } from "@/store";
 
 const Page = () => {
-  const { postId,status } = useParams();
-  const [campaignData, setCampaignData] = useState<NewCampaignResponse | null>(null);
-  const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
-  const { data, isLoading, error } = useCampaign(postId as string,status as string);
+  const user = useAppSelector((state) => state.auth.user);
+    const creatorId = user?._id;
+    const { postId,status } = useParams();
+  
+    const [campaignData, setCampaignData] = useState<NewCampaignResponse | null>(null);
+    const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
+    const { data, isLoading, error } = useCampaign(postId as string, creatorId as string, 'none');
   useEffect(() => {
     if (data?.data) {
       setCampaignData(data.data.campaignData || {});

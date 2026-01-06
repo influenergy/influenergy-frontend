@@ -54,10 +54,10 @@ const getSocialMediaIcon = (platform?: string) => {
 
 /* ---------------- Component ---------------- */
 
-const PostDescription = ({ data }: PostDescriptionProps) => {
+const PostDescription = ({ data, role }: PostDescriptionProps) => {
   const router = useRouter();
 
-  const processedData: NewPostData = useMemo(() => { return { id: data._id, campaignImage: data.campaignImage || "/images/placeholder.png", campaignTitle: data.campaignTitle, campaignDescription: data.campaignDescription, brandName: data.brandName, targetNiche: Array.isArray(data.targetNiche) ? data.targetNiche : parseJsonArray(data.targetNiche), budgetForCampaign: data.budgetForCampaign, expectedDeliverables: Array.isArray(data.expectedDeliverables) ? data.expectedDeliverables : parseJsonArray(data.expectedDeliverables), requirements: data.requirements, status: data.status || "DRAFT", deadline: data.deadline, socialPlatforms: data.socialPlatforms, applicationQuestions: data.applicationQuestions || "", createdAt: data.createdAt || "", updatedAt: data.updatedAt || "", brandId: data.brandId, }; }, [data]);
+  const processedData: NewPostData = useMemo(() => { return { id: data._id, campaignImage: data.campaignImage || "/images/placeholder.png", campaignTitle: data.campaignTitle, campaignDescription: data.campaignDescription, brandName: data.brandName, targetNiche: Array.isArray(data.targetNiche) ? data.targetNiche : parseJsonArray(data.targetNiche), budgetForCampaign: data.budgetForCampaign, expectedDeliverables: Array.isArray(data.expectedDeliverables) ? data.expectedDeliverables : parseJsonArray(data.expectedDeliverables), requirements: data.requirements, status: data.status || "DRAFT", deadline: data.deadline, socialPlatforms: data.socialPlatforms, applicationQuestions: data.applicationQuestions || "", createdAt: data.createdAt || "", updatedAt: data.updatedAt || "", brandId: data.brandId, applied: data.applied || "" }; }, [data]);
 
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -142,6 +142,15 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           </h1>
           <p className="text-gray-500">{processedData.brandName}</p>
         </div>
+
+        {(!processedData.applied && role === "CREATOR") && <Button
+          className="w-auto"
+          onClick={() => {
+            setShowApplyModal(true);
+          }}
+        >
+          Apply
+        </Button>}
       </div>
 
       {/* Description */}
@@ -233,15 +242,6 @@ const PostDescription = ({ data }: PostDescriptionProps) => {
           </ul>
         </section>
       )}
-
-      <Button
-        className="w-auto"
-        onClick={() => {
-          setShowApplyModal(true);
-        }}
-      >
-        Apply
-      </Button>
 
       {showApplyModal && processedData && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">

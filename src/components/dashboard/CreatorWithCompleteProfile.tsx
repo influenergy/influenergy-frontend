@@ -37,7 +37,6 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     "https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4";
 
   const userProfile = useAppSelector(selectUser);
-  console.log(userProfile, "userProfile");
   // const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch()

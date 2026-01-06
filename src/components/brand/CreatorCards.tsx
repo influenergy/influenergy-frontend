@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { User, Instagram, Youtube, MapPin } from "lucide-react";
+
 
 interface Creator {
   _id: string;
@@ -53,7 +54,8 @@ interface CreatorCardsProps {
 const CreatorCard = ({ collaboration }: { collaboration: Collaboration }) => {
   const router = useRouter();
   const { creatorId, status } = collaboration;
-  console.log("datt->", collaboration);
+  const [expanded, setExpanded] = useState(false);
+
 
   const handleCardClick = () => {
     router.push(
@@ -90,98 +92,105 @@ const CreatorCard = ({ collaboration }: { collaboration: Collaboration }) => {
 
   return (
     <div
-      className="group relative bg-white dark:bg-card border border-border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-primary/40 dark:hover:bg-muted/50"
+      className="group relative bg-white dark:bg-card border border-border rounded-xl overflow-hidden cursor-pointer
+             transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40"
     >
       {/* Status Badge */}
       <div className="absolute top-3 right-3 z-10">
         <span
-          className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusStyles[status] || "bg-gray-100 text-gray-700"
-            }`}
+          className={`text-[11px] font-semibold px-3 py-1 rounded-full backdrop-blur
+        ${statusStyles[status] || "bg-gray-100 text-gray-700"}`}
         >
           {status}
         </span>
       </div>
 
-      {/* Profile Picture */}
-      <div className="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center overflow-hidden">
+      {/* Profile Image */}
+      <div className="relative h-52 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center overflow-hidden">
         {collaboration.profileIcon ? (
-          <img
-            src={collaboration.profileIcon}
-            alt={collaboration.creatorName}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-          />
+          <>
+            <img
+              src={collaboration.profileIcon}
+              alt={collaboration.creatorName}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+          </>
         ) : (
-          <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
+          <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center shadow-inner">
             <User className="w-12 h-12 text-primary" />
           </div>
         )}
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5">
         {/* Name */}
-        <h3 className="text-lg font-semibold text-foreground mb-1 truncate">
+        <h3 className="text-lg font-semibold text-foreground truncate">
           {collaboration.creatorName}
         </h3>
 
         {/* Category */}
         {collaboration.profile?.category?.[0] && (
-          <p className="text-sm text-muted-foreground mb-3">
-            {collaboration.profile?.category[0]}
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {collaboration.profile.category[0]}
           </p>
         )}
 
         {/* Stats */}
-        <div className="flex items-center gap-4 mb-3">
-          {/* Followers */}
-          {collaboration.profile?.socialLinks?.primary && (
-            <div className="flex items-center gap-1.5 text-sm">
-              {getPlatformIcon(collaboration.profile.socialLinks.primary.platform)}
-              <span className="font-medium text-foreground">
-                {formatFollowers(collaboration.profile.socialLinks.primary.followers)}
-              </span>
-              <span className="text-muted-foreground">followers</span>
+        {collaboration.profile?.socialLinks?.primary && (
+          <div className="flex items-center gap-2 mt-3 text-sm">
+            <div className="flex items-center gap-1.5 text-foreground font-medium">
+              {getPlatformIcon(
+                collaboration.profile.socialLinks.primary.platform
+              )}
+              {formatFollowers(
+                collaboration.profile.socialLinks.primary.followers
+              )}
             </div>
-          )}
-        </div>
-
-        {/* Location */}
-        {/* {collaboration.profile?.location && (
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-3">
-            <MapPin className="w-4 h-4" />
-            <span className="truncate">{collaboration.profile.location}</span>
-          </div>
-        )} */}
-
-        {/* Bio */}
-        {/* {creatorId.profile?.bio && (
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-            {creatorId.profile.bio}
-          </p>
-        )} */}
-
-        {/* Cover Message */}
-        {collaboration.coverMessage && (
-          <div className="mt-3 pt-3 border-t border-border">
-            <p className="text-xs text-muted-foreground italic line-clamp-2">
-              "{collaboration.coverMessage}"
-            </p>
+            <span className="text-muted-foreground">followers</span>
           </div>
         )}
 
-        {/* View Profile Button */}
-        <div className="mt-4">
-          <button onClick={handleCardClick} className="w-full py-2 px-4 text-sm font-medium rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors">
+        {/* Cover Message */}
+        {collaboration.coverMessage && (
+          <div className="mt-4 pt-4 border-t border-border">
+            <p
+              className={`text-xs text-muted-foreground italic leading-relaxed ${expanded ? "" : "line-clamp-2"
+                }`}
+            >
+              “{collaboration.coverMessage}”
+            </p>
+
+            {collaboration.coverMessage.length > 120 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="mt-2 text-xs font-medium text-primary hover:underline"
+              >
+                {expanded ? "Show less" : "Read more"}
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* CTA */}
+        <div className="mt-5">
+          <button
+            onClick={handleCardClick}
+            className="w-full py-2.5 px-4 text-sm font-semibold rounded-lg
+                   bg-primary text-white hover:bg-primary/90
+                   transition-all duration-200 shadow-sm hover:shadow-md"
+          >
             View Profile
           </button>
         </div>
       </div>
     </div>
+
   );
 };
 
 const CreatorCards: React.FC<CreatorCardsProps> = ({ collaborations }) => {
-  console.log(collaborations);
 
   if (!collaborations || collaborations.length === 0) {
     return (

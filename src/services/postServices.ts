@@ -59,9 +59,11 @@ export const postApi = {
   },
 
   // Get a single campaign by ID
-  getCampaignById: async (id: string, status: string = "Completed") => {
+  getCampaignById: async (id: string, creatorId: string, status: string = "Completed") => {
     try {
-      const response = await api.get(`/brand/campaign/${id}`);
+      const response = await api.get(
+        `/brand/campaign/${id}`
+      );
       return response.data;
     } catch (error) {
       console.error(`Error fetching campaign with ID ${id}:`, error);

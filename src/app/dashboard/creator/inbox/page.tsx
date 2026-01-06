@@ -31,7 +31,6 @@ const Page = () => {
     setActiveTab(value);
   };
 
-  // console.log("data--->",campaignsData);
   return (
     <AnimatePresence mode="wait">
       <Tabs defaultValue="" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
@@ -105,7 +104,7 @@ const Page = () => {
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
-                          collaboration?.campaignId?.campaignPost ||
+                          collaboration?.campaignId?.campaignImage ||
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
@@ -150,7 +149,7 @@ const Page = () => {
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
-                          collaboration?.campaignId?.campaignPost ||
+                          collaboration?.campaignId?.campaignImage ||
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
@@ -195,7 +194,7 @@ const Page = () => {
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
-                          collaboration?.campaignId?.campaignPost ||
+                          collaboration?.campaignId?.campaignImage ||
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}
@@ -240,7 +239,7 @@ const Page = () => {
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
                         image={
-                          collaboration?.campaignId?.campaignPost ||
+                          collaboration?.campaignId?.campaignImage ||
                           "https://avatar.iran.liara.run/public/boy"
                         }
                         data={collaboration}

@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Film,
+  FolderSearch, 
   ClipboardList,
   Settings,
   // Link,
@@ -36,10 +37,10 @@ const creatorNav: NavItem[] = [
   },
   {
     href: "/dashboard/creator/browse-campaigns",
-    icon: Film,
+    icon: FolderSearch,
     label: "Browse Campaigns",
     slug: "campaigns",
-  }, 
+  },
   // {
   //   href: "/dashboard/creator/inbox",
   //   icon: Mail,
@@ -52,7 +53,7 @@ const creatorNav: NavItem[] = [
     label: "My Applications",
     slug: "inbox",
   },
- 
+
 ];
 
 const brandNav: NavItem[] = [
@@ -106,7 +107,7 @@ const brandNav: NavItem[] = [
     href: "/dashboard/brand/explore",
     icon: UserRoundSearch,
     slug: "explore",
-    
+
   },
 
 ];

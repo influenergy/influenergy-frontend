@@ -82,7 +82,6 @@ export default function CampaignDetailsPage() {
 
         // Fetch fresh data from API
         const response = await postApi.getCollabByCampaignId(campaignId);
-        console.log("response---->", response);
 
         if (!response?.status) {
           throw new Error("Failed to fetch applications");

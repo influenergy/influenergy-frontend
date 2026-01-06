@@ -65,7 +65,7 @@ export interface Campaign {
   creatorType: string;
   minimumFollowers: string;
   creatorInfluencer: string;
-  socialPlatforms: string[];
+  socialPlatforms: string;
   pastExperience: string;
   preferredCreatorNiche: string[];
   preferredCreatorDemographics: string;
@@ -75,6 +75,9 @@ export interface Campaign {
   additionalInstructions: string;
   campaignImage: string;
   targetNiche: string[];
+  applicationQuestions: string;
   deadline: string;
+  requirements: string[];
+  status: string;
   __v?: number;
 }

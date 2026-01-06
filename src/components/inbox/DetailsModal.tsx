@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Dialog,
   DialogContent,
@@ -10,9 +11,22 @@ import Image from "next/image";
 import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
 import { Collaboration } from "@/types/Collaboration";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { CollaborationContractModal } from "../ui/ContractModal";
 import { useState } from "react";
+import {
+  ChevronsLeft,
+  Instagram,
+  Youtube,
+  Twitter,
+  Facebook,
+  Linkedin,
+  Mail,
+  Share2,
+  CircleCheckBig,
+  DollarSign,
+  Calendar,
+  Loader2,
+} from "lucide-react";
 
 interface DetailsModalProps {
   open: boolean;
@@ -21,6 +35,26 @@ interface DetailsModalProps {
   data: Collaboration;
 }
 
+const getSocialMediaIcon = (platform?: string) => {
+  switch (platform?.toLowerCase()) {
+    case "instagram":
+      return <Instagram className="w-6 h-6 text-pink-500" />;
+    case "youtube":
+      return <Youtube className="w-6 h-6 text-red-500" />;
+    case "twitter":
+    case "twitter / x":
+      return <Twitter className="w-6 h-6 text-sky-500" />;
+    case "facebook":
+      return <Facebook className="w-6 h-6 text-blue-600" />;
+    case "linkedin":
+      return <Linkedin className="w-6 h-6 text-blue-700" />;
+    case "newsletter":
+      return <Mail className="w-6 h-6 text-gray-600" />;
+    default:
+      return <Share2 className="w-6 h-6 text-gray-500" />;
+  }
+};
+
 export default function DetailsModal({
   open,
   onOpenChange,
@@ -28,27 +62,20 @@ export default function DetailsModal({
   data,
 }: DetailsModalProps) {
   const campaign = data?.campaignId || {};
-
   const collaborationId = data?._id;
 
   const [contractModalOpen, setContractModalOpen] = useState(false);
-
-  const handleContractModalOpen = () => {
-    setContractModalOpen(true);
-  };
-  const handleContractModalClose = () => {
-    setContractModalOpen(false);
-  };
 
   const { mutate: acceptCollaboration, isPending: isAccepting } =
     useAcceptOrDeclineCollaboration(collaborationId, "Active", {
       onSuccess: () => onOpenChange(false),
     });
+
   const { mutate: declineCollaboration, isPending: declineLoading } =
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled", {
       onSuccess: () => onOpenChange(false),
     });
-
+    
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-screen flex flex-col p-0 dark:bg-background">
@@ -57,294 +84,151 @@ export default function DetailsModal({
           <DialogClose />
         </DialogHeader>
 
-        {/* Scrollable Content Area */}
-        <div className="flex-1 overflow-y-auto px-6 pb-20 dark:bg-background">
-          <div className="bg-white rounded-lg space-y-4 dark:bg-background">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-6 pb-24">
+          <div className="space-y-6">
+
+            {/* Header */}
             <div className="flex flex-col lg:flex-row gap-6">
-              {/* Image Section */}
-              <div className=" relative rounded-lg overflow-hidden">
-                <Image
-                  src={campaign.campaignPost || "/images/placeholder.png"}
-                  alt="Campaign Image"
-                  width={550}
-                  height={550}
-                  className="object-cover aspect-[16/9] rounded-lg"
-                />
+              <Image
+                src={campaign.campaignImage || "/images/placeholder.png"}
+                alt="Campaign Image"
+                width={550}
+                height={350}
+                className="object-cover aspect-[16/9] rounded-lg"
+              />
+
+              <div className="space-y-3">
+                <h2 className="text-2xl font-bold dark:text-white">
+                  {campaign.campaignTitle || "Campaign Title"}
+                </h2>
+
+                <p className="text-lg text-gray-700 dark:text-gray-300">
+                  {campaign.brandName || "Brand"}
+                </p>
+              </div>
+            </div>
+
+            <hr />
+
+            {/* Description */}
+            <section>
+              <h3 className="font-semibold mb-1">Campaign Description</h3>
+              <p className="text-gray-600">{campaign.campaignDescription}</p>
+            </section>
+
+            <hr />
+
+            {/* Target Niche */}
+            <section>
+              <h3 className="font-semibold mb-2">Target Niche</h3>
+              <div className="flex flex-wrap gap-2">
+                {campaign.targetNiche.map((niche, i) => (
+                  <span
+                    key={i}
+                    className="px-4 py-1 rounded-full bg-gray-100 text-sm text-gray-600 dark:bg-background"
+                  >
+                    {niche}
+                  </span>
+                ))}
+              </div>
+            </section>
+
+            <hr />
+
+            {/* Platforms */}
+            <div className="p-4 border rounded-xl space-y-5">
+              <div className="flex items-center gap-3">
+                {getSocialMediaIcon(campaign.socialPlatforms)}
+                <div>
+                  <p className="text-xs text-gray-500 ">Platform</p>
+                  <p className="font-semibold">{campaign.socialPlatforms}</p>
+                </div>
               </div>
 
-              {/* Content Section */}
-              <div className="w-full space-y-4">
-                {/* Title and Brand */}
-                <div className="flex items-center gap-2">
-                  <h3 className="text-2xl text-gray-900 line-clamp-2 font-bold dark:text-white">
-                    {campaign.campaignName || "Campaign Name"}
-                  </h3>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={campaign.campaignPost || "/images/placeholder.png"}
-                    alt="Campaign Image"
-                    width={40}
-                    height={40} // Make height equal to width for a perfect circle
-                    className="object-cover rounded-full h-10 w-10"
-                  />
-                  <p className="text-black text-lg dark:text-white">
-                    {campaign.brandName || "Brand"}
+              {campaign.expectedDeliverables.length > 0 && (
+                <div>
+                  <p className="text-sm text-gray-500 mb-2">
+                    Expected Deliverables
                   </p>
+                  <div className="flex flex-wrap gap-2">
+                    {campaign.expectedDeliverables.map((item, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 rounded-full text-sm bg-primary/10 text-primary"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <hr />
+
+            {/* Budget & Deadline */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 border rounded-xl flex items-center gap-4">
+                <DollarSign className="w-8 h-8 text-primary" />
+                <div>
+                  <p className="text-xs text-gray-500">Budget</p>
+                  <p className="font-semibold">{campaign.budgetForCampaign}</p>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-xl flex items-center gap-4">
+                <Calendar className="w-8 h-8 text-primary" />
+                <div>
+                  <p className="text-xs text-gray-500">Deadline</p>
+                  <p className="font-semibold">{campaign.deadline}</p>
                 </div>
               </div>
             </div>
-            <div>
-              {/* Campaign Objective */}
-              <div className="mt-4 flex flex-col gap-4">
-                <h4 className="text-lg font-semibold">Campaign Objective</h4>
+
+            <hr />
+
+            {/* Requirements */}
+            {campaign.requirements?.length > 0 && (
+              <section>
+                <h3 className="font-semibold mb-2">Requirements</h3>
+                <ul className="space-y-2">
+                  {campaign.requirements.map((req, i) => (
+                    <li key={i} className="flex gap-2 text-gray-600">
+                      <CircleCheckBig className="w-5 h-5 text-green-600 mt-0.5" />
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Application Questions */}
+            {campaign.applicationQuestions && (
+              <div>
+                <h4 className="text-lg font-semibold mb-2">
+                  Application Questions
+                </h4>
                 <p className="text-gray-600">
-                  {campaign.campaignObjective
-                    ? campaign.campaignObjective
-                        .toString()
-                        .replace(/[\[\]"]/g, " ")
-                    : "Awareness  Engagement Sales"}
+                  {campaign.applicationQuestions}
                 </p>
               </div>
-
-              {/* Campaign Description */}
-              <div className="mt-4 flex flex-col gap-4">
-                <h4 className="text-lg font-semibold">Campaign Description</h4>
-                <p className="text-gray-600">
-                  {campaign.campaignDescription || "No description available"}
-                </p>
-              </div>
-
-              <hr />
-
-              {/* Campaign Description */}
-              <div className="mt-4 flex flex-col gap-4 my-3">
-                <h4 className="text-lg font-semibold">Campaign Brief</h4>
-                <p className="text-gray-600">
-                  {campaign.yourBrief || "No brief provided"}
-                </p>
-              </div>
-
-              <hr />
-
-              {/* Target Group */}
-              {/* <div className="my-3 flex flex-col gap-4">
-                <h4 className="text-lg font-semibold">Campaign Concept</h4>
-                <p className="text-gray-600">
-                  {campaign.campaignConcept || "No campaign concept provided"}
-                </p>
-                <hr />
-              </div> */}
-
-              {/* Target Audience */}
-
-              <div className="my-7">
-                <h4 className="text-2xl font-semibold flex items-center gap-2 mb-4">
-                  Target Audience & Demographics
-                </h4>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
-                  <div>
-                    <p className="font-medium dark:text-white">Target Audience Age</p>
-                    <p className="text-gray-600">
-                      {campaign?.targetAgeGroup && campaign.targetAgeGroup
-                        ? Array.isArray(campaign.targetAgeGroup)
-                          ? (campaign.targetAgeGroup as string[])
-                              .map((age) =>
-                                age.toString().replace(/[\[\]"]/g, " ")
-                              )
-                              .join(", ")
-                          : (campaign.targetAgeGroup as string)
-                              .toString()
-                              .replace(/[\[\]"]/g, " ")
-                        : ""}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="font-medium dark:text-white">Target Audience Gender</p>
-                    <p className="text-gray-600">
-                      {(campaign?.targetGender &&
-                        campaign.targetGender
-                          .toString()
-                          .replace(/[\[\]"]/g, " ")) ||
-                        "Not specified"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="font-medium dark:text-white"> Target Audience Location</p>
-                    <p className="text-gray-600">
-                      {campaign.targetLocation
-                        ? campaign.targetLocation
-                            .map((loc) => loc.replace(/[\[\]"]/g, " "))
-                            .join(", ")
-                        : "Not specified"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="font-medium dark:text-white"> Target Audience Interests</p>
-                    <p className="text-gray-600">
-                      {campaign.targetInterests
-                        ? campaign.targetInterests
-                            .map((int) => int.replace(/[\[\]"]/g, " "))
-                            .join(", ")
-                        : "Not specified"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <hr />
-              {/* Content Vibe */}
-              <div className="my-7">
-                <h4 className="text-2xl font-semibold flex items-center gap-2">
-                  What is the Content Vibe?
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <div>
-                    <p>Content Type</p>
-                    <p className="text-gray-600">
-                      {campaign.contentType || "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Duration of Video</p>
-                    <p className="text-gray-600">
-                      {campaign.videoDuration || "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Call to Action</p>
-                    <p className="text-gray-600">
-                      {campaign.catchPhrase || "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Key Message & Hashtags</p>
-                    <p className="text-gray-600">
-                      {campaign.keyMessage || "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Tone & Style</p>
-                    <p className="text-gray-600">
-                      {campaign.toneStyle || "Not specified"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Ideal Creator Checklist */}
-              <div className="my-7">
-                <h4 className="text-2xl font-semibold flex items-center gap-2">
-                  Ideal Creator Checklist
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <div>
-                    <p>Preferred Creator Niche</p>
-                    <p className="text-gray-600">
-                      {campaign.preferredCreatorNiche
-                        ? campaign.preferredCreatorNiche
-                            .map((niche) => niche.replace(/[\[\]"]/g, " "))
-                            .join(", ")
-                        : "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Preferred Creator Demographics</p>
-                    <p className="text-gray-600">
-                      {campaign.preferredCreatorDemographics || "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>Preferred Social Media</p>
-                    <p className="text-gray-600">
-                      {/* {campaign.socialMediaPlatform || "Not specified"} */}
-                      {campaign?.socialMediaPlatform &&
-                      campaign.socialMediaPlatform
-                        ? Array.isArray(campaign.socialMediaPlatform)
-                          ? (campaign.socialMediaPlatform as string[])
-                              .map((age) =>
-                                age.toString().replace(/[\[\]"]/g, " ")
-                              )
-                              .join(", ")
-                          : (campaign.socialMediaPlatform as string)
-                              .toString()
-                              .replace(/[\[\]"]/g, " ")
-                        : ""}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Compensation & Deliverables */}
-              <div className="my-7">
-                <h4 className="text-2xl font-semibold flex items-center gap-2">
-                  Compensation & Deliverables
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  <div>
-                    <p className="text-lg">No. Of Days for Delivery</p>
-                    <p className="text-gray-600">
-                      {campaign.noOfDaysForDelivery || "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-lg">Expected Deliverables</p>
-                    <p className="text-gray-600">
-                      {campaign.expectedDeliverables || "Not specified"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-lg">Required Documents</p>
-                    <p className="text-gray-600">
-                      {campaign.campaignPdf ? (
-                        <Link
-                          href={campaign.campaignPdf || "#"}
-                          target="_blank"
-                          className="underline italic"
-                        >
-                          Link
-                        </Link>
-                      ) : (
-                        <p>Not specified</p>
-                      )}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-lg">Budget</p>
-                    <p className="text-gray-600">
-                      {data?.amount ? `$ ${data.amount}` : "Not specified"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-lg">Additional Information</p>
-                    <p className="text-gray-600">
-                      {campaign.additionalInstructions || "Not specified"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* Fixed Footer with Action Buttons */}
-        {status == "Pending" && (
-          <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-end gap-4 z-10">
+        {/* Footer */}
+        {status === "Pending" && (
+          <div className="absolute bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-end gap-4">
             <Button
-              className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition"
-              onClick={() => handleContractModalOpen()}
+              onClick={() => setContractModalOpen(true)}
               disabled={isAccepting || declineLoading}
             >
               {isAccepting ? "Accepting..." : "Accept"}
             </Button>
+
             <Button
-              className="px-4 py-2 text-sm font-medium text-white border border-primary rounded-lg transition"
+              variant="outline"
               onClick={() => declineCollaboration()}
               disabled={declineLoading || isAccepting}
             >
@@ -355,7 +239,7 @@ export default function DetailsModal({
 
         <CollaborationContractModal
           isOpen={contractModalOpen}
-          onClose={handleContractModalClose}
+          onClose={() => setContractModalOpen(false)}
           handleCollaborate={acceptCollaboration}
         />
       </DialogContent>
