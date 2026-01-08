@@ -42,42 +42,47 @@ export interface PostQuestionnaireData {
 
 export interface Campaign {
   _id: string;
-  campaignId: string;
+  campaignImage?: string;
   campaignTitle: string;
-  brandId: string;
-  vectorId: string;
-  brandName: string;
-  collaborationId:string;
-  campaignObjective: string[];
   campaignDescription: string;
-  targetAgeGroup: string[];
-  yourBrief?:string;
-  campaignConcept?:string;
-  targetGender: string[];
-  targetLocation: string[];
-  targetInterests: string[];
-  contentType: string;
-  campaignPdf?:string;
-  videoDuration: string;
-  catchPhrase: string;
-  keyMessage: string;
-  toneStyle: string;
-  creatorType: string;
-  minimumFollowers: string;
-  creatorInfluencer: string;
-  socialPlatforms: string;
-  pastExperience: string;
-  preferredCreatorNiche: string[];
-  preferredCreatorDemographics: string;
-  budgetForCampaign: string;
-  expectedDeliverables: string;
-  noOfDaysForDelivery: string;
-  additionalInstructions: string;
-  campaignImage: string;
+  brandName: string;
+  brandId: string;
+
   targetNiche: string[];
-  applicationQuestions: string;
+  budgetForCampaign: string;
+  socialPlatforms: string;
+  expectedDeliverables: string[];
   deadline: string;
-  requirements: string[];
-  status: string;
-  __v?: number;
+
+  requirements?: string[];
+  applicationQuestions?: string;
+
+  status: "DRAFT" | "PUBLISHED" | "CLOSED";
+  createdAt?: string;
+  updatedAt?: string;
 }
+
+
+export interface CampaignDetails {
+  _id?: string;          // optional (modal doesn't really use it)
+  brandId?: string;      // optional
+
+  campaignTitle: string;
+  campaignImage?: string;
+  brandName: string;
+  campaignDescription: string;
+
+  targetNiche: string[];
+  socialPlatforms: string;
+  expectedDeliverables: string[];
+
+  budgetForCampaign: string;
+  deadline: string;
+
+  requirements?: string[];
+  applicationQuestions?: string;
+
+  status: "DRAFT" | "PUBLISHED" | "CLOSED";
+}
+
+

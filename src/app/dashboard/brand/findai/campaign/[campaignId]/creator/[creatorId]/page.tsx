@@ -77,28 +77,28 @@ export default function CreatorDetailsPage(){
   const handleContractModalOpen = () => {
     setContractModalOpen(true);
   }
-  const handleContractModalClose = () => {
+  const handleContractModalClose = () => { 
     setContractModalOpen(false);
   }
 
   const handleCollaborate = async () => {
-    try {
-      const response = await initiatePayment({
-        campaignId: campaignId as string,
-        amount: creator?.badge? creator.badgePrice : creator?.profile?.budgetVideo || "0",
-        creatorId: creatorId as string,
-        similarity: similarity || "",
-      });
+    // try {
+    //   const response = await initiatePayment({
+    //     campaignId: campaignId as string,
+    //     amount: creator?.badge? creator.badgePrice : creator?.profile?.budgetVideo || "0",
+    //     creatorId: creatorId as string,
 
-      // Redirect to Stripe checkout
-      if (response?.url) {
-        window.location.href = response.url;
-        router.replace(response.url);
-      }
-    } catch (error) {
-      setFailedModalOpen(true);
-      console.error("Payment initiation failed:", error);
-    }
+    //   });
+
+    //   // Redirect to Stripe checkout
+    //   if (response?.url) {
+    //     window.location.href = response.url;
+    //     router.replace(response.url);
+    //   }
+    // } catch (error) {
+    //   setFailedModalOpen(true);
+    //   console.error("Payment initiation failed:", error);
+    // }
   };
 
   useEffect(() => {
@@ -247,7 +247,7 @@ export default function CreatorDetailsPage(){
       {/* Failed Modal */}
       <CollaborationFailedModal isOpen={failedModalOpen} />
 
-      <CollaborationContractModal isOpen={contractModalOpen} onClose={handleContractModalClose} handleCollaborate={handleCollaborate} />
+      {/* <CollaborationContractModal isOpen={contractModalOpen} onClose={handleContractModalClose} handleCollaborate={handleCollaborate}/> */}
 
       {/* Spacer for fixed button on mobile */}
       <div className="h-16 md:hidden"></div>

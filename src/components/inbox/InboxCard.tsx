@@ -14,6 +14,8 @@ import { Card } from "../ui/card";
 
 interface InboxCardProps {
   status: string;
+  paymentStatus: string;
+  tab: string;
   title: string;
   image: string;
   data: Collaboration;
@@ -28,9 +30,10 @@ interface FormData {
 }
 
 
-
 const InboxCard: React.FC<InboxCardProps> = ({
   status,
+  paymentStatus,
+  tab,
   image,
   data,
   refetch,
@@ -45,6 +48,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [contractModalOpen, setContractModalOpen] = useState(false);
   const [expanded, setExpanded] = useState<boolean>(false);
+
+  const isWaitingForBrand = status === "Offer Accepted" && paymentStatus === "Pending" && tab === "Active";
 
   const handleModalClose = (wasUpdated: boolean = false) => {
     if (wasUpdated) {
@@ -82,7 +87,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
     setContractModalOpen(false);
   };
   const { mutate: acceptCollaboration, isPending: isAccepting } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Active");
+    useAcceptOrDeclineCollaboration(collaborationId, "Offer Accepted");
 
   const { mutate: declineCollaboration, isPending: declineLoading } =
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
@@ -248,6 +253,26 @@ const InboxCard: React.FC<InboxCardProps> = ({
                         </Button>
                       </div>
                     )}
+
+                    {status === "Offer Accepted" && (
+                      <p className="text-sm text-yellow-700 text-center">
+                        Please wait. The brand will enable video submissions shortly.
+                      </p>
+                    )}
+
+                    {/* {isWaitingForBrand ? (
+                      <p className="text-sm text-yellow-700 text-center">
+                        Please wait. The brand will enable video submissions shortly.
+                      </p>
+                    ) : (
+                      <Button
+                        onClick={() => setIsStatusModalOpen(true)}
+                        className="w-full px-4 py-2 text-sm font-medium rounded-lg transition text-white bg-primary hover:bg-primary/90"
+                      >
+                        Update Status
+                      </Button>
+                    )} */}
+
                   </div>
                 </section>
               </div>
@@ -280,7 +305,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
         isOpen={contractModalOpen}
         onClose={handleContractModalClose}
         handleCollaborate={acceptCollaboration}
-        disabled={isAccepting || declineLoading}
+        isAccepting={isAccepting}
       />
 
       <PaymentModal

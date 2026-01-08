@@ -5,14 +5,14 @@ export const paymentApi = {
     campaignId: string,
     amount: string,
     creatorId: string,
-    similarity: string
+    collaborationId: string,
   ) => {
     const response = await api.post(
       `/stripe/create-payment-session/${campaignId}`,
       {
         amount,
         creatorId,
-        similarity,
+        collaborationId,
       }
     );
     return response.data;

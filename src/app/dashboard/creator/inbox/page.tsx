@@ -19,7 +19,7 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 });
 
 const Page = () => {
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState("Pending");
   const pendingCollabCount = useAppSelector(pendingCollaborationCount);
   const {
     data: campaignsData,
@@ -33,7 +33,7 @@ const Page = () => {
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
+      <Tabs defaultValue="Pending" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full">
             <TabsTrigger
@@ -49,6 +49,14 @@ const Page = () => {
                 )} */}
               </div>
             </TabsTrigger>
+            
+            <TabsTrigger
+              value="Offer Accepted"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+            >
+              Accepted Collaboration
+            </TabsTrigger>
+
             <TabsTrigger
               value="Active"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
@@ -100,6 +108,8 @@ const Page = () => {
                       <InboxCard
                         key={collaboration._id || index}
                         status={"Active"}
+                        paymentStatus={collaboration?.paymentStatus}
+                        tab={"Active"}
                         title={
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
@@ -135,6 +145,54 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
+
+        <TabsContent value="Offer Accepted" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
+          <Suspense fallback={<TabLoading />}>
+            {activeTab === "Offer Accepted" &&
+              campaignsData?.collaborations?.length > 0 && (
+                <div className="grid grid-cols-1 gap-5 md:gap-10">
+                  {campaignsData.collaborations.map(
+                    (collaboration: Collaboration, index: number) => (
+                      <InboxCard
+                        key={collaboration._id || index}
+                        status={"Offer Accepted"}
+                        paymentStatus={collaboration?.paymentStatus}
+                        tab={"Offer Accepted"}
+                        title={
+                          collaboration?.campaignId?.campaignTitle || "No Title"
+                        }
+                        image={
+                          collaboration?.campaignId?.campaignImage ||
+                          "https://avatar.iran.liara.run/public/boy"
+                        }
+                        data={collaboration}
+                        refetch={refetch}
+                      />
+                    )
+                  )}
+                </div>
+              )}
+            {activeTab === "Offer Accepted" &&
+              (!campaignsData?.collaborations ||
+                (campaignsData.collaborations.length === 0 && !isLoading)) && (
+                <div className="text-center p-10">
+                  <Image
+                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                    alt=""
+                    width={280}
+                    height={280} 
+                    className="mx-auto"
+                    priority
+                  />
+                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
+                    Welcome to the inbox. <br /> No ongoing collaborations
+                    found.
+                  </h3>
+                </div>
+              )}
+          </Suspense>
+        </TabsContent>
+
         <TabsContent value="Pending" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Pending" &&
@@ -145,6 +203,8 @@ const Page = () => {
                       <InboxCard
                         key={collaboration._id || index}
                         status={"Pending"}
+                        paymentStatus={collaboration?.paymentStatus}
+                        tab={"Pending"}
                         title={
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
@@ -190,6 +250,8 @@ const Page = () => {
                       <InboxCard
                         key={collaboration._id || index}
                         status={"Completed"}
+                        paymentStatus={collaboration?.paymentStatus}
+                        tab={"Completed"}
                         title={
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
@@ -235,6 +297,8 @@ const Page = () => {
                       <InboxCard
                         key={collaboration._id || index}
                         status={"Payment"}
+                        paymentStatus={collaboration?.paymentStatus}
+                        tab={"Payment"}
                         title={
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }

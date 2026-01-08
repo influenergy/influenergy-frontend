@@ -40,6 +40,8 @@ export default function PendingCollaborationTab() {
     );
 
     // Get collaborations from the selected campaign
+    console.log("campaign--->",selectedCampaign);
+    
     const collaborationsToShow = selectedCampaign?.collaborations || [];
     
     return (
@@ -86,6 +88,7 @@ export default function PendingCollaborationTab() {
                     {/* Creator Cards */}
                     <CreatorCards 
                         collaborations={collaborationsToShow}
+                        campaign={selectedCampaign.campaignDetails}
                     />
                 </>
             ) : (

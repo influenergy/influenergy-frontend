@@ -27,6 +27,7 @@ import {
   Calendar,
   Loader2,
 } from "lucide-react";
+import { Campaign, CampaignDetails } from "@/types/PostQuestionnaire";
 
 interface DetailsModalProps {
   open: boolean;
@@ -61,7 +62,7 @@ export default function DetailsModal({
   status,
   data,
 }: DetailsModalProps) {
-  const campaign = data?.campaignId || {};
+  const campaign = data.campaignId || {};
   const collaborationId = data?._id;
 
   const [contractModalOpen, setContractModalOpen] = useState(false);
@@ -75,7 +76,7 @@ export default function DetailsModal({
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled", {
       onSuccess: () => onOpenChange(false),
     });
-    
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-screen flex flex-col p-0 dark:bg-background">
@@ -123,7 +124,7 @@ export default function DetailsModal({
             <section>
               <h3 className="font-semibold mb-2">Target Niche</h3>
               <div className="flex flex-wrap gap-2">
-                {campaign.targetNiche.map((niche, i) => (
+                {campaign.targetNiche && campaign.targetNiche.map((niche: any, i: any) => (
                   <span
                     key={i}
                     className="px-4 py-1 rounded-full bg-gray-100 text-sm text-gray-600 dark:bg-background"
@@ -146,13 +147,13 @@ export default function DetailsModal({
                 </div>
               </div>
 
-              {campaign.expectedDeliverables.length > 0 && (
+              {campaign.expectedDeliverables && campaign.expectedDeliverables.length > 0 && (
                 <div>
                   <p className="text-sm text-gray-500 mb-2">
                     Expected Deliverables
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {campaign.expectedDeliverables.map((item, i) => (
+                    {campaign.expectedDeliverables.map((item: any, i: any) => (
                       <span
                         key={i}
                         className="px-3 py-1 rounded-full text-sm bg-primary/10 text-primary"
@@ -189,11 +190,11 @@ export default function DetailsModal({
             <hr />
 
             {/* Requirements */}
-            {campaign.requirements?.length > 0 && (
+            {campaign.requirements && campaign.requirements?.length > 0 && (
               <section>
                 <h3 className="font-semibold mb-2">Requirements</h3>
                 <ul className="space-y-2">
-                  {campaign.requirements.map((req, i) => (
+                  {campaign.requirements.map((req: any, i: any) => (
                     <li key={i} className="flex gap-2 text-gray-600">
                       <CircleCheckBig className="w-5 h-5 text-green-600 mt-0.5" />
                       {req}
@@ -241,6 +242,7 @@ export default function DetailsModal({
           isOpen={contractModalOpen}
           onClose={() => setContractModalOpen(false)}
           handleCollaborate={acceptCollaboration}
+          isAccepting={isAccepting}
         />
       </DialogContent>
     </Dialog>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { User, Instagram, Youtube, MapPin } from "lucide-react";
-
+import { useInitiatePayment } from "@/hooks/usePayment";
 
 interface Creator {
   _id: string;
@@ -26,7 +26,7 @@ interface Creator {
 interface Collaboration {
   _id: string;
   collaborationId: string;
-  creatorId: Creator;
+  creatorId: string;
   creatorName: string;
   status: string;
   coverMessage?: string;
@@ -49,19 +49,46 @@ interface Collaboration {
 
 interface CreatorCardsProps {
   collaborations: Collaboration[];
+  campaign?: any; // Optional campaign prop for special pages
 }
 
-const CreatorCard = ({ collaboration }: { collaboration: Collaboration }) => {
+const CreatorCard = ({
+  collaboration,
+  campaign
+}: {
+  collaboration: Collaboration;
+  campaign?: any;
+}) => {
   const router = useRouter();
   const { creatorId, status } = collaboration;
   const [expanded, setExpanded] = useState(false);
 
-
   const handleCardClick = () => {
     router.push(
-      `/dashboard/brand/creators/${creatorId}?status=${status}&collaborationId=${collaboration.collaborationId
-      }`
+      `/dashboard/brand/creators/${creatorId}?status=${status}&collaborationId=${collaboration.collaborationId}`
     );
+  };
+
+  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
+  // console.log("collaboration data ->", collaboration);
+  // console.log("campaign data ->", campaign); // Will be undefined on pages that don't pass it
+
+  const handlePayNow = async () => {
+    try {
+      // Now you have access to campaign data when needed
+      const response = await initiatePayment({
+        campaignId: campaign?._id || "",
+        amount: campaign?.budgetForCampaign || "0",
+        creatorId: collaboration?.creatorId || "0",
+        collaborationId: collaboration?.collaborationId || "0",
+      });
+
+      if (response?.url) {
+        window.location.href = response.url;
+      }
+    } catch (error) {
+      console.error("Payment initiation failed:", error);
+    }
   };
 
   const statusStyles: Record<string, string> = {
@@ -89,6 +116,8 @@ const CreatorCard = ({ collaboration }: { collaboration: Collaboration }) => {
     if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
     return count.toString();
   };
+
+  const isOfferAccepted = status === "Offer Accepted";
 
   return (
     <div
@@ -159,7 +188,7 @@ const CreatorCard = ({ collaboration }: { collaboration: Collaboration }) => {
               className={`text-xs text-muted-foreground italic leading-relaxed ${expanded ? "" : "line-clamp-2"
                 }`}
             >
-              “{collaboration.coverMessage}”
+              "{collaboration.coverMessage}"
             </p>
 
             {collaboration.coverMessage.length > 120 && (
@@ -173,25 +202,42 @@ const CreatorCard = ({ collaboration }: { collaboration: Collaboration }) => {
           </div>
         )}
 
-        {/* CTA */}
-        <div className="mt-5">
+        <div className="mt-5 flex flex-col gap-2">
+          {isOfferAccepted && (
+            <button
+              onClick={handlePayNow}
+              disabled={isPending}
+              className="w-full py-2 px-4 text-sm font-semibold rounded-lg
+       bg-primary text-white hover:bg-primary/90
+       disabled:opacity-50 disabled:cursor-not-allowed
+       transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              {isPending ? "Processing..." : "Pay Now"}
+            </button>
+          )}
+
+          {status === "Offered" && (
+            <p className="text-sm text-center text-yellow-700">
+              Waiting for creator to accept the offer
+            </p>
+          )}
+
           <button
             onClick={handleCardClick}
-            className="w-full py-2.5 px-4 text-sm font-semibold rounded-lg
-                   bg-primary text-white hover:bg-primary/90
-                   transition-all duration-200 shadow-sm hover:shadow-md"
+            className="w-full py-2 px-4 text-sm font-semibold rounded-lg
+     bg-primary text-white hover:bg-primary/90
+     transition-all duration-200 shadow-sm hover:shadow-md"
           >
             View Profile
           </button>
         </div>
+
       </div>
     </div>
-
   );
 };
 
-const CreatorCards: React.FC<CreatorCardsProps> = ({ collaborations }) => {
-
+const CreatorCards: React.FC<CreatorCardsProps> = ({ collaborations, campaign }) => {
   if (!collaborations || collaborations.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -212,7 +258,10 @@ const CreatorCards: React.FC<CreatorCardsProps> = ({ collaborations }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
       {collaborations.map((collaboration) => (
         <div key={collaboration._id} className="relative">
-          <CreatorCard collaboration={collaboration} />
+          <CreatorCard
+            collaboration={collaboration}
+            campaign={campaign} // Will be undefined on pages that don't pass it
+          />
         </div>
       ))}
     </div>

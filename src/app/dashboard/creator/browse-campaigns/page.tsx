@@ -377,13 +377,13 @@ const MyCampaignsPage = () => {
                                 />
 
                                 {/* Portfolio */}
-                                <input
+                                {/* <input
                                     type="string"
                                     value={creatorBudget}
                                     onChange={(e) => setCreatorBudget(e.target.value)}
                                     className="w-full rounded-xl border px-4 py-3 bg-background"
                                     placeholder="tell your expected buget"
-                                />
+                                /> */}
 
                                 {/* Submit */}
                                 <button

@@ -5,7 +5,7 @@ interface PaymentData {
   campaignId: string;
   amount: string;
   creatorId: string;
-  similarity: string;
+  collaborationId: string;
 }
 
 export const useInitiatePayment = () => {
@@ -15,7 +15,7 @@ export const useInitiatePayment = () => {
         data.campaignId,
         data.amount,
         data.creatorId,
-        data.similarity
+        data.collaborationId,
       );
     },
   });
