@@ -14,8 +14,9 @@ export default function ShortlistedApplications() {
         data: campaigns,
         isLoading,
         isError,
-    } = useFindAiCampaignsList("Shortlisted");
+    } = useFindAiCampaignsList("Interested");
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+
 
     if (isLoading) {
         return <Loader />;
@@ -29,8 +30,9 @@ export default function ShortlistedApplications() {
         );
     }
 
-    const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCampaignId(e.target.value);
+    const handleCampaignSelect = (campaignId: string) => {
+        setSelectedCampaignId(campaignId);
+        router.push(`/dashboard/brand/application-inbox/${campaignId}`);
     };
 
     // Filter to get only the selected campaign
@@ -38,65 +40,70 @@ export default function ShortlistedApplications() {
         (campaign: any) => campaign.campaignId === selectedCampaignId
     );
 
+
     // Get collaborations from the selected campaign
-    const collaborationsToShow = selectedCampaign?.collaborations || [];
-    
+    const collaborationsToShow = campaigns?.collaborations || [];
+    // console.log(campaigns);
+    // console.log(campaigns.campaigns[0].collaborations);
+
+
     return (
         <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
+            {campaigns?.campaigns?.length > 0 ? (
+                /* Campaign Cards Section */
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    {campaigns.campaigns.map((campaign: any) => (
+                        <div
+                            key={campaign.campaignId}
+                            className="border rounded-lg p-4 bg-white dark:bg-card shadow-sm hover:shadow-md transition"
+                        >
+                            {/* Campaign Image */}
+                            {campaign.campaignImage && (
+                                <div className="relative w-full h-40 mb-3 rounded-md overflow-hidden">
+                                    <Image
+                                        src={campaign.campaignImage}
+                                        alt={campaign.campaignTitle}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+                            )}
 
-            <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">
-                    Select Campaign
-                </label>
-
-                <select
-                    value={selectedCampaignId}
-                    onChange={handleCampaignSelect}
-                    className="w-full max-w-md px-4 py-2 border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                    <option value="">-- Select a campaign --</option>
-
-                    {campaigns?.campaigns?.map((campaign: any) => (
-                        <option key={campaign.campaignId} value={campaign.campaignId}>
-                            {campaign.campaignTitle}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
-            {!selectedCampaignId ? (
-                <>
-                    <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
-                        <div className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
-                            <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100">
-                                Select a campaign to view shortlisted creators
+                            {/* Campaign Info */}
+                            <h3 className="text-base font-semibold mb-3">
+                                {campaign.campaignTitle}
                             </h3>
-                            <p className="text-sm text-muted-foreground">
-                                Choose a campaign from the dropdown above to see all the creators who have been shortlisted for that campaign.
-                            </p>
-                        </div>
-                    </div>
-                </>
-            ) : collaborationsToShow.length > 0 ? (
-                <>
-                    {/* Campaign Info Header */}
-                    
 
-                    {/* Creator Cards */}
-                    <CreatorCards 
-                        collaborations={collaborationsToShow}
-                    />
-                </>
+                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                                {campaign.campaignDescription}
+                            </p>
+
+                            {/* View Applications Button */}
+                            <button
+                                onClick={() => handleCampaignSelect(campaign.campaignId)}
+                                className="w-full bg-primary text-white text-sm py-2 rounded-md hover:opacity-90 transition"
+                            >
+                                View Applications
+                            </button>
+                        </div>
+                    ))}
+                </div>
             ) : (
-                <div className="w-full flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center">
-                    <div className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
-                        <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-900 dark:text-gray-100">
-                            No shortlisted creators yet
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                            This campaign doesn't have any shortlisted creators at the moment. Check back later or review pending applications.
-                        </p>
-                    </div>
+                /* Empty State */
+                <div className="flex flex-col items-center justify-center p-10 text-center">
+                    <Image
+                        src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                        alt="No campaigns"
+                        width={280}
+                        height={280}
+                        className="mx-auto"
+                        priority
+                    />
+                    <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-4 dark:text-gray-200">
+                        Welcome to the inbox.
+                        <br />
+                        No interested campaigns found.
+                    </h3>
                 </div>
             )}
         </div>

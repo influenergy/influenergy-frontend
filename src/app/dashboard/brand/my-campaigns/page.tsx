@@ -70,7 +70,7 @@ const MyCampaignsPage = () => {
             </div>
         );
     }
-
+ 
     // Error state
     if (error) {
         return (

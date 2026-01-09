@@ -39,7 +39,7 @@ export default function Page() {
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
             >
               <span className="flex items-center gap-1">
-                <span>Applications Received</span>
+                <span>Campaign Applications</span>
               </span>
             </TabsTrigger>
 
@@ -48,7 +48,7 @@ export default function Page() {
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
             >
               <span className="flex items-center gap-1">
-                <span>Shortlisted Collaboration</span>
+                <span>Interested Campaigns</span>
               </span>
             </TabsTrigger>
 
@@ -56,19 +56,19 @@ export default function Page() {
               value="offered"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Pending Collaboration
+              Pending Campaigns
             </TabsTrigger>
             <TabsTrigger
               value="active"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Active Collaboration
+              Active Campaigns
             </TabsTrigger>
             <TabsTrigger
               value="completed"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Completed Collaboration
+              Completed Campaigns
             </TabsTrigger>
           </TabsList>
         </div>

@@ -6,6 +6,11 @@ import { postApi } from "@/services/postServices";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2, Clock, CircleCheckBig, CircleX, ChevronsLeft } from "lucide-react";
 import Image from "next/image";
+import CreatorCard from "@/components/brand/CreatorCards";
+import { useInitiatePayment } from "@/hooks/usePayment";
+import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 interface CreatorProfile {
   socialLinks?: {
@@ -25,14 +30,17 @@ interface Creator {
 interface Application {
   _id: string;
   creatorId: Creator;
+  campaignId: Campaign;
   coverMessage?: string;
-  status: "Pending" | "Shortlisted" | "Offered" | "Rejected" | "Active" | "Completed";
+  videos?: string[];
+  status: "Pending" | "Shortlisted" | "Offered" | "Rejected" | "Active" | "Completed" | "Interested" | "Payment";
 }
 
 interface Campaign {
   _id: string;
   campaignTitle: string;
   campaignImage: string;
+  budgetForCampaign: string;
 }
 
 const statusStyles = {
@@ -55,6 +63,50 @@ export default function CampaignDetailsPage() {
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+
+  const { mutate: handleApproveVideo, isPending: isApproving } =
+    useAcceptOrDeclineVideo({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      },
+    });
+
+  const approveVideo = (collaborationId: string, videoId: string) => {
+    handleApproveVideo({
+      collaborationId,
+      videoId,
+      status: "Approved",
+    });
+  };
+
+  const { mutate: handleDeclineVideo, isPending: isDeclining } =
+    useAcceptOrDeclineVideo({
+
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        // onClose();
+      },
+    });
+
+  const requestVideoChanges = (
+    collaborationId: string,
+    videoId: string,
+    message: string
+  ) => {
+    handleDeclineVideo({
+      collaborationId,
+      videoId,
+      status: "Declined",
+      message,
+    });
+  };
+
+
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -104,34 +156,90 @@ export default function CampaignDetailsPage() {
     fetchApplications();
   }, [campaignId]);
 
-  const handleStatus = async (newStatus: string, applicationId: string) => {
-    try {
-      setUpdatingId(applicationId);
-      setUpdatingStatus(newStatus);
+  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
 
-      // Call your API to update status
-      // const response = await postApi.updateCollaborationStatus(applicationId, newStatus);
+  // const handleStatus = async (newStatus: string, applicationId: string) => {
+  //   try {
+  //     setUpdatingId(applicationId);
+  //     setUpdatingStatus(newStatus);
 
-      // Update local state
-      setApplications((prev) =>
-        prev.map((app) =>
-          app._id === applicationId ? { ...app, status: newStatus as any } : app
-        )
-      );
+  //     // Call your API to update status
+  //     // const response = await postApi.updateCollaborationStatus(applicationId, newStatus);
 
-      console.log(`Updated ${applicationId} to ${newStatus}`);
-    } catch (error) {
-      console.error("Error updating status:", error);
-      alert("Failed to update status. Please try again.");
-    } finally {
-      setUpdatingId(null);
-      setUpdatingStatus(null);
-    }
-  };
+  //     // Update local state
+  //     setApplications((prev) =>
+  //       prev.map((app) =>
+  //         app._id === applicationId ? { ...app, status: newStatus as any } : app
+  //       )
+  //     );
+
+  //     console.log(`Updated ${applicationId} to ${newStatus}`);
+  //   } catch (error) {
+  //     console.error("Error updating status:", error);
+  //     alert("Failed to update status. Please try again.");
+  //   } finally {
+  //     setUpdatingId(null);
+  //     setUpdatingStatus(null);
+  //   }
+  // };
+
 
   const handleBack = () => {
     router.push("/dashboard/brand/application-inbox");
   };
+
+
+  const handlePayNow = async (application: Application) => {
+    try {
+      setActionLoadingId(application._id);
+
+      // Call your payment initiation function
+      const response = await initiatePayment({
+        campaignId: application.campaignId._id || "",
+        amount: application.campaignId.budgetForCampaign || "0",
+        creatorId: application.creatorId._id,
+        collaborationId: application._id,
+      });
+
+      if (response?.url) {
+        window.location.href = response.url; // redirect to payment page
+      }
+    } catch (err) {
+      console.error("Payment failed:", err);
+      setErrorMessage("Payment initiation failed. Please try again.");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+
+  const handleStatusChange = async (
+    applicationId: string,
+    nextStatus: "Interested" | "Offered" | "Rejected" | "Payment"
+  ) => {
+    try {
+      setActionLoadingId(applicationId);
+
+      await postApi.changeCollaborationStatus(applicationId, nextStatus);
+
+      setApplications((prev) =>
+        prev.map((app) =>
+          app._id === applicationId
+            ? { ...app, status: nextStatus }
+            : app
+        )
+      );
+
+      setSuccessMessage(`Status updated to ${nextStatus}`);
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage("Failed to update status. Please try again.");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+
 
   if (isLoading) {
     return (
@@ -155,6 +263,8 @@ export default function CampaignDetailsPage() {
       </div>
     );
   }
+
+  // console.log("applicaton-->", applications);
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -210,65 +320,75 @@ export default function CampaignDetailsPage() {
       ) : (
         <div className="mt-6 space-y-4">
           {applications.map((app) => (
-            <div
+            <CreatorCard
               key={app._id}
-              onClick={() =>
-                router.push(
-                  `/dashboard/brand/creators/${app.creatorId._id}?status=${app.status}`
-                )
-              }
+              creator={app.creatorId}
+              status={app.status}
+              onAction={async (nextStatus) => {
+                if (nextStatus === "Payment") {
+                  await handlePayNow(app); // pass the app so you know which creator/campaign
+                } else {
+                  await handleStatusChange(app._id, nextStatus);
+                }
+              }}
+            />
 
-              className="
-                flex justify-between gap-6
-                border rounded-lg p-5
-                bg-white dark:bg-background
-                border-border
-                shadow-sm dark:shadow-none
-                cursor-pointer
-                hover:shadow-md hover:border-primary/40
-                dark:hover:bg-muted/50
-                transition
-              "
-            >
-              {/* Left section */}
-              <div className="flex flex-col gap-2">
-                <h3 className="text-lg font-semibold text-foreground">
-                  {app.creatorId.fullName}
-                </h3>
 
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>
-                    {app.creatorId.profile?.socialLinks?.primary?.followers || 0} followers
-                  </span>
-                  <span>•</span>
-                  <span>
-                    {app.creatorId.profile?.category?.[0] || "N/A"}
-                  </span>
-                </div>
+            // <CreatorCard
+            //   creator={app.creatorId}
+            //   status={app.status}
+            //   onAction={async (nextStatus) => {
+            //     if (nextStatus === "Payment") {
+            //       await handlePayNow(app);
+            //     } else {
+            //       await handleStatusChange(app._id, nextStatus);
+            //     }
+            //   }}
+            //   isActiveCollaboration={true}
+            //   videos={app.videos}
+            //   collaborationId={app._id}
+            //   onApproveVideo={approveVideo}
+            //   onRequestChanges={requestVideoChanges}
+            //   isProcessing={true}
+            // />
 
-                {app.coverMessage && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {app.coverMessage}
-                  </p>
-                )}
 
-                {/* Actions */}
-                
-              </div>
-
-              {/* Right section */}
-              <div className="flex flex-col items-end justify-between">
-                <span
-                  className={`text-xs font-medium px-3 py-1 rounded-full ${statusStyles[app.status] || "bg-gray-100 text-gray-700"
-                    }`}
-                >
-                  {app.status}
-                </span>
-              </div>
-            </div>
           ))}
+
         </div>
       )}
+
+      {successMessage && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[320px] text-center">
+            <CircleCheckBig className="h-10 w-10 text-green-500 mx-auto mb-3" />
+            <p className="text-lg font-medium">{successMessage}</p>
+            <Button className="mt-4 w-full" onClick={() => setSuccessMessage(null)}>
+              OK
+            </Button>
+          </div>
+        </div>
+      )}
+
+
+      {errorMessage && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[320px] text-center">
+            <CircleX className="h-10 w-10 text-red-500 mx-auto mb-3" />
+            <p className="text-lg font-medium text-red-600">{errorMessage}</p>
+            <Button
+              variant="outline"
+              className="mt-4 w-full"
+              onClick={() => setErrorMessage(null)}
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
+
+
+
     </div>
   );
 }

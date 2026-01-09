@@ -1,271 +1,140 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { User, Instagram, Youtube, MapPin } from "lucide-react";
-import { useInitiatePayment } from "@/hooks/usePayment";
+import { Button } from "@/components/ui/button";
 
-interface Creator {
-  _id: string;
-  fullName: string;
-  profile?: {
-    profilePicture?: string;
-    bio?: string;
-    category?: string[];
-    location?: string;
-    socialLinks?: {
-      primary?: {
-        platform?: string;
-        followers?: number;
-        username?: string;
-      };
-    };
-  };
-}
-
-interface Collaboration {
-  _id: string;
-  collaborationId: string;
-  creatorId: string;
-  creatorName: string;
+type CreatorCardProps = {
+  creator: any;
   status: string;
-  coverMessage?: string;
-  createdAt: string;
-  profileIcon: string;
-  profile?: {
-    profileIcon?: string;
-    bio?: string;
-    category?: string[];
-    location?: string;
-    socialLinks?: {
-      primary?: {
-        platform?: string;
-        followers?: number;
-        username?: string;
-      };
-    };
-  };
-}
+  onAction: (nextStatus: "Interested" | "Offered" | "Rejected" | "Payment") => void;
+};
 
-interface CreatorCardsProps {
-  collaborations: Collaboration[];
-  campaign?: any; // Optional campaign prop for special pages
-}
+export default function CreatorCard({
+  creator,
+  status,
+  onAction,
+}: CreatorCardProps) {
+  const getAge = (dob: string) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
 
-const CreatorCard = ({
-  collaboration,
-  campaign
-}: {
-  collaboration: Collaboration;
-  campaign?: any;
-}) => {
-  const router = useRouter();
-  const { creatorId, status } = collaboration;
-  const [expanded, setExpanded] = useState(false);
-
-  const handleCardClick = () => {
-    router.push(
-      `/dashboard/brand/creators/${creatorId}?status=${status}&collaborationId=${collaboration.collaborationId}`
-    );
-  };
-
-  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
-  // console.log("collaboration data ->", collaboration);
-  // console.log("campaign data ->", campaign); // Will be undefined on pages that don't pass it
-
-  const handlePayNow = async () => {
-    try {
-      // Now you have access to campaign data when needed
-      const response = await initiatePayment({
-        campaignId: campaign?._id || "",
-        amount: campaign?.budgetForCampaign || "0",
-        creatorId: collaboration?.creatorId || "0",
-        collaborationId: collaboration?.collaborationId || "0",
-      });
-
-      if (response?.url) {
-        window.location.href = response.url;
-      }
-    } catch (error) {
-      console.error("Payment initiation failed:", error);
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
+    return age;
   };
+
+  const age = creator?.profile?.dob
+    ? getAge(creator.profile.dob)
+    : null;
 
   const statusStyles: Record<string, string> = {
-    Pending: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-    Shortlisted: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-    Active: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-    Completed: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-    Offered: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400",
-    Rejected: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+    Applied: "bg-blue-100 text-blue-700 border border-blue-300",
+    Shortlisted: "bg-purple-100 text-purple-700 border border-purple-300",
+    Offered: "bg-green-100 text-green-700 border border-green-300",
+    Rejected: "bg-red-100 text-red-700 border border-red-300",
   };
 
-  const getPlatformIcon = (platform?: string) => {
-    if (platform?.toLowerCase() === "instagram") {
-      return <Instagram className="w-4 h-4" />;
-    }
-    if (platform?.toLowerCase() === "youtube") {
-      return <Youtube className="w-4 h-4" />;
-    }
-    return <User className="w-4 h-4" />;
-  };
-
-  const formatFollowers = (count?: number) => {
-    if (!count) return "0";
-    if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
-    if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
-    return count.toString();
-  };
-
-  const isOfferAccepted = status === "Offer Accepted";
 
   return (
-    <div
-      className="group relative bg-white dark:bg-card border border-border rounded-xl overflow-hidden cursor-pointer
-             transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40"
-    >
-      {/* Status Badge */}
-      <div className="absolute top-3 right-3 z-10">
+    <div className="relative flex items-center gap-4 p-4 bg-white dark:bg-card border border-gray-400 rounded-xl shadow-sm hover:shadow-md transition">
+
+      {/* LEFT: Profile + Info */}
+      <div className="flex items-center gap-4">
+        <div className="w-16 h-16 rounded-full overflow-hidden border shrink-0">
+          <img
+            src={creator.profileIcon}
+            alt={creator.fullName}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="min-w-0">
+          <h3 className="text-lg font-semibold truncate">
+            {creator.fullName}
+          </h3>
+
+          <p className="text-sm text-muted-foreground">
+            {creator.profile?.city || "Unknown location"}
+            {age && ` • ${age} yrs`}
+          </p>
+
+          <div className="flex flex-wrap gap-2 mt-2">
+            {creator.profile?.category?.map((cat: string, index: number) => (
+              <span
+                key={index}
+                className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary"
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Status Badge - TOP RIGHT */}
+      {status && (
         <span
-          className={`text-[11px] font-semibold px-3 py-1 rounded-full backdrop-blur
-        ${statusStyles[status] || "bg-gray-100 text-gray-700"}`}
+          className={`absolute top-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full ${statusStyles[status] ?? "bg-gray-100 text-gray-700 border border-gray-300"
+            }`}
         >
           {status}
         </span>
-      </div>
+      )}
 
-      {/* Profile Image */}
-      <div className="relative h-52 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center overflow-hidden">
-        {collaboration.profileIcon ? (
-          <>
-            <img
-              src={collaboration.profileIcon}
-              alt={collaboration.creatorName}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-          </>
-        ) : (
-          <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center shadow-inner">
-            <User className="w-12 h-12 text-primary" />
-          </div>
-        )}
-      </div>
+      {/* Actions - BOTTOM RIGHT */}
+      <div className="absolute bottom-3 right-3 flex items-center gap-2">
 
-      {/* Content */}
-      <div className="p-5">
-        {/* Name */}
-        <h3 className="text-lg font-semibold text-foreground truncate">
-          {collaboration.creatorName}
-        </h3>
-
-        {/* Category */}
-        {collaboration.profile?.category?.[0] && (
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {collaboration.profile.category[0]}
-          </p>
-        )}
-
-        {/* Stats */}
-        {collaboration.profile?.socialLinks?.primary && (
-          <div className="flex items-center gap-2 mt-3 text-sm">
-            <div className="flex items-center gap-1.5 text-foreground font-medium">
-              {getPlatformIcon(
-                collaboration.profile.socialLinks.primary.platform
-              )}
-              {formatFollowers(
-                collaboration.profile.socialLinks.primary.followers
-              )}
-            </div>
-            <span className="text-muted-foreground">followers</span>
-          </div>
-        )}
-
-        {/* Cover Message */}
-        {collaboration.coverMessage && (
-          <div className="mt-4 pt-4 border-t border-border">
-            <p
-              className={`text-xs text-muted-foreground italic leading-relaxed ${expanded ? "" : "line-clamp-2"
-                }`}
-            >
-              "{collaboration.coverMessage}"
-            </p>
-
-            {collaboration.coverMessage.length > 120 && (
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="mt-2 text-xs font-medium text-primary hover:underline"
-              >
-                {expanded ? "Show less" : "Read more"}
-              </button>
-            )}
-          </div>
-        )}
-
-        <div className="mt-5 flex flex-col gap-2">
-          {isOfferAccepted && (
-            <button
-              onClick={handlePayNow}
-              disabled={isPending}
-              className="w-full py-2 px-4 text-sm font-semibold rounded-lg
-       bg-primary text-white hover:bg-primary/90
-       disabled:opacity-50 disabled:cursor-not-allowed
-       transition-all duration-200 shadow-sm hover:shadow-md"
-            >
-              {isPending ? "Processing..." : "Pay Now"}
-            </button>
-          )}
-
-          {status === "Offered" && (
-            <p className="text-sm text-center text-yellow-700">
-              Waiting for creator to accept the offer
-            </p>
-          )}
-
-          <button
-            onClick={handleCardClick}
-            className="w-full py-2 px-4 text-sm font-semibold rounded-lg
-     bg-primary text-white hover:bg-primary/90
-     transition-all duration-200 shadow-sm hover:shadow-md"
+        {/* Applied (was Pending) */}
+        {status === "Applied" && (
+          <Button
+            className="bg-blue-600 text-white hover:bg-blue-700"
+            onClick={() => onAction("Interested")}
           >
-            View Profile
-          </button>
-        </div>
+            Interested
+          </Button>
+        )}
 
+        {/* Shortlisted (was Interested) */}
+        {status === "Shortlisted" && (
+          <Button
+            className="bg-purple-600 text-white hover:bg-purple-700"
+            onClick={() => onAction("Offered")}
+          >
+            Send Offer
+          </Button>
+        )}
+
+        {/* Offered */}
+        {status === "Offered" && (
+          <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-green-100 text-green-700 border border-green-300 whitespace-nowrap">
+            Offer sent • Waiting for creator
+          </span>
+        )}
+
+
+        {/* Offered */}
+        {status === "Offer Accepted" && (
+          <Button
+            className="bg-purple-600 text-white hover:bg-purple-700"
+            onClick={() => onAction("Payment")}
+          >
+            Pay Now
+          </Button>
+        )}
+
+        {/* Reject - ALWAYS */}
+        <Button
+          variant="outline"
+          className="border-red-500 text-red-500 hover:text-white hover:bg-red-600"
+          onClick={() => onAction("Rejected")}
+        >
+          Reject
+        </Button>
       </div>
+
     </div>
+
   );
-};
-
-const CreatorCards: React.FC<CreatorCardsProps> = ({ collaborations, campaign }) => {
-  if (!collaborations || collaborations.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-          <User className="w-8 h-8 text-muted-foreground" />
-        </div>
-        <h3 className="text-lg font-semibold text-foreground mb-2">
-          No creators yet
-        </h3>
-        <p className="text-sm text-muted-foreground max-w-sm">
-          Creators will appear here once they apply to your campaigns.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-      {collaborations.map((collaboration) => (
-        <div key={collaboration._id} className="relative">
-          <CreatorCard
-            collaboration={collaboration}
-            campaign={campaign} // Will be undefined on pages that don't pass it
-          />
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default CreatorCards;
+}
