@@ -54,7 +54,7 @@ const CampaignCard = memo(
         // }
 
         // Navigate to dynamic route with campaign ID
-        router.push(`/dashboard/brand/application-inbox/${campaign.campaignId}`);
+        router.push(`/dashboard/brand/application-inbox/${campaign._id}`);
 
         // // Alternative: If you want to pass the applications data to avoid re-fetching
         // // Store in sessionStorage (better than localStorage for temporary data)
@@ -186,14 +186,14 @@ const CampaignCard = memo(
           )}
         </div>
 
-        {isOpen && campaign.collaborationId && (
+        {/* {isOpen && campaign.collaborationId && (
           <StatusDialog
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             campaign={campaign as any}
             status={status}
           />
-        )}
+        )} */}
       </>
     );
   }
