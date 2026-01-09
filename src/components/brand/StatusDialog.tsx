@@ -29,8 +29,8 @@ interface CollaborationDetails {
 interface CampaignCollaboration {
   brandId?: string;
   brandName?: string;
-  campaignName: string;
-  campaignPost: string;
+  campaignTitle: string;
+  campaignImage: string;
   collaborationId: string;
   collaborationData: CollaborationDetails;
   campaignCollaborationStatus: string;

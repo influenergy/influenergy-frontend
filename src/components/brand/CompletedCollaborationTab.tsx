@@ -41,7 +41,7 @@ interface CollabInterface {
   campaignTitle: string,
   campaignDescription: string,
   campaignId: string,
-  campaignPost: string,
+  campaignImage: string,
   collaborations: {
     collaborationId: string,
     creatorName: string,

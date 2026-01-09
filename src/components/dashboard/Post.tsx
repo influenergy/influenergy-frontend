@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/hooks/useQueryCampaigns"; // make sure this import path is correct
 import { useToast } from "@/hooks/use-toast";
 
-const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign) => {
+const Post = ({ _id, campaignTitle, campaignImage, campaignDescription }: Campaign) => {
   const router = useRouter();
   const [showCopyModal, setShowCopyModal] = useState(false);
   const [newName, setNewName] = useState("");
@@ -79,9 +79,9 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
         <div className="flex justify-between items-center mb-3">
           <div className="">
             <h3 className="text-sm text-gray-900 line-clamp-2 text-left dark:text-white">
-              {campaignName.length > 50
-                ? campaignName.slice(0, 50) + "..."
-                : campaignName}
+              {campaignTitle.length > 50
+                ? campaignTitle.slice(0, 50) + "..."
+                : campaignTitle}
             </h3>
           </div>
 
@@ -112,8 +112,8 @@ const Post = ({ _id, campaignName, campaignPost, campaignDescription }: Campaign
         {/* Image */}
         <div className="aspect-video relative rounded-xl overflow-hidden mb-3">
           <Image
-            src={campaignPost || "/images/placeholder.png"}
-            alt={campaignName}
+            src={campaignImage || "/images/placeholder.png"}
+            alt={campaignTitle}
             fill
             className="object-cover rounded-xl"
           />

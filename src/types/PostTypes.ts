@@ -1,6 +1,5 @@
 export interface NewCampaignResponse {
   _id: string;
-  campaignImage: string,
   campaignTitle: string;
   campaignDescription: string;
   brandName: string;
@@ -13,7 +12,7 @@ export interface NewCampaignResponse {
   socialPlatforms: string,
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
   applicationQuestions?: string;
-  campaignPost?: string; 
+  campaignImage?: string; 
   applied: string;
   createdAt: string;
   updatedAt: string;

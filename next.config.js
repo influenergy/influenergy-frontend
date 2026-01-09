@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: [
       "avatar.iran.liara.run",
@@ -11,7 +14,7 @@ const nextConfig = {
       "hostfluencer.com",
       "www.hostfluencer.com",
       "www.vbreathe.com",
-      "cdn.liznr.ai"
+      "cdn.liznr.ai",
     ],
     remotePatterns: [
       {

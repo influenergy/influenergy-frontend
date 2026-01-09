@@ -35,8 +35,8 @@ type CreatorBrief = {
 };
 
 type CampaignBrief = {
-    campaignName?: string;
-    campaignPost?: string;
+    campaignTitle?: string;
+    campaignImage?: string;
     campaignDescription?: string;
     _id: string
 };
@@ -331,8 +331,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {completedCollabs.map((item) => {
                         const campaign = item.campaignId as CampaignBrief | undefined;
-                        const title = campaign?.campaignName || "Campaign";
-                        const img = campaign?.campaignPost || "/camp.jpg";
+                        const title = campaign?.campaignTitle || "Campaign";
+                        const img = campaign?.campaignImage || "/camp.jpg";
                         const description = campaign?.campaignDescription || "";
                         return (
                             <Card

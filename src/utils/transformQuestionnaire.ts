@@ -107,7 +107,7 @@ export const transformPostData = (formData: PostQuestionnaireData) => {
     _id: formData._id || "", // Use empty string if _id is not provided
     brandId: formData["brandId"],
     vectorId: formData["vectorId"],
-    campaignName: formData["compaign-name"],
+    campaignTitle: formData["compaign-name"],
     brandName: formData["brand-name"],
     campaignObjective: formData["campaign-objective"],
     campaignDescription: formData["campaign-description"],
@@ -131,7 +131,7 @@ export const transformPostData = (formData: PostQuestionnaireData) => {
     expectedDeliverables: formData["expected-deliverables"],
     noOfDaysForDelivery: formData["no-of-days-for-delivery"],
     additionalInstructions: formData["additional-instructions"] || "",
-    campaignPost: formData["campaign-post"],
+    campaignImage: formData["campaign-post"],
     // campaignConcept: formData["compaign-concept"],
     yourBrief: formData["your-brief"],
   };

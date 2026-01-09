@@ -19,7 +19,7 @@ interface Collaboration {
   brandName: string;
   status: string;
   videos: Array<{ link: string, status: string }>;
-  campaignPost?: string;
+  campaignImage?: string;
 }
 
 
@@ -195,7 +195,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             <div className="flex flex-col gap-4 flex-1 overflow-auto max-h-[400px]">
               {collaborations.map((collab) => (
                 collab.status === "Completed" && <div key={collab._id} className="flex items-center gap-4 mt-2">
-                  <Image src={collab.campaignPost || "/brandIcon.jpg"} alt={collab.brandName} width={70} height={70} className="rounded-full" />
+                  <Image src={collab.campaignImage || "/brandIcon.jpg"} alt={collab.brandName} width={70} height={70} className="rounded-full" />
                   <span className="text-lg text-gray-600 dark:text-gray-300">{collab.brandName}</span>
                 </div>
               ))}

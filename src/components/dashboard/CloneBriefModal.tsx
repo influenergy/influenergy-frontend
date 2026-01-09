@@ -58,13 +58,13 @@ const CloneBriefModal: React.FC<CloneBriefModalProps> = ({ open, onClose, campai
                                 />
                                 <div className="flex items-center gap-2">
                                     <Image
-                                        src={campaign.campaignPost || "/images/placeholder.png"}
-                                        alt={campaign.campaignName}
+                                        src={campaign.campaignImage || "/images/placeholder.png"}
+                                        alt={campaign.campaignTitle}
                                         width={40}
                                         height={40}
                                         className="rounded object-cover"
                                     />
-                                    <span className="font-medium">{campaign.campaignName}</span>
+                                    <span className="font-medium">{campaign.campaignTitle}</span>
                                 </div>
                             </label>
                         ))
