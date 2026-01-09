@@ -51,7 +51,7 @@ export interface Campaign {
   targetNiche: string[];
   budgetForCampaign: string;
   socialPlatforms: string;
-  expectedDeliverables: string[];
+  expectedDeliverables?: string[] | string;
   deadline: string;
 
   requirements?: string[];
