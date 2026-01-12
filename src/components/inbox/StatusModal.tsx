@@ -1,249 +1,348 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from "@/components/ui/dialog";
-// import { CircleCheck } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-import { useAddVideoUrl } from "@/hooks/usePost";
+import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Upload, Link2, Check, Loader2, AlertCircle } from "lucide-react";
+import { postApi } from "@/services/postServices";
 import { useQueryClient } from "@tanstack/react-query";
-import { UploadCloud } from "lucide-react";
-import { Award } from "lucide-react";
-import { CheckCircle } from "lucide-react";
-import { Button } from "../ui/button";
 
 interface Video {
   link: string;
   timestamp: string;
+  status: "Approved" | "Declined" | "Pending" | "Waiting Approval" | null;
+  message?: string | null;
+  deliverableType?: string;
+}
+
+interface StatusModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  collaborationId: string;
+  campaignId: string;
+  data: Video[];
   status: string;
-  _id: string;
-  reason?: string;
+}
+
+interface DeliverableUpload {
+  type: string;
+  link: string;
+  platform: string;
+  status?: "Approved" | "Declined" | "Pending" | "Waiting Approval" | null;
+  message?: string | null;
 }
 
 export default function StatusModal({
   open,
   onOpenChange,
   collaborationId,
+  campaignId,
   data,
   status,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  collaborationId: string;
-  data: Video[] | [];
-  status: string;
-}) {
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [videoUrl, setVideoUrl] = useState("");
+}: StatusModalProps) {
+  const [campaignDetails, setCampaignDetails] = useState<any>(null);
+  const [deliverables, setDeliverables] = useState<DeliverableUpload[]>([]);
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+  const [isFetchingCampaign, setIsFetchingCampaign] = useState(true);
   const queryClient = useQueryClient();
 
-  const addVideoMutation = useAddVideoUrl(videoUrl, collaborationId);
+  useEffect(() => {
+    if (open && collaborationId) {
+      fetchCampaignDetails();
+    }
+  }, [open, collaborationId, data]);
 
-  const handleSubmitVideo = async () => {
+  const fetchCampaignDetails = async () => {
     try {
-      await addVideoMutation.mutateAsync();
-      // Force refetch of relevant data
+      setIsFetchingCampaign(true);
+      const response = await postApi.getCollabByCampaignId(campaignId);
+
+      if (response?.collaborations && response.collaborations.length > 0) {
+        const campaign = response.collaborations[0].campaignId;
+        const collaboration = response.collaborations[0];
+
+        setCampaignDetails(campaign);
+
+        const initialDeliverables: DeliverableUpload[] = [];
+
+        if (campaign.expectedDeliverables && Array.isArray(campaign.expectedDeliverables)) {
+          campaign.expectedDeliverables.forEach((deliverableType: string) => {
+            const existingVideo = data.find(
+              (v: any) => v.deliverableType === deliverableType
+            );
+
+            initialDeliverables.push({
+              type: deliverableType,
+              link: existingVideo?.link || "",
+              platform: campaign.socialPlatforms || "",
+              status: existingVideo?.status || null,
+              message: existingVideo?.message || null,
+            });
+          });
+        }
+
+        setDeliverables(initialDeliverables);
+      }
+    } catch (error) {
+      console.error("Error fetching campaign details:", error);
+    } finally {
+      setIsFetchingCampaign(false);
+    }
+  };
+
+  const handleLinkChange = (index: number, value: string) => {
+    const updated = [...deliverables];
+    updated[index].link = value;
+    setDeliverables(updated);
+  };
+
+  const handleIndividualUpload = async (index: number) => {
+    const deliverable = deliverables[index];
+
+    if (!deliverable.link.trim()) {
+      alert("Please provide a link for this deliverable");
+      return;
+    }
+
+    if (!isValidUrl(deliverable.link)) {
+      alert("Please enter a valid URL");
+      return;
+    }
+
+    try {
+      setUploadingIndex(index);
+
+      await postApi.uploadCollaborationVideos(collaborationId, {
+        link: deliverable.link.trim(),
+        deliverableType: deliverable.type,
+      });
+
+      // Invalidate queries to refresh data
       queryClient.invalidateQueries({
         queryKey: ["collaborationStatusDetails"],
       });
       queryClient.invalidateQueries({
         queryKey: ["creatorVideos", collaborationId],
       });
-      setIsConfirmationOpen(false);
-      setVideoUrl("");
-      onOpenChange(false);
+
+      // Update local state to show pending status
+      const updated = [...deliverables];
+      updated[index].status = "Pending";
+      updated[index].message = null;
+      setDeliverables(updated);
+
+      alert("Deliverable uploaded successfully! Waiting for approval.");
     } catch (error) {
-      console.error("Error submitting video:", error);
+      console.error("Error uploading deliverable:", error);
+      alert("Failed to upload deliverable. Please try again.");
+    } finally {
+      setUploadingIndex(null);
     }
   };
 
+  const isValidUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const getDeliverableIcon = (type: string) => {
+    const lowerType = type.toLowerCase();
+    if (lowerType.includes("video")) return "🎥";
+    if (lowerType.includes("short")) return "📱";
+    if (lowerType.includes("post")) return "📝";
+    if (lowerType.includes("story")) return "📸";
+    return "📎";
+  };
+
+  const canUpload = (deliverable: DeliverableUpload) => {
+    return deliverable.status !== "Approved" && deliverable.status !== "Waiting Approval";
+  };
+
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between my-4">
-            <p className="font-semibold">Your Status</p>
-            <Button
-              variant="link"
-              className="font-semibold text-primary bg-white"
-              onClick={() =>
-                (window.location.href = "mailto:support@influenergy.co")
-              }
-            >
-              Get Help?
-            </Button>
+          <DialogTitle className="text-xl font-semibold">
+            Upload Campaign Deliverables
           </DialogTitle>
-          <DialogClose />
         </DialogHeader>
 
-        {/* Status Steps - Vertical Progressive */}
-        <div className="relative pb-4">
-          {/* Vertical line */}
-          <div className="absolute left-4 top-0 bottom-0 border-2 border-dashed"></div>
-
-          {/* Step 1 - Active */}
-          <div className="relative mb-8 pl-12">
-            <div className="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center z-10">
-              <Image
-                src={"https://d20cf3kfv1a9jn.cloudfront.net/images/collab.svg"}
-                alt={""}
-                width={20}
-                height={20}
-              />
-            </div>
-            <p className="font-medium text-primary mb-1">
-              Collaboration Request
-            </p>
+        {isFetchingCampaign ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-
-          {/* Step 2 - Current */}
-          <div className="relative mb-8 pl-12">
-            <div className="absolute left-0 w-8 h-8 text-gray-400 bg-secondary rounded-full flex items-center justify-center z-10">
-              {/* <Image
-                src={"https://d20cf3kfv1a9jn.cloudfront.net/images/videos.svg"}
-                alt={""}
-                width={20}
-                height={20}
-              /> */}
-              <UploadCloud className="text-primary" />
-            </div>
-            <div>
-              <p className="font-medium mb-2">Upload Video</p>
-
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2">
-                <input
-                  type="text"
-                  placeholder="Paste your Google drive link here"
-                  className="w-full px-3 py-2 border rounded-md text-sm"
-                  value={videoUrl}
-                  onChange={(e) => setVideoUrl(e.target.value)}
-                  disabled={
-                    data[0]?.status == "Pending" ||
-                    data[0]?.status == "Approved"
-                  }
-                />
-                <button
-                  onClick={() => setIsConfirmationOpen(true)}
-                  disabled={
-                    data[0]?.status == "Pending" ||
-                    data[0]?.status == "Approved"
-                  }
-                  className="w-full p-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition"
-                >
-                  Send Video Link to Brand
-                </button>
-              </div>
-              {data.length > 0 && (
-                <div className="mt-2">
-                  <p
-                    className={`text-xs italic ${data[0].status == "Pending"
-                      ? "text-yellow-500"
-                      : data[0].status == "Declined"
-                        ? "text-red-500"
-                        : "text-green-500"
-                      }`}
-                  >
-                    {data[0].status == "Pending"
-                      ? "Pending Approval"
-                      : data[0].status == "Declined"
-                        ? data[0]?.reason ||
-                        "Video modification requested . Please Check Your Email for More Details"
-                        : "Approved"}{" "}
-                  </p>
+        ) : (
+          <div className="space-y-6">
+            {campaignDetails && (
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                <h3 className="font-semibold text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  Campaign: {campaignDetails.campaignTitle}
+                </h3>
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span className="font-medium">Platform:</span>
+                  <span className="px-2 py-1 bg-primary/10 text-primary rounded">
+                    {campaignDetails.socialPlatforms}
+                  </span>
                 </div>
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold text-gray-900 dark:text-white">
+                  Required Deliverables
+                </h4>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {deliverables.filter((d) => d.status === "Approved").length} of{" "}
+                  {deliverables.length} approved
+                </span>
+              </div>
+
+              {deliverables.length === 0 ? (
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                  No deliverables required for this campaign
+                </div>
+              ) : (
+                deliverables.map((deliverable, index) => {
+                  const isApproved = deliverable.status === "Approved";
+                  const isPending = deliverable.status === "Pending";
+                  const isDeclined = deliverable.status === "Declined";
+                  const showUploadButton = canUpload(deliverable);
+                  const isUploading = uploadingIndex === index;
+                  const isWaitingApproval = deliverable.status === "Waiting Approval";
+
+
+                  return (
+                    <div
+                      key={index}
+                      className={`border rounded-lg p-4 ${isApproved
+                        ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20"
+                        : isPending
+                          ? "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
+                          : isDeclined
+                            ? "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20"
+                            : "border-gray-200 dark:border-gray-700"
+                        }`}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">
+                            {getDeliverableIcon(deliverable.type)}
+                          </span>
+                          <div>
+                            <Label className="text-sm font-medium text-gray-900 dark:text-white">
+                              {deliverable.type}
+                            </Label>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {deliverable.platform}
+                            </p>
+                          </div>
+                        </div>
+
+                        {deliverable.status ? (
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full ${isApproved
+                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                              : isWaitingApproval
+                                ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                : isPending
+                                  ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                              }`}
+                          >
+                            {deliverable.status}
+                          </span>
+                        ) : (
+                          <span
+                            className={`text-xs px-2 py-1 rounded-full "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"}`}
+                          >
+                            Pending
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Input
+                              type="url"
+                              placeholder={`Enter ${deliverable.type} link`}
+                              value={deliverable.link}
+                              onChange={(e) => handleLinkChange(index, e.target.value)}
+                              disabled={isApproved || isUploading || isWaitingApproval}
+                              className="pl-10"
+                            />
+                          </div>
+
+                          {showUploadButton && (
+                            <Button
+                              onClick={() => handleIndividualUpload(index)}
+                              disabled={isUploading || !deliverable.link.trim()}
+                              size="default"
+                              className="whitespace-nowrap"
+                            >
+                              {isUploading ? (
+                                <>
+                                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                  Uploading...
+                                </>
+                              ) : (
+                                <>
+                                  <Upload className="h-4 w-4 mr-2" />
+                                  Upload
+                                </>
+                              )}
+                            </Button>
+                          )}
+                        </div>
+
+                        {isApproved && (
+                          <div className="flex items-center gap-2 text-xs text-green-600 dark:text-green-400">
+                            <Check className="h-4 w-4" />
+                            <span>This deliverable has been approved</span>
+                          </div>
+                        )}
+
+                        {isDeclined && deliverable.message && (
+                          <div className="p-2 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded text-sm">
+                            <div className="flex items-start gap-2">
+                              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                              <div>
+                                <p className="text-red-800 dark:text-red-200 font-medium text-xs mb-1">
+                                  Feedback:
+                                </p>
+                                <p className="text-red-700 dark:text-red-300 text-xs">
+                                  {deliverable.message}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
               )}
             </div>
-          </div>
 
-          {/* Step 3 - Inactive */}
-          <div className="relative mb-8 pl-12">
-            <div
-              className={`absolute left-0 w-8 h-8 ${status == "Completed" ? "bg-secondary" : "bg-gray-100"
-                } text-gray-400 rounded-full flex items-center justify-center z-10`}
-            >
-              {/* <Image
-                src={"https://d20cf3kfv1a9jn.cloudfront.net/images/video.svg"}
-                alt={""}
-                width={20}
-                height={20}
-              /> */}
-              <Award
-                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
-                  }`}
-              />
-            </div>
-            <div className="">
-              <p
-                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
-                  }`}
+            <div className="flex justify-end pt-4 border-t dark:border-gray-700">
+              <Button
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={uploadingIndex !== null}
               >
-                Video accepted by Brand
-              </p>
+                Close
+              </Button>
             </div>
           </div>
-
-          {/* Step 4 - Inactive */}
-          <div className="relative pl-12 mt-10">
-            <div
-              className={`absolute left-0  w-8 h-8 ${status == "Completed" ? "bg-secondary" : "bg-gray-100"
-                } text-gray-400 rounded-full flex items-center justify-center z-10`}
-            >
-              <CheckCircle
-                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
-                  }`}
-              />
-            </div>
-            <div className="">
-              <p
-                className={`${status == "Completed" ? "text-primary" : "text-gray-400"
-                  }`}
-              >
-                Collaboration Completed
-              </p>
-            </div>
-          </div>
-        </div>
+        )}
       </DialogContent>
-
-      {/* Confirmation Dialog */}
-      <Dialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
-        <DialogContent className="max-w-sm text-center">
-          <div className="flex flex-col items-center">
-            <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center">
-              <Image
-                src="https://d20cf3kfv1a9jn.cloudfront.net/images/film.png"
-                width={50}
-                height={50}
-                alt="logo"
-              />
-            </div>
-            <p className="mt-4 text-md">
-              Are you sure you want to submit this video link? After submitting,
-              brands will be able to view the video and either approve or ask
-              for a redo.
-            </p>
-            <div className="mt-6 flex gap-4 w-full">
-              <Button
-                onClick={handleSubmitVideo}
-                disabled={addVideoMutation.isPending}
-                className="w-full px-2 py-2 text-sm font-medium text-white bg-primary rounded-md border border-primary hover:bg-white hover:text-primary transition"
-              >
-                {addVideoMutation.isPending ? "Submitting..." : "Yes"}
-              </Button>
-              <Button
-                onClick={() => setIsConfirmationOpen(false)}
-                className="w-full px-2 py-2 text-sm font-medium text-white border border-primary rounded-md hover:bg-white hover:text-primary transition"
-                disabled={addVideoMutation.isPending}
-              >
-                No
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </Dialog>
   );
 }

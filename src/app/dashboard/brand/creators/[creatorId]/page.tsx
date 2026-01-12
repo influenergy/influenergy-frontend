@@ -6,7 +6,7 @@ import {
     ChevronsLeft, MapPin, Users, TrendingUp, Award, ExternalLink, Tag,
     Calendar, Globe, DollarSign, Heart, Video, User, Target,
     BarChart3, Languages, CreditCard, Sparkles, CheckCircle2, XCircle, Clock,
-    Loader2, X
+    Loader2, X, Eye, Briefcase, Star, Link as LinkIcon
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useParams, useSearchParams } from "next/navigation";
@@ -124,6 +124,17 @@ const CreatorDetailsPage = () => {
         return age;
     };
 
+    const formatNumber = (num?: number | string) => {
+        if (!num) return "N/A";
+        const number = typeof num === 'string' ? parseFloat(num) : num;
+        if (number >= 1000000) {
+            return `${(number / 1000000).toFixed(1)}M`;
+        } else if (number >= 1000) {
+            return `${(number / 1000).toFixed(1)}K`;
+        }
+        return number.toLocaleString();
+    };
+
     const handleStatus = async (newStatus: string, collaborationId: string) => {
         setStatusLoading(true);
         try {
@@ -133,7 +144,6 @@ const CreatorDetailsPage = () => {
             setModalMessage(`Successfully updated status to ${newStatus}!`);
             setShowModal(true);
             
-            // Optional: Navigate back after delay
             setTimeout(() => {
                 router.back();
             }, 2000);
@@ -271,6 +281,12 @@ const CreatorDetailsPage = () => {
                                             {creator.type}
                                         </span>
                                     )}
+                                    {creator.badge && (
+                                        <span className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                                            <Award className="w-4 h-4" />
+                                            {creator.badge}
+                                        </span>
+                                    )}
                                 </div>
                                 {creator.stageName && (
                                     <p className="text-lg text-primary dark:text-primary/90 font-medium">
@@ -286,6 +302,12 @@ const CreatorDetailsPage = () => {
                                         {creator.email}
                                     </p>
                                 )}
+                                <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <span>Joined: {formatDate(creator.createdAt)}</span>
+                                    {creator.updatedAt && (
+                                        <span>Updated: {formatDate(creator.updatedAt)}</span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -335,14 +357,25 @@ const CreatorDetailsPage = () => {
                                     </div>
                                 </div>
                             )}
+                            {creator.isProfileCompleted !== undefined && (
+                                <div className="flex items-start gap-2">
+                                    <CheckCircle2 className={`h-4 w-4 mt-1 flex-shrink-0 ${creator.isProfileCompleted ? 'text-green-500' : 'text-gray-400'}`} />
+                                    <div>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Profile Status</p>
+                                        <p className={`font-semibold ${creator.isProfileCompleted ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-white'}`}>
+                                            {creator.isProfileCompleted ? 'Completed' : 'Incomplete'}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
                     {/* Location & Category Card */}
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-blue-500 hover:shadow-xl transition-shadow duration-300">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                <MapPin className="h-6 w-6 text-primary" />
+                            <div className="bg-blue-500/10 dark:bg-blue-500/20 p-3 rounded-lg">
+                                <MapPin className="h-6 w-6 text-blue-500" />
                             </div>
                             <h2 className="font-bold text-lg text-gray-900 dark:text-white">Location & Category</h2>
                         </div>
@@ -350,7 +383,7 @@ const CreatorDetailsPage = () => {
                             <div className="flex items-start gap-2">
                                 <MapPin className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
                                 <div>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">City</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Country</p>
                                     <p className="font-semibold text-gray-900 dark:text-white">{creator.city || "N/A"}</p>
                                 </div>
                             </div>
@@ -360,7 +393,7 @@ const CreatorDetailsPage = () => {
                                     <p className="text-sm text-gray-500 dark:text-gray-400">Categories</p>
                                     <div className="flex flex-wrap gap-1 mt-1">
                                         {creator.category?.map((cat, idx) => (
-                                            <span key={idx} className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary/90 px-2 py-1 rounded-full text-xs font-medium">
+                                            <span key={idx} className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full text-xs font-medium">
                                                 {cat}
                                             </span>
                                         )) || <span className="text-gray-400">N/A</span>}
@@ -371,10 +404,10 @@ const CreatorDetailsPage = () => {
                     </div>
 
                     {/* Languages & Payment Card */}
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-primary hover:shadow-xl transition-shadow duration-300">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-green-500 hover:shadow-xl transition-shadow duration-300">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg">
-                                <Languages className="h-6 w-6 text-primary" />
+                            <div className="bg-green-500/10 dark:bg-green-500/20 p-3 rounded-lg">
+                                <Languages className="h-6 w-6 text-green-500" />
                             </div>
                             <h2 className="font-bold text-lg text-gray-900 dark:text-white">Languages & Payment</h2>
                         </div>
@@ -409,41 +442,427 @@ const CreatorDetailsPage = () => {
                     </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                    {status === "Pending" && (
-                        <button
-                            onClick={() => handleStatus("Shortlisted", collaborationId)}
-                            disabled={statusLoading}
-                            className="w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                        >
-                            {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Clock className="w-5 h-5" />}
-                            Shortlist Creator
-                        </button>
+                {/* Social Media & Statistics */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Social Links Card */}
+                    {(creator.socialLinks?.primary || creator.socialLinks?.secondary) && (
+                        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-purple-500 hover:shadow-xl transition-shadow duration-300">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="bg-purple-500/10 dark:bg-purple-500/20 p-3 rounded-lg">
+                                    <LinkIcon className="h-6 w-6 text-purple-500" />
+                                </div>
+                                <h2 className="font-bold text-lg text-gray-900 dark:text-white">Social Media</h2>
+                            </div>
+                            <div className="space-y-4">
+                                {creator.socialLinks.primary && (
+                                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">Primary Platform</span>
+                                            {creator.socialLinks.primary.platform && (
+                                                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded text-xs font-medium">
+                                                    {creator.socialLinks.primary.platform}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {creator.socialLinks.primary.followers && (
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Users className="h-4 w-4 text-gray-400" />
+                                                <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                    {formatNumber(creator.socialLinks.primary.followers)} followers
+                                                </span>
+                                            </div>
+                                        )}
+                                        {creator.socialLinks.primary.link && (
+                                            <a 
+                                                href={creator.socialLinks.primary.link} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm"
+                                            >
+                                                <ExternalLink className="h-4 w-4" />
+                                                Visit Profile
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
+                                {creator.socialLinks.secondary && (
+                                    <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">Secondary Platform</span>
+                                            {creator.socialLinks.secondary.platform && (
+                                                <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded text-xs font-medium">
+                                                    {creator.socialLinks.secondary.platform}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {creator.socialLinks.secondary.followers && (
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Users className="h-4 w-4 text-gray-400" />
+                                                <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                    {formatNumber(creator.socialLinks.secondary.followers)} followers
+                                                </span>
+                                            </div>
+                                        )}
+                                        {creator.socialLinks.secondary.link && (
+                                            <a 
+                                                href={creator.socialLinks.secondary.link} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm"
+                                            >
+                                                <ExternalLink className="h-4 w-4" />
+                                                Visit Profile
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     )}
 
-                    {status === "Shortlisted" && (
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => handleStatus("Offered", collaborationId)}
-                                disabled={statusLoading}
-                                className="w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                            >
-                                {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
-                                Send Offer
-                            </button>
+                    {/* Performance Metrics Card */}
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-orange-500 hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="bg-orange-500/10 dark:bg-orange-500/20 p-3 rounded-lg">
+                                <BarChart3 className="h-6 w-6 text-orange-500" />
+                            </div>
+                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Performance Metrics</h2>
+                        </div>
+                        <div className="space-y-3">
+                            {creator.averageView && (
+                                <div className="flex items-start gap-2">
+                                    <Eye className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Average Views</p>
+                                        <p className="font-semibold text-gray-900 dark:text-white">{formatNumber(creator.averageView)}</p>
+                                    </div>
+                                </div>
+                            )}
+                            {creator.growthRate && (
+                                <div className="flex items-start gap-2">
+                                    <TrendingUp className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Growth Rate</p>
+                                        <p className="font-semibold text-gray-900 dark:text-white">{creator.growthRate}</p>
+                                    </div>
+                                </div>
+                            )}
+                            {creator.budgetVideo && (
+                                <div className="flex items-start gap-2">
+                                    <DollarSign className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Budget per Video</p>
+                                        <p className="font-semibold text-gray-900 dark:text-white">{creator.budgetVideo}</p>
+                                    </div>
+                                </div>
+                            )}
+                            {creator.badgePrice && (
+                                <div className="flex items-start gap-2">
+                                    <Award className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Badge Price</p>
+                                        <p className="font-semibold text-gray-900 dark:text-white">{creator.badgePrice}</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
 
-                            <button
-                                onClick={() => handleStatus("Rejected", collaborationId)}
-                                disabled={statusLoading}
-                                className="w-auto flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                            >
-                                {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <XCircle className="w-5 h-5" />}
-                                Reject
-                            </button>
+                {/* Audience Information */}
+                {(creator.audience || creator.audienceInfo) && (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Audience Demographics */}
+                        {creator.audience && (
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-indigo-500 hover:shadow-xl transition-shadow duration-300">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="bg-indigo-500/10 dark:bg-indigo-500/20 p-3 rounded-lg">
+                                        <Users className="h-6 w-6 text-indigo-500" />
+                                    </div>
+                                    <h2 className="font-bold text-lg text-gray-900 dark:text-white">Audience Demographics</h2>
+                                </div>
+                                <div className="space-y-3">
+                                    {creator.audience.audienceLocations && creator.audience.audienceLocations.length > 0 && (
+                                        <div className="flex items-start gap-2">
+                                            <MapPin className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                            <div>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">Audience Locations</p>
+                                                <div className="flex flex-wrap gap-1 mt-1">
+                                                    {creator.audience.audienceLocations.map((location, idx) => (
+                                                        <span key={idx} className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded-full text-xs font-medium">
+                                                            {location}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {creator.audience.ageBracket && creator.audience.ageBracket.length > 0 && (
+                                        <div className="flex items-start gap-2">
+                                            <Calendar className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                            <div>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">Age Bracket</p>
+                                                <div className="flex flex-wrap gap-1 mt-1">
+                                                    {creator.audience.ageBracket.map((age, idx) => (
+                                                        <span key={idx} className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full text-xs font-medium">
+                                                            {age}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {creator.audience.usBasedPercentage && (
+                                        <div className="flex items-start gap-2">
+                                            <Target className="h-4 w-4 text-gray-400 mt-1 flex-shrink-0" />
+                                            <div>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">US-Based Audience</p>
+                                                <p className="font-semibold text-gray-900 dark:text-white">{creator.audience.usBasedPercentage}%</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Detailed Audience Info */}
+                        {creator.audienceInfo && (
+                            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-pink-500 hover:shadow-xl transition-shadow duration-300">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="bg-pink-500/10 dark:bg-pink-500/20 p-3 rounded-lg">
+                                        <Target className="h-6 w-6 text-pink-500" />
+                                    </div>
+                                    <h2 className="font-bold text-lg text-gray-900 dark:text-white">Audience Breakdown</h2>
+                                </div>
+                                <div className="space-y-4">
+                                    {/* Primary Audience */}
+                                    {(creator.audienceInfo.primaryAge || creator.audienceInfo.primaryGender || creator.audienceInfo.primaryLocation) && (
+                                        <div className="bg-pink-50 dark:bg-pink-900/10 rounded-lg p-4">
+                                            <h3 className="text-sm font-semibold text-pink-600 dark:text-pink-400 mb-3">Primary Audience</h3>
+                                            <div className="space-y-2">
+                                                {creator.audienceInfo.primaryAge && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Age Group</span>
+                                                        <span className="font-semibold text-gray-900 dark:text-white">{creator.audienceInfo.primaryAge}</span>
+                                                    </div>
+                                                )}
+                                                {creator.audienceInfo.primaryGender && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Gender</span>
+                                                        <span className="font-semibold text-gray-900 dark:text-white">{creator.audienceInfo.primaryGender}</span>
+                                                    </div>
+                                                )}
+                                                {creator.audienceInfo.primaryLocation && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Location</span>
+                                                        <span className="font-semibold text-gray-900 dark:text-white">{creator.audienceInfo.primaryLocation}</span>
+                                                    </div>
+                                                )}
+                                                {creator.audienceInfo.primaryPercentage && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Percentage</span>
+                                                        <span className="font-semibold text-pink-600 dark:text-pink-400">{creator.audienceInfo.primaryPercentage}%</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Secondary Audience */}
+                                    {(creator.audienceInfo.secondaryAge || creator.audienceInfo.secondaryGender || creator.audienceInfo.secondaryLocation) && (
+                                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                                            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-3">Secondary Audience</h3>
+                                            <div className="space-y-2">
+                                                {creator.audienceInfo.secondaryAge && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Age Group</span>
+                                                        <span className="font-semibold text-gray-900 dark:text-white">{creator.audienceInfo.secondaryAge}</span>
+                                                    </div>
+                                                )}
+                                                {creator.audienceInfo.secondaryGender && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Gender</span>
+                                                        <span className="font-semibold text-gray-900 dark:text-white">{creator.audienceInfo.secondaryGender}</span>
+                                                    </div>
+                                                )}
+                                                {creator.audienceInfo.secondaryLocation && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Location</span>
+                                                        <span className="font-semibold text-gray-900 dark:text-white">{creator.audienceInfo.secondaryLocation}</span>
+                                                    </div>
+                                                )}
+                                                {creator.audienceInfo.secondaryPercentage && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400">Percentage</span>
+                                                        <span className="font-semibold text-gray-600 dark:text-gray-400">{creator.audienceInfo.secondaryPercentage}%</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Experience & Preferences */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Campaign Experience */}
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-teal-500 hover:shadow-xl transition-shadow duration-300">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="bg-teal-500/10 dark:bg-teal-500/20 p-3 rounded-lg">
+                                <Briefcase className="h-6 w-6 text-teal-500" />
+                            </div>
+                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Campaign Experience</h2>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <span className="text-sm text-gray-600 dark:text-gray-400">Worked with AI Consumer Apps</span>
+                                <span className={`flex items-center gap-2 font-semibold ${creator.workedWithAIConsumerApps ? 'text-green-600 dark:text-green-400' : 'text-gray-500'}`}>
+                                    {creator.workedWithAIConsumerApps ? (
+                                        <>
+                                            <CheckCircle2 className="w-4 h-4" />
+                                            Yes
+                                        </>
+                                    ) : (
+                                        <>
+                                            <XCircle className="w-4 h-4" />
+                                            No
+                                        </>
+                                    )}
+                                </span>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <span className="text-sm text-gray-600 dark:text-gray-400">Paid Campaign Experience</span>
+                                <span className={`flex items-center gap-2 font-semibold ${creator.hasPaidCampaignExperience ? 'text-green-600 dark:text-green-400' : 'text-gray-500'}`}>
+                                    {creator.hasPaidCampaignExperience ? (
+                                        <>
+                                            <CheckCircle2 className="w-4 h-4" />
+                                            Yes
+                                        </>
+                                    ) : (
+                                        <>
+                                            <XCircle className="w-4 h-4" />
+                                            No
+                                        </>
+                                    )}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Favorite Brands */}
+                    {creator.favouriteBrands && (
+                        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-yellow-500 hover:shadow-xl transition-shadow duration-300">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="bg-yellow-500/10 dark:bg-yellow-500/20 p-3 rounded-lg">
+                                    <Heart className="h-6 w-6 text-yellow-500" />
+                                </div>
+                                <h2 className="font-bold text-lg text-gray-900 dark:text-white">Favorite Brands</h2>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <Star className="h-4 w-4 text-yellow-500 mt-1 flex-shrink-0" />
+                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{creator.favouriteBrands}</p>
+                            </div>
                         </div>
                     )}
                 </div>
+
+                {/* Social Videos */}
+                {creator.socialVideos && creator.socialVideos.length > 0 && (
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-l-4 border-red-500">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="bg-red-500/10 dark:bg-red-500/20 p-3 rounded-lg">
+                                <Video className="h-6 w-6 text-red-500" />
+                            </div>
+                            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Portfolio Videos</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {creator.socialVideos.map((video, idx) => (
+                                <div key={idx} className="bg-gray-50 dark:bg-gray-700/50 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300">
+                                    {video.image && (
+                                        <div className="aspect-video bg-gray-200 dark:bg-gray-600 relative">
+                                            <img 
+                                                src={video.image} 
+                                                alt={video.title || `Video ${idx + 1}`}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            {video.isPublic && (
+                                                <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                                                    Public
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+                                    <div className="p-4">
+                                        {video.title && (
+                                            <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                                                {video.title}
+                                            </h3>
+                                        )}
+                                        {video.addedAt && (
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                                Added: {formatDate(video.addedAt)}
+                                            </p>
+                                        )}
+                                        {video.videoLink && (
+                                            <a
+                                                href={video.videoLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors text-sm font-medium"
+                                            >
+                                                <ExternalLink className="h-4 w-4" />
+                                                Watch Video
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Action Buttons */}
+                {(status === "Pending" || status === "Shortlisted") && (
+                    <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                        <h2 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Actions</h2>
+                        
+                        {status === "Pending" && (
+                            <button
+                                onClick={() => handleStatus("Shortlisted", collaborationId)}
+                                disabled={statusLoading}
+                                className="w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            >
+                                {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Clock className="w-5 h-5" />}
+                                Shortlist Creator
+                            </button>
+                        )}
+
+                        {status === "Shortlisted" && (
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => handleStatus("Offered", collaborationId)}
+                                    disabled={statusLoading}
+                                    className="w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                                >
+                                    {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
+                                    Send Offer
+                                </button>
+
+                                <button
+                                    onClick={() => handleStatus("Rejected", collaborationId)}
+                                    disabled={statusLoading}
+                                    className="w-auto flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                                >
+                                    {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <XCircle className="w-5 h-5" />}
+                                    Reject
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

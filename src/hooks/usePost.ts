@@ -121,7 +121,7 @@ export const useAcceptOrDeclineVideo = ({ onSuccess }: { onSuccess?: () => void 
     }: {
       collaborationId: string;
       videoId: string;
-      status: "Approved" | "Declined" | "Pending";
+      status: "Approved" | "Declined" | "Pending" | "Waiting Approval";
       message?: string;
     }) => {
       try {

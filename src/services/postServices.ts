@@ -82,6 +82,16 @@ export const postApi = {
   },
   getCollabByCampaignId: async (campaignId: string) => {
     try {
+      const response = await api.get(`/creator/collab/campaign/${campaignId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCollabByStatus :", error);
+      throw error;
+    }
+  },
+
+  getCollabByCampaignIdForBrand: async (campaignId: string) => {
+    try {
       const response = await api.get(`/brand/collab/campaign/${campaignId}`);
       return response.data;
     } catch (error) {
@@ -89,6 +99,7 @@ export const postApi = {
       throw error;
     }
   },
+
   findAIMatch: async (campaignId: string, creatorId: string) => {
     try {
       const response = creatorId ? await api.get(`/brand/ai-find/${campaignId}?creatorId=${creatorId}`) : await api.get(`/brand/ai-find/${campaignId}`);
@@ -212,6 +223,26 @@ export const postApi = {
       throw error;
     }
   },
+  inviteForCollaboration: async (
+    campaignId: string,
+    payload: {
+      creatorId: string;
+      coverMessage?: string;
+      creatorBudget?: string;
+      // portfolioLink?: string;
+    }
+  ) => {
+    try {
+      const response = await api.post(
+        `/brand/collaboration-invite/${campaignId}`,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error creating collaboration:", error);
+      throw error;
+    }
+  },
   getCollaborationByStatus: async (status: string) => {
     try {
       const response = await api.get(`/creator/collaboration/${status}`);
@@ -231,7 +262,7 @@ export const postApi = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching getCollaborationByStatus :", error);
+      console.error("Error fetching acceptOrDeclineCollaboration :", error);
       throw error;
     }
   },
@@ -245,7 +276,21 @@ export const postApi = {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching getCollaborationByStatus :", error);
+      console.error("Error fetching changeCollaborationStatus :", error);
+      throw error;
+    }
+  },
+  changeCampaignStatus: async (
+    campaignId: string,
+    status: string
+  ) => {
+    try {
+      const response = await api.put(
+        `/brand/campaign-status/${campaignId}/${status}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching changeCampaignStatus :", error);
       throw error;
     }
   },
@@ -312,5 +357,72 @@ export const postApi = {
   deleteCollab: async (collabId: string) => {
     const response = await api.delete(`/brand/collab/${collabId}`)
     return response.data
-  }
+  },
+
+  // Get collaboration by ID (including campaign details)
+  getCollaborationById: async (collaborationId: string) => {
+    try {
+      const response = await api.get(`/creator/collaboration/${collaborationId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching collaboration:", error);
+      throw error;
+    }
+  },
+
+  // Upload multiple videos with deliverable types
+  uploadCollaborationVideos: async (
+    collaborationId: string,
+    deliverable: { link: string; deliverableType: string }
+  ) => {
+    try {
+      const response = await api.put(
+        `/creator/collaboration/add-video/${collaborationId}`,
+        { deliverable }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading videos:", error);
+      throw error;
+    }
+  },
+
+  completeCollaboration: async (
+    collaborationId: string,
+  ) => {
+    try {
+      const response = await api.put(
+        `/brand/complete-collaboration/${collaborationId}`,
+      );
+      console.log("ressssssss->",response);
+      
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading videos:", error);
+      throw error;
+    }
+  },
+
+  // uploadSingleDeliverable: async (
+  //   collaborationId: string,
+  //   deliverable: { link: string; deliverableType: string }
+  // ) => {
+  //   const response = await fetch(
+  //     `/api/collaborations/${collaborationId}/deliverable`,
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         // Add auth headers if needed
+  //       },
+  //       body: JSON.stringify(deliverable),
+  //     }
+  //   );
+
+  //   if (!response.ok) {
+  //     throw new Error("Failed to upload deliverable");
+  //   }
+
+  //   return response.json();
+  // },
 };

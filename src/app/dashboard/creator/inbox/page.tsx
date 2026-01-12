@@ -19,7 +19,7 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 });
 
 const Page = () => {
-  const [activeTab, setActiveTab] = useState("Pending");
+  const [activeTab, setActiveTab] = useState("Waiting Approval");
   const pendingCollabCount = useAppSelector(pendingCollaborationCount);
   const {
     data: campaignsData,
@@ -30,14 +30,15 @@ const Page = () => {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
+  
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="Pending" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
+      <Tabs defaultValue="Waiting Approval" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full">
             <TabsTrigger
-              value="Pending"
+              value="Waiting Approval"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm relative"
             >
               <div className="flex items-center gap-1">
@@ -193,18 +194,18 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Pending" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
+        <TabsContent value="Waiting Approval" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "Pending" &&
+            {activeTab === "Waiting Approval" &&
               campaignsData?.collaborations?.length > 0 && (
                 <div className="grid grid-cols-1 gap-5 md:gap-10">
                   {campaignsData.collaborations.map(
                     (collaboration: Collaboration, index: number) => (
                       <InboxCard
                         key={collaboration._id || index}
-                        status={"Pending"}
+                        status={"Waiting Approval"}
                         paymentStatus={collaboration?.paymentStatus}
-                        tab={"Pending"}
+                        tab={"Waiting Approval"}
                         title={
                           collaboration?.campaignId?.campaignTitle || "No Title"
                         }
@@ -219,7 +220,7 @@ const Page = () => {
                   )}
                 </div>
               )}
-            {activeTab === "Pending" &&
+            {activeTab === "Waiting Approval" &&
               (!campaignsData?.collaborations ||
                 (campaignsData.collaborations.length === 0 && !isLoading)) && (
                 <div className="text-center p-10">

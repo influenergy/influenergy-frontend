@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { postApi } from "@/services/postServices";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2, Clock, CircleCheckBig, CircleX, ChevronsLeft } from "lucide-react";
@@ -10,7 +10,6 @@ import CreatorCard from "@/components/brand/CreatorCards";
 import { useInitiatePayment } from "@/hooks/usePayment";
 import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
 import { useQueryClient } from "@tanstack/react-query";
-
 
 interface CreatorProfile {
   socialLinks?: {
@@ -27,12 +26,21 @@ interface Creator {
   profile?: CreatorProfile;
 }
 
+interface Video {
+  _id: string;
+  link: string;
+  timestamp: string;
+  status: "Approved" | "Declined" | "Pending" | "Waiting Approval";
+  message?: string | null;
+  deliverableType: string;
+}
+
 interface Application {
   _id: string;
   creatorId: Creator;
   campaignId: Campaign;
   coverMessage?: string;
-  videos?: string[];
+  videos?: Video[];
   status: "Pending" | "Shortlisted" | "Offered" | "Rejected" | "Active" | "Completed" | "Interested" | "Payment";
 }
 
@@ -41,29 +49,21 @@ interface Campaign {
   campaignTitle: string;
   campaignImage: string;
   budgetForCampaign: string;
+  expectedDeliverables?: string[];
 }
-
-const statusStyles = {
-  Pending: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-  Shortlisted: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  Offered: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-  Rejected: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-  Active: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-  Completed: "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400",
-};
 
 export default function CampaignDetailsPage() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const campaignId = params.campaignId as string;
+
+  const isActiveTab = searchParams.get("tab") === "active";
 
   const [applications, setApplications] = useState<Application[]>([]);
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
-
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -73,6 +73,8 @@ export default function CampaignDetailsPage() {
     useAcceptOrDeclineVideo({
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        setSuccessMessage("Video approved successfully!");
+        fetchApplications();
       },
     });
 
@@ -81,15 +83,16 @@ export default function CampaignDetailsPage() {
       collaborationId,
       videoId,
       status: "Approved",
+      message: "Approved"
     });
   };
 
   const { mutate: handleDeclineVideo, isPending: isDeclining } =
     useAcceptOrDeclineVideo({
-
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-        // onClose();
+        setSuccessMessage("Video revision requested!");
+        fetchApplications();
       },
     });
 
@@ -106,94 +109,60 @@ export default function CampaignDetailsPage() {
     });
   };
 
+  const fetchApplications = async () => {
+    if (!campaignId) {
+      setError("No campaign ID provided");
+      setIsLoading(false);
+      return;
+    }
 
+    try {
+      setIsLoading(true);
+
+      const cachedData = sessionStorage.getItem("campaignApplications");
+      if (cachedData) {
+        const { applications: cachedApps, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < 5 * 60 * 1000) {
+          setApplications(cachedApps);
+          sessionStorage.removeItem("campaignApplications");
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      const response = await postApi.getCollabByCampaignIdForBrand(campaignId);
+
+      if (!response?.status) {
+        throw new Error("Failed to fetch applications");
+      }
+
+      setApplications(response.collaborations || []);
+
+      if (response.campaign) {
+        setCampaign(response.campaign);
+      }
+    } catch (err) {
+      console.error("Error fetching applications:", err);
+      setError("Failed to load applications. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      if (!campaignId) {
-        setError("No campaign ID provided");
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        setIsLoading(true);
-
-        // First, check if data is in sessionStorage (to avoid re-fetching)
-        const cachedData = sessionStorage.getItem('campaignApplications');
-        if (cachedData) {
-          const { applications: cachedApps, timestamp } = JSON.parse(cachedData);
-          // Use cached data if it's less than 5 minutes old
-          if (Date.now() - timestamp < 5 * 60 * 1000) {
-            setApplications(cachedApps);
-            sessionStorage.removeItem('campaignApplications');
-            setIsLoading(false);
-            return;
-          }
-        }
-
-        // Fetch fresh data from API
-        const response = await postApi.getCollabByCampaignId(campaignId);
-
-        if (!response?.status) {
-          throw new Error("Failed to fetch applications");
-        }
-
-        setApplications(response.collaborations || []);
-
-        // If your API returns campaign details, set them here
-        if (response.campaign) {
-          setCampaign(response.campaign);
-        }
-      } catch (err) {
-        console.error("Error fetching applications:", err);
-        setError("Failed to load applications. Please try again.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchApplications();
   }, [campaignId]);
 
   const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
 
-  // const handleStatus = async (newStatus: string, applicationId: string) => {
-  //   try {
-  //     setUpdatingId(applicationId);
-  //     setUpdatingStatus(newStatus);
-
-  //     // Call your API to update status
-  //     // const response = await postApi.updateCollaborationStatus(applicationId, newStatus);
-
-  //     // Update local state
-  //     setApplications((prev) =>
-  //       prev.map((app) =>
-  //         app._id === applicationId ? { ...app, status: newStatus as any } : app
-  //       )
-  //     );
-
-  //     console.log(`Updated ${applicationId} to ${newStatus}`);
-  //   } catch (error) {
-  //     console.error("Error updating status:", error);
-  //     alert("Failed to update status. Please try again.");
-  //   } finally {
-  //     setUpdatingId(null);
-  //     setUpdatingStatus(null);
-  //   }
-  // };
-
-
   const handleBack = () => {
     router.push("/dashboard/brand/application-inbox");
   };
-
 
   const handlePayNow = async (application: Application) => {
     try {
       setActionLoadingId(application._id);
 
-      // Call your payment initiation function
       const response = await initiatePayment({
         campaignId: application.campaignId._id || "",
         amount: application.campaignId.budgetForCampaign || "0",
@@ -202,7 +171,7 @@ export default function CampaignDetailsPage() {
       });
 
       if (response?.url) {
-        window.location.href = response.url; // redirect to payment page
+        window.location.href = response.url;
       }
     } catch (err) {
       console.error("Payment failed:", err);
@@ -211,7 +180,6 @@ export default function CampaignDetailsPage() {
       setActionLoadingId(null);
     }
   };
-
 
   const handleStatusChange = async (
     applicationId: string,
@@ -224,9 +192,7 @@ export default function CampaignDetailsPage() {
 
       setApplications((prev) =>
         prev.map((app) =>
-          app._id === applicationId
-            ? { ...app, status: nextStatus }
-            : app
+          app._id === applicationId ? { ...app, status: nextStatus } : app
         )
       );
 
@@ -239,6 +205,32 @@ export default function CampaignDetailsPage() {
     }
   };
 
+  const handleCompleteCollaboration = async (collaborationId: string) => {
+    try {
+      setActionLoadingId(collaborationId);
+
+      const res = await postApi.completeCollaboration(collaborationId);
+
+      if (!res?.status) {
+        throw new Error("Completion failed");
+      }
+
+      setApplications((prev) =>
+        prev.map((app) =>
+          app._id === collaborationId
+            ? { ...app, status: "Completed" }
+            : app
+        )
+      );
+
+      setSuccessMessage("Collaboration completed successfully");
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Failed to complete collaboration. Please try again.");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
 
 
   if (isLoading) {
@@ -263,8 +255,6 @@ export default function CampaignDetailsPage() {
       </div>
     );
   }
-
-  // console.log("applicaton-->", applications);
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -294,7 +284,8 @@ export default function CampaignDetailsPage() {
                 {campaign.campaignTitle}
               </h1>
               <p className="text-gray-600 dark:text-gray-300">
-                {applications.length} Application{applications.length !== 1 ? "s" : ""}
+                {applications.length} {isActiveTab ? "Active Collaboration" : "Application"}
+                {applications.length !== 1 ? "s" : ""}
               </p>
             </div>
           </div>
@@ -302,7 +293,7 @@ export default function CampaignDetailsPage() {
 
         {!campaign && (
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Campaign Applications
+            {isActiveTab ? "Active Collaborations" : "Campaign Applications"}
           </h1>
         )}
       </div>
@@ -311,10 +302,12 @@ export default function CampaignDetailsPage() {
       {applications.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
-            No applications found for this campaign.
+            No {isActiveTab ? "active collaborations" : "applications"} found for this campaign.
           </p>
           <p className="text-gray-400 dark:text-gray-500 text-sm">
-            Applications will appear here once influencers apply.
+            {isActiveTab
+              ? "Active collaborations will appear here once creators start working."
+              : "Applications will appear here once influencers apply."}
           </p>
         </div>
       ) : (
@@ -326,43 +319,33 @@ export default function CampaignDetailsPage() {
               status={app.status}
               onAction={async (nextStatus) => {
                 if (nextStatus === "Payment") {
-                  await handlePayNow(app); // pass the app so you know which creator/campaign
+                  await handlePayNow(app);
                 } else {
                   await handleStatusChange(app._id, nextStatus);
                 }
               }}
+              isActiveCollaboration={isActiveTab}
+              videos={isActiveTab ? app.videos : undefined}
+              collaborationId={app._id}
+              expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
+              onApproveVideo={approveVideo}
+              onRequestChanges={requestVideoChanges}
+              isProcessing={
+                isApproving ||
+                isDeclining ||
+                actionLoadingId === app._id
+              }
+              onCompleteCollaboration={handleCompleteCollaboration}
             />
-
-
-            // <CreatorCard
-            //   creator={app.creatorId}
-            //   status={app.status}
-            //   onAction={async (nextStatus) => {
-            //     if (nextStatus === "Payment") {
-            //       await handlePayNow(app);
-            //     } else {
-            //       await handleStatusChange(app._id, nextStatus);
-            //     }
-            //   }}
-            //   isActiveCollaboration={true}
-            //   videos={app.videos}
-            //   collaborationId={app._id}
-            //   onApproveVideo={approveVideo}
-            //   onRequestChanges={requestVideoChanges}
-            //   isProcessing={true}
-            // />
-
-
           ))}
-
         </div>
       )}
 
       {successMessage && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[320px] text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-[320px] text-center">
             <CircleCheckBig className="h-10 w-10 text-green-500 mx-auto mb-3" />
-            <p className="text-lg font-medium">{successMessage}</p>
+            <p className="text-lg font-medium dark:text-white">{successMessage}</p>
             <Button className="mt-4 w-full" onClick={() => setSuccessMessage(null)}>
               OK
             </Button>
@@ -370,12 +353,13 @@ export default function CampaignDetailsPage() {
         </div>
       )}
 
-
       {errorMessage && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[320px] text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-[320px] text-center">
             <CircleX className="h-10 w-10 text-red-500 mx-auto mb-3" />
-            <p className="text-lg font-medium text-red-600">{errorMessage}</p>
+            <p className="text-lg font-medium text-red-600 dark:text-red-400">
+              {errorMessage}
+            </p>
             <Button
               variant="outline"
               className="mt-4 w-full"
@@ -386,9 +370,6 @@ export default function CampaignDetailsPage() {
           </div>
         </div>
       )}
-
-
-
     </div>
   );
 }

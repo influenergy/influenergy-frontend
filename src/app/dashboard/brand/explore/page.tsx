@@ -25,6 +25,7 @@ import Link from "next/link";
 import SkeletonCard from "@/components/Skeletons/ExploreCreatorsSkeleton";
 import TikTokIcon from "@/components/icons/tiktok";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
+import InviteCreatorModal from "@/components/brand/InviteCreatorModal";
 
 // Filters data
 const FollowerRanges = [
@@ -146,7 +147,8 @@ export default function ExploreCreators() {
         );
     };
 
-
+    const [inviteModal, setInviteModal] = useState(false);
+    const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
 
     const toggleNiche = (n: string) => {
         setNiches((prev) =>
@@ -241,8 +243,10 @@ export default function ExploreCreators() {
     if (status === "error") return <p>Failed to load creators</p>;
 
     const handleSelecteCreatorForCampaign = (creatorId: string) => {
-        localStorage.setItem("selected-creator-campaign", creatorId);
+        setSelectedCreator(creatorId);
+        setInviteModal(true);
     };
+
     // console.log(data,'data')
     const selectedFiltersCount = platforms.length + niches.length + followers.length;
 
@@ -251,7 +255,7 @@ export default function ExploreCreators() {
         <div className="relative p-6">
             <div className="flex justify-between">
                 <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
-                <NewCampaignButton/>
+                <NewCampaignButton />
             </div>
 
             {/* Filter Options */}
@@ -556,16 +560,11 @@ export default function ExploreCreators() {
 
                                 {/* ACTIONS */}
                                 <div className="flex items-center justify-between mt-auto">
-                                    <Link
-                                        href="/dashboard/brand/create-post"
-                                        onClick={() =>
-                                            handleSelecteCreatorForCampaign(creator._id)
-                                        }
-                                    >
-                                        <Button className="bg-primary px-5 py-2 rounded-xl">
-                                            Create Campaign
-                                        </Button>
-                                    </Link>
+
+                                    <Button className="bg-primary px-5 py-2 rounded-xl" onClick={() =>
+                                        handleSelecteCreatorForCampaign(creator._id)}>
+                                        Invite for a Campaign
+                                    </Button>
 
                                     <span
                                         className="border rounded-md p-3 cursor-pointer"
@@ -591,6 +590,15 @@ export default function ExploreCreators() {
             <div ref={loadMoreRef} className="h-10 flex justify-center items-center mt-4">
                 {isFetchingNextPage && <p>Loading more...</p>}
             </div>
+
+            {inviteModal && selectedCreator && (
+                <InviteCreatorModal
+                    creatorId={selectedCreator}
+                    onClose={() => setInviteModal(false)}
+                />
+
+            )}
+
         </div>
     );
 }

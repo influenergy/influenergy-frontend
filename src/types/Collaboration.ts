@@ -1,43 +1,43 @@
 export interface Video {
+  _id: string;
   link: string;
   timestamp: string;
-  status: string;
-  _id: string;
-  reason?: string;
+  status: "Approved" | "Declined" | "Pending" | "Waiting Approval"; // Updated to match schema
+  message?: string | null; // Changed from 'reason' to 'message' to match schema
+  deliverableType?: string; // NEW FIELD
+}
+
+export interface Campaign {
+  _id?: string;
+  campaignTitle: string;
+  campaignImage: string;
+  brandName: string;
+  campaignDescription: string;
+  targetNiche: string[];
+  socialPlatforms: string; // e.g., "YouTube", "TikTok", "Instagram"
+  expectedDeliverables: string[]; // e.g., ["Video", "Shorts", "Community Post"]
+  budgetForCampaign: string;
+  deadline: string;
+  requirements: string[];
+  applicationQuestions: string;
+  status: "DRAFT" | "PUBLISHED" | "CLOSED";
 }
 
 export interface Collaboration {
   _id: string;
   brandId: string;
-
-  campaignId: {
-    campaignTitle: string;
-    campaignImage: string;
-    brandName: string;
-    campaignDescription: string;
-
-    targetNiche: string[];
-    socialPlatforms: string;          // enum in schema
-    expectedDeliverables: string[];
-
-    budgetForCampaign: string;
-    deadline: string;
-
-    requirements: string[];
-    applicationQuestions: string;
-    status: "DRAFT" | "PUBLISHED" | "CLOSED";
-  };
-
+  campaignId: Campaign; // Changed to use Campaign interface instead of inline
   creatorId: string;
-  status: string;
-  amount: number;
-
+  status: "Pending" | "Offered" | "Offer Accepted" | "Shortlisted" | "Active" | "Completed" | "Rejected" | "Interested";
+  paymentStatus: "Cancelled" | "Under Process" | "Done" | "Pending";
   videos?: Video[];
-
+  amount: number;
+  coverMessage?: string;
+  creatorBudget?: string;
+  requiredDocuments?: string;
+  source: string;
   createdAt: string;
   updatedAt: string;
-  paymentStatus: string;
-  requiredDocuments: string;
 }
 
 

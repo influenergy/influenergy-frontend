@@ -92,6 +92,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const { mutate: declineCollaboration, isPending: declineLoading } =
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
 
+
+
   return (
     <div className="relative flex flex-col dark:bg-background">
       {
@@ -219,6 +221,16 @@ const InboxCard: React.FC<InboxCardProps> = ({
                     setIsDetailsModalOpen(true)
                   }} >View Campaign Details</h2>
 
+                  <div>
+                    {data?.source === "Brand" && (
+                      <p className="text-base text-yellow-500">
+                        A brand has sent you a collaboration request.
+                      </p>
+                    )}
+                  </div>
+
+
+
                   <div className="flex w-full">
                     {data?.status == "Pending" && (
                       <p>Your application is under review. The brand will respond soon.</p>
@@ -297,7 +309,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
       <DetailsModal
         open={isDetailsModalOpen}
         onOpenChange={setIsDetailsModalOpen}
-        status={status}
+        status={data?.status}
         data={data}
       />
 
@@ -320,6 +332,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
             open={isStatusModalOpen}
             onOpenChange={handleModalClose}
             collaborationId={data._id}
+            campaignId={data?.campaignId?._id || ""}
             data={data.videos || []}
             status={status}
           />

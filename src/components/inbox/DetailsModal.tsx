@@ -219,7 +219,7 @@ export default function DetailsModal({
         </div>
 
         {/* Footer */}
-        {status === "Pending" && (
+        {status === "Offered" && (
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-end gap-4">
             <Button
               onClick={() => setContractModalOpen(true)}

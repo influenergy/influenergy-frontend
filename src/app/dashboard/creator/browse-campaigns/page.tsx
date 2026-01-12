@@ -158,6 +158,15 @@ const MyCampaignsPage = () => {
                 throw new Error(res?.message || "Something went wrong");
             }
 
+            // ✅ Update the campaigns state to mark this campaign as applied
+            setCampaigns(prevCampaigns =>
+                prevCampaigns.map(campaign =>
+                    campaign._id === selectedCampaign._id
+                        ? { ...campaign, applied: "true" } // or whatever value indicates applied status
+                        : campaign
+                )
+            );
+
             // ✅ Close apply modal
             setShowApplyModal(false);
             setCoverMessage("");
