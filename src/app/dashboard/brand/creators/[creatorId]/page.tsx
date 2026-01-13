@@ -139,11 +139,11 @@ const CreatorDetailsPage = () => {
         setStatusLoading(true);
         try {
             await postApi.changeCollaborationStatus(collaborationId, newStatus);
-            
+
             setModalType('success');
             setModalMessage(`Successfully updated status to ${newStatus}!`);
             setShowModal(true);
-            
+
             setTimeout(() => {
                 router.back();
             }, 2000);
@@ -193,7 +193,7 @@ const CreatorDetailsPage = () => {
                         >
                             <X className="w-5 h-5" />
                         </button>
-                        
+
                         <div className="text-center">
                             {modalType === 'success' ? (
                                 <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
@@ -204,21 +204,20 @@ const CreatorDetailsPage = () => {
                                     <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
                                 </div>
                             )}
-                            
+
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                                 {modalType === 'success' ? 'Success!' : 'Error'}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300 mb-6">
                                 {modalMessage}
                             </p>
-                            
+
                             <button
                                 onClick={closeModal}
-                                className={`w-full py-3 rounded-lg font-medium transition-colors ${
-                                    modalType === 'success'
+                                className={`w-full py-3 rounded-lg font-medium transition-colors ${modalType === 'success'
                                         ? 'bg-green-600 hover:bg-green-700 text-white'
                                         : 'bg-red-600 hover:bg-red-700 text-white'
-                                }`}
+                                    }`}
                             >
                                 Close
                             </button>
@@ -253,12 +252,15 @@ const CreatorDetailsPage = () => {
                 <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
                     <div className="bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 p-8">
                         <div className="flex flex-col md:flex-row items-center gap-6">
-                            {creator.profileIcon ? (
+                            {creator.profileIcon?.trim() ? (
                                 <div className="relative">
                                     <img
                                         src={creator.profileIcon}
                                         alt={creator.fullName}
-                                        className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-700 object-cover shadow-lg"
+                                        className="w-32 h-32 rounded-full object-cover"
+                                        onError={(e) => {
+                                            e.currentTarget.style.display = "none";
+                                        }}
                                     />
                                     {creator.isProfileCompleted && (
                                         <div className="absolute bottom-0 right-0 bg-green-500 rounded-full p-2 border-4 border-white dark:border-gray-700">
@@ -473,9 +475,9 @@ const CreatorDetailsPage = () => {
                                             </div>
                                         )}
                                         {creator.socialLinks.primary.link && (
-                                            <a 
-                                                href={creator.socialLinks.primary.link} 
-                                                target="_blank" 
+                                            <a
+                                                href={creator.socialLinks.primary.link}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm"
                                             >
@@ -504,9 +506,9 @@ const CreatorDetailsPage = () => {
                                             </div>
                                         )}
                                         {creator.socialLinks.secondary.link && (
-                                            <a 
-                                                href={creator.socialLinks.secondary.link} 
-                                                target="_blank" 
+                                            <a
+                                                href={creator.socialLinks.secondary.link}
+                                                target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors text-sm"
                                             >
@@ -783,8 +785,8 @@ const CreatorDetailsPage = () => {
                                 <div key={idx} className="bg-gray-50 dark:bg-gray-700/50 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300">
                                     {video.image && (
                                         <div className="aspect-video bg-gray-200 dark:bg-gray-600 relative">
-                                            <img 
-                                                src={video.image} 
+                                            <img
+                                                src={video.image}
                                                 alt={video.title || `Video ${idx + 1}`}
                                                 className="w-full h-full object-cover"
                                             />
@@ -828,7 +830,7 @@ const CreatorDetailsPage = () => {
                 {(status === "Pending" || status === "Shortlisted") && (
                     <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                         <h2 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Actions</h2>
-                        
+
                         {status === "Pending" && (
                             <button
                                 onClick={() => handleStatus("Shortlisted", collaborationId)}

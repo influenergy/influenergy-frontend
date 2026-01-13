@@ -120,6 +120,14 @@ export default function CompletedCollaborationTab() {
 
   return (
     <div className="w-full px-2 sm:px-4  dark:bg-background">
+      {/* Info Banner */}
+      <div className="sticky top-0 z-10 mb-6 rounded-lg border border-gray-300 bg-white/80 dark:bg-background/80 backdrop-blur px-4 py-4 shadow-sm">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          This section shows campaigns that have been successfully completed.
+          All deliverables have been approved and the campaign has been marked as complete.
+        </p>
+      </div>
+
       {data.campaigns.length === 0 ? (
         <div className="text-center py-10">
           <p className="text-gray-500">No completed collaborations available</p>

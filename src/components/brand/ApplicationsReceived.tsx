@@ -1,109 +1,142 @@
-import { Campaign } from "@/types/PostQuestionnaire";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useFindAiCampaignsList } from "@/hooks/useFindAi";
-import CampaignCard from "./CampaignCard";
-import Loader from "./Loader";
-import React, { useEffect, useState } from "react";
-import CreatorCards from "./CreatorCards";
 
+import { useFindAiCampaignsList } from "@/hooks/useFindAi";
+import Loader from "./Loader";
 
 export default function ApplicationsReceived() {
-    const router = useRouter();
-    const {
-        data: campaigns,
-        isLoading,
-        isError,
-    } = useFindAiCampaignsList("Pending");
-    const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+  const router = useRouter();
 
+  const {
+    data: campaigns,
+    isLoading,
+    isError,
+  } = useFindAiCampaignsList("Pending");
 
-    if (isLoading) {
-        return <Loader />;
-    }
+  const [status, setStatus] = useState("Pending");
 
-    if (isError) {
-        return (
-            <div className="text-center py-10">
-                <p className="text-red-500">Something went wrong while fetching data</p>
-            </div>
-        );
-    }
+  if (isLoading) {
+    return <Loader />;
+  }
 
-    const handleCampaignSelect = (campaignId: string) => {
-        setSelectedCampaignId(campaignId);
-        router.push(`/dashboard/brand/application-inbox/${campaignId}`);
-    };
-
-    // Filter to get only the selected campaign
-    const selectedCampaign = campaigns?.campaigns?.find(
-        (campaign: any) => campaign.campaignId === selectedCampaignId
-    );
-
-
-    // Get collaborations from the selected campaign
-    const collaborationsToShow = selectedCampaign?.collaborations || [];
-
+  if (isError) {
     return (
-        <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
-            {campaigns?.campaigns?.length > 0 ? (
-                /* Campaign Cards Section */
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    {campaigns.campaigns.map((campaign: any) => (
-                        <div
-                            key={campaign.campaignId}
-                            className="border rounded-lg p-4 bg-white dark:bg-card shadow-sm hover:shadow-md transition"
-                        >
-                            {/* Campaign Image */}
-                            {campaign.campaignImage && (
-                                <div className="relative w-full h-40 mb-3 rounded-md overflow-hidden">
-                                    <Image
-                                        src={campaign.campaignImage}
-                                        alt={campaign.campaignTitle}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            )}
+      <div className="text-center py-10">
+        <p className="text-red-500">
+          Something went wrong while fetching data
+        </p>
+      </div>
+    );
+  }
 
-                            {/* Campaign Info */}
-                            <h3 className="text-base font-semibold mb-3">
-                                {campaign.campaignTitle}
-                            </h3>
+  const handleCampaignSelect = (campaignId: string) => {
+    router.push(`/dashboard/brand/application-inbox/${campaignId}`);
+  };
 
-                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                                {campaign.campaignDescription}
-                            </p>
+  // Filter campaigns based on collaboration status
+  const filteredCampaigns = campaigns?.campaigns?.filter((campaign: any) =>
+    campaign.collaborations?.some(
+      (collab: any) => collab.status === status
+    )
+  );
 
-                            {/* View Applications Button */}
-                            <button
-                                onClick={() => handleCampaignSelect(campaign.campaignId)}
-                                className="w-full bg-primary text-white text-sm py-2 rounded-md hover:opacity-90 transition"
-                            >
-                                View Applications
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                /* Empty State */
-                <div className="flex flex-col items-center justify-center p-10 text-center">
-                    <Image
-                        src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-                        alt="No campaigns"
-                        width={280}
-                        height={280}
-                        className="mx-auto"
-                        priority
-                    />
-                    <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 mt-4 dark:text-gray-200">
-                        Welcome to the inbox.
-                        <br />
-                        No campaign applications found.
-                    </h3>
-                </div>
-            )}
+  return (
+    <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Info Banner */}
+        <div className="sticky top-0 z-10 mb-6 rounded-lg border border-gray-300 bg-white/80 dark:bg-background/80 backdrop-blur px-4 py-4 shadow-sm">
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            This section shows campaigns where creators have applied.
+            You can review their applications and mark them as interested for collaboration.
+          </p>
         </div>
 
-    );
+        {/* Status Filters */}
+        <div className="flex gap-2 mb-8 bg-muted p-1 rounded-lg w-fit">
+          {[
+            { label: "Pending", value: "Pending" },
+            { label: "Not a fit", value: "Rejected" },
+          ].map(({ label, value }) => (
+            <button
+              key={value}
+              onClick={() => setStatus(value)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all
+                ${
+                  status === value
+                    ? "bg-white dark:bg-card shadow text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Campaign Cards */}
+        {filteredCampaigns?.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+            {filteredCampaigns.map((campaign: any) => (
+              <div
+                key={campaign.campaignId}
+                className="group border rounded-xl p-4 bg-white dark:bg-card shadow-sm hover:shadow-lg transition-all duration-200"
+              >
+                {/* Campaign Image */}
+                {campaign.campaignImage && (
+                  <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden bg-muted">
+                    <Image
+                      src={campaign.campaignImage}
+                      alt={campaign.campaignTitle}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+
+                {/* Campaign Info */}
+                <h3 className="text-base font-semibold mb-2 group-hover:text-primary transition">
+                  {campaign.campaignTitle}
+                </h3>
+
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-5">
+                  {campaign.campaignDescription}
+                </p>
+
+                {/* CTA */}
+                <button
+                  onClick={() => handleCampaignSelect(campaign.campaignId)}
+                  className="w-full rounded-lg bg-primary/90 text-white text-sm py-2.5
+                             hover:bg-primary transition font-medium"
+                >
+                  View Applications
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* Empty State */
+          <div className="flex flex-col items-center justify-center p-10 text-center">
+            <Image
+              src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+              alt="No campaigns"
+              width={280}
+              height={280}
+              className="mx-auto"
+              priority
+            />
+            <h3 className="text-base sm:text-xl md:text-2xl font-semibold text-gray-900 mt-6 dark:text-gray-200">
+              No applications found
+            </h3>
+            <p className="text-sm text-muted-foreground mt-2">
+              There are no{" "}
+              {status === "Rejected" ? "Not a fit" : status} applications at the moment.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

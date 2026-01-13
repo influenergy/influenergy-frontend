@@ -16,6 +16,8 @@ export default function ShortlistedApplications() {
         isError,
     } = useFindAiCampaignsList("Interested");
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+    const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
+
 
 
     if (isLoading) {
@@ -49,6 +51,14 @@ export default function ShortlistedApplications() {
 
     return (
         <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
+            <div className="sticky top-0 z-10 mb-6 rounded-lg border border-gray-300 bg-white/80 dark:bg-background/80 backdrop-blur px-4 py-4 shadow-sm">
+                <p className="text-sm text-muted-foreground">
+                    This section shows campaigns where creators have applied and you’ve marked them as <span className="font-medium text-foreground">Interested</span>.
+                    You can review their applications and send collaboration offers from here.
+                </p>
+            </div>
+
+
             {campaigns?.campaigns?.length > 0 ? (
                 /* Campaign Cards Section */
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -74,9 +84,27 @@ export default function ShortlistedApplications() {
                                 {campaign.campaignTitle}
                             </h3>
 
-                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                            <p
+                                className={`text-sm text-muted-foreground mb-2 ${expandedDesc[campaign.campaignId] ? "" : "line-clamp-2"
+                                    }`}
+                            >
                                 {campaign.campaignDescription}
                             </p>
+
+                            {campaign.campaignDescription?.length > 120 && (
+                                <button
+                                    onClick={() =>
+                                        setExpandedDesc((prev) => ({
+                                            ...prev,
+                                            [campaign.campaignId]: !prev[campaign.campaignId],
+                                        }))
+                                    }
+                                    className="text-xs text-primary font-medium hover:underline mb-3"
+                                >
+                                    {expandedDesc[campaign.campaignId] ? "View less" : "Read more"}
+                                </button>
+                            )}
+
 
                             {/* View Applications Button */}
                             <button

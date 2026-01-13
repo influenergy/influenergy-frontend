@@ -36,6 +36,14 @@ export default function ActiveCollaborationTab() {
 
     return (
         <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
+            {/* Info Banner */}
+            <div className="sticky top-0 z-10 mb-6 rounded-lg border border-gray-300 bg-white/80 dark:bg-background/80 backdrop-blur px-4 py-4 shadow-sm">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                    This section shows your active campaigns that are currently in progress.
+                    Review the deliverables submitted by creators and request revisions if needed.
+                </p>
+            </div>
+
             {/* Campaign Cards Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {campaigns?.campaigns?.map((campaign: any) => (

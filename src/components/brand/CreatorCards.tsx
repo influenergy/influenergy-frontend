@@ -132,14 +132,13 @@ export default function CreatorCard({
   };
 
 
-
   return (
     <>
-      <div className="relative bg-white dark:bg-gray-800 border border-gray-300 hover:border-primary/50 dark:hover:border-primary/50 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardClick(creator._id)}>
+      <div className="relative bg-white dark:bg-gray-800 border border-gray-300 hover:border-primary/50 dark:hover:border-primary/50 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer">
         {isProcessing && <LoaderOverlay />}
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-4" onClick={() => handleCardClick(creator._id)}>
           {/* Creator Info */}
-          <div className="flex items-start gap-4 w-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:border-primary/50 dark:hover:border-primary/50">
+          <div className="flex items-start gap-4 w-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-300 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:border-primary/50 dark:hover:border-primary/50">
             {/* Avatar */}
             {creator.profileIcon?.trim() ? (
               <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-600 flex-shrink-0 shadow-md">
@@ -403,7 +402,7 @@ export default function CreatorCard({
               <>
                 <Button
                   onClick={() => onAction("Interested")}
-                  variant="outline"
+                  variant="default"
                   className="flex"
                 >
                   Mark Interested
@@ -413,11 +412,16 @@ export default function CreatorCard({
                 </Button>
               </>
             )}
-            
+
             {status === "Interested" && (
-              <Button onClick={() => onAction("Offered")} className="flex">
-                Send Offer
-              </Button>
+              <>
+                <Button onClick={() => onAction("Offered")} className="flex">
+                  Send Offer
+                </Button>
+                <Button onClick={() => onAction("Rejected")} variant="destructive" className="flex">
+                  Reject
+                </Button>
+              </>
             )}
 
             {status === "Offered" && (
@@ -426,9 +430,15 @@ export default function CreatorCard({
 
             {
               status === "Offer Accepted" && (
-                <Button onClick={() => onAction("Payment")} className="flex">
-                  Proceed to Payment
-                </Button>
+                <>
+                  <Button onClick={() => onAction("Payment")} className="flex">
+                    Proceed to Payment
+                  </Button>
+
+                  <Button onClick={() => onAction("Rejected")} variant="destructive" className="flex">
+                    Reject
+                  </Button>
+                </>
               )}
           </div>
         )}

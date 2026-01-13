@@ -197,6 +197,7 @@ export default function CampaignDetailsPage() {
       );
 
       setSuccessMessage(`Status updated to ${nextStatus}`);
+      router.push("/dashboard/brand/application-inbox");
     } catch (err: any) {
       console.error(err);
       setErrorMessage("Failed to update status. Please try again.");
