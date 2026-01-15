@@ -5,6 +5,7 @@ import { useState, lazy, Suspense } from "react";
 // import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import Loader from "@/components/brand/Loader";
 import ShortlistedApplications from "@/components/brand/ShortlistedApplications";
+import { CampaignManagerGridSkeleton } from "@/components/Skeletons/CampaignManagerGridSkeleton";
 
 const AIFindTab = lazy(() => import("@/components/brand/AIFindTab"));
 const ApplicationsReceived = lazy(() => import("@/components/brand/ApplicationsReceived"));
@@ -19,10 +20,13 @@ const CompletedCollaborationTab = lazy(
 );
 
 // Loading component for Suspense fallback
-const TabLoading = () => <Loader />;
-
+const TabLoading = () => (
+  <div className="w-full mt-5 sm:mt-8 mb-5 md:mb-10">
+    <CampaignManagerGridSkeleton count={6} />
+  </div>
+);
 export default function Page() {
-  const [activeTab, setActiveTab] = useState("pending");
+  const [activeTab, setActiveTab] = useState("Waiting Approval");
   // const { data: campaigns, isLoading, isError } = useFindAiCampaignsList();
 
   const handleTabChange = (value: string) => {
@@ -31,11 +35,11 @@ export default function Page() {
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="pending" onValueChange={handleTabChange} className="dark:bg-background h-full">
+      <Tabs defaultValue="Waiting Approval" onValueChange={handleTabChange} className="dark:bg-background h-full">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full ">
             <TabsTrigger
-              value="pending"
+              value="Waiting Approval"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
             >
               <span className="flex items-center gap-1">
@@ -48,7 +52,7 @@ export default function Page() {
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
             >
               <span className="flex items-center gap-1">
-                <span>Interested Campaigns</span>
+                <span>Nominated Applications</span>
               </span>
             </TabsTrigger>
 
@@ -56,27 +60,27 @@ export default function Page() {
               value="offered"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Pending Campaigns
+              Pending Collaborations
             </TabsTrigger>
             <TabsTrigger
               value="active"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Active Campaigns
+              Active Collaboration
             </TabsTrigger>
             <TabsTrigger
               value="completed"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Completed Campaigns
+              Completed Collaboration
             </TabsTrigger>
           </TabsList>
         </div>
 
         {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="pending" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-background">
+        <TabsContent value="Waiting Approval" className="w-full mt-5 sm:mt-8 mb-5 md:mb-10 dark:bg-background">
           <Suspense fallback={<TabLoading />}>
-            {activeTab === "pending" && <ApplicationsReceived />}
+            {activeTab === "Waiting Approval" && <ApplicationsReceived />}
           </Suspense>
         </TabsContent>
 

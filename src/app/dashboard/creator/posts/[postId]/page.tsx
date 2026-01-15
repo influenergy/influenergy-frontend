@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
 import { NewCampaignResponse, Collaboration } from "@/types/PostTypes";
 import { useAppSelector } from "@/store";
+import ErrorState from "@/components/common/ErrorState";
 
 
 const Page = () => {
@@ -33,12 +34,14 @@ const Page = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-center text-red-500">
-        Not able to fetch campaigns data
-      </div>
-    );
-  }
+  return (
+    <ErrorState
+      title="Campaigns unavailable"
+      description="We couldn’t fetch campaigns right now."
+    />
+  );
+}
+
 
   if (!campaignData) {
     return <div>Campaign not found</div>;

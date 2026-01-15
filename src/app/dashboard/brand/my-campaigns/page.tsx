@@ -6,6 +6,8 @@ import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
+import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
+import ErrorState from "@/components/common/ErrorState";
 
 interface Campaign {
     _id: string;
@@ -121,12 +123,25 @@ const MyCampaignsPage = () => {
     // Loading state
     if (loading) {
         return (
-            <div className="w-full min-h-[400px] flex items-center justify-center dark:bg-background">
-                <div className="flex flex-col items-center gap-3">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                    <p className="text-sm text-muted-foreground">
-                        Loading campaigns...
-                    </p>
+            <div className="w-full h-full p-[2%] dark:bg-background">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header Skeleton */}
+                    <div className="mb-6 space-y-2 animate-pulse">
+                        <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded" />
+                        <div className="h-4 w-80 bg-gray-200 dark:bg-gray-600 rounded" />
+                    </div>
+
+                    {/* Search Skeleton */}
+                    <div className="mb-6">
+                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse" />
+                    </div>
+
+                    {/* Campaign Cards Skeleton */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <CampaignSkeleton key={index} />
+                        ))}
+                    </div>
                 </div>
             </div>
         );
@@ -135,22 +150,12 @@ const MyCampaignsPage = () => {
     // Error state
     if (error) {
         return (
-            <div className="w-full p-[2%] dark:bg-background">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">
-                        <h3 className="text-lg font-semibold text-destructive mb-2">
-                            Error Loading Campaigns
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{error}</p>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                        >
-                            Retry
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ErrorState
+                title="Failed to load campaigns"
+                description={error}
+                onRetry={() => window.location.reload()}
+                fullPage
+            />
         );
     }
 
@@ -170,7 +175,7 @@ const MyCampaignsPage = () => {
                         >
                             <X className="w-5 h-5" />
                         </button>
-                        
+
                         <div className="text-center">
                             {modal.type === 'success' ? (
                                 <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
@@ -181,21 +186,20 @@ const MyCampaignsPage = () => {
                                     <XCircle className="w-10 h-10 text-red-600 dark:text-red-400" />
                                 </div>
                             )}
-                            
+
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                                 {modal.type === 'success' ? 'Success!' : 'Error'}
                             </h3>
                             <p className="text-gray-600 dark:text-gray-300 mb-6">
                                 {modal.message}
                             </p>
-                            
+
                             <button
                                 onClick={closeModal}
-                                className={`w-full py-3 rounded-lg font-medium transition-colors ${
-                                    modal.type === 'success'
+                                className={`w-full py-3 rounded-lg font-medium transition-colors ${modal.type === 'success'
                                         ? 'bg-green-600 hover:bg-green-700 text-white'
                                         : 'bg-red-600 hover:bg-red-700 text-white'
-                                }`}
+                                    }`}
                             >
                                 Close
                             </button>
@@ -239,7 +243,7 @@ const MyCampaignsPage = () => {
                                 {searchQuery ? "No campaigns found" : "You Haven't Created Any Campaigns Yet"}
                             </h2>
                             <p className="text-muted-foreground mb-6 text-md">
-                                {searchQuery 
+                                {searchQuery
                                     ? "Try adjusting your search to find what you're looking for"
                                     : "Start your first campaign to attract the right creators and kick-off your brand's growth"
                                 }
@@ -256,13 +260,12 @@ const MyCampaignsPage = () => {
                             >
                                 <div className="flex justify-end mb-3">
                                     <span
-                                        className={`text-xs px-2 py-1 rounded-full ${
-                                            campaign.status === "PUBLISHED"
+                                        className={`text-xs px-2 py-1 rounded-full ${campaign.status === "PUBLISHED"
                                                 ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                                                 : campaign.status === "DRAFT"
                                                     ? "bg-[#FEF9C2] text-[#A65F00] dark:bg-[#FEF9C2] dark:text-[#A65F00]"
                                                     : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                        }`}
+                                            }`}
                                     >
                                         {campaign.status}
                                     </span>
@@ -345,8 +348,8 @@ const MyCampaignsPage = () => {
 
                                 {/* Footer */}
                                 <div className="mt-4 pt-4">
-                                    <Button 
-                                        className="w-full" 
+                                    <Button
+                                        className="w-full"
                                         onClick={() => handleCampaignAction(campaign.status, campaign._id)}
                                         disabled={updatingId === campaign._id}
                                     >

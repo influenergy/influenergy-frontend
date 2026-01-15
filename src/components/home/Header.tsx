@@ -83,7 +83,7 @@ export default function Header() {
               <Button
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors w-full bg-transparent border-none shadow-none cursor-pointer"
                 onClick={() => {
-                  console.log("clicked")
+                  // console.log("clicked")
                   handleUserTypeSelection("brand", "/login")
                 }}
               >

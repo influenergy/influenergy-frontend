@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useParams, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 
 interface SocialLinks {
@@ -144,9 +145,10 @@ const CreatorDetailsPage = () => {
             setModalMessage(`Successfully updated status to ${newStatus}!`);
             setShowModal(true);
 
-            setTimeout(() => {
-                router.back();
-            }, 2000);
+            // setTimeout(() => {
+            //     router.back();
+            // }, 2000);
+            
         } catch (err: any) {
             setModalType('error');
             setModalMessage(err?.message || 'Failed to update status. Please try again.');
@@ -158,6 +160,7 @@ const CreatorDetailsPage = () => {
 
     const closeModal = () => {
         setShowModal(false);
+        router.push("/dashboard/brand/application-inbox");
     };
 
     if (loading) {
@@ -215,8 +218,8 @@ const CreatorDetailsPage = () => {
                             <button
                                 onClick={closeModal}
                                 className={`w-full py-3 rounded-lg font-medium transition-colors ${modalType === 'success'
-                                        ? 'bg-green-600 hover:bg-green-700 text-white'
-                                        : 'bg-red-600 hover:bg-red-700 text-white'
+                                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                                    : 'bg-red-600 hover:bg-red-700 text-white'
                                     }`}
                             >
                                 Close
@@ -827,40 +830,36 @@ const CreatorDetailsPage = () => {
                 )}
 
                 {/* Action Buttons */}
-                {(status === "Pending" || status === "Shortlisted") && (
+                {(status === "Waiting Approval" || status === "Interested") && (
                     <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                         <h2 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Actions</h2>
 
-                        {status === "Pending" && (
-                            <button
-                                onClick={() => handleStatus("Shortlisted", collaborationId)}
-                                disabled={statusLoading}
-                                className="w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                            >
-                                {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Clock className="w-5 h-5" />}
-                                Shortlist Creator
-                            </button>
+                        {status === "Waiting Approval" && (
+                            <div className="flex gap-3">
+                                <Button
+                                    onClick={() => handleStatus("Interested", collaborationId)}
+                                    variant="default"
+                                    className="flex"
+                                >
+                                    Mark Interested
+                                </Button>
+                                <Button onClick={() => handleStatus("Offered", collaborationId)} className="flex">
+                                    Send Offer
+                                </Button>
+                                <Button onClick={() => handleStatus("Rejected", collaborationId)} variant="destructive" className="flex">
+                                    Reject
+                                </Button>
+                            </div>
                         )}
 
-                        {status === "Shortlisted" && (
+                        {status === "Interested" && (
                             <div className="flex gap-3">
-                                <button
-                                    onClick={() => handleStatus("Offered", collaborationId)}
-                                    disabled={statusLoading}
-                                    className="w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                                >
-                                    {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
+                                <Button onClick={() => handleStatus("Offered", collaborationId)} className="flex">
                                     Send Offer
-                                </button>
-
-                                <button
-                                    onClick={() => handleStatus("Rejected", collaborationId)}
-                                    disabled={statusLoading}
-                                    className="w-auto flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                                >
-                                    {statusLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <XCircle className="w-5 h-5" />}
+                                </Button>
+                                <Button onClick={() => handleStatus("Rejected", collaborationId)} variant="destructive" className="flex">
                                     Reject
-                                </button>
+                                </Button>
                             </div>
                         )}
                     </div>

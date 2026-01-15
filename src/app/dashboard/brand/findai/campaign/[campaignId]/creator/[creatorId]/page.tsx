@@ -11,6 +11,7 @@ import { useInitiatePayment } from "@/hooks/usePayment";
 import { toast } from "@/hooks/use-toast";
 import { useGetAISummary } from "@/hooks/useQueryCampaigns";
 import { CollaborationContractModal } from "@/components/ui/ContractModal";
+import ErrorState from "@/components/common/ErrorState";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
 const CreatorProfile = lazy(
@@ -43,7 +44,7 @@ const SectionLoader = () => (
   </div>
 );
 
-export default function CreatorDetailsPage(){
+export default function CreatorDetailsPage() {
   const { campaignId, creatorId } = useParams();
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -77,7 +78,7 @@ export default function CreatorDetailsPage(){
   const handleContractModalOpen = () => {
     setContractModalOpen(true);
   }
-  const handleContractModalClose = () => { 
+  const handleContractModalClose = () => {
     setContractModalOpen(false);
   }
 
@@ -134,22 +135,15 @@ export default function CreatorDetailsPage(){
 
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="text-center">
-          <p className="text-red-500">
-            Failed to load creator details. Please try again.
-          </p>
-          <Button
-            variant="outline"
-            className="mt-4"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </Button>
-        </div>
-      </div>
+      <ErrorState
+        title="Creator profile unavailable"
+        description="We couldn’t load this creator’s details right now."
+        fullPage
+        onRetry={() => window.location.reload()}
+      />
     );
   }
+
 
   if (!creator) {
     return (
@@ -171,14 +165,14 @@ export default function CreatorDetailsPage(){
         </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
-        <MatchReason
-          value={similarity || ""}
-          summary={summary?.data}
-          isSummaryLoading={isSummaryLoading}
-          summaryError={summaryError}
-          refetch={refetch}
-        />
-      </Suspense>
+          <MatchReason
+            value={similarity || ""}
+            summary={summary?.data}
+            isSummaryLoading={isSummaryLoading}
+            summaryError={summaryError}
+            refetch={refetch}
+          />
+        </Suspense>
 
         <Suspense fallback={<SectionLoader />}>
           <CreatorAudience creator={creator} />
@@ -224,8 +218,7 @@ export default function CreatorDetailsPage(){
                 Processing...
               </>
             ) : (
-              `Collaborate With This Creator For $${
-                creator?.badge ? creator.badgePrice: creator?.profile?.budgetVideo || 0
+              `Collaborate With This Creator For $${creator?.badge ? creator.badgePrice : creator?.profile?.budgetVideo || 0
               }`
             )}
           </Button>

@@ -94,7 +94,9 @@ export default function CreatorCard({
   };
 
   const handleCardClick = (creatorId: string) => {
-    router.push(`/dashboard/brand/creators/${creatorId}`)
+    router.push(
+      `/dashboard/brand/creators/${creatorId}?collaborationId=${encodeURIComponent(collaborationId)}&status=${encodeURIComponent(status)}`
+    );
   }
 
   const approvedCount = videos.filter((v) => v.status === "Approved").length;
@@ -398,7 +400,7 @@ export default function CreatorCard({
         {/* Action Buttons - Only for non-Active statuses */}
         {!isActiveCollaboration && (
           <div className="mt-6 flex gap-3">
-            {status === "Pending" && (
+            {status === "Waiting Approval" && (
               <>
                 <Button
                   onClick={() => onAction("Interested")}
@@ -425,7 +427,7 @@ export default function CreatorCard({
             )}
 
             {status === "Offered" && (
-              <p className="font-medium text-yellow-500">Waiting for the creator to accepet the offer</p>
+              <p className="font-medium text-yellow-500">Waiting for the creator to accept the offer</p>
             )}
 
             {

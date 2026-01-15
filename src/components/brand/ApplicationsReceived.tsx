@@ -14,10 +14,11 @@ export default function ApplicationsReceived() {
     data: campaigns,
     isLoading,
     isError,
-  } = useFindAiCampaignsList("Pending");
+  } = useFindAiCampaignsList("Waiting Approval");
 
-  const [status, setStatus] = useState("Pending");
-
+  const [status, setStatus] = useState("Waiting Approval");
+  const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
+  
   if (isLoading) {
     return <Loader />;
   }
@@ -58,17 +59,16 @@ export default function ApplicationsReceived() {
         {/* Status Filters */}
         <div className="flex gap-2 mb-8 bg-muted p-1 rounded-lg w-fit">
           {[
-            { label: "Pending", value: "Pending" },
+            { label: "Waiting Approval", value: "Waiting Approval" },
             { label: "Not a fit", value: "Rejected" },
           ].map(({ label, value }) => (
             <button
               key={value}
               onClick={() => setStatus(value)}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-all
-                ${
-                  status === value
-                    ? "bg-white dark:bg-card shadow text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                ${status === value
+                  ? "bg-white dark:bg-card shadow text-primary"
+                  : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               {label}
@@ -101,9 +101,26 @@ export default function ApplicationsReceived() {
                   {campaign.campaignTitle}
                 </h3>
 
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-5">
+                <p
+                  className={`text-sm text-muted-foreground mb-2 ${expandedDesc[campaign.campaignId] ? "" : "line-clamp-2"
+                    }`}
+                >
                   {campaign.campaignDescription}
                 </p>
+
+                {campaign.campaignDescription?.length > 120 && (
+                  <button
+                    onClick={() =>
+                      setExpandedDesc((prev) => ({
+                        ...prev,
+                        [campaign.campaignId]: !prev[campaign.campaignId],
+                      }))
+                    }
+                    className="text-xs text-primary font-medium hover:underline mb-3"
+                  >
+                    {expandedDesc[campaign.campaignId] ? "View less" : "Read more"}
+                  </button>
+                )}
 
                 {/* CTA */}
                 <button
@@ -131,8 +148,7 @@ export default function ApplicationsReceived() {
               No applications found
             </h3>
             <p className="text-sm text-muted-foreground mt-2">
-              There are no{" "}
-              {status === "Rejected" ? "Not a fit" : status} applications at the moment.
+              There are no applications of this status at the moment.
             </p>
           </div>
         )}

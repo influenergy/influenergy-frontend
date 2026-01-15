@@ -92,8 +92,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const { mutate: declineCollaboration, isPending: declineLoading } =
     useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
 
-
-
+  
   return (
     <div className="relative flex flex-col dark:bg-background">
       {
@@ -232,7 +231,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
 
                   <div className="flex w-full">
-                    {data?.status == "Pending" && (
+                    {data?.status == "Waiting Approval" && (
                       <p>Your application is under review. The brand will respond soon.</p>
                     )}
 
@@ -243,14 +242,14 @@ const InboxCard: React.FC<InboxCardProps> = ({
                           onClick={() => handleContractModalOpen()}
                           disabled={isAccepting || declineLoading}
                         >
-                          {isAccepting ? "Accepting..." : "Accept"}
+                          {"Accept"}
                         </Button>
                         <Button
                           className="w-full px-4 py-2 text-sm font-medium  border rounded-lg transition border-primary text-primary bg-white hover:bg-primary hover:text-white"
                           onClick={() => declineCollaboration()}
                           disabled={declineLoading || isAccepting}
                         >
-                          {declineLoading ? "Rejecting..." : "Reject"}
+                          {"Reject"}
                         </Button>
                       </div>
                     )}

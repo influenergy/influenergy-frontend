@@ -7,6 +7,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import Page from "../findai/page";
+import { CampaignManagerGridSkeleton } from "@/components/Skeletons/CampaignManagerGridSkeleton";
+import ErrorState from "@/components/common/ErrorState";
 
 interface Campaign {
     _id: string;
@@ -132,13 +134,8 @@ const MyCampaignsPage = () => {
     // Loading state
     if (loading) {
         return (
-            <div className="w-full min-h-[400px] flex items-center justify-center dark:bg-background">
-                <div className="flex flex-col items-center gap-3">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                    <p className="text-sm text-muted-foreground">
-                        Loading campaigns...
-                    </p>
-                </div>
+            <div className="w-full mt-5 sm:mt-8 mb-5 md:mb-10">
+                <CampaignManagerGridSkeleton count={6} />
             </div>
         );
     }
@@ -146,24 +143,15 @@ const MyCampaignsPage = () => {
     // Error state
     if (error) {
         return (
-            <div className="w-full p-[2%] dark:bg-background">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">
-                        <h3 className="text-lg font-semibold text-destructive mb-2">
-                            Error Loading Campaigns
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{error}</p>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                        >
-                            Retry
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ErrorState
+                title="Failed to load campaigns"
+                description={error}
+                onRetry={() => window.location.reload()}
+                fullPage
+            />
         );
     }
+
 
     const filteredCampaigns = campaigns.filter((campaign) =>
         campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
@@ -189,7 +177,7 @@ const MyCampaignsPage = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-2xl font-semibold mb-2">Inbox</h1>
+                        <h1 className="text-2xl font-semibold mb-2">Collaboartion Manager</h1>
                         <p className="text-muted-foreground text-md">
                             Review and manage creator applications
                         </p>
@@ -218,7 +206,7 @@ const MyCampaignsPage = () => {
                     </select>
                 </div> */}
 
-                <Page/>
+                <Page />
 
                 {/* Applications Section */}
                 {loadingApps ? (

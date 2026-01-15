@@ -1,0 +1,11 @@
+import { CampaignManagerCardSkeleton } from "./CampaignManagerCardSkeleton";
+
+export const CampaignManagerGridSkeleton = ({ count = 6 }: { count?: number }) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: count }).map((_, i) => (
+        <CampaignManagerCardSkeleton key={i} />
+      ))}
+    </div>
+  );
+};

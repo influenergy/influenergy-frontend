@@ -139,8 +139,8 @@ const CreatorQuestionnaire = ({ initialData }: CreatorQuestionnaireProps): JSX.E
             user._id,
             submitData as CreatorQuestionnaireData
           );
-          console.log("Submitted Data:", submitData);
-          console.log("updatedData:", updatedData);
+          // console.log("Submitted Data:", submitData);
+          // console.log("updatedData:", updatedData);
           dispatch(
             setCredentials({
               user: { ...user, isProfileCompleted: true,userType:submitData["are-you-ugc-creator"] } as User,

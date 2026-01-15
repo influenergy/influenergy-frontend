@@ -15,6 +15,7 @@ export default function ActiveCollaborationTab() {
         isError,
     } = useFindAiCampaignsList("Active");
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+    const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
 
     if (isLoading) {
         return <Loader />;
@@ -69,9 +70,26 @@ export default function ActiveCollaborationTab() {
                                 {campaign.campaignTitle}
                             </h3>
 
-                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                            <p
+                                className={`text-sm text-muted-foreground mb-2 ${expandedDesc[campaign.campaignId] ? "" : "line-clamp-2"
+                                    }`}
+                            >
                                 {campaign.campaignDescription}
                             </p>
+
+                            {campaign.campaignDescription?.length > 120 && (
+                                <button
+                                    onClick={() =>
+                                        setExpandedDesc((prev) => ({
+                                            ...prev,
+                                            [campaign.campaignId]: !prev[campaign.campaignId],
+                                        }))
+                                    }
+                                    className="text-xs text-primary font-medium hover:underline mb-3"
+                                >
+                                    {expandedDesc[campaign.campaignId] ? "View less" : "Read more"}
+                                </button>
+                            )}
 
                             {/* CTA */}
                             <button

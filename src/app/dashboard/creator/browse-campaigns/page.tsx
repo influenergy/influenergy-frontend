@@ -7,6 +7,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector } from "@/store";
 
 import { Button } from "@/components/ui/button";
+import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
+import ErrorState from "@/components/common/ErrorState";
 
 interface Campaign {
     _id: string;
@@ -78,12 +80,25 @@ const MyCampaignsPage = () => {
     // Loading state
     if (loading) {
         return (
-            <div className="w-full min-h-[400px] flex items-center justify-center dark:bg-background">
-                <div className="flex flex-col items-center gap-3">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                    <p className="text-sm text-muted-foreground">
-                        Loading campaigns...
-                    </p>
+            <div className="w-full h-full p-[2%] dark:bg-background">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header Skeleton */}
+                    <div className="mb-6 space-y-2 animate-pulse">
+                        <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded" />
+                        <div className="h-4 w-80 bg-gray-200 dark:bg-gray-600 rounded" />
+                    </div>
+
+                    {/* Search Skeleton */}
+                    <div className="mb-6">
+                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse" />
+                    </div>
+
+                    {/* Campaign Cards Skeleton */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <CampaignSkeleton key={index} />
+                        ))}
+                    </div>
                 </div>
             </div>
         );
@@ -92,22 +107,12 @@ const MyCampaignsPage = () => {
     // Error state
     if (error) {
         return (
-            <div className="w-full p-[2%] dark:bg-background">
-                <div className="max-w-4xl mx-auto">
-                    <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-6 text-center">
-                        <h3 className="text-lg font-semibold text-destructive mb-2">
-                            Error Loading Campaigns
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{error}</p>
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                        >
-                            Retry
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ErrorState
+                title="Failed to load campaigns"
+                description={error}
+                onRetry={() => window.location.reload()}
+                fullPage
+            />
         );
     }
 

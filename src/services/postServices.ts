@@ -394,7 +394,6 @@ export const postApi = {
       const response = await api.put(
         `/brand/complete-collaboration/${collaborationId}`,
       );
-      console.log("ressssssss->",response);
       
       return response.data;
     } catch (error) {

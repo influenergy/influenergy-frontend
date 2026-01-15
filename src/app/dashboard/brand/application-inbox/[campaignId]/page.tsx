@@ -10,6 +10,7 @@ import CreatorCard from "@/components/brand/CreatorCards";
 import { useInitiatePayment } from "@/hooks/usePayment";
 import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
 import { useQueryClient } from "@tanstack/react-query";
+import ErrorState from "@/components/common/ErrorState";
 
 interface CreatorProfile {
   socialLinks?: {
@@ -41,7 +42,7 @@ interface Application {
   campaignId: Campaign;
   coverMessage?: string;
   videos?: Video[];
-  status: "Pending" | "Shortlisted" | "Offered" | "Rejected" | "Active" | "Completed" | "Interested" | "Payment";
+  status: "Pending" | "Shortlisted" | "Offered" | "Rejected" | "Active" | "Completed" | "Interested" | "Payment" | "Waiting Approval";
 }
 
 interface Campaign {
@@ -247,15 +248,15 @@ export default function CampaignDetailsPage() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <div className="text-lg text-red-500">{error}</div>
-        <Button onClick={handleBack} variant="outline">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Go Back
-        </Button>
-      </div>
+      <ErrorState
+        title="Oops! Something didn’t go as planned"
+        description={error}
+        fullPage
+        onRetry={handleBack}
+      />
     );
   }
+
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">

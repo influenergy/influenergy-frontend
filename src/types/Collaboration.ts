@@ -28,7 +28,7 @@ export interface Collaboration {
   brandId: string;
   campaignId: Campaign; // Changed to use Campaign interface instead of inline
   creatorId: string;
-  status: "Pending" | "Offered" | "Offer Accepted" | "Shortlisted" | "Active" | "Completed" | "Rejected" | "Interested";
+  status: "Pending" | "Offered" | "Offer Accepted" | "Shortlisted" | "Active" | "Completed" | "Rejected" | "Interested" | "Waiting Approval";
   paymentStatus: "Cancelled" | "Under Process" | "Done" | "Pending";
   videos?: Video[];
   amount: number;
