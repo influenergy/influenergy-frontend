@@ -82,26 +82,28 @@ const emptyCollaboration: Collaboration = {
     brandName: "",
     campaignDescription: "",
     targetNiche: [],
-    socialPlatforms: "", // ✅ string
+    socialPlatforms: "",
     expectedDeliverables: [],
     budgetForCampaign: "",
     deadline: "",
     requirements: [],
     applicationQuestions: "",
-    status: "DRAFT", // ✅ valid union
+    status: "DRAFT",
   },
   creatorId: "",
-  status: "",
+  status: "Completed", // ✅ FIX
   amount: 0,
   videos: [],
   createdAt: "",
   updatedAt: "",
-  paymentStatus: "",
+  paymentStatus: "Done",
+  source: "",
   requiredDocuments: "",
 };
+
 export default function CompletedCollaborationTab() {
   const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite();
-  const [campaignData, setCampaignData] = useState<Collaboration>(emptyCollaboration)
+  const [campaignData, setCampaignData] = useState<any>(emptyCollaboration as Collaboration)
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
 
   const { data, isLoading, isError } = useFindAiCampaignsList("Completed");
@@ -187,12 +189,12 @@ export default function CompletedCollaborationTab() {
                                 : "DRAFT",
                           },
                           creatorId: "",
-                          status: "",
+                          status: "Completed",
                           amount: 0,
                           videos: [],
                           createdAt: "",
                           updatedAt: "",
-                          paymentStatus: "",
+                          paymentStatus: "Pending",
                           requiredDocuments: "",
                         });
                         setIsDetailsModalOpen(true);
@@ -350,9 +352,10 @@ export default function CompletedCollaborationTab() {
           <DetailsModal
             open={isDetailsModalOpen}
             onOpenChange={setIsDetailsModalOpen}
-            status={"Completed"}
-            data={campaignData}
+            status="Completed"
+            data={campaignData as Collaboration}
           />
+
         </div>
       )}
     </div>
