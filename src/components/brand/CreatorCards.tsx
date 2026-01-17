@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, ExternalLink, MessageSquare, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle, XCircle, ExternalLink, MessageSquare, AlertCircle, ChevronDown, ChevronUp, CircleCheckBig, CircleX } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 interface Video {
@@ -33,6 +33,7 @@ interface Creator {
 interface CreatorCardProps {
   creator: Creator;
   status: string;
+  coverMessage?: string;
   onAction: (nextStatus: any) => Promise<void>;
   isActiveCollaboration?: boolean;
   videos?: Video[];
@@ -47,6 +48,7 @@ interface CreatorCardProps {
 export default function CreatorCard({
   creator,
   status,
+  coverMessage,
   onAction,
   isActiveCollaboration = false,
   videos = [],
@@ -136,99 +138,103 @@ export default function CreatorCard({
 
   return (
     <>
-      <div className="relative bg-white dark:bg-gray-800 border border-gray-300 hover:border-primary/50 dark:hover:border-primary/50 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer">
-        {isProcessing && <LoaderOverlay />}
-        <div className="flex items-start justify-between gap-4" onClick={() => handleCardClick(creator._id)}>
-          {/* Creator Info */}
-          <div className="flex items-start gap-4 w-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-300 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:border-primary/50 dark:hover:border-primary/50">
-            {/* Avatar */}
-            {creator.profileIcon?.trim() ? (
-              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-600 flex-shrink-0 shadow-md">
-                <img
-                  src={creator.profileIcon}
-                  alt={creator.fullName}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 via-primary/30 to-primary/40 flex items-center justify-center text-2xl font-bold text-primary flex-shrink-0 shadow-md border-2 border-primary/20">
-                {creator.fullName?.charAt(0)?.toUpperCase() || "?"}
+      {isProcessing && <LoaderOverlay />}
+      <div className="flex flex-col items-start justify-between px-3 py-2 gap-2 border border-gray-300 rounded-2xl dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:border-primary/50 dark:hover:border-primary/50" onClick={() => handleCardClick(creator._id)}>
+        {/* Creator Info */}
+        <div className="flex items-start gap-4 w-full px-3 py-2 bg-white dark:bg-gray-800">
+          {/* Avatar */}
+          {creator.profileIcon?.trim() ? (
+            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-600 flex-shrink-0 shadow-md">
+              <img
+                src={creator.profileIcon}
+                alt={creator.fullName}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            </div>
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 via-primary/30 to-primary/40 flex items-center justify-center text-2xl font-bold text-primary flex-shrink-0 shadow-md border-2 border-primary/20">
+              {creator.fullName?.charAt(0)?.toUpperCase() || "?"}
+            </div>
+          )}
+
+          {/* Info */}
+          <div className="flex flex-col gap-2 flex-1 min-w-0">
+            {/* Name */}
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
+              {creator.fullName}
+            </h3>
+
+            {/* City + Age */}
+            {(creator.profile?.city || creator.profile?.dob) && (
+              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                {creator.profile?.city && (
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {creator.profile.city}
+                  </span>
+                )}
+                {creator.profile?.city && creator.profile?.dob && (
+                  <span className="text-gray-400 dark:text-gray-600">•</span>
+                )}
+                {creator.profile?.dob && (
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {calculateAge(creator.profile.dob)} yrs
+                  </span>
+                )}
+                {creator.profile?.dob && creator.profile?.socialLinks?.primary && (
+                  <span className="text-gray-400 dark:text-gray-600">•</span>
+                )}
+                {/* Followers */}
+                {creator.profile?.socialLinks?.primary?.followers && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1 bg-primary/10 dark:bg-primary/20 rounded-full">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      <span className="">
+                        {creator.profile.socialLinks.primary.followers.toLocaleString()}
+                      </span>
+                      <span className="">followers</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
-            {/* Info */}
-            <div className="flex flex-col gap-2 flex-1 min-w-0">
-              {/* Name */}
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-tight truncate">
-                {creator.fullName}
-              </h3>
-
-              {/* City + Age */}
-              {(creator.profile?.city || creator.profile?.dob) && (
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  {creator.profile?.city && (
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      {creator.profile.city}
-                    </span>
-                  )}
-                  {creator.profile?.city && creator.profile?.dob && (
-                    <span className="text-gray-400 dark:text-gray-600">•</span>
-                  )}
-                  {creator.profile?.dob && (
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      {calculateAge(creator.profile.dob)} yrs
-                    </span>
-                  )}
-                </div>
-              )}
-
-              {/* Followers */}
-              {creator.profile?.socialLinks?.primary?.followers && (
-                <div className="flex items-center gap-1.5">
-                  <div className="flex items-center gap-1 px-2.5 py-1 bg-primary/10 dark:bg-primary/20 rounded-full">
-                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    <span className="text-sm font-semibold text-primary">
-                      {creator.profile.socialLinks.primary.followers.toLocaleString()}
-                    </span>
-                    <span className="text-xs text-primary/70 font-medium">followers</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Categories */}
-              {creator.profile?.category && creator.profile?.category?.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {creator.profile.category.map((cat, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs px-3 py-1 rounded-full bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 font-medium border border-gray-200 dark:border-gray-600 hover:shadow-sm transition-shadow"
-                    >
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Status Badge */}
-            <div>
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                {status}
-              </span>
-            </div>
+            {/* Categories */}
+            {creator.profile?.category && creator.profile?.category?.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                {creator.profile.category.map((cat, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 dark:text-gray-200 font-medium border border-gray-200 dark:border-gray-600 hover:shadow-sm transition-shadow"
+                  >
+                    {cat}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
+
+          {/* Status Badge */}
+          <div>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+              {status}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm text-[#364153]">{coverMessage}</p>
         </div>
 
         {/* Deliverables Toggle - Only shown for Active Collaborations */}
@@ -399,15 +405,18 @@ export default function CreatorCard({
 
         {/* Action Buttons - Only for non-Active statuses */}
         {!isActiveCollaboration && (
-          <div className="mt-6 flex gap-3">
+          <div className="flex gap-3">
             {status === "Waiting Approval" && (
               <>
                 <Button
                   onClick={() => onAction("Interested")}
-                  variant="default"
+                  variant="blue"
                   className="flex"
                 >
                   Mark Interested
+                </Button>
+                <Button onClick={() => onAction("Offered")} className="flex">
+                  Send Offer
                 </Button>
                 <Button onClick={() => onAction("Rejected")} variant="destructive" className="flex">
                   Reject
@@ -418,9 +427,11 @@ export default function CreatorCard({
             {status === "Interested" && (
               <>
                 <Button onClick={() => onAction("Offered")} className="flex">
+                  <CircleCheckBig className="w-4 h-4" />
                   Send Offer
                 </Button>
                 <Button onClick={() => onAction("Rejected")} variant="destructive" className="flex">
+                  <CircleX className="w-4 h-4" />
                   Reject
                 </Button>
               </>
@@ -444,7 +455,9 @@ export default function CreatorCard({
               )}
           </div>
         )}
+
       </div>
+
 
       {/* Message Modal */}
       {showMessageModal && (

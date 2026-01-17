@@ -232,6 +232,8 @@ const MyCampaignsPage = () => {
                             className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:border-gray-700"
                         />
                     </div>
+
+                    
                 </div>
 
                 {/* Empty State */}
@@ -256,7 +258,7 @@ const MyCampaignsPage = () => {
                         {filteredCampaigns.map((campaign) => (
                             <div
                                 key={campaign._id}
-                                className="border rounded-lg p-5 cursor-pointer hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
+                                className="border border-gray-300 rounded-lg p-5 cursor-pointer hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
                             >
                                 <div className="flex justify-end mb-3">
                                     <span

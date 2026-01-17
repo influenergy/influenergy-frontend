@@ -1,51 +1,305 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-
+import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { postApi } from "@/services/postServices";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import Loader from "./Loader";
+import CreatorCard from "./CreatorCards";
+import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
+import { useQueryClient } from "@tanstack/react-query";
+import { useInitiatePayment } from "@/hooks/usePayment";
+import StatusModal from "./StatusModal";
+
+interface CreatorProfile {
+  socialLinks?: {
+    primary?: {
+      followers?: number;
+    };
+  };
+  category?: string[];
+}
+
+interface Creator {
+  _id: string;
+  fullName: string;
+  profile?: CreatorProfile;
+}
+
+interface Video {
+  _id: string;
+  link: string;
+  timestamp: string;
+  status: "Approved" | "Declined" | "Pending" | "Waiting Approval";
+  message?: string | null;
+  deliverableType: string;
+}
+
+interface Application {
+  _id: string;
+  creatorId: Creator;
+  campaignId: Campaign;
+  coverMessage?: string;
+  videos?: Video[];
+  status: "Pending" | "Shortlisted" | "Offered" | "Rejected" | "Active" | "Completed" | "Interested" | "Payment" | "Waiting Approval";
+}
+
+interface Campaign {
+  _id: string;
+  campaignTitle: string;
+  campaignImage: string;
+  budgetForCampaign: string;
+  expectedDeliverables?: string[];
+}
 
 export default function ApplicationsReceived() {
   const router = useRouter();
 
+  // const {
+  //   // data: campaigns,
+  //   isLoading,
+  //   isError,
+  // } = useFindAiCampaignsList("Waiting Approval");
+
+  // const [status, setStatus] = useState("Waiting Approval");
+  // const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
+  // const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const campaignId = params.campaignId as string;
+  // const [updatingId, setUpdatingId] = useState<string | null>(null);
+  // const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+  // const [loadingApps, setLoadingApps] = useState(false);
+
+  const params = useParams();
+  const searchParams = useSearchParams();
+
+  const isActiveTab = searchParams.get("tab") === "active";
+
+  // const [applications, setApplications] = useState<Application[]>([]);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+
+
+  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
+
+  // Fetch campaigns
+  // useEffect(() => {
+  //   const fetchCampaigns = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
+
+  //       const response = await postApi.getCampaigns();
+  //       if (!response || !response.status) {
+  //         throw new Error("Failed to fetch campaigns");
+  //       }
+
+  //       setCampaigns(response.campaigns || []);
+  //     } catch (err) {
+  //       setError(err instanceof Error ? err.message : "Something went wrong");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchCampaigns();
+  // }, []);
+
   const {
-    data: campaigns,
+    data: campaigns = [],
     isLoading,
-    isError,
-  } = useFindAiCampaignsList("Waiting Approval");
+    isError
+  } = useQuery({
+    queryKey: ["campaigns", "Waiting Approval"],
+    queryFn: () => postApi.getCollabByStatus("Waiting Approval"),
+    select: (res) => res.campaigns || []
+  });
 
-  const [status, setStatus] = useState("Waiting Approval");
-  const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
-  
-  if (isLoading) {
-    return <Loader />;
-  }
 
-  if (isError) {
-    return (
-      <div className="text-center py-10">
-        <p className="text-red-500">
-          Something went wrong while fetching data
-        </p>
-      </div>
-    );
-  }
 
-  const handleCampaignSelect = (campaignId: string) => {
-    router.push(`/dashboard/brand/application-inbox/${campaignId}`);
+
+  // const fetchApplications = async () => {
+  //   try {
+  //     setLoadingApps(true);
+
+  //     const response = await postApi.getCollabByCampaignIdForBrand(selectedCampaignId);
+
+  //     if (!response?.status) {
+  //       throw new Error("Failed to fetch applications");
+  //     }
+
+  //     setApplications(response.collaborations || []);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setLoadingApps(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (!selectedCampaignId) {
+  //     setApplications([]);
+  //     return;
+  //   }
+
+  //   fetchApplications();
+  // }, [selectedCampaignId]);
+
+
+  const {
+    data: applications = [],
+    isFetching: loadingApps
+  } = useQuery({
+    queryKey: ["applications", selectedCampaignId],
+    queryFn: () =>
+      postApi.getCollabByCampaignIdForBrand(selectedCampaignId),
+    enabled: !!selectedCampaignId,
+    select: (res) => res.collaborations || []
+  });
+
+
+
+
+  const { mutate: handleApproveVideo, isPending: isApproving } =
+    useAcceptOrDeclineVideo({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        setSuccessMessage("Video approved successfully!");
+      },
+    });
+
+  const approveVideo = (collaborationId: string, videoId: string) => {
+    handleApproveVideo({
+      collaborationId,
+      videoId,
+      status: "Approved",
+      message: "Approved"
+    });
   };
 
-  // Filter campaigns based on collaboration status
-  const filteredCampaigns = campaigns?.campaigns?.filter((campaign: any) =>
-    campaign.collaborations?.some(
-      (collab: any) => collab.status === status
-    )
-  );
+  const { mutate: handleDeclineVideo, isPending: isDeclining } =
+    useAcceptOrDeclineVideo({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+        setSuccessMessage("Video revision requested!");
+      },
+    });
+
+  const requestVideoChanges = (
+    collaborationId: string,
+    videoId: string,
+    message: string
+  ) => {
+    handleDeclineVideo({
+      collaborationId,
+      videoId,
+      status: "Declined",
+      message,
+    });
+  };
+
+  // const handleCampaignSelect = (campaignId: string) => {
+  //   router.push(`/dashboard/brand/application-inbox/${campaignId}`);
+  // };
+
+  const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {    
+    setSelectedCampaignId(e.target.value);
+  };
+
+  
+
+
+  const handlePayNow = async (application: Application) => {
+    try {
+      setActionLoadingId(application._id);
+
+      const response = await initiatePayment({
+        campaignId: application.campaignId._id || "",
+        amount: application.campaignId.budgetForCampaign || "0",
+        creatorId: application.creatorId._id,
+        collaborationId: application._id,
+      });
+
+      if (response?.url) {
+        window.location.href = response.url;
+      }
+    } catch (err) {
+      console.error("Payment failed:", err);
+      setErrorMessage("Payment initiation failed. Please try again.");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  const handleStatusChange = async (
+    applicationId: string,
+    nextStatus: "Interested" | "Offered" | "Rejected" | "Payment"
+  ) => {
+    try {
+      setActionLoadingId(applicationId);
+
+      await postApi.changeCollaborationStatus(applicationId, nextStatus);
+
+      queryClient.invalidateQueries({
+        queryKey: ["applications", selectedCampaignId]
+      });
+
+      setSuccessMessage(`Status updated to ${nextStatus}`);
+      router.push("/dashboard/brand/application-inbox");
+    } catch (err: any) {
+      console.error(err);
+      setErrorMessage("Failed to update status. Please try again.");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
+  const handleCompleteCollaboration = async (collaborationId: string) => {
+    try {
+      setActionLoadingId(collaborationId);
+
+      const res = await postApi.completeCollaboration(collaborationId);
+
+      if (!res?.status) {
+        throw new Error("Completion failed");
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["applications", selectedCampaignId]
+      });
+
+      setSuccessMessage("Collaboration completed successfully");
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Failed to complete collaboration. Please try again.");
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
 
   return (
     <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
+
+      {isLoading && <Loader />}
+
+      {isError && (
+        <div className="text-center py-10">
+          <p className="text-red-500">
+            Something went wrong while fetching data
+          </p>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto">
 
         {/* Info Banner */}
@@ -56,103 +310,87 @@ export default function ApplicationsReceived() {
           </p>
         </div>
 
-        {/* Status Filters */}
-        <div className="flex gap-2 mb-8 bg-muted p-1 rounded-lg w-fit">
-          {[
-            { label: "Waiting Approval", value: "Waiting Approval" },
-            { label: "Not a fit", value: "Rejected" },
-          ].map(({ label, value }) => (
-            <button
-              key={value}
-              onClick={() => setStatus(value)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all
-                ${status === value
-                  ? "bg-white dark:bg-card shadow text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              {label}
-            </button>
-          ))}
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">
+            Select Campaign
+          </label>
+
+          <select
+            value={selectedCampaignId}
+            onChange={handleCampaignSelect}
+            className="w-full max-w-md px-4 py-2 border border-gray-400 rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="">-- Select a campaign --</option>
+
+            {campaigns.map((campaign: any) => (
+              <option key={campaign._id} value={campaign.campaignId}>
+                {campaign.campaignTitle}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Campaign Cards */}
-        {filteredCampaigns?.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-            {filteredCampaigns.map((campaign: any) => (
-              <div
-                key={campaign.campaignId}
-                className="group border rounded-xl p-4 bg-white dark:bg-card shadow-sm hover:shadow-lg transition-all duration-200"
-              >
-                {/* Campaign Image */}
-                {campaign.campaignImage && (
-                  <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden bg-muted">
-                    <Image
-                      src={campaign.campaignImage}
-                      alt={campaign.campaignTitle}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-
-                {/* Campaign Info */}
-                <h3 className="text-base font-semibold mb-2 group-hover:text-primary transition">
-                  {campaign.campaignTitle}
-                </h3>
-
-                <p
-                  className={`text-sm text-muted-foreground mb-2 ${expandedDesc[campaign.campaignId] ? "" : "line-clamp-2"
-                    }`}
-                >
-                  {campaign.campaignDescription}
-                </p>
-
-                {campaign.campaignDescription?.length > 120 && (
-                  <button
-                    onClick={() =>
-                      setExpandedDesc((prev) => ({
-                        ...prev,
-                        [campaign.campaignId]: !prev[campaign.campaignId],
-                      }))
-                    }
-                    className="text-xs text-primary font-medium hover:underline mb-3"
-                  >
-                    {expandedDesc[campaign.campaignId] ? "View less" : "Read more"}
-                  </button>
-                )}
-
-                {/* CTA */}
-                <button
-                  onClick={() => handleCampaignSelect(campaign.campaignId)}
-                  className="w-full rounded-lg bg-primary/90 text-white text-sm py-2.5
-                             hover:bg-primary transition font-medium"
-                >
-                  View Applications
-                </button>
-              </div>
-            ))}
+        {applications.length === 0 ? (
+          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+              No {isActiveTab ? "active collaborations" : "applications"} found for this campaign.
+            </p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm">
+              {isActiveTab
+                ? "Active collaborations will appear here once creators start working."
+                : "Applications will appear here once influencers apply."}
+            </p>
           </div>
         ) : (
-          /* Empty State */
-          <div className="flex flex-col items-center justify-center p-10 text-center">
-            <Image
-              src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-              alt="No campaigns"
-              width={280}
-              height={280}
-              className="mx-auto"
-              priority
-            />
-            <h3 className="text-base sm:text-xl md:text-2xl font-semibold text-gray-900 mt-6 dark:text-gray-200">
-              No applications found
-            </h3>
-            <p className="text-sm text-muted-foreground mt-2">
-              There are no applications of this status at the moment.
-            </p>
+          <div className="mt-6 space-y-4">
+            {applications.map((app: Application) => (
+              <CreatorCard
+                key={app._id}
+                creator={app.creatorId}
+                status={app.status}
+                coverMessage={app.coverMessage}
+                onAction={async (nextStatus) => {
+                  if (nextStatus === "Payment") {
+                    await handlePayNow(app);
+                  } else {
+                    await handleStatusChange(app._id, nextStatus);
+                  }
+                }}
+                isActiveCollaboration={isActiveTab}
+                videos={isActiveTab ? app.videos : undefined}
+                collaborationId={app._id}
+                expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
+                onApproveVideo={approveVideo}
+                onRequestChanges={requestVideoChanges}
+                isProcessing={
+                  isApproving ||
+                  isDeclining ||
+                  actionLoadingId === app._id
+                }
+                onCompleteCollaboration={handleCompleteCollaboration}
+              />
+            ))}
           </div>
         )}
       </div>
+
+      {successMessage && (
+        <StatusModal
+          type="success"
+          message={successMessage}
+          onClose={() => setSuccessMessage(null)}
+        />
+      )}
+
+      {errorMessage && (
+        <StatusModal
+          type="error"
+          message={errorMessage}
+          onClose={() => setErrorMessage(null)}
+        />
+      )}
+
     </div>
   );
 }

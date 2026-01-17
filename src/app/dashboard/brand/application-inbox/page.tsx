@@ -83,8 +83,6 @@ const MyCampaignsPage = () => {
                 setLoadingApps(true);
 
                 const response = await postApi.getCollabByCampaignId(selectedCampaignId);
-                // or better naming:
-                // getCollaborationsByCampaignId(selectedCampaignId)
 
                 if (!response?.status) {
                     throw new Error("Failed to fetch applications");

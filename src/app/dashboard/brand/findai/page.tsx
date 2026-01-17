@@ -47,7 +47,7 @@ export default function Page() {
               </span>
             </TabsTrigger>
 
-            <TabsTrigger
+            {/* <TabsTrigger
               value="shortlisted"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
             >
@@ -61,7 +61,7 @@ export default function Page() {
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Pending Collaborations
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger
               value="active"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
