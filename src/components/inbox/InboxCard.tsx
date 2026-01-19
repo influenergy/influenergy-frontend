@@ -90,7 +90,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
     useAcceptOrDeclineCollaboration(collaborationId, "Offer Accepted");
 
   const { mutate: declineCollaboration, isPending: declineLoading } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Cancelled");
+    useAcceptOrDeclineCollaboration(collaborationId, "Rejected");
 
   
   return (

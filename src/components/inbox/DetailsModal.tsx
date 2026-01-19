@@ -73,7 +73,7 @@ export default function DetailsModal({
     });
 
   const { mutate: declineCollaboration, isPending: declineLoading } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Cancelled", {
+    useAcceptOrDeclineCollaboration(collaborationId, "Rejected", {
       onSuccess: () => onOpenChange(false),
     });
 

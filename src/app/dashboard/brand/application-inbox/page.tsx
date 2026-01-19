@@ -175,7 +175,7 @@ const MyCampaignsPage = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-2xl font-semibold mb-2">Collaboartion Manager</h1>
+                        <h1 className="text-2xl font-semibold mb-2">Collaboration Manager</h1>
                         <p className="text-muted-foreground text-md">
                             Review and manage creator applications
                         </p>

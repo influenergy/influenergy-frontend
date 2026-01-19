@@ -838,7 +838,7 @@ const CreatorDetailsPage = () => {
                             <div className="flex gap-3">
                                 <Button
                                     onClick={() => handleStatus("Interested", collaborationId)}
-                                    variant="default"
+                                    variant="blue"
                                     className="flex"
                                 >
                                     Mark Interested

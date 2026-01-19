@@ -166,9 +166,7 @@ export default function ApplicationsReceived() {
     enabled: !!selectedCampaignId,
     select: (res) => res.collaborations || []
   });
-
-
-
+  
 
   const { mutate: handleApproveVideo, isPending: isApproving } =
     useAcceptOrDeclineVideo({
