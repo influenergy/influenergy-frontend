@@ -26,6 +26,7 @@ import SkeletonCard from "@/components/Skeletons/ExploreCreatorsSkeleton";
 import TikTokIcon from "@/components/icons/tiktok";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import InviteCreatorModal from "@/components/brand/InviteCreatorModal";
+import ExploreCreatorCard from "@/components/brand/ExploreCreatorCard";
 
 // Filters data
 const FollowerRanges = [
@@ -422,165 +423,19 @@ export default function ExploreCreators() {
                         const badgePrice = creator.badgePrice || ""
                         // console.log(badgePrice, 'badgePrice')
                         return (
-                            <Card
-                                key={creator._id}
-                                className={`flex flex-col items-stretch p-2 pt-0  gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow transition-all duration-300 ${isActive
-                                    ? "scale-105 ring-2 ring-primary z-20"
-                                    : someActive
-                                        ? "opacity-40"
-                                        : "hover:scale-105"
-                                    }`}
-                            >
-                                <div className="relative w-full p-2">
-                                    <Image
-                                        width={300}
-                                        height={200}
-                                        src={creator.profileIcon || "/default-avatar.png"}
-                                        alt={creator.fullName}
-                                        className="w-full h-40 object-contain rounded-xl mb-2"
-                                    />
+                            <ExploreCreatorCard
+                                creator={creator}
+                                isExpanded={expanded[creator._id]}
+                                isActive={activeCardId === creator._id}
+                                someActive={!!activeCardId}
+                                level={level}
+                                badgePrice={badgePrice}
+                                isToggling={isToggling}
+                                onToggleBio={() => toggleBio(creator._id)}
+                                onToggleFavorite={() => toggleFavorite({ creatorId: creator._id })}
+                                onInvite={() => handleSelecteCreatorForCampaign(creator._id)}
+                            />
 
-                                    {/* Budget badge */}
-                                    {creator.profile?.budget && (
-                                        <span className="absolute top-1 right-1 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                                            {badgePrice ? badgePrice : creator.profile.budget} $
-                                        </span>
-                                    )}
-                                    {level && (
-                                        <div className="absolute top-1 left-1 w-8 h-8">
-                                            <Image src={level.img} alt={level.text} fill
-                                                className="object-contain" />
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* IMAGE */}
-
-                                {/* CONTENT */}
-                                <div className="flex flex-col gap-3">
-                                    {/* NAME + SOCIALS */}
-                                    <div className="flex w-full justify-between">
-                                        <span className="text-base font-semibold text-gray-900 dark:text-white">
-                                            {creator.fullName}
-                                        </span>
-                                        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
-                                            {/* Primary */}
-                                            {creator?.profile?.socialLinks?.primary?.platform &&
-                                                creator?.profile?.socialLinks?.primary?.link && (
-                                                    <a
-                                                        href={creator.profile.socialLinks.primary.link}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="hover:scale-110 transition-transform"
-                                                    >
-                                                        {getSocialMediaIcon(
-                                                            creator.profile.socialLinks.primary.platform
-                                                        )}
-                                                    </a>
-                                                )}
-                                            {/* Secondary */}
-                                            {creator?.profile?.socialLinks?.secondary?.platform &&
-                                                creator?.profile?.socialLinks?.secondary?.link && (
-                                                    <a
-                                                        href={creator.profile.socialLinks.secondary.link}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="hover:scale-110 transition-transform"
-                                                    >
-                                                        {getSocialMediaIcon(
-                                                            creator.profile.socialLinks.secondary.platform
-                                                        )}
-                                                    </a>
-                                                )}
-                                            {/* Fallback */}
-                                            {!creator?.profile?.socialLinks?.primary?.platform &&
-                                                !creator?.profile?.socialLinks?.secondary?.platform && (
-                                                    <div className="flex items-center gap-1">
-                                                        <Share2 className="w-5 h-5" />
-                                                        <span className="text-xs text-gray-400">N/A</span>
-                                                    </div>
-                                                )}
-
-                                        </div>
-                                    </div>
-
-                                    <div className="flex gap-4 text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                        <span>
-                                            {creator.profile?.socialLinks?.primary?.followers} followers
-                                        </span>
-                                        {creator.profile?.socialLinks?.secondary?.followers && creator.profile?.socialLinks?.secondary?.link && (
-                                            <span>
-                                                {creator.profile.socialLinks.secondary.followers} followers
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* CATEGORIES */}
-                                    <div className="flex gap-2 flex-wrap">
-                                        {Array.isArray(creator?.profile?.category) &&
-                                            creator.profile.category.slice(0, 2).map((c, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className="text-xs p-1 bg-gray-300 rounded-lg dark:text-black"
-                                                >
-                                                    {c}
-                                                </span>
-                                            ))}
-                                    </div>
-
-                                    {badge && <div className="flex gap-2 flex-wrap items-center">
-                                        <div className="w-5 h-5 relative">
-
-                                            <Image src={level.img} alt={level.text} fill
-                                                className="object-contain" />
-                                        </div>
-
-                                        <p>{level.title.split("-")[1]}</p>
-                                    </div>}
-
-                                    {/* BIO */}
-                                    <div>
-                                        <h4 className="font-semibold">Bio</h4>
-                                        <p
-                                            className={`text-gray-700 dark:text-gray-200 text-sm leading-snug ${isExpanded ? "" : "line-clamp-2"
-                                                }`}
-                                        >
-                                            {creator.profile?.aboutYourself}
-                                        </p>
-                                        {isLongDescription && (
-                                            <button
-                                                onClick={() => toggleBio(creator._id)}
-                                                className="text-blue-500 hover:underline text-xs mt-1"
-                                            >
-                                                {isExpanded ? "View Less" : "View More"}
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* ACTIONS */}
-                                <div className="flex items-center justify-between mt-auto">
-
-                                    <Button className="bg-primary px-5 py-2 rounded-xl" onClick={() =>
-                                        handleSelecteCreatorForCampaign(creator._id)}>
-                                        Invite for a Campaign
-                                    </Button>
-
-                                    <span
-                                        className="border rounded-md p-3 cursor-pointer"
-                                        onClick={() =>
-                                            toggleFavorite({ creatorId: creator._id })
-                                        }
-                                    >
-                                        <Heart
-                                            className={`w-5 h-5 ${creator.isFavorite
-                                                ? "text-red-500 fill-red-500"
-                                                : "text-gray-600"
-                                                } ${isToggling ? "animate-pulse" : ""}`}
-                                        />
-                                    </span>
-                                </div>
-                            </Card>
                         );
                     })
                 )}

@@ -6,7 +6,9 @@ import {
     ChevronsLeft, MapPin, Users, TrendingUp, Award, ExternalLink, Tag,
     Calendar, Globe, DollarSign, Heart, Video, User, Target,
     BarChart3, Languages, CreditCard, Sparkles, CheckCircle2, XCircle, Clock,
-    Loader2, X, Eye, Briefcase, Star, Link as LinkIcon
+    Loader2, X, Eye, Briefcase, Star, Link as LinkIcon,
+    CircleCheckBig,
+    CircleX
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useParams, useSearchParams } from "next/navigation";
@@ -148,7 +150,7 @@ const CreatorDetailsPage = () => {
             // setTimeout(() => {
             //     router.back();
             // }, 2000);
-            
+
         } catch (err: any) {
             setModalType('error');
             setModalMessage(err?.message || 'Failed to update status. Please try again.');
@@ -830,7 +832,7 @@ const CreatorDetailsPage = () => {
                 )}
 
                 {/* Action Buttons */}
-                {(status === "Waiting Approval" || status === "Interested") && (
+                {(status === "Waiting Approval" || status === "Interested" || status === "Offered" || status === "Offer Accepted") && (
                     <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                         <h2 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Actions</h2>
 
@@ -841,12 +843,15 @@ const CreatorDetailsPage = () => {
                                     variant="blue"
                                     className="flex"
                                 >
+                                    <Clock className="w-4 h-4" />
                                     Mark Interested
                                 </Button>
                                 <Button onClick={() => handleStatus("Offered", collaborationId)} className="flex">
+                                    <CircleCheckBig className="w-4 h-4" />
                                     Send Offer
                                 </Button>
                                 <Button onClick={() => handleStatus("Rejected", collaborationId)} variant="destructive" className="flex">
+                                    <CircleX className="w-4 h-4" />
                                     Reject
                                 </Button>
                             </div>
@@ -855,13 +860,34 @@ const CreatorDetailsPage = () => {
                         {status === "Interested" && (
                             <div className="flex gap-3">
                                 <Button onClick={() => handleStatus("Offered", collaborationId)} className="flex">
+                                    <CircleCheckBig className="w-4 h-4" />
                                     Send Offer
                                 </Button>
                                 <Button onClick={() => handleStatus("Rejected", collaborationId)} variant="destructive" className="flex">
+                                    <CircleX className="w-4 h-4" />
                                     Reject
                                 </Button>
                             </div>
                         )}
+
+                        {status === "Offered" && (
+                            <p className="font-medium text-primary">Waiting for the creator to accept the offer</p>
+                        )}
+
+                        {
+                            status === "Offer Accepted" && (
+                                <>
+                                    <Button onClick={() => handleStatus("Payment", collaborationId)} className="flex">
+                                        <CreditCard className="w-4 h-4" />
+                                        Proceed to Payment
+                                    </Button>
+
+                                    <Button onClick={() => handleStatus("Rejected", collaborationId)} variant="destructive" className="flex">
+                                        <CircleX className="w-4 h-4" />
+                                        Reject
+                                    </Button>
+                                </>
+                            )}
                     </div>
                 )}
             </div>

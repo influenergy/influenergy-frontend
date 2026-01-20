@@ -350,6 +350,10 @@ export const postApi = {
     const response = await api.get(`/brand/collaborations-history`);
     return response.data; // return only the data payload
   },
+  getCampaignHistory: async () => {
+    const response = await api.get(`/brand/campaign-history`);
+    return response.data; 
+  },
   toggleFavoriteCreator: async (creatorId: string) => {
     const response = await api.post(`/brand/favorite/${creatorId}`)
     return response.data

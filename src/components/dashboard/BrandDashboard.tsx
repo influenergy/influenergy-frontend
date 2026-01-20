@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "../ui/card";
 import Image from "next/image";
-import { Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2 } from "lucide-react";
+import { Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, Contact, DollarSign, CircleCheckBig, Megaphone, Send, Clock4 } from "lucide-react";
 import { userApi } from "@/services/userServices";
 import PieChart from "../brand/PieChart";
 import { Button } from "../ui/button";
@@ -10,6 +10,8 @@ import { postApi } from "@/services/postServices";
 import BrandDashboardSkeleton from "../Skeletons/BrandDashboardSkeleton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import CampaignCard from "../brand/CampaignCard";
+import ExploreCreatorCard from "../brand/ExploreCreatorCard";
 
 type CreatorBrief = {
     fullName?: string;
@@ -125,7 +127,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     useEffect(() => {
         Promise.all([
             userApi.getRegionAnalysis(),
-            postApi.getCollaborationHistory()
+            postApi.getCollaborationHistory(),
+            postApi.getCampaignHistory(),
         ])
             .then(([regionData, collabData]) => {
                 // Region data
@@ -145,11 +148,190 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
         return <BrandDashboardSkeleton />;
     }
 
+    console.log("fev-->",favCreators);
+    
+    const dashboardCampaigns = [
+        {
+            _id: "cmp_001",
+            campaignImage: "",
+            campaignTitle: "Summer Fashion Influencer Campaign",
+            campaignDescription:
+                "Collaborate with fashion influencers to promote our summer collection across Instagram and YouTube.",
+            brandName: "Tradio",
+            targetNiche: ["Fashion", "Lifestyle", "Instagram"],
+            budgetForCampaign: "$5,000",
+            expectedDeliverables: ["2 Instagram Reels", "1 Story", "1 YouTube Short"],
+            status: "PUBLISHED",
+            brandId: "brand_001",
+            createdAt: "2024-12-10T10:00:00Z",
+            updatedAt: "2024-12-15T12:00:00Z",
+        },
+        {
+            _id: "cmp_002",
+            campaignImage: "",
+            campaignTitle: "Tech Gadget Launch Campaign",
+            campaignDescription:
+                "Looking for tech reviewers to showcase our latest smart gadgets with unboxing and reviews.",
+            brandName: "Tradio",
+            targetNiche: ["Technology", "Gadgets", "YouTube"],
+            budgetForCampaign: "$8,500",
+            expectedDeliverables: ["1 Unboxing Video", "1 Review Video"],
+            status: "DRAFT",
+            brandId: "brand_001",
+            createdAt: "2024-12-18T09:30:00Z",
+            updatedAt: "2024-12-18T09:30:00Z",
+        },
+        {
+            _id: "cmp_003",
+            campaignImage: "",
+            campaignTitle: "Fitness Brand Awareness Drive",
+            campaignDescription:
+                "Promote our fitness supplements and workout gear through fitness creators on Instagram.",
+            brandName: "Tradio",
+            targetNiche: ["Fitness", "Health", "Instagram"],
+            budgetForCampaign: "$3,200",
+            expectedDeliverables: ["1 Reel", "2 Stories"],
+            status: "PUBLISHED",
+            brandId: "brand_001",
+            createdAt: "2024-11-28T14:15:00Z",
+            updatedAt: "2024-12-01T10:45:00Z",
+        },
+    ];
+
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[1.5fr_2.5fr] gap-6 w-full">
-                <Card className="p-6 flex flex-col">
+            <div className="grid grid-cols-1 md:grid-cols-1  gap-6 w-full">
+
+                <div className="border border-gray-200 rounded-lg px-4 py-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[
+                            {
+                                label: "Total Campaigns",
+                                count: collaborationCount.ongoing,
+                                icon: <Megaphone size={30} />,
+                                iconBg: "bg-indigo-100",
+                                iconColor: "text-indigo-600",
+                            },
+                            {
+                                label: "Total Applicants",
+                                count: collaborationCount.pending,
+                                icon: <Contact size={30} />,
+                                iconBg: "bg-purple-100",
+                                iconColor: "text-purple-600",
+                            },
+                            {
+                                label: "Active Campaigns",
+                                count: collaborationCount.completed,
+                                icon: <CircleCheckBig size={30} />,
+                                iconBg: "bg-green-100",
+                                iconColor: "text-green-600",
+                            },
+                            {
+                                label: "Total Spending",
+                                count: collaborationCount.completed,
+                                icon: <DollarSign size={30} />,
+                                iconBg: "bg-yellow-100",
+                                iconColor: "text-yellow-600",
+                            },
+                        ].map((item, idx) => (
+                            <div
+                                key={idx}
+                                className="flex items-center justify-between rounded-xl border border-gray-2    00 bg-white p-5 shadow-sm hover:shadow-md transition"
+                            >
+                                {/* LEFT */}
+                                <div className="flex flex-col gap-2">
+                                    <p className="text-sm font-normal text-black">
+                                        {item.label}
+                                    </p>
+                                    <span className="text-3xl font-semibold text-gray-900">
+                                        {String(item.count).padStart(2, "0")}
+                                    </span>
+                                </div>
+
+                                {/* RIGHT ICON */}
+                                <div
+                                    className={`flex items-center justify-center w-14 h-14 rounded-md ${item.iconBg} ${item.iconColor}`}
+                                >
+                                    {item.icon}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg px-4 py-4">
+                    <h1 className="text-xl mb-4 text-black font-semibold">Active Campaigns</h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {dashboardCampaigns.map((campaign) => (
+                            <CampaignCard
+                                key={campaign._id}
+                                campaign={campaign}
+                                onActionClick={() => { }}
+                                actionLabel={{
+                                    published: "View Applications",
+                                    draft: "View Applications",
+                                }}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+
+
+                <div className="border border-gray-200 rounded-lg px-4 py-4">
+                    <h1 className="text-xl mb-4 text-black font-semibold dark:text-white">Offers & Payments Overview</h1>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {[
+                            {
+                                label: "Offer Sent",
+                                count: collaborationCount.ongoing,
+                                icon: <Send size={30} />,
+                                iconBg: "bg-purple-100",
+                                iconColor: "text-purple-600",
+                            },
+                            {
+                                label: "Offer Accepted",
+                                count: collaborationCount.pending,
+                                icon: <CircleCheckBig size={30} />,
+                                iconBg: "bg-green-100",
+                                iconColor: "text-green-600",
+                            },
+                            {
+                                label: "Payments Pending",
+                                count: collaborationCount.completed,
+                                icon: <Clock4 size={30} />,
+                                iconBg: "bg-yellow-100",
+                                iconColor: "text-yellow-600",
+                            },
+                        ].map((item, idx) => (
+                            <div
+                                key={idx}
+                                className="flex items-center justify-between rounded-xl border border-gray-2    00 bg-white p-5 shadow-sm hover:shadow-md transition"
+                            >
+                                {/* LEFT */}
+                                <div className="flex flex-col gap-2">
+                                    <p className="text-sm font-medium text-gray-500">
+                                        {item.label}
+                                    </p>
+                                    <span className="text-3xl font-semibold text-gray-900">
+                                        {String(item.count).padStart(2, "0")}
+                                    </span>
+                                </div>
+
+                                {/* RIGHT ICON */}
+                                <div
+                                    className={`flex items-center justify-center w-14 h-14 rounded-md ${item.iconBg} ${item.iconColor}`}
+                                >
+                                    {item.icon}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+
+                {/* <Card className="p-6 flex flex-col">
                     <div>
                         <h2 className="text-xl font-semibold mb-2">
                             Welcome Back, {fullName || "Brand"}!
@@ -165,16 +347,15 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             style={{ borderRadius: '12px', maxHeight: '100%', background: '#000', height: '100%' }}
                         >
                             <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
-                            {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" /> */}
                             Your browser does not support the video tag.
                         </video>
                     </div>
-                </Card>
+                </Card> */}
                 {/* Recently Worked With + Stats */}
-                <div className={`grid grid-cols-1 ${favCreators.length > 0 ? 'lg:grid-cols-[1.5fr_2.5fr]' : 'lg:grid-cols-1'} gap-6 w-full h-full`}>
+                <div className={` gap-6 w-full h-full`}>
 
 
-                    <div className="w-full flex flex-col">
+                    {/* <div className="w-full flex flex-col">
                         <div className="flex flex-col gap-4 justify-between h-full">
                             {[
                                 { label: "Ongoing Collaborations", count: collaborationCount.ongoing },
@@ -190,126 +371,30 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                 </Card>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
 
 
-                    {favCreators.length > 0 && <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300 rounded-2xl shadow-sm">
-                        <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
-                            Favorite Creators:
-                        </h2>
+                    {favCreators.length > 0 && (
+                        <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
+                            <h1 className="text-xl mb-4 text-black font-semibold dark:text-white">
+                                Favorite Creators
+                            </h1>
 
-                        <div className="flex flex-col gap-4 overflow-auto max-h-[400px]">
-                            {
-                                favCreators.length > 0 && favCreators.map((creator, idx) => {
-                                    const avatar = creator?.profileIcon || "/user1.jpg";
-                                    const city = creator?.profile?.city
-                                    const name = creator?.profile.fullName || "Creator";
-
-                                    return <Link key={idx} href={"/dashboard/brand/explore"}>
-                                        <div className="flex items-stretch justify-between p-2 gap-4 bg-white dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm dark:text-white"
-                                        >
-                                            {/* Left: Profile */}
-                                            <div className="flex items-center">
-                                                <div className="relative w-24 h-24 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-600">
-                                                    <Image
-                                                        src={avatar}
-                                                        alt={name}
-                                                        fill
-                                                        className="object-cover hover:scale-105 transition-transform duration-300 ease-in-out"
-                                                    />
-                                                </div>
-                                            </div>
-                                            {/* Right: Social Icons */}
-                                            <div className=" flex flex-col h-full  w-full gap-2">
-                                                <div className="flex w-full justify-between">
-                                                    <span className="text-base font-semibold text-gray-900 dark:text-white">
-                                                        {name}
-                                                    </span>
-
-                                                    <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
-                                                        {/* Primary Social Media */}
-                                                        {creator?.profile?.socialLinks?.primary?.platform && creator?.profile?.socialLinks?.primary?.link && (
-                                                            <a
-                                                                href={creator.profile.socialLinks.primary.link}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
-                                                                title={`Primary: ${creator.profile.socialLinks.primary.platform}`}
-                                                                onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
-
-                                                            >
-                                                                {getSocialMediaIcon(creator.profile.socialLinks.primary.platform)}
-                                                            </a>
-                                                        )}
-
-                                                        {/* Secondary Social Media */}
-                                                        {creator?.profile?.socialLinks?.secondary?.platform && creator?.profile?.socialLinks?.secondary?.link && (
-                                                            <a
-                                                                href={creator.profile.socialLinks.secondary.link}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="flex items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-pointer"
-                                                                title={`Secondary: ${creator.profile.socialLinks.secondary.platform}`}
-                                                                onClick={(e) => e.stopPropagation()} // prevent triggering parent Link
-
-                                                            >
-                                                                {getSocialMediaIcon(creator.profile.socialLinks.secondary.platform)}
-                                                            </a>
-                                                        )}
-
-                                                        {/* Fallback if no social media data */}
-                                                        {!creator?.profile?.socialLinks?.primary?.platform && !creator?.profile?.socialLinks?.secondary?.platform && (
-                                                            <div className="flex items-center gap-1" title="No social media data">
-                                                                <Share2 className="w-5 h-5" />
-                                                                <span className="text-xs text-gray-400">N/A</span>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-start flex-col justify-between h-full text-sm text-gray-500 dark:text-black">
-                                                    <div className="flex gap-2">
-
-                                                        {Array.isArray(creator?.profile?.category) && creator.profile.category.length > 0 &&
-                                                            creator.profile.category.map((data, idx) => (
-                                                                idx <= 1 && <span key={idx} className="text-xs p-1 bg-gray-300 rounded-lg">{data}</span>
-                                                            ))
-                                                        }
-                                                    </div>
-
-                                                    <div className="flex gap-2">
-                                                        <div className="flex gap-1 items-center">
-                                                            <Image
-                                                                src="/verified.png"
-                                                                alt="Verified"
-                                                                width={16}
-                                                                height={16}
-                                                            />
-                                                            <span className="text-sm text-gray-600 dark:text-gray-400">Verified</span>
-
-                                                        </div>
-                                                        {city && (
-                                                            <div className="flex gap-1 items-center">
-                                                                <span className="text-sm">📍</span>
-                                                                <span className="text-sm text-gray-600 dark:text-gray-400">{city}</span>
-                                                            </div>
-                                                        )}
-                                                    </div>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </Link>
-                                }
-                                )
-                            }
-                        </div>
-                    </Card>}
+                            <div className="flex">
+                                {favCreators.map((creator, idx) => (
+                                    <ExploreCreatorCard
+                                        creator={creator}
+                                        showInviteButton={true}
+                                        showFavoriteIcon={false}
+                                    />
+                                ))}
+                            </div>
+                        </Card>
+                    )}
 
                 </div>
             </div>
-            <div className="grid grid-cols-1">
+            {/* <div className="grid grid-cols-1">
                 <Card className="lg:p-6 ">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <PieChart
@@ -372,7 +457,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         );
                     })}
                 </div>
-            </Card>}
+            </Card>} */}
 
         </div>
     )

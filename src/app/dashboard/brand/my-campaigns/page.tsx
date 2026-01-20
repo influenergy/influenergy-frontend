@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
 import ErrorState from "@/components/common/ErrorState";
+import CampaignCard from "@/components/brand/CampaignCard";
 
 interface Campaign {
     _id: string;
@@ -197,8 +198,8 @@ const MyCampaignsPage = () => {
                             <button
                                 onClick={closeModal}
                                 className={`w-full py-3 rounded-lg font-medium transition-colors ${modal.type === 'success'
-                                        ? 'bg-green-600 hover:bg-green-700 text-white'
-                                        : 'bg-red-600 hover:bg-red-700 text-white'
+                                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                                    : 'bg-red-600 hover:bg-red-700 text-white'
                                     }`}
                             >
                                 Close
@@ -233,7 +234,7 @@ const MyCampaignsPage = () => {
                         />
                     </div>
 
-                    
+
                 </div>
 
                 {/* Empty State */}
@@ -256,116 +257,12 @@ const MyCampaignsPage = () => {
                     /* Campaign Grid */
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredCampaigns.map((campaign) => (
-                            <div
+                            <CampaignCard
                                 key={campaign._id}
-                                className="border border-gray-300 rounded-lg p-5 cursor-pointer hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
-                            >
-                                <div className="flex justify-end mb-3">
-                                    <span
-                                        className={`text-xs px-2 py-1 rounded-full ${campaign.status === "PUBLISHED"
-                                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                                : campaign.status === "DRAFT"
-                                                    ? "bg-[#FEF9C2] text-[#A65F00] dark:bg-[#FEF9C2] dark:text-[#A65F00]"
-                                                    : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                            }`}
-                                    >
-                                        {campaign.status}
-                                    </span>
-                                </div>
-
-                                <div className="flex gap-5 mb-3">
-                                    <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                                        {campaign.campaignImage ? (
-                                            <img
-                                                src={campaign.campaignImage}
-                                                alt={campaign.campaignTitle}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
-                                                <Megaphone className="w-6 h-6 text-white" />
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <h3 className="text-md font-medium mb-2 line-clamp-1 text-black dark:text-white">
-                                            {campaign.campaignTitle}
-                                        </h3>
-
-                                        <h4 className="text-xs font-medium mb-2 line-clamp-1 text-[#364153] dark:text-gray-400">
-                                            {campaign.brandName}
-                                        </h4>
-                                    </div>
-                                </div>
-
-                                <p className="text-sm text-muted-foreground mb-3 line-clamp-2 text-[#364153] dark:text-gray-400">
-                                    {campaign.campaignDescription}
-                                </p>
-
-                                <div className="flex items-center gap-2 text-sm mb-2 text-[#364153] dark:text-gray-400">
-                                    <DollarSign className="w-4 h-4 text-primary" />
-                                    {campaign.budgetForCampaign}
-                                </div>
-
-                                <div className="flex items-center gap-2 text-sm mb-2 text-[#364153] dark:text-gray-400">
-                                    <Calendar className="w-4 h-4 text-primary" />
-                                    {"Due: Open for a month"}
-                                </div>
-
-                                {/* Niches */}
-                                {campaign.targetNiche?.length > 0 && (
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Target className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
-                                        <div className="flex flex-wrap gap-1 text-[#364153]">
-                                            {campaign.targetNiche.slice(0, 2).map((niche, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className="text-sm py-1 rounded-full dark:text-gray-400"
-                                                >
-                                                    {niche}
-                                                </span>
-                                            ))}
-                                            {campaign.targetNiche.length > 2 && (
-                                                <span className="text-sm py-1 rounded-full dark:text-gray-400">
-                                                    +{campaign.targetNiche.length - 2}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Deliverables */}
-                                {campaign.expectedDeliverables?.length > 0 && (
-                                    <div className="flex items-center gap-2 text-sm text-[#364153] dark:text-gray-400 text-muted-foreground mb-3">
-                                        <Package className="w-4 h-4 flex-shrink-0 text-primary" />
-                                        <span className="line-clamp-1">
-                                            {campaign.expectedDeliverables.join(", ")}
-                                        </span>
-                                    </div>
-                                )}
-
-                                {/* Spacer to push button to bottom */}
-                                <div className="flex-grow"></div>
-
-                                {/* Footer */}
-                                <div className="mt-4 pt-4">
-                                    <Button
-                                        className="w-full"
-                                        onClick={() => handleCampaignAction(campaign.status, campaign._id)}
-                                        disabled={updatingId === campaign._id}
-                                    >
-                                        {updatingId === campaign._id ? (
-                                            <>
-                                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                                Publishing...
-                                            </>
-                                        ) : (
-                                            campaign.status === "PUBLISHED" ? "View Details" : "Publish"
-                                        )}
-                                    </Button>
-                                </div>
-                            </div>
+                                campaign={campaign}
+                                isUpdating={updatingId === campaign._id}
+                                onActionClick={handleCampaignAction}
+                            />
                         ))}
                     </div>
                 )}
