@@ -18,6 +18,7 @@ interface CampaignCardProps {
     published: string;
     draft: string;
   };
+  displayStatus?: string;
 }
 
 const CampaignCard = ({
@@ -28,22 +29,29 @@ const CampaignCard = ({
     published: "View Details",
     draft: "Publish",
   },
+  displayStatus,
 }: CampaignCardProps) => {
+
+  const statusToShow = displayStatus ?? campaign.status;
+
   return (
     <div className="border border-gray-300 rounded-lg p-5 hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col">
       {/* Status */}
       <div className="flex justify-end mb-3">
         <span
-          className={`text-xs px-2 py-1 rounded-full ${
-            campaign.status === "PUBLISHED"
-              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-              : campaign.status === "DRAFT"
-              ? "bg-[#FEF9C2] text-[#A65F00]"
-              : "bg-blue-100 text-blue-700"
-          }`}
+          className={`
+        px-2 py-1 rounded-full text-xs font-medium
+        ${statusToShow === "Ongoing"
+              ? "bg-green-100 text-green-700"
+              : statusToShow === "PUBLISHED"
+                ? "bg-green-100 text-green-700"
+                : "bg-gray-100 text-gray-700"
+            }
+    `}
         >
-          {campaign.status}
+          {statusToShow}
         </span>
+
       </div>
 
       {/* Header */}

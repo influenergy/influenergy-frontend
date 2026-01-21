@@ -91,7 +91,6 @@ export default function CreatorCard({
   };
 
 
-
   const getVideoForDeliverable = (deliverableType: string) => {
     return videos.find((v) => v.deliverableType === deliverableType);
   };

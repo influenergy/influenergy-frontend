@@ -111,7 +111,7 @@ const ExploreCreatorCard = ({
 
     const handleCardClick = (creatorId: string) => {
         router.push(`/dashboard/brand/creators/${creatorId}`);
-    };
+    };    
 
     return (
         <Card onClick={() => handleCardClick(creator._id)}
@@ -154,7 +154,7 @@ const ExploreCreatorCard = ({
                 {/* NAME + SOCIALS */}
                 <div className="flex items-start justify-between">
                     <h3 className="text-base font-semibold text-gray-900 leading-tight">
-                        {creator.fullName}
+                        {creator.profile.fullName}
                     </h3>
 
                     <div className="flex gap-3 text-gray-500">

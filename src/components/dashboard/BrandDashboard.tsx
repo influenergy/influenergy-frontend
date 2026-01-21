@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CampaignCard from "../brand/CampaignCard";
 import ExploreCreatorCard from "../brand/ExploreCreatorCard";
+import { useQuery } from "@tanstack/react-query";
 
 type CreatorBrief = {
     fullName?: string;
@@ -111,7 +112,10 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     // Separate states as requested
     const [collaborationCount, setCollaborationCount] = useState({ ongoing: 0, pending: 0, completed: 0 });
     const [favCreators, setFavCreators] = useState<FavCreators[]>([]);
+    const [recentCreators, setRecentCreators] = useState<FavCreators[]>([]);
     const [completedCollabs, setCompletedCollabs] = useState<CollaborationItem[]>([]);
+    const [campaignCount, setCampaignCount] = useState({ totalCampaigns: 0, totalApplicants: 0, activeCampaigns: 0, totalSpending: 0, offerSent: 0, offerAccepted: 0, totalPendingPayment: 0, acceptanceRate: 0, pendingCampaignCount: 0, });
+
 
     const [loading, setLoading] = useState(true);
 
@@ -130,74 +134,37 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
             postApi.getCollaborationHistory(),
             postApi.getCampaignHistory(),
         ])
-            .then(([regionData, collabData]) => {
+            .then(([regionData, collabData, campaignData]) => {
                 // Region data
                 setRegionAnalysis(regionData.regionAnalysis);
 
-                setCollaborationCount(collabData?.collaborations?.counts)
+                // setCollaborationCount(collabData?.collaborations?.counts)
 
-                const completed = collabData?.collaborations?.completedCollabs ?? [];
-                setCompletedCollabs(completed);
+                // const completed = collabData?.collaborations?.completedCollabs ?? [];
+                // setCompletedCollabs(completed);
+
+                const completedCount = campaignData?.campaign?.counts;
+                setCampaignCount(completedCount);
+
                 setFavCreators(collabData?.collaborations?.favCreators ?? []);
+                setRecentCreators(collabData?.collaborations?.recentCreators ?? []);
             })
             .catch((err) => console.error("Error fetching data:", err))
             .finally(() => setLoading(false));
     }, []);
 
+
+    const { data: campaigns = [], isLoading,
+        isError, } = useQuery({
+            queryKey: ["campaigns", "Active", 3],
+            queryFn: () => postApi.getCollabByStatus("Active", 3),
+            select: (res) => res.campaigns || [],
+        });
+
+
     if (loading) {
         return <BrandDashboardSkeleton />;
     }
-
-    console.log("fev-->",favCreators);
-    
-    const dashboardCampaigns = [
-        {
-            _id: "cmp_001",
-            campaignImage: "",
-            campaignTitle: "Summer Fashion Influencer Campaign",
-            campaignDescription:
-                "Collaborate with fashion influencers to promote our summer collection across Instagram and YouTube.",
-            brandName: "Tradio",
-            targetNiche: ["Fashion", "Lifestyle", "Instagram"],
-            budgetForCampaign: "$5,000",
-            expectedDeliverables: ["2 Instagram Reels", "1 Story", "1 YouTube Short"],
-            status: "PUBLISHED",
-            brandId: "brand_001",
-            createdAt: "2024-12-10T10:00:00Z",
-            updatedAt: "2024-12-15T12:00:00Z",
-        },
-        {
-            _id: "cmp_002",
-            campaignImage: "",
-            campaignTitle: "Tech Gadget Launch Campaign",
-            campaignDescription:
-                "Looking for tech reviewers to showcase our latest smart gadgets with unboxing and reviews.",
-            brandName: "Tradio",
-            targetNiche: ["Technology", "Gadgets", "YouTube"],
-            budgetForCampaign: "$8,500",
-            expectedDeliverables: ["1 Unboxing Video", "1 Review Video"],
-            status: "DRAFT",
-            brandId: "brand_001",
-            createdAt: "2024-12-18T09:30:00Z",
-            updatedAt: "2024-12-18T09:30:00Z",
-        },
-        {
-            _id: "cmp_003",
-            campaignImage: "",
-            campaignTitle: "Fitness Brand Awareness Drive",
-            campaignDescription:
-                "Promote our fitness supplements and workout gear through fitness creators on Instagram.",
-            brandName: "Tradio",
-            targetNiche: ["Fitness", "Health", "Instagram"],
-            budgetForCampaign: "$3,200",
-            expectedDeliverables: ["1 Reel", "2 Stories"],
-            status: "PUBLISHED",
-            brandId: "brand_001",
-            createdAt: "2024-11-28T14:15:00Z",
-            updatedAt: "2024-12-01T10:45:00Z",
-        },
-    ];
-
 
     return (
         <div className="flex flex-col gap-4">
@@ -208,29 +175,29 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         {[
                             {
                                 label: "Total Campaigns",
-                                count: collaborationCount.ongoing,
-                                icon: <Megaphone size={30} />,
+                                count: campaignCount.totalCampaigns,
+                                icon: <Megaphone size={32} />,
                                 iconBg: "bg-indigo-100",
                                 iconColor: "text-indigo-600",
                             },
                             {
                                 label: "Total Applicants",
-                                count: collaborationCount.pending,
-                                icon: <Contact size={30} />,
+                                count: campaignCount.totalApplicants,
+                                icon: <Contact size={32} />,
                                 iconBg: "bg-purple-100",
                                 iconColor: "text-purple-600",
                             },
                             {
                                 label: "Active Campaigns",
-                                count: collaborationCount.completed,
-                                icon: <CircleCheckBig size={30} />,
+                                count: campaignCount.activeCampaigns,
+                                icon: <CircleCheckBig size={32} />,
                                 iconBg: "bg-green-100",
                                 iconColor: "text-green-600",
                             },
                             {
                                 label: "Total Spending",
-                                count: collaborationCount.completed,
-                                icon: <DollarSign size={30} />,
+                                count: campaignCount.totalSpending,
+                                icon: <DollarSign size={32} />,
                                 iconBg: "bg-yellow-100",
                                 iconColor: "text-yellow-600",
                             },
@@ -241,17 +208,19 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             >
                                 {/* LEFT */}
                                 <div className="flex flex-col gap-2">
-                                    <p className="text-sm font-normal text-black">
+                                    <p className="text-sm font-normal text-gray-800">
                                         {item.label}
                                     </p>
-                                    <span className="text-3xl font-semibold text-gray-900">
+                                    <span className="text-2xl font-semibold text-black">
                                         {String(item.count).padStart(2, "0")}
                                     </span>
                                 </div>
 
                                 {/* RIGHT ICON */}
                                 <div
-                                    className={`flex items-center justify-center w-14 h-14 rounded-md ${item.iconBg} ${item.iconColor}`}
+                                    className={`flex items-center justify-center
+      w-14 h-14
+      rounded-xl ${item.iconBg} ${item.iconColor}`}
                                 >
                                     {item.icon}
                                 </div>
@@ -260,21 +229,73 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     </div>
                 </div>
 
-                <div className="border border-gray-200 rounded-lg px-4 py-4">
-                    <h1 className="text-xl mb-4 text-black font-semibold">Active Campaigns</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {dashboardCampaigns.map((campaign) => (
-                            <CampaignCard
-                                key={campaign._id}
-                                campaign={campaign}
-                                onActionClick={() => { }}
-                                actionLabel={{
-                                    published: "View Applications",
-                                    draft: "View Applications",
-                                }}
-                            />
-                        ))}
+                <div className="border border-gray-200 rounded-xl px-5 py-5 bg-white">
+                    {/* HEADER */}
+                    <div className="flex justify-between items-center mb-5">
+                        <h1 className="text-lg font-semibold text-gray-900">
+                            Ongoing Collaborations
+                        </h1>
+                        <p
+                            onClick={() => router.push("/dashboard/brand/explore")}
+                            className="text-primary text-base font-semibold cursor-pointer hover:underline"
+                        >
+                            View All
+                        </p>
                     </div>
+
+                    {/* LOADING STATE */}
+                    {isLoading && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {[...Array(3)].map((_, idx) => (
+                                <CampaignCardSkeleton key={idx} />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* ERROR STATE */}
+                    {!isLoading && isError && (
+                        <div className="flex flex-col items-center justify-center py-10 text-center">
+                            <p className="text-sm text-red-500 font-medium">
+                                Something went wrong
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Unable to load active collaborations
+                            </p>
+                        </div>
+                    )}
+
+                    {/* EMPTY STATE */}
+                    {!isLoading && !isError && campaigns.length === 0 && (
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                                📭
+                            </div>
+                            <p className="text-sm font-medium text-gray-700">
+                                No ongoing collaborations
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                New collaborations will appear here once active
+                            </p>
+                        </div>
+                    )}
+
+                    {/* DATA STATE */}
+                    {!isLoading && !isError && campaigns.length > 0 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {campaigns.map((campaign, idx) => (
+                                <CampaignCard
+                                    key={idx}
+                                    campaign={campaign.campaignDetails}
+                                    displayStatus="Ongoing"
+                                    onActionClick={() => { }}
+                                    actionLabel={{
+                                        published: "View Applications",
+                                        draft: "View Applications",
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
 
 
@@ -285,48 +306,72 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         {[
                             {
                                 label: "Offer Sent",
-                                count: collaborationCount.ongoing,
-                                icon: <Send size={30} />,
+                                count: campaignCount.offerSent,
+                                subLabel: "Last 30 days",
+                                icon: <Send size={32} />,
                                 iconBg: "bg-purple-100",
                                 iconColor: "text-purple-600",
                             },
                             {
                                 label: "Offer Accepted",
-                                count: collaborationCount.pending,
-                                icon: <CircleCheckBig size={30} />,
+                                count: campaignCount.offerAccepted,
+                                subLabel: `${campaignCount.acceptanceRate}% acceptance rate`,
+                                icon: <CircleCheckBig size={32} />,
                                 iconBg: "bg-green-100",
                                 iconColor: "text-green-600",
                             },
                             {
                                 label: "Payments Pending",
-                                count: collaborationCount.completed,
-                                icon: <Clock4 size={30} />,
+                                count: campaignCount.totalPendingPayment,
+                                subLabel: `${campaignCount.pendingCampaignCount} campaigns`,
+                                icon: <Clock4 size={32} />,
                                 iconBg: "bg-yellow-100",
                                 iconColor: "text-yellow-600",
                             },
-                        ].map((item, idx) => (
-                            <div
-                                key={idx}
-                                className="flex items-center justify-between rounded-xl border border-gray-2    00 bg-white p-5 shadow-sm hover:shadow-md transition"
-                            >
-                                {/* LEFT */}
-                                <div className="flex flex-col gap-2">
-                                    <p className="text-sm font-medium text-gray-500">
-                                        {item.label}
-                                    </p>
-                                    <span className="text-3xl font-semibold text-gray-900">
-                                        {String(item.count).padStart(2, "0")}
-                                    </span>
+                        ]
+                            .map((item, idx) => (
+                                <div
+                                    key={idx}
+                                    className="
+    flex items-center justify-between
+    rounded-2xl border border-gray-200
+    bg-white p-6
+    shadow-sm
+    hover:shadow-lg hover:-translate-y-0.5
+    transition-all duration-200
+  "
+                                >
+                                    {/* LEFT */}
+                                    <div className="flex flex-col gap-1">
+                                        <p className="text-sm font-medium text-gray-600 tracking-wide">
+                                            {item.label}
+                                        </p>
+
+                                        <span className="text-2xl font-semibold text-gray-900 leading-tight">
+                                            {String(item.count).padStart(2, "0")}
+                                        </span>
+
+                                        {item.subLabel && (
+                                            <p className="text-sm text-gray-500 mt-1">
+                                                {item.subLabel}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    {/* RIGHT ICON */}
+                                    <div
+                                        className={`
+      flex items-center justify-center
+      w-14 h-14
+      rounded-xl
+      ${item.iconBg} ${item.iconColor}
+    `}
+                                    >
+                                        {item.icon}
+                                    </div>
                                 </div>
 
-                                {/* RIGHT ICON */}
-                                <div
-                                    className={`flex items-center justify-center w-14 h-14 rounded-md ${item.iconBg} ${item.iconColor}`}
-                                >
-                                    {item.icon}
-                                </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </div>
 
@@ -376,21 +421,63 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
                     {favCreators.length > 0 && (
                         <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
-                            <h1 className="text-xl mb-4 text-black font-semibold dark:text-white">
-                                Favorite Creators
-                            </h1>
+                            <div className="flex justify-between items-center mb-4">
+                                <h1 className="text-xl text-black font-semibold dark:text-white">
+                                    Favorite Creators
+                                </h1>
 
-                            <div className="flex">
+                                <p
+                                    onClick={() => router.push("/dashboard/brand/explore")}
+                                    className="text-primary font-semibold cursor-pointer hover:underline"
+                                >
+                                    View All
+                                </p>
+                            </div>
+
+                            <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-smooth pb-2 scrollbar-hide">
                                 {favCreators.map((creator, idx) => (
-                                    <ExploreCreatorCard
-                                        creator={creator}
-                                        showInviteButton={true}
-                                        showFavoriteIcon={false}
-                                    />
+                                    <div key={idx} className="flex-shrink-0 w-[280px]">
+                                        <ExploreCreatorCard
+                                            creator={creator}
+                                            showInviteButton
+                                            showFavoriteIcon={false}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </Card>
                     )}
+
+
+                    {recentCreators.length > 0 && (
+                        <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-sm">
+                            <div className="flex justify-between items-center mb-4">
+                                <h1 className="text-xl text-black font-semibold dark:text-white">
+                                    Recently Worked With
+                                </h1>
+
+                                <p
+                                    onClick={() => router.push("/dashboard/brand/explore")}
+                                    className="text-primary font-semibold cursor-pointer hover:underline"
+                                >
+                                    View All
+                                </p>
+                            </div>
+
+                            <div className="flex gap-4 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth pb-2">
+                                {recentCreators.map((creator, idx) => (
+                                    <div key={idx} className="flex-shrink-0 w-[280px]">
+                                        <ExploreCreatorCard
+                                            creator={creator}
+                                            showInviteButton
+                                            showFavoriteIcon={false}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                    )}
+
 
                 </div>
             </div>
@@ -464,11 +551,11 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 }
 
 
-type DataItem = {
-    city?: string;
-    platform?: string;
-    value: number;
-    percentage: string;
-};
+// type DataItem = {
+//     city?: string;
+//     platform?: string;
+//     value: number;
+//     percentage: string;
+// };
 
 export default BrandDashboard

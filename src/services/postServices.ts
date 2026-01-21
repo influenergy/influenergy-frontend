@@ -71,15 +71,18 @@ export const postApi = {
     }
   },
 
-  getCollabByStatus: async (status: string) => {
+  getCollabByStatus: async (status: string, limit?: number) => {
     try {
-      const response = await api.get(`/brand/collab/${status}`);
+      const response = await api.get(`/brand/collab/${status}`, {
+        params: limit ? { limit } : {},
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching getCollabByStatus :", error);
       throw error;
     }
   },
+
   getCollabByCampaignId: async (campaignId: string) => {
     try {
       const response = await api.get(`/creator/collab/campaign/${campaignId}`);
@@ -352,7 +355,7 @@ export const postApi = {
   },
   getCampaignHistory: async () => {
     const response = await api.get(`/brand/campaign-history`);
-    return response.data; 
+    return response.data;
   },
   toggleFavoriteCreator: async (creatorId: string) => {
     const response = await api.post(`/brand/favorite/${creatorId}`)
@@ -398,7 +401,7 @@ export const postApi = {
       const response = await api.put(
         `/brand/complete-collaboration/${collaborationId}`,
       );
-      
+
       return response.data;
     } catch (error) {
       console.error("Error uploading videos:", error);
