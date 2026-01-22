@@ -124,7 +124,7 @@ export interface CampaignQuestionnaireData {
   targetNiche: string[];
   budgetForCampaign: string;
   socialPlatforms: string; 
-  expectedDeliverables: string[];
+  expectedDeliverables: string;
   requirements?: string;
   applicationQuestions?: string;
   status: "DRAFT" | "PUBLISHED";

@@ -7,6 +7,8 @@ import Loader from "@/components/brand/Loader";
 import ShortlistedApplications from "@/components/brand/ShortlistedApplications";
 import { CampaignManagerGridSkeleton } from "@/components/Skeletons/CampaignManagerGridSkeleton";
 
+import { Info } from "lucide-react";
+
 const AIFindTab = lazy(() => import("@/components/brand/AIFindTab"));
 const ApplicationsReceived = lazy(() => import("@/components/brand/ApplicationsReceived"));
 const ActiveCollaborationTab = lazy(
@@ -33,46 +35,52 @@ export default function Page() {
     setActiveTab(value);
   };
 
+  const TabInfo = ({ text }: { text: string }) => (
+    <span className="relative group inline-flex">
+      <Info
+        size={14}
+        className="ml-1 text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300"
+      />
+
+      <span className="pointer-events-none absolute z-50 hidden group-hover:block w-64 rounded-md bg-black px-3 py-2 text-xs text-white shadow-lg -top-2 left-5">
+        {text}
+      </span>
+    </span>
+  );
+
   return (
     <AnimatePresence mode="wait">
       <Tabs defaultValue="Waiting Approval" onValueChange={handleTabChange} className="dark:bg-background h-full">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
-          <TabsList className="w-full ">
+          <TabsList className="w-full">
             <TabsTrigger
               value="Waiting Approval"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
-            >
-              <span className="flex items-center gap-1">
-                <span>Campaign Applications</span>
-              </span>
-            </TabsTrigger>
-
-            {/* <TabsTrigger
-              value="shortlisted"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm "
-            >
-              <span className="flex items-center gap-1">
-                <span>Nominated Applications</span>
-              </span>
-            </TabsTrigger>
-
-            <TabsTrigger
-              value="offered"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Pending Collaborations
-            </TabsTrigger> */}
+              <span className="flex items-center gap-1">
+                Campaign Applications
+                {/* <TabInfo text="This section shows all campaign collaborations that need your action — review applications, send offers, or reject creators." /> */}
+              </span>
+            </TabsTrigger>
+
             <TabsTrigger
               value="active"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Active Collaboration
+              <span className="flex items-center gap-1">
+                Active Collaboration
+                {/* <TabInfo text="This section shows ongoing campaign collaborations where creators are working and you can review their submitted work." /> */}
+              </span>
             </TabsTrigger>
+
             <TabsTrigger
               value="completed"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
-              Completed Collaboration
+              <span className="flex items-center gap-1">
+                Completed Collaboration
+                {/* <TabInfo text="This section shows campaign collaborations that have been marked as completed by the brand." /> */}
+              </span>
             </TabsTrigger>
           </TabsList>
         </div>

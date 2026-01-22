@@ -80,7 +80,7 @@ export const getSocialMediaIcon = (platform?: string) => {
             return <Mail className="w-5 h-5 text-gray-600" />;
 
         case "tiktok":
-            return <TikTokIcon className="w-5 h-5" />;
+            return  <TikTokIcon size={20} />;
 
         default:
             return <Share2 className="w-5 h-5 text-gray-400" />;

@@ -55,7 +55,7 @@ const CreateCampaign = ({
             targetNiche: [],
             budgetForCampaign: "",
             socialPlatforms: "",
-            expectedDeliverables: [],
+            expectedDeliverables: "",
             applicationQuestions: "",
             status: "DRAFT",
         },

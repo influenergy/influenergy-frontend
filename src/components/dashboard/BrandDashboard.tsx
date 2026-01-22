@@ -13,6 +13,7 @@ import Link from "next/link";
 import CampaignCard from "../brand/CampaignCard";
 import ExploreCreatorCard from "../brand/ExploreCreatorCard";
 import { useQuery } from "@tanstack/react-query";
+import total_campaigns from "../../../public/images/total_campaigns.svg"
 
 type CreatorBrief = {
     fullName?: string;
@@ -55,30 +56,6 @@ type CollaborationItem = {
     updatedAt?: string;
 };
 
-// Helper function to get social media icon based on platform name
-const getSocialMediaIcon = (platform: string) => {
-    switch (platform?.toLowerCase()) {
-        case 'instagram':
-            return <Instagram className="w-5 h-5" />;
-        case 'youtube':
-        case 'youtube reel':
-            return <Youtube className="w-5 h-5" />;
-        case 'twitter':
-        case 'twitter / x':
-            return <Twitter className="w-5 h-5" />;
-        case 'facebook':
-            return <Facebook className="w-5 h-5" />;
-        case 'linkedin':
-            return <Linkedin className="w-5 h-5" />;
-        case 'newsletter':
-            return <Mail className="w-5 h-5" />;
-        case 'pinterest':
-        case 'tiktok':
-        case 'twitch':
-        default:
-            return <Share2 className="w-5 h-5" />;
-    }
-};
 
 interface FavCreators {
     _id: string,
@@ -166,6 +143,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
         return <BrandDashboardSkeleton />;
     }
 
+    // console.log("campaigns-->",campaigns);
+
     return (
         <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 md:grid-cols-1  gap-6 w-full">
@@ -176,7 +155,14 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             {
                                 label: "Total Campaigns",
                                 count: campaignCount.totalCampaigns,
-                                icon: <Megaphone size={32} />,
+                                icon: (
+                                    <Image
+                                        src={total_campaigns}   // public/megaphone.png
+                                        alt="Total Campaigns"
+                                        width={32}
+                                        height={32}
+                                    />
+                                ),
                                 iconBg: "bg-indigo-100",
                                 iconColor: "text-indigo-600",
                             },
@@ -282,11 +268,12 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                     {/* DATA STATE */}
                     {!isLoading && !isError && campaigns.length > 0 && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {campaigns.map((campaign, idx) => (
+                            {campaigns.slice(0, 3).map((campaign, idx) => (
                                 <CampaignCard
                                     key={idx}
                                     campaign={campaign.campaignDetails}
                                     displayStatus="Ongoing"
+                                    user="brand"
                                     onActionClick={() => { }}
                                     actionLabel={{
                                         published: "View Applications",
@@ -434,9 +421,9 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                 </p>
                             </div>
 
-                            <div className="flex gap-4 overflow-x-auto overflow-y-hidden scroll-smooth pb-2 scrollbar-hide">
-                                {favCreators.map((creator, idx) => (
-                                    <div key={idx} className="flex-shrink-0 w-[280px]">
+                            <div className="flex gap-3 overflow-x-hidden overflow-y-hidden scroll-smooth pb-2 scrollbar-hide">
+                                {favCreators.slice(0, 4).map((creator, idx) => (
+                                    <div key={idx} className="flex-shrink-0 w-[260px]">
                                         <ExploreCreatorCard
                                             creator={creator}
                                             showInviteButton
@@ -445,6 +432,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </div>
                                 ))}
                             </div>
+
                         </Card>
                     )}
 
@@ -464,9 +452,9 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                 </p>
                             </div>
 
-                            <div className="flex gap-4 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth pb-2">
-                                {recentCreators.map((creator, idx) => (
-                                    <div key={idx} className="flex-shrink-0 w-[280px]">
+                            <div className="flex gap-3 overflow-x-hidden overflow-y-hidden scroll-smooth pb-2 scrollbar-hide">
+                                {recentCreators.slice(0, 4).map((creator, idx) => (
+                                    <div key={idx} className="flex-shrink-0 w-[260px]">
                                         <ExploreCreatorCard
                                             creator={creator}
                                             showInviteButton

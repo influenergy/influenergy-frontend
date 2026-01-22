@@ -7,6 +7,13 @@ import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithComplete
 import { selectUser, useAppDispatch, useAppSelector } from "@/store";
 import FeaturedCard from "./FeaturedCard";
 import FeaturedModal from "./FeaturedModal";
+import total_campaigns from "../../../public/images/total_campaigns.svg"
+import { Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, Contact, DollarSign, CircleCheckBig, Megaphone, Send, Clock4, Activity } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { postApi } from "@/services/postServices";
+import { useRouter } from "next/navigation";
+import CampaignCard from "../brand/CampaignCard";
+import CampaignSkeleton from "../Skeletons/CampaignSkeleton";
 
 
 interface CreatorWithCompleteProfileProps {
@@ -26,7 +33,7 @@ interface Collaboration {
 function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProps) {
   const [improvementLoading, setImprovementLoading] = useState<boolean>(false);
   const [improvementText, setImprovementText] = useState<string | null>(null);
-  const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
+  // const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
   const [counts, setCounts] = useState<{ Pending: number; Active: number; Completed: number }>({ Pending: 0, Active: 0, Completed: 0 });
   const [collaborationCount, setCollaborationCount] = useState<number>(0);
 
@@ -51,6 +58,9 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     }
   };
 
+  const router = useRouter();
+
+
   useEffect(() => {
     setImprovementLoading(true);
     fetchImprovementText().then((text) => {
@@ -64,31 +74,43 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       .getCreatorHistoryData()
       .then((res) => {
         if (res?.data) {
-
-          // dispatch(
-          //   updatePendingCollaborationCount(res?.data.counts.Pending || 0)
-          // );
-          setCollaborations(res.data.collaborations || []);
-          setCounts(res.data.counts || { Pending: 0, Active: 0, Completed: 0 });
+          setCounts(res.data || { Pending: 0, Active: 0, Completed: 0 });
         }
       })
       .catch((err) => console.log(err));
   }, [dispatch]);
 
-  if (improvementLoading) {
-    return <CreatorWithCompleteProfileSkeleton />;
+  const {
+    data: collaborations = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["collaborations", 3],
+    queryFn: () => postApi.getAllCollaborations(3),
+    select: (res) => res.collaborations.collaborations || [],
+  });
+
+  const campaigns = collaborations.filter(c => c.status === "Active");
+  const offers = collaborations.filter(c => c.status === "Offered");
+
+  const handleViewDetails = (campaignId: string) => {
+    router.push(`/dashboard/creator/posts/${campaignId}`);
   }
 
-  const handleFeature = async () => {
-    setOpen(true)
+  const handleNewOffer = () => {
+    router.push("/dashboard/creator/inbox?tab=Waiting Approval");
+  };
+
+
+  if (improvementLoading) {
+    return <CreatorWithCompleteProfileSkeleton />;
   }
 
   return (
     <div className="flex flex-col lg:flex-col gap-6 pr-4">
       {/* Welcome Section */}
-      <div className={`grid grid-cols-1  ${userProfile?.userType === "UGC" && !userProfile?.badge ? "md:grid-cols-1 lg:grid-cols-[2fr_2fr]" : "md:grid-cols-1 lg:grid-cols-1"
-        } gap-6 w-full`}>
-        <Card className="p-6 w-full md:flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
+      <div className={`grid grid-cols-1 gap-4 w-full`}>
+        {/* <Card className="p-6 w-full md:flex gap-6 bg-white dark:bg-gray-800 transition-colors duration-300">
           <div className="mb-2 md:mb-0 flex items-center cursor-pointer" onClick={() => setIsOpen(true)}>
             <video
             controls
@@ -105,7 +127,6 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
               Your browser does not support the video tag.
             </video>
           </div>
-          {/* Modal */}
           {isOpen && (
             <div
               className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
@@ -141,131 +162,230 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
           </div>
         </Card>
 
-        {userProfile?.userType === "UGC" && !userProfile?.badge && <FeaturedCard handleFeature={handleFeature} />}
+        {userProfile?.userType === "UGC" && !userProfile?.badge && <FeaturedCard handleFeature={handleFeature} />} */}
+        <div className="border border-gray-200 rounded-lg px-4 py-4 shadow-md">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              {
+                label: "Applications",
+                count: counts.Pending,
+                icon: (
+                  <Image
+                    src={total_campaigns}   // public/megaphone.png
+                    alt="Applications"
+                    width={32}
+                    height={32}
+                  />
+                ),
+                iconBg: "bg-purple-100",
+                iconColor: "text-purple-600",
+              },
+              // {
+              //   label: "Total Applicants",
+              //   count: 20,
+              //   icon: <Contact size={32} />,
+              //   iconBg: "bg-purple-100",
+              //   iconColor: "text-purple-600",
+              // },
+              {
+                label: "In progress",
+                count: counts.Active,
+                icon: <Activity size={32} />,
+                iconBg: "bg-indigo-100",
+                iconColor: "text-indigo-600",
+              },
+              {
+                label: "Completed",
+                count: counts.Completed,
+                icon: <CircleCheckBig size={32} />,
+                iconBg: "bg-green-100",
+                iconColor: "text-green-600",
+              },
+              // {
+              //   label: "Total Spending",
+              //   count: 20,
+              //   icon: <DollarSign size={32} />,
+              //   iconBg: "bg-yellow-100",
+              //   iconColor: "text-yellow-600",
+              // },
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between rounded-xl border border-gray-2    00 bg-white p-5 shadow-sm hover:shadow-md transition"
+              >
+                {/* LEFT */}
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-normal text-gray-800">
+                    {item.label}
+                  </p>
+                  <span className="text-2xl font-semibold text-black">
+                    {String(item.count).padStart(2, "0")}
+                  </span>
+                </div>
+
+                {/* RIGHT ICON */}
+                <div
+                  className={`flex items-center justify-center
+              w-14 h-14
+              rounded-xl ${item.iconBg} ${item.iconColor}`}
+                >
+                  {item.icon}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="border border-gray-200 rounded-xl px-5 py-5 bg-white shadow-md">
+          {/* HEADER */}
+          <div className="flex justify-between items-center mb-5">
+            <h1 className="text-lg font-semibold text-gray-900">
+              Ongoing Collaborations
+            </h1>
+            <p
+              onClick={() => router.push("/dashboard/brand/explore")}
+              className="text-primary text-base font-semibold cursor-pointer hover:underline"
+            >
+              View All
+            </p>
+          </div>
+
+          {/* LOADING STATE */}
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(3)].map((_, idx) => (
+                <CampaignSkeleton key={idx} />
+              ))}
+            </div>
+          )}
+
+          {/* ERROR STATE */}
+          {!isLoading && isError && (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <p className="text-sm text-red-500 font-medium">
+                Something went wrong
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Unable to load active collaborations
+              </p>
+            </div>
+          )}
+
+          {/* EMPTY STATE */}
+          {!isLoading && !isError && campaigns.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                📭
+              </div>
+              <p className="text-sm font-medium text-gray-700">
+                No ongoing collaborations
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                New collaborations will appear here once active
+              </p>
+            </div>
+          )}
+
+          {/* DATA STATE */}
+          {!isLoading && !isError && campaigns.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {campaigns.slice(0, 3).map((campaign, idx) => (
+                <CampaignCard
+                  key={idx}
+                  campaign={campaign.campaignId}
+                  displayStatus="Ongoing"
+                  user="creator"
+                  onActionClick={() => handleViewDetails(campaign.campaignId._id)}
+                // actionLabel={{
+                //   published: "View Applications",
+                //   draft: "View Applications",
+                // }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+
+
+        <div className="border border-gray-200 rounded-xl px-5 py-5 bg-white shadow-md">
+          {/* HEADER */}
+          <div className="flex justify-between items-center mb-5">
+            <h1 className="text-lg font-semibold text-gray-900">
+              New Offers
+            </h1>
+            <p
+              onClick={() => router.push("/dashboard/brand/explore")}
+              className="text-primary text-base font-semibold cursor-pointer hover:underline"
+            >
+              View All
+            </p>
+          </div>
+
+          {/* LOADING STATE */}
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(3)].map((_, idx) => (
+                <CampaignSkeleton key={idx} />
+              ))}
+            </div>
+          )}
+
+          {/* ERROR STATE */}
+          {!isLoading && isError && (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <p className="text-sm text-red-500 font-medium">
+                Something went wrong
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Unable to load active collaborations
+              </p>
+            </div>
+          )}
+
+          {/* EMPTY STATE */}
+          {!isLoading && !isError && offers.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                📭
+              </div>
+              <p className="text-sm font-medium text-gray-700">
+                No new offers
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                New offes will appear here when there is any
+              </p>
+            </div>
+          )}
+
+          {/* DATA STATE */}
+          {!isLoading && !isError && offers.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {offers.slice(0, 3).map((campaign, idx) => (
+                <CampaignCard
+                  key={idx}
+                  campaign={campaign.campaignId}
+                  displayStatus="Offered"
+                  user="creator"
+                  onActionClick={() => handleNewOffer()}
+                // actionLabel={{
+                //   published: "View Applications",
+                //   draft: "View Applications",
+                // }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+
       </div>
 
       {/* AI Recommendation Section */}
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[2fr_2fr] gap-6 w-full">
-        <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
-          <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-            AI Recommendations
-          </h2>
 
-          <div className="mt-6 bg-purple-gradient flex rounded-xl p-6 text-white flex-col gap-8 flex-1">
-            <div className="flex justify-between items-center w-full">
-              <div className="flex flex-col gap-4">
-                <h1 className="font-medium text-lg">Total Collaboration</h1>
-                <span className="text-5xl font-medium">{collaborationCount}</span>
-              </div>
-              <div>
-                <Image src="/flex_user.svg" alt="flex user" width={50} height={40} />
-              </div>
-            </div>
-            <div className="flex gap-4 flex-col">
-              <h1 className="font-medium text-lg">How You Can Improve</h1>
-              <span>
-                {improvementLoading ? (
-                  <span>Loading suggestions...</span>
-                ) : improvementText ? (
-                  <ul className="list-disc pl-5 space-y-1">
-                    {improvementText
-                      .split("\n")
-                      .map((line) => line.replace(/^(\*|\-|\d+\.)\s*/, "").trim())
-                      .filter((line) => line.length > 0)
-                      .map((line, idx) => (
-                        <li key={idx}>{line}</li>
-                      ))}
-                  </ul>
-                ) : (
-                  <span>No suggestions available.</span>
-                )}
-              </span>
-            </div>
-          </div>
-        </Card>
-
-        {/* Recently Worked With + Stats */}
-        <div className={`grid grid-cols-1  ${counts?.Completed === 0 ?
-          'md:grid-cols-1 lg:grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-2'
-          } gap-6 w-full h-full`}>
-          {counts?.Completed > 0 && <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
-            <h2 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white">
-              Recently Worked With:
-            </h2>
-            <div className="flex flex-col gap-4 flex-1 overflow-auto max-h-[400px]">
-              {collaborations.map((collab) => (
-                collab.status === "Completed" && <div key={collab._id} className="flex items-center gap-4 mt-2">
-                  <Image src={collab.campaignImage || "/brandIcon.jpg"} alt={collab.brandName} width={70} height={70} className="rounded-full" />
-                  <span className="text-lg text-gray-600 dark:text-gray-300">{collab.brandName}</span>
-                </div>
-              ))}
-            </div>
-          </Card>}
-
-          <div className="w-full flex flex-col">
-            <div className="flex flex-col gap-4 justify-between h-full">
-              {counts && [
-                { label: "Ongoing Collaboration", count: counts.Active },
-                { label: "Pending Opportunities", count: counts.Pending },
-                { label: "Completed Collaboration", count: counts.Completed },
-              ].map((item, idx) => (
-                <Card
-                  key={idx}
-                  className="flex flex-col items-start gap-4 px-2 py-5 bg-white dark:bg-gray-800 transition-colors duration-300"
-                >
-                  <p className="text-xl font-normal text-gray-700 dark:text-gray-300">{item.label}</p>
-                  <span className="text-5xl text-blue-600 dark:text-blue-400 font-semibold">{item.count < 10 ? '0' + item.count : item.count}</span>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Recent Videos */}
-      {collaborations.length > 0 && <Card className="p-6 w-full flex flex-col bg-white dark:bg-gray-800 transition-colors duration-300">
-        <h1 className="text-gray-900 dark:text-white mb-4">Recent Videos</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {collaborations
-            .flatMap((c) => c.videos)
-            .slice(0, 6)
-            .map((video, idx) => {
-              const isVideo = video.link?.endsWith(".mp4"); // basic check for direct video files
 
-              return (
-                video.status === "Approved" && <div key={idx} className="relative rounded-lg overflow-hidden">
-                  {video.status === "Approved" && (
-                    isVideo ? (
-                      <video
-                        controls
-                        className="rounded-lg w-full max-h-48 bg-black"
-                      >
-                        <source src={video.link} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <a
-                        href={video.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block relative w-full h-48"
-                      >
-                        <Image
-                          src="/video-static-img.png"
-                          alt="Video Thumbnail"
-                          fill
-                          className="rounded-lg object-cover cursor-pointer"
-                        />
-                      </a>
-                    )
-                  )}
-                </div>
-              );
-            })}
-        </div>
-
-      </Card>}
-
-      <FeaturedModal isOpen={open} onClose={() => setOpen(false)} />
     </div>
   );
 }

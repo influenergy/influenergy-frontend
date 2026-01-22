@@ -158,79 +158,70 @@ export const FormField = ({ field }: FormFieldProps) => {
   }
 
   // SPECIAL HANDLING FOR DELIVERABLES - Dynamic options based on social platform
-  if (fieldName === "expected-deliverables" || field.slug === "expectedDeliverables") {
+  // DELIVERABLES — single select, overwrite previous value
+  if (
+    fieldName === "expected-deliverables" ||
+    field.slug === "expectedDeliverables"
+  ) {
     const socialPlatform = watch("socialPlatforms" as keyof PostQuestionnaireData);
-    const selectedOptions = watch(fieldName) || [];
+    const selectedValue = watch(fieldName);
 
-    // Generate options based on selected platform
     const dynamicOptions = React.useMemo(() => {
-      if (!socialPlatform || typeof socialPlatform !== "string") {
-        return [];
-      }
-
-      const platformDeliverables = PLATFORM_DELIVERABLES[socialPlatform] || [];
-      return platformDeliverables.map((deliverable) => `${deliverable}`);
+      if (!socialPlatform || typeof socialPlatform !== "string") return [];
+      return (PLATFORM_DELIVERABLES[socialPlatform] || []).map((d) => ({
+        label: d,
+        value: d,
+      }));
     }, [socialPlatform]);
 
     return (
-      <div>
-        <Select
-          isMulti
-          options={dynamicOptions.map((option) => ({
-            label: option,
-            value: option,
-          }))}
-          value={(selectedOptions as string[]).map((value: string) => ({
-            label: value,
-            value,
-          }))}
-          onChange={(selected) => {
-            const values = selected.map((opt) => opt.value);
-            setValue(fieldName, values, { shouldValidate: true });
-          }}
-          placeholder={
-            dynamicOptions.length === 0
-              ? "Select social platform first"
-              : "Select deliverables..."
-          }
-          isDisabled={dynamicOptions.length === 0}
-          classNamePrefix="react-select"
-          className="dark:bg-gray-900 dark:text-gray-100"
-          styles={{
-            control: (base, state) => ({
-              ...base,
-              backgroundColor: "#F3F3F5",
-              border: "none",
-              boxShadow: "none",
-              opacity: state.isDisabled ? 0.6 : 1,
-              cursor: state.isDisabled ? "not-allowed" : "default",
-              "&:hover": {
-                border: "none",
-              },
-            }),
-            menu: (base) => ({
-              ...base,
-              backgroundColor: "#F3F3F5",
-            }),
-            option: (base, state) => ({
-              ...base,
-              backgroundColor: state.isSelected ? "#7544DB" : "#F3F3F5",
-              color: state.isSelected ? "#FFFFFF" : "#000000",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                backgroundColor: "#7544DB",
-                color: "#FFFFFF",
-              },
-              "&:active": {
-                backgroundColor: "#7544DB",
-              },
-            }),
-          }}
-        />
-      </div>
+      <Select
+        options={dynamicOptions}
+        value={
+          typeof selectedValue === "string"
+            ? { label: selectedValue, value: selectedValue }
+            : null
+        }
+        onChange={(selected) => {
+          // 🔥 overwrite previous value
+          setValue(fieldName, selected?.value || "", {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        }}
+        placeholder={
+          dynamicOptions.length === 0
+            ? "Select social platform first"
+            : "Select a deliverable"
+        }
+        isDisabled={dynamicOptions.length === 0}
+        classNamePrefix="react-select"
+        styles={{
+          control: (base) => ({
+            ...base,
+            backgroundColor: "#F3F3F5",
+            border: "none",
+            boxShadow: "none",
+          }),
+          menu: (base) => ({
+            ...base,
+            backgroundColor: "#F3F3F5",
+          }),
+          option: (base, state) => ({
+            ...base,
+            backgroundColor: state.isFocused ? "#7544DB" : "#F3F3F5",
+            color: state.isFocused ? "#FFFFFF" : "#000000",
+            cursor: "pointer",
+            "&:hover": {
+              backgroundColor: "#7544DB",
+              color: "#FFFFFF",
+            },
+          }),
+        }}
+      />
     );
   }
+
 
   // DROPDOWN with placeholder
   if (field.category === "dropdown") {
@@ -341,11 +332,10 @@ export const FormField = ({ field }: FormFieldProps) => {
       <div className="relative w-full">
         <select
           {...register(fieldName)}
-          className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${
-            error
+          className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
               ? "border-red-500 focus:ring-red-500 dark:border-red-500"
               : "border-gray-300 focus:ring-primary dark:border-gray-700"
-          } focus:outline-none focus:ring-2 appearance-none`}
+            } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" className="dark:text-gray-900">
             {field.placeholder || "Select an option"}
@@ -472,11 +462,10 @@ export const FormField = ({ field }: FormFieldProps) => {
             };
           }
         }}
-        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${
-          error
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
             ? "border-red-500 focus:ring-red-500 dark:border-red-500"
             : "border-gray-300 focus:ring-primary dark:border-gray-700"
-        } focus:outline-none focus:ring-2`}
+          } focus:outline-none focus:ring-2`}
       />
     );
   }
@@ -526,9 +515,8 @@ export const FormField = ({ field }: FormFieldProps) => {
       type={field.category}
       {...register(fieldName)}
       placeholder={field.placeholder || `Enter ${field.title.toLowerCase()}...`}
-      className={`w-full p-3 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${
-        error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"
-      } focus:outline-none focus:ring-2`}
+      className={`w-full p-3 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"
+        } focus:outline-none focus:ring-2`}
     />
   );
 };
@@ -586,11 +574,10 @@ const DateInput = ({ field }: { field: Field }) => {
           });
         }}
         dateFormat="MM/dd/yyyy"
-        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${
-          error
+        className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
             ? "border-red-500 focus:ring-red-500 dark:border-red-500"
             : "border-gray-300 focus:ring-primary dark:border-gray-700"
-        } focus:outline-none focus:ring-2`}
+          } focus:outline-none focus:ring-2`}
         placeholderText="Select date"
       />
     </div>
@@ -627,9 +614,8 @@ export const Step = ({ fields, mode }: StepProps) => {
         return (
           <div
             key={rowIndex}
-            className={`grid gap-4 ${
-              isRow0or2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
-            }`}
+            className={`grid gap-4 ${isRow0or2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+              }`}
           >
             {rowFields.map((field) => {
               const fieldName = field.slug as keyof PostQuestionnaireData;

@@ -212,12 +212,11 @@ export default function ApplicationsReceived() {
   //   router.push(`/dashboard/brand/application-inbox/${campaignId}`);
   // };
 
-  const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {    
+  const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCampaignId(e.target.value);
   };
 
-  
-
+  const hasSelectedCampaign = Boolean(selectedCampaignId);
 
   const handlePayNow = async (application: Application) => {
     try {
@@ -331,7 +330,18 @@ export default function ApplicationsReceived() {
         </div>
 
         {/* Campaign Cards */}
-        {applications.length === 0 ? (
+        {!hasSelectedCampaign ? (
+          /* NO CAMPAIGN SELECTED */
+          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+              Select a campaign to view collaborations
+            </p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm">
+              Choose a campaign from the dropdown above to see applications or active collaborations.
+            </p>
+          </div>
+        ) : applications.length === 0 ? (
+          /* CAMPAIGN SELECTED BUT NO DATA */
           <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
             <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
               No {isActiveTab ? "active collaborations" : "applications"} found for this campaign.
@@ -343,6 +353,7 @@ export default function ApplicationsReceived() {
             </p>
           </div>
         ) : (
+          /* DATA EXISTS */
           <div className="mt-6 space-y-4">
             {applications.map((app: Application) => (
               <CreatorCard
@@ -357,8 +368,8 @@ export default function ApplicationsReceived() {
                     await handleStatusChange(app._id, nextStatus);
                   }
                 }}
-                isActiveCollaboration={false}
-                videos={app?.videos}
+                isActiveCollaboration={isActiveTab}
+                videos={isActiveTab ? app.videos : undefined}
                 collaborationId={app._id}
                 expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
                 onApproveVideo={approveVideo}
@@ -373,6 +384,7 @@ export default function ApplicationsReceived() {
             ))}
           </div>
         )}
+
       </div>
 
       {successMessage && (

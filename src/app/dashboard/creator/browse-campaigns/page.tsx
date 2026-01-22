@@ -121,7 +121,7 @@ const MyCampaignsPage = () => {
     );
 
     const handleViewDetails = (campaign: Campaign) => {
-        (window.location.href = `/dashboard/creator/posts/${campaign._id}`)
+        router.push(`/dashboard/creator/posts/${campaign._id}`);
     }
 
     const getMidAmount = (budget?: string) => {

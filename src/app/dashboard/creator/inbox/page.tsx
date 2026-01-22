@@ -70,12 +70,12 @@ const Page = () => {
             >
               Completed Collaboration
             </TabsTrigger>
-            <TabsTrigger
+            {/* <TabsTrigger
               value="Payment"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
             >
               Payment
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
         </div>
 
@@ -186,7 +186,7 @@ const Page = () => {
                     priority
                   />
                   <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
-                    Welcome to the inbox. <br /> No ongoing collaborations
+                    Welcome to the inbox. <br /> No Accepted collaborations
                     found.
                   </h3>
                 </div>

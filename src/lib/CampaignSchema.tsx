@@ -21,10 +21,8 @@ export const createCampaignSchema = yup.object({
     .required(),
 
   expectedDeliverables: yup
-    .array()
-    .of(yup.string().required())
-    .min(1, "Select at least one deliverable")
-    .required(),
+    .string()
+    .required("Deliverable is required"),
 
   applicationQuestions: yup.string().optional(),
 

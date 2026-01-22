@@ -246,9 +246,22 @@ export const postApi = {
       throw error;
     }
   },
-  getCollaborationByStatus: async (status: string) => {
+  getCollaborationByStatus: async (status: string, limit?: number) => {
     try {
-      const response = await api.get(`/creator/collaboration/${status}`);
+      const response = await api.get(`/creator/collaboration/${status}`, {
+        params: limit ? { limit } : {},
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching getCollaborationByStatus :", error);
+      throw error;
+    }
+  },
+  getAllCollaborations: async (limit?: number) => {
+    try {
+      const response = await api.get(`/creator/all-collaborations`, {
+        params: limit ? { limit } : {},
+      });
       return response.data;
     } catch (error) {
       console.error("Error fetching getCollaborationByStatus :", error);

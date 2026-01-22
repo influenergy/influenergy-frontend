@@ -19,9 +19,9 @@ export interface SingleForm {
 
 // Platform-specific deliverables mapping
 export const PLATFORM_DELIVERABLES: Record<string, string[]> = {
-    Instagram: ["Reel", "Story", "Post", "Carousel"],
-    YouTube: ["Video", "Shorts", "Community Post"],
-    TikTok: ["Short Video", "Live Stream"],
+    Instagram: ["Reel", "Story", "Post"],
+    YouTube: ["Video", "Shorts"],
+    TikTok: ["Short Video"],
     Facebook: ["Post", "Story", "Video"],
     X: ["Tweet", "Thread"],
 };
@@ -92,20 +92,18 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
         {
             title: "Social Platform *",
             slug: "socialPlatforms",
-            category: "multiselect",
+            category: "dropdown",
             options: [
                 "Instagram",
                 "YouTube",
                 "TikTok",
-                "Facebook",
-                "X",
             ],
             placeholder: "Select social platform(s)",
         },
         {
             title: "Deliverables *",
             slug: "expectedDeliverables",
-            category: "multiselect",
+            category: "dropdown",
             // No options here - they're dynamically generated based on socialPlatforms
             placeholder: "Select social platform first",
         },

@@ -19,6 +19,7 @@ interface CampaignCardProps {
     draft: string;
   };
   displayStatus?: string;
+  user: string;
 }
 
 const CampaignCard = ({
@@ -30,10 +31,11 @@ const CampaignCard = ({
     draft: "Publish",
   },
   displayStatus,
+  user,
 }: CampaignCardProps) => {
 
   const statusToShow = displayStatus ?? campaign.status;
-
+  
   return (
     <div className="border border-gray-300 rounded-lg p-5 hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col">
       {/* Status */}
