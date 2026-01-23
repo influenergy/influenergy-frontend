@@ -2,12 +2,14 @@ import { LucideIcon, FileText } from "lucide-react";
 
 export interface Field {
     title: string;
-    category: "text" | "textarea" | "dropdown" | "multiselect" | "file" | "date" | "range" | "grouped-dropdown";
+    category: "text" | "textarea" | "dropdown" | "multiselect" | "file" | "date" | "range" | "grouped-dropdown" | "number-with-prefix" | "number-with-suffix";
     slug: string;
     options?: string[];
     placeholder?: string;
     colSpan?: 1 | 2;
     groups?: { label: string; options: string[] }[];
+    prefix?: string;
+    suffix?: string;
 }
 
 export interface SingleForm {
@@ -73,15 +75,16 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
         {
             title: "Budget *",
             slug: "budgetForCampaign",
-            category: "dropdown",
-            options: [
-                "$50",
-                "$100",
-                "$200",
-                "$400",
-                "$500+",
-            ],
-            placeholder: "Select a budget"
+            category: "number-with-prefix",
+            prefix: "$",
+            placeholder: "Enter budget amount"
+        },
+        {
+            title: "Deadline *",
+            slug: "deadline",
+            category: "number-with-suffix",
+            suffix: "days",
+            placeholder: "Enter number of days"
         },
         {
             title: "Requirements",
@@ -106,18 +109,6 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
             category: "dropdown",
             // No options here - they're dynamically generated based on socialPlatforms
             placeholder: "Select social platform first",
-        },
-        {
-            title: "Deadline *",
-            slug: "deadline",
-            category: "dropdown",
-            options: [
-                "within 24hrs",
-                "within 2 days",
-                "within next week",
-                "within a month",
-            ],
-            placeholder: "Select a deadline"
         },
         {
             title: "Campaign Image",

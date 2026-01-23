@@ -18,6 +18,7 @@ interface Campaign {
     brandName: string;
     targetNiche: string[];
     budgetForCampaign: string;
+    deadline: string;
     expectedDeliverables: string[];
     applicationQuestions?: string;
     status: string;
@@ -251,9 +252,9 @@ const MyCampaignsPage = () => {
                                 // }
                                 className="border rounded-lg p-5 hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col"
                             >
-                                <div className="flex justify-end mb-3">
+                                {/* <div className="flex justify-end mb-3">
                                     <Bookmark />
-                                </div>
+                                </div> */}
 
                                 <div className="flex gap-5 mb-3">
                                     <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
@@ -291,7 +292,7 @@ const MyCampaignsPage = () => {
 
                                 <div className="flex items-center gap-2 text-sm mb-2 text-[#364153] dark:text-gray-400">
                                     <Calendar className="w-4 h-4 text-primary" />
-                                    {"Due: Open for a month"}
+                                    {campaign.deadline}
                                 </div>
 
                                 {/* Niches */}
@@ -437,7 +438,7 @@ const MyCampaignsPage = () => {
                             </p>
                             <button
                                 onClick={() => setShowSuccess(false)}
-                                className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
+                                className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white hover:bg-primary/90"
                             >
                                 Close
                             </button>

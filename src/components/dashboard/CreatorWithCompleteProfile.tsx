@@ -16,6 +16,20 @@ import CampaignCard from "../brand/CampaignCard";
 import CampaignSkeleton from "../Skeletons/CampaignSkeleton";
 
 
+type CampaignBrief = {
+  _id: string;
+  campaignTitle?: string;
+  campaignImage?: string;
+  campaignDescription?: string;
+};
+
+type CollaborationItem = {
+  _id: string;
+  status: "Active" | "Offered" | "Completed" | "Pending";
+  campaignId: CampaignBrief;
+};
+
+
 interface CreatorWithCompleteProfileProps {
   fullName?: string;
 }
@@ -84,11 +98,14 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     data: collaborations = [],
     isLoading,
     isError,
-  } = useQuery({
+  } = useQuery<CollaborationItem[]>({
     queryKey: ["collaborations", 3],
-    queryFn: () => postApi.getAllCollaborations(3),
-    select: (res) => res.collaborations.collaborations || [],
+    queryFn: async () => {
+      const res = await postApi.getAllCollaborations(3);
+      return res.collaborations.collaborations ?? [];
+    },
   });
+
 
   const campaigns = collaborations.filter(c => c.status === "Active");
   const offers = collaborations.filter(c => c.status === "Offered");
@@ -243,7 +260,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
               Ongoing Collaborations
             </h1>
             <p
-              onClick={() => router.push("/dashboard/brand/explore")}
+              onClick={() => router.push("/dashboard/creator/inbox?tab=Active")}
               className="text-primary text-base font-semibold cursor-pointer hover:underline"
             >
               View All
@@ -289,9 +306,9 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
           {/* DATA STATE */}
           {!isLoading && !isError && campaigns.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {campaigns.slice(0, 3).map((campaign, idx) => (
+              {campaigns.slice(0, 3).map((campaign) => (
                 <CampaignCard
-                  key={idx}
+                  key={campaign._id}
                   campaign={campaign.campaignId}
                   displayStatus="Ongoing"
                   user="creator"
@@ -315,7 +332,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
               New Offers
             </h1>
             <p
-              onClick={() => router.push("/dashboard/brand/explore")}
+              onClick={() => router.push("/dashboard/creator/inbox")}
               className="text-primary text-base font-semibold cursor-pointer hover:underline"
             >
               View All
@@ -361,9 +378,9 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
           {/* DATA STATE */}
           {!isLoading && !isError && offers.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {offers.slice(0, 3).map((campaign, idx) => (
+              {offers.slice(0, 3).map((campaign) => (
                 <CampaignCard
-                  key={idx}
+                  key={campaign._id}
                   campaign={campaign.campaignId}
                   displayStatus="Offered"
                   user="creator"

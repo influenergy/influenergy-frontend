@@ -18,6 +18,11 @@ export default function PendingCollaborationTab() {
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
     const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
 
+    useEffect(() => {
+        if (campaigns.length > 0 && !selectedCampaignId) {
+            setSelectedCampaignId(campaigns[0].campaignId);
+        }
+    }, [campaigns, selectedCampaignId]);
 
     if (isLoading) {
         return <Loader />;
@@ -49,15 +54,6 @@ export default function PendingCollaborationTab() {
 
     return (
         <div className="h-full w-full px-2 sm:px-4 flex-1 dark:bg-background">
-            {/* Info Banner */}
-            <div className="sticky top-0 z-10 mb-6 rounded-lg border border-gray-300 bg-white/80 dark:bg-background/80 backdrop-blur px-4 py-4 shadow-sm">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                    This section shows campaigns where you’ve sent offers to creators.
-                    Once a creator accepts the offer, you can proceed with payment.
-                    Until then, the collaboration will wait for the creator’s response.
-                </p>
-            </div>
-
 
             {campaigns?.campaigns?.length > 0 ? (
                 /* Campaign Cards Section */

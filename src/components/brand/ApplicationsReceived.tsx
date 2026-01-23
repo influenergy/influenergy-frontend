@@ -168,6 +168,13 @@ export default function ApplicationsReceived() {
   });
 
 
+  useEffect(() => {
+    if (campaigns.length > 0 && !selectedCampaignId) {
+      setSelectedCampaignId(campaigns[0].campaignId);
+    }
+  }, [campaigns, selectedCampaignId]);
+
+
   const { mutate: handleApproveVideo, isPending: isApproving } =
     useAcceptOrDeclineVideo({
       onSuccess: () => {
@@ -299,14 +306,6 @@ export default function ApplicationsReceived() {
       )}
 
       <div className="max-w-7xl mx-auto">
-
-        {/* Info Banner */}
-        <div className="sticky top-0 z-10 mb-6 rounded-lg border border-gray-300 bg-white/80 dark:bg-background/80 backdrop-blur px-4 py-4 shadow-sm">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            This section shows campaigns where creators have applied.
-            You can review their applications and mark them as interested for collaboration.
-          </p>
-        </div>
 
         <div className="mb-6">
           <label className="block text-sm font-medium mb-2">

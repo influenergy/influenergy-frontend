@@ -22,7 +22,7 @@ export const CollaborationFailedModal: React.FC<
         </p>
         <div className="mt-4 flex justify-end">
           <Link href="/dashboard/brand/findai">
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="default">
               Close
             </Button>
           </Link>

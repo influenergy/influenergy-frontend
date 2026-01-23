@@ -1,7 +1,7 @@
 import {
   LayoutDashboard,
   Film,
-  FolderSearch, 
+  FolderSearch,
   ClipboardList,
   Settings,
   // Link,
@@ -125,26 +125,79 @@ const creatorProfileNav: NavItem[] = [
   //   label: "Linked Socials",
   //   slug: "socials",
   // },
-  {
-    href: "/user-profile/notifications",
-    icon: Bell,
-    label: "Notifications",
-    slug: "notifications",
-  },
+  // {
+  //   href: "/user-profile/notifications",
+  //   icon: Bell,
+  //   label: "Notifications",
+  //   slug: "notifications",
+  // },
 ];
 
 const brandProfileNav: NavItem[] = [
+  // {
+  //   href: "/user-profile",
+  //   icon: Settings,
+  //   label: "Account Settings",
+  //   slug: "account",
+  // },
+  // {
+  //   href: "/user-profile/notifications",
+  //   icon: Bell,
+  //   label: "Notifications",
+  //   slug: "notifications",
+  // },
+
   {
-    href: "/user-profile",
-    icon: Settings,
-    label: "Account Settings",
-    slug: "account",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
+    slug: "dashboard",
+  },
+  // {
+  //   label: "My Ad Brief",
+  //   href: "/dashboard/brand/posts",
+  //   icon: ClipboardList,
+  //   slug: "posts",
+  //   matchPaths: ["/dashboard/brand/posts", "/dashboard/brand/create-post"],
+  // },
+  // {
+  //   label: "My Ad Brief",
+  //   href: "/dashboard/brand/create-campaign",
+  //   icon: ClipboardList,
+  //   slug: "posts",
+  //   matchPaths: ["/dashboard/brand/create-campaign", "/dashboard/brand/create-campaign"],
+  // },
+  {
+    label: "My Campaigns",
+    href: "/dashboard/brand/my-campaigns",
+    icon: ClipboardList,
+    slug: "posts",
+    matchPaths: ["/dashboard/brand/create-campaign", "/dashboard/brand/create-campaign"],
   },
   {
-    href: "/user-profile/notifications",
-    icon: Bell,
-    label: "Notifications",
-    slug: "notifications",
+    label: "Collaboration Manager",
+    href: "/dashboard/brand/application-inbox",
+    icon: Mail,
+    slug: "p",
+    matchPaths: ["/dashboard/brand/xyz", "/dashboard/brand/xyz"],
+  },
+  // {
+  //   href: "/dashboard/brand/findai",
+  //   icon: WandSparkles,
+  //   label: "AI Find",
+  //   slug: "findai",
+  //   matchPaths: [
+  //     "/dashboard/brand/findai",
+  //     "/dashboard/brand/findai/campaign",
+  //     "/dashboard/brand/findai/campaign/[campaignId]/creator",
+  //   ],
+  // },
+  {
+    label: "Discover Creators",
+    href: "/dashboard/brand/explore",
+    icon: UserRoundSearch,
+    slug: "explore",
+
   },
 ];
 

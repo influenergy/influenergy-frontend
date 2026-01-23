@@ -77,6 +77,38 @@ const MyCampaignsPage = () => {
     const handleCampaignAction = async (status: string, campaignId: string) => {
         if (status === "PUBLISHED") {
             router.push(`/dashboard/brand/posts/${campaignId}`);
+        } else if (status === "CLOSED") {
+            try {
+                setUpdatingId(campaignId);
+                setUpdatingStatus("UNPUBLISHED");
+
+                await postApi.changeCampaignStatus(campaignId, "UNPUBLISHED");
+
+                // Update local state
+                setCampaigns(prevCampaigns =>
+                    prevCampaigns.map(campaign =>
+                        campaign._id === campaignId
+                            ? { ...campaign, status: "UNPUBLISHED" }
+                            : campaign
+                    )
+                );
+
+                setModal({
+                    open: true,
+                    type: "success",
+                    message: "Campaign unpublished successfully!",
+                });
+            } catch (error: any) {
+                const errorMessage = error?.response?.data?.message || error?.message || "Failed to publish campaign. Please try again.";
+                setModal({
+                    open: true,
+                    type: "error",
+                    message: errorMessage,
+                });
+            } finally {
+                setUpdatingId(null);
+                setUpdatingStatus(null);
+            }
         } else {
             // Publish the draft campaign
             try {
@@ -197,10 +229,7 @@ const MyCampaignsPage = () => {
 
                             <button
                                 onClick={closeModal}
-                                className={`w-full py-3 rounded-lg font-medium transition-colors ${modal.type === 'success'
-                                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                                    : 'bg-red-600 hover:bg-red-700 text-white'
-                                    }`}
+                                className={`w-full py-3 rounded-lg font-medium transition-colors bg-primary text-white hover:bg-primary/90`}
                             >
                                 Close
                             </button>
@@ -262,6 +291,7 @@ const MyCampaignsPage = () => {
                                 campaign={campaign}
                                 isUpdating={updatingId === campaign._id}
                                 onActionClick={handleCampaignAction}
+                                user="brand"
                             />
                         ))}
                     </div>

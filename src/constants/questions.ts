@@ -13,11 +13,16 @@ export interface Field {
   | "textarea"
   | "file"
   | "grouped-dropdown"
+  | "number-with-prefix"
+  | "number-with-suffix"
+  | "suffix"
   | "range";
   slug: string;
   options?: string[];
   dependsOn?: string;
   placeholder?: string;
+  prefix?: string;
+  suffix?: string;
   groups?: {
     label: string,
     options: string[]

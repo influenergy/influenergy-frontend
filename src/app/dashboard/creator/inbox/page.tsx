@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnimatePresence } from "framer-motion";
 import { useState, Suspense } from "react";
@@ -10,6 +10,7 @@ import { useCollaborationStatusDetails } from "@/hooks/useQueryCampaigns";
 import { Collaboration } from "@/types/Collaboration";
 import { pendingCollaborationCount, useAppSelector } from "@/store";
 import { Badge } from "@/components/ui/badge";
+import { useSearchParams } from "next/navigation";
 
 const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
   ssr: false,
@@ -18,8 +19,11 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
   ),
 });
 
+
+
 const Page = () => {
-  const [activeTab, setActiveTab] = useState("Waiting Approval");
+  const DEFAULT_TAB = "Waiting Approval";
+  const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
   const pendingCollabCount = useAppSelector(pendingCollaborationCount);
   const {
     data: campaignsData,
@@ -30,11 +34,26 @@ const Page = () => {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
-  
+
+  const searchParams = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+
+  const VALID_TABS = [
+    "Waiting Approval",
+    "Offer Accepted",
+    "Active",
+    "Completed",
+  ];
+
+  useEffect(() => {
+    if (tabFromUrl && tabFromUrl !== activeTab && VALID_TABS.includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="Waiting Approval" onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full">
             <TabsTrigger
@@ -50,7 +69,7 @@ const Page = () => {
                 )} */}
               </div>
             </TabsTrigger>
-            
+
             <TabsTrigger
               value="Offer Accepted"
               className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
@@ -133,7 +152,7 @@ const Page = () => {
                     src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
-                    height={280} 
+                    height={280}
                     className="mx-auto"
                     priority
                   />
@@ -181,7 +200,7 @@ const Page = () => {
                     src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
                     alt=""
                     width={280}
-                    height={280} 
+                    height={280}
                     className="mx-auto"
                     priority
                   />

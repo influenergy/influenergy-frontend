@@ -333,8 +333,8 @@ export const FormField = ({ field }: FormFieldProps) => {
         <select
           {...register(fieldName)}
           className={`w-full p-3 max-h-20 border rounded-lg transition-all duration-200 font-poppins dark:bg-gray-900 dark:text-gray-100 ${error
-              ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-              : "border-gray-300 focus:ring-primary dark:border-gray-700"
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
             } focus:outline-none focus:ring-2 appearance-none`}
         >
           <option value="" className="dark:text-gray-900">
@@ -463,8 +463,8 @@ export const FormField = ({ field }: FormFieldProps) => {
           }
         }}
         className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+          : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
       />
     );
@@ -505,6 +505,68 @@ export const FormField = ({ field }: FormFieldProps) => {
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // BUDGET INPUT - Number with $ prefix (stores as "$300")
+  if (field.category === "number-with-prefix" && field.prefix) {
+    const value = watch(fieldName) || "";
+    // Remove prefix if it exists to show clean number in input
+    const displayValue = typeof value === 'string' ? value.replace(/^\$/, '') : value;
+
+    return (
+      <div className="relative w-full">
+        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
+          {field.prefix}
+        </span>
+        <input
+          type="number"
+          value={displayValue}
+          onChange={(e) => {
+            const numValue = e.target.value;
+            // Store with $ prefix
+            const formattedValue = numValue ? `$${numValue}` : '';
+            setValue(fieldName, formattedValue, { shouldValidate: true });
+          }}
+          placeholder={field.placeholder || "0"}
+          className={`w-full p-3 pl-8 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"
+            } focus:outline-none focus:ring-2`}
+          min="0"
+          step="1"
+        />
+      </div>
+    );
+  }
+
+  // DEADLINE INPUT - Number with "days" suffix (stores as "4 days")
+  if (field.category === "number-with-suffix" && field.suffix) {
+    const value = watch(fieldName) || "";
+    // Remove suffix if it exists to show clean number in input
+    const displayValue = typeof value === 'string' ? value.replace(/\s*days?$/i, '') : value;
+
+    return (
+      <div className="relative w-full">
+        <input
+          type="number"
+          value={displayValue}
+          onChange={(e) => {
+            const numValue = e.target.value;
+            // Store with "days" suffix (singular for 1, plural for others)
+            const formattedValue = numValue
+              ? `${numValue} ${numValue === '1' ? 'day' : 'days'}`
+              : '';
+            setValue(fieldName, formattedValue, { shouldValidate: true });
+          }}
+          placeholder={field.placeholder || "0"}
+          className={`w-full p-3 pr-16 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"
+            } focus:outline-none focus:ring-2`}
+          min="1"
+          step="1"
+        />
+        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
+          {field.suffix}
+        </span>
       </div>
     );
   }
@@ -575,8 +637,8 @@ const DateInput = ({ field }: { field: Field }) => {
         }}
         dateFormat="MM/dd/yyyy"
         className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+          : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
         placeholderText="Select date"
       />
@@ -591,7 +653,9 @@ export const Step = ({ fields, mode }: StepProps) => {
 
   fields.forEach((field, index) => {
     const isRow0or2 = currentRowIndex === 0 || currentRowIndex === 2;
-    const maxFieldsInRow = isRow0or2 ? 2 : 1;
+
+    // Special handling for row 2 (Niche, Budget, Deadline) - 3 columns
+    const maxFieldsInRow = currentRowIndex === 2 ? 3 : (isRow0or2 ? 2 : 1);
 
     currentRow.push(field);
 
@@ -610,11 +674,16 @@ export const Step = ({ fields, mode }: StepProps) => {
     <div className="space-y-4">
       {rows.map((rowFields, rowIndex) => {
         const isRow0or2 = rowIndex === 0 || rowIndex === 2;
+        const isRow2 = rowIndex === 2; // Niche, Budget, Deadline row
 
         return (
           <div
             key={rowIndex}
-            className={`grid gap-4 ${isRow0or2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+            className={`grid gap-4 ${isRow2
+                ? 'grid-cols-1 md:grid-cols-3'
+                : isRow0or2
+                  ? 'grid-cols-1 md:grid-cols-2'
+                  : 'grid-cols-1'
               }`}
           >
             {rowFields.map((field) => {

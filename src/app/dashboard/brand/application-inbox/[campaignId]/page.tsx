@@ -348,7 +348,7 @@ export default function CampaignDetailsPage() {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-[320px] text-center">
             <CircleCheckBig className="h-10 w-10 text-green-500 mx-auto mb-3" />
             <p className="text-lg font-medium dark:text-white">{successMessage}</p>
-            <Button className="mt-4 w-full" onClick={() => setSuccessMessage(null)}>
+            <Button variant="default" className="mt-4 w-full" onClick={() => setSuccessMessage(null)}>
               OK
             </Button>
           </div>
@@ -363,7 +363,7 @@ export default function CampaignDetailsPage() {
               {errorMessage}
             </p>
             <Button
-              variant="outline"
+              variant="default"
               className="mt-4 w-full"
               onClick={() => setErrorMessage(null)}
             >

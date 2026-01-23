@@ -137,6 +137,9 @@ const CreatorDetailsPage = () => {
         return age;
     };
 
+    console.log("creator--->",creator);
+    
+
     const getSocialMediaIcon = (platform?: string) => {
         if (!platform) return <Share2 className="w-5 h-5" />;
 
@@ -166,7 +169,7 @@ const CreatorDetailsPage = () => {
                 return <Mail className="w-5 h-5 text-gray-600" />;
 
             case "tiktok":
-                return  <TikTokIcon size={20} />;
+                return <TikTokIcon size={20} />;
 
             default:
                 return <Share2 className="w-5 h-5 text-gray-400" />;
@@ -274,10 +277,7 @@ const CreatorDetailsPage = () => {
 
                             <button
                                 onClick={closeModal}
-                                className={`w-full py-3 rounded-lg font-medium transition-colors ${modalType === 'success'
-                                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                                    : 'bg-red-600 hover:bg-red-700 text-white'
-                                    }`}
+                                className={`w-full py-3 rounded-lg font-medium transition-colors bg-primary text-white hover:bg-primary/90`}
                             >
                                 Close
                             </button>
@@ -423,6 +423,7 @@ const CreatorDetailsPage = () => {
                                                     </span>
                                                 </>
                                             )}
+
                                         </div>
                                     )}
 
@@ -455,7 +456,7 @@ const CreatorDetailsPage = () => {
                                         Average Views
                                     </p>
                                     <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                                        {formatNumber(creator.averageView)}
+                                        {creator.averageView}
                                     </p>
                                 </div>
                             )}
@@ -564,13 +565,13 @@ const CreatorDetailsPage = () => {
 
 
                     {/* Tabs */}
-                    <div className="border-b border-gray-200 dark:border-gray-700 mt-6">
+                    <div className="mt-6 px-7">
                         <div className="flex gap-6">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
-                                    className={`pb-3 text-sm font-medium border-b-2 transition ${activeTab === tab
+                                    className={`pb-3 text-base font-semibold border-b-2 transition ${activeTab === tab
                                         ? "text-primary border-primary"
                                         : "text-gray-500 dark:text-gray-400 border-transparent hover:text-primary"
                                         }`}
@@ -584,95 +585,63 @@ const CreatorDetailsPage = () => {
 
 
                     {activeTab === "Audience Insights" && (
-                        <div className="space-y-6">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border">
+                            <div className="overflow-hidden rounded-xl border dark:border-gray-700">
+                                <table className="w-full border-collapse">
+                                    <thead className="bg-gray-50 dark:bg-gray-700/50">
+                                        <tr className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-300">
+                                            <th className="px-5 py-3 text-left">Country</th>
+                                            <th className="px-5 py-3 text-left">Age</th>
+                                            <th className="px-5 py-3 text-left">Gender</th>
+                                            <th className="px-5 py-3 text-right">Audience %</th>
+                                        </tr>
+                                    </thead>
 
-                            {/* AGE DISTRIBUTION */}
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border">
-                                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                                    Age Distribution
-                                </h3>
+                                    <tbody className="text-sm">
+                                        {/* PRIMARY */}
+                                        {creator.audienceInfo?.primaryLocation && (
+                                            <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                                <td className="px-5 py-4 font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                                                    {creator.audienceInfo.primaryLocation}
+                                                    <span className="text-[10px] font-semibold bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                                                        PRIMARY
+                                                    </span>
+                                                </td>
+                                                <td className="px-5 py-4">
+                                                    {creator.audienceInfo.primaryAge}
+                                                </td>
+                                                <td className="px-5 py-4">
+                                                    {creator.audienceInfo.primaryGender}
+                                                </td>
+                                                <td className="px-5 py-4 text-right font-semibold">
+                                                    {creator.audienceInfo.primaryPercentage}
+                                                </td>
+                                            </tr>
+                                        )}
 
-                                <div className="space-y-3">
-                                    {creator.audienceInfo?.primaryAge && (
-                                        <div className="flex justify-between">
-                                            <span>Age {creator.audienceInfo.primaryAge}</span>
-                                            <span className="font-medium">
-                                                {creator.audienceInfo.primaryPercentage}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {creator.audienceInfo?.secondaryAge && (
-                                        <div className="flex justify-between text-gray-600">
-                                            <span>Age {creator.audienceInfo.secondaryAge}</span>
-                                            <span>{creator.audienceInfo.secondaryPercentage}</span>
-                                        </div>
-                                    )}
-                                </div>
+                                        {/* SECONDARY */}
+                                        {creator.audienceInfo?.secondaryLocation && (
+                                            <tr className="bg-gray-50 dark:bg-gray-900/40 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-600 dark:text-gray-300">
+                                                <td className="px-5 py-4 flex items-center gap-2">
+                                                    {creator.audienceInfo.secondaryLocation}
+                                                    <span className="text-[10px] font-semibold bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                                                        SECONDARY
+                                                    </span>
+                                                </td>
+                                                <td className="px-5 py-4">
+                                                    {creator.audienceInfo.secondaryAge}
+                                                </td>
+                                                <td className="px-5 py-4">
+                                                    {creator.audienceInfo.secondaryGender}
+                                                </td>
+                                                <td className="px-5 py-4 text-right">
+                                                    {creator.audienceInfo.secondaryPercentage}
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
                             </div>
-
-                            {/* GENDER DISTRIBUTION */}
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border">
-                                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                                    Gender Distribution
-                                </h3>
-
-                                <div className="space-y-2">
-                                    {creator.audienceInfo?.primaryGender && (
-                                        <p>
-                                            <span className="font-medium">Primary:</span>{" "}
-                                            {creator.audienceInfo.primaryGender}
-                                        </p>
-                                    )}
-
-                                    {creator.audienceInfo?.secondaryGender && (
-                                        <p className="text-gray-600">
-                                            <span className="font-medium">Secondary:</span>{" "}
-                                            {creator.audienceInfo.secondaryGender}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* TOP COUNTRIES */}
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border">
-                                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-                                    Top Countries
-                                </h3>
-
-                                <div className="space-y-2">
-                                    {creator.audienceInfo?.primaryLocation && (
-                                        <p>
-                                            {creator.audienceInfo.primaryLocation}
-                                            <span className="ml-2 text-sm text-gray-500">
-                                                ({creator.audienceInfo.primaryPercentage})
-                                            </span>
-                                        </p>
-                                    )}
-
-                                    {creator.audienceInfo?.secondaryLocation && (
-                                        <p className="text-gray-600">
-                                            {creator.audienceInfo.secondaryLocation}
-                                            <span className="ml-2 text-sm">
-                                                ({creator.audienceInfo.secondaryPercentage})
-                                            </span>
-                                        </p>
-                                    )}
-
-                                    {creator.audience?.audienceLocations
-                                        ?.filter(
-                                            (loc) =>
-                                                loc !== creator.audienceInfo?.primaryLocation &&
-                                                loc !== creator.audienceInfo?.secondaryLocation
-                                        )
-                                        .map((loc, idx) => (
-                                            <p key={idx} className="text-gray-500 text-sm">
-                                                {loc}
-                                            </p>
-                                        ))}
-                                </div>
-                            </div>
-
                         </div>
                     )}
                 </div>

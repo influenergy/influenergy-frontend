@@ -27,6 +27,9 @@ import TikTokIcon from "@/components/icons/tiktok";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import InviteCreatorModal from "@/components/brand/InviteCreatorModal";
 import ExploreCreatorCard from "@/components/brand/ExploreCreatorCard";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 // Filters data
 const FollowerRanges = [
@@ -136,12 +139,18 @@ export default function ExploreCreators() {
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [niches, setNiches] = useState<string[]>([]);
     const [followers, setFollowers] = useState<string[]>([]);
+
+    const searchParams = useSearchParams();
+    const sortFromUrl = searchParams.get("sort") || "";
+    const router = useRouter();
+
     const [filters, setFilters] = useState({
-        sort: "", // "recentlyCollaborated" | "favorites"
+        sort: sortFromUrl, // 👈 key change
         platform: "",
         followers: "",
         niche: "",
     });
+
     const togglePlatform = (p: string) => {
         setPlatforms((prev) =>
             prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
@@ -233,10 +242,16 @@ export default function ExploreCreators() {
 
     // filter handlers
     const handleSort = (sort: string) => {
-        if (sort === filters.sort) {
-            setFilters((prev) => ({ ...prev, sort: "" }))
+        const newSort = sort === filters.sort ? "" : sort;
+
+        setFilters((prev) => ({ ...prev, sort: newSort }));
+
+        if (newSort) {
+            router.replace(`/dashboard/brand/explore?sort=${newSort}`);
+        } else {
+            router.replace(`/dashboard/brand/explore`);
         }
-        else setFilters((prev) => ({ ...prev, sort }));
+
         refetch();
     };
 

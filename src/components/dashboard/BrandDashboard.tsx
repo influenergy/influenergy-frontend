@@ -56,6 +56,10 @@ type CollaborationItem = {
     updatedAt?: string;
 };
 
+type ActiveCampaignItem = {
+    campaignDetails: CampaignBrief;
+};
+
 
 interface FavCreators {
     _id: string,
@@ -131,19 +135,21 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     }, []);
 
 
-    const { data: campaigns = [], isLoading,
-        isError, } = useQuery({
-            queryKey: ["campaigns", "Active", 3],
-            queryFn: () => postApi.getCollabByStatus("Active", 3),
-            select: (res) => res.campaigns || [],
-        });
-
+    const {
+        data: campaigns = [],
+        isLoading,
+        isError,
+    } = useQuery<ActiveCampaignItem[]>({
+        queryKey: ["campaigns", "Active", 3],
+        queryFn: async () => {
+            const res = await postApi.getCollabByStatus("Active", 3);
+            return res.campaigns ?? [];
+        },
+    });
 
     if (loading) {
         return <BrandDashboardSkeleton />;
     }
-
-    // console.log("campaigns-->",campaigns);
 
     return (
         <div className="flex flex-col gap-4">
@@ -222,7 +228,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             Ongoing Collaborations
                         </h1>
                         <p
-                            onClick={() => router.push("/dashboard/brand/explore")}
+                            onClick={() => router.push("/dashboard/brand/application-inbox?tab=active")}
                             className="text-primary text-base font-semibold cursor-pointer hover:underline"
                         >
                             View All
@@ -414,7 +420,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                 </h1>
 
                                 <p
-                                    onClick={() => router.push("/dashboard/brand/explore")}
+                                    onClick={() => router.push("/dashboard/brand/explore?sort=favorites")}
                                     className="text-primary font-semibold cursor-pointer hover:underline"
                                 >
                                     View All
@@ -445,7 +451,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                 </h1>
 
                                 <p
-                                    onClick={() => router.push("/dashboard/brand/explore")}
+                                    onClick={() => router.push("/dashboard/brand/explore?sort=recentlyCollaborated")}
                                     className="text-primary font-semibold cursor-pointer hover:underline"
                                 >
                                     View All

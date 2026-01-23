@@ -1,13 +1,13 @@
 "use client";
 import { AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState, lazy, Suspense } from "react";
-// import { useFindAiCampaignsList } from "@/hooks/useFindAi";
+import { useState, lazy, Suspense, useEffect } from "react";
 import Loader from "@/components/brand/Loader";
 import ShortlistedApplications from "@/components/brand/ShortlistedApplications";
 import { CampaignManagerGridSkeleton } from "@/components/Skeletons/CampaignManagerGridSkeleton";
 
 import { Info } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const AIFindTab = lazy(() => import("@/components/brand/AIFindTab"));
 const ApplicationsReceived = lazy(() => import("@/components/brand/ApplicationsReceived"));
@@ -27,59 +27,77 @@ const TabLoading = () => (
     <CampaignManagerGridSkeleton count={6} />
   </div>
 );
+
 export default function Page() {
-  const [activeTab, setActiveTab] = useState("Waiting Approval");
-  // const { data: campaigns, isLoading, isError } = useFindAiCampaignsList();
+  const DEFAULT_TAB = "Waiting Approval";
+  const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
 
-  const TabInfo = ({ text }: { text: string }) => (
-    <span className="relative group inline-flex">
-      <Info
-        size={14}
-        className="ml-1 text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300"
-      />
+  const searchParams = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
 
-      <span className="pointer-events-none absolute z-50 hidden group-hover:block w-64 rounded-md bg-black px-3 py-2 text-xs text-white shadow-lg -top-2 left-5">
-        {text}
+  const VALID_TABS = [
+    "Waiting Approval",
+    "active",
+    "completed",
+  ];
+
+  useEffect(() => {
+    if (tabFromUrl && tabFromUrl !== activeTab && VALID_TABS.includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
+
+  const TabInfo = ({ text }: { text: string }) => (
+    <span className="relative inline-flex items-center ml-0.5">
+      <span className="group relative">
+        <Info
+          size={14}
+          className="text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+        />
+        
+        <span className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute z-[100] w-56 sm:w-64 rounded-lg bg-gray-900 dark:bg-gray-800 px-3 py-2.5 text-xs leading-relaxed text-white shadow-xl bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-normal after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-[6px] after:border-transparent after:border-t-gray-900 dark:after:border-t-gray-800">
+          {text}
+        </span>
       </span>
     </span>
   );
 
   return (
     <AnimatePresence mode="wait">
-      <Tabs defaultValue="Waiting Approval" onValueChange={handleTabChange} className="dark:bg-background h-full">
-        <div className="overflow-auto sticky top-0 z-10 bg-background">
-          <TabsList className="w-full">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="dark:bg-background h-full">
+        <div className="overflow-visible sticky top-0 z-10 bg-background pb-2">
+          <TabsList className="w-full overflow-visible">
             <TabsTrigger
               value="Waiting Approval"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm overflow-visible"
             >
-              <span className="flex items-center gap-1">
-                Campaign Applications
-                {/* <TabInfo text="This section shows all campaign collaborations that need your action — review applications, send offers, or reject creators." /> */}
+              <span className="flex items-center gap-0.5 justify-center">
+                <span>Campaign Applications</span>
+                <TabInfo text="This section shows all campaign collaborations that need your action — review applications, send offers, or reject creators." />
               </span>
             </TabsTrigger>
 
             <TabsTrigger
               value="active"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm overflow-visible"
             >
-              <span className="flex items-center gap-1">
-                Active Collaboration
-                {/* <TabInfo text="This section shows ongoing campaign collaborations where creators are working and you can review their submitted work." /> */}
+              <span className="flex items-center gap-0.5 justify-center">
+                <span>Active Collaboration</span>
+                <TabInfo text="This section shows ongoing campaign collaborations where creators are working and you can review their submitted work." />
               </span>
             </TabsTrigger>
 
             <TabsTrigger
               value="completed"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm overflow-visible"
             >
-              <span className="flex items-center gap-1">
-                Completed Collaboration
-                {/* <TabInfo text="This section shows campaign collaborations that have been marked as completed by the brand." /> */}
+              <span className="flex items-center gap-0.5 justify-center">
+                <span>Completed Collaboration</span>
+                <TabInfo text="This section shows campaign collaborations that have been marked as completed." />
               </span>
             </TabsTrigger>
           </TabsList>
@@ -98,7 +116,7 @@ export default function Page() {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="active" className="w-full mt-0  pt-5 md:pt-8 mb-5 md:mb-10 dark:bg-background">
+        <TabsContent value="active" className="w-full mt-0 pt-5 md:pt-8 mb-5 md:mb-10 dark:bg-background">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "active" && <ActiveCollaborationTab />}
           </Suspense>

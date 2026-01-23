@@ -7,8 +7,12 @@ import {
   Calendar,
   Megaphone,
   Loader2,
+  MoreVertical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { postApi } from "@/services/postServices";
+import { useRouter } from "next/navigation";
+
 
 interface CampaignCardProps {
   campaign: any;
@@ -35,26 +39,50 @@ const CampaignCard = ({
 }: CampaignCardProps) => {
 
   const statusToShow = displayStatus ?? campaign.status;
-  
+  const router = useRouter();
+
   return (
-    <div className="border border-gray-300 rounded-lg p-5 hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col">
-      {/* Status */}
-      <div className="flex justify-end mb-3">
+    <div className="border border-gray-300 rounded-lg p-5 hover:shadow-lg transition-shadow dark:border-gray-700 flex flex-col cursor-pointer" onClick={() =>
+      router.push(`/dashboard/brand/posts/${campaign._id}`)
+    }>
+      {/* Status + Actions */}
+      <div className="flex justify-end items-center gap-2 mb-3 relative">
         <span
           className={`
-        px-2 py-1 rounded-full text-xs font-medium
-        ${statusToShow === "Ongoing"
+      px-2 py-1 rounded-full text-xs font-medium
+      ${statusToShow === "Ongoing"
               ? "bg-green-100 text-green-700"
               : statusToShow === "PUBLISHED"
                 ? "bg-green-100 text-green-700"
-                : "bg-gray-100 text-gray-700"
+                : "bg-yellow-200 text-yellow-700"
             }
     `}
         >
           {statusToShow}
         </span>
 
+        {/* 3-dot menu */}
+        {(statusToShow !== "DRAFT" && statusToShow !== "UNPUBLISHED") && <div className="relative group">
+          <button className="p-1 rounded-full hover:bg-gray-100">
+            <MoreVertical className="w-4 h-4 text-gray-500" />
+          </button>
+
+          {/* Tooltip / Dropdown */}
+          <div className="absolute right-0 top-6 z-10 hidden group-hover:block">
+            <div className="bg-white border border-gray-200 rounded-md shadow-md w-32">
+              <button
+                onClick={() =>
+                  onActionClick("CLOSED", campaign._id)
+                }
+                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 text-red-600"
+              >
+                Unpublish
+              </button>
+            </div>
+          </div>
+        </div>}
       </div>
+
 
       {/* Header */}
       <div className="flex gap-5 mb-3">
@@ -96,7 +124,7 @@ const CampaignCard = ({
       {/* Duration */}
       <div className="flex items-center gap-2 text-sm mb-2 text-muted-foreground">
         <Calendar className="w-4 h-4 text-primary" />
-        Open for a month
+        {campaign.deadline}
       </div>
 
       {/* Niches */}
