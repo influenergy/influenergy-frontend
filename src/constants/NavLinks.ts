@@ -114,11 +114,35 @@ const brandNav: NavItem[] = [
 
 const creatorProfileNav: NavItem[] = [
   {
-    href: "/user-profile",
-    icon: Settings,
-    label: "Account Settings",
-    slug: "account",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
+    slug: "dashboard",
   },
+  {
+    href: "/dashboard/creator/browse-campaigns",
+    icon: FolderSearch,
+    label: "Browse Campaigns",
+    slug: "campaigns",
+  },
+  // {
+  //   href: "/dashboard/creator/inbox",
+  //   icon: Mail,
+  //   label: "Educational Hub",
+  //   slug: "inbox",
+  // },
+  {
+    href: "/dashboard/creator/inbox",
+    icon: Mail,
+    label: "My Applications",
+    slug: "inbox",
+  },
+  // {
+  //   href: "/user-profile",
+  //   icon: Settings,
+  //   label: "Account Settings",
+  //   slug: "account",
+  // },
   // {
   //   href: "/user-profile/socials",
   //   icon: Link,
@@ -203,11 +227,11 @@ const brandProfileNav: NavItem[] = [
 
 export const navLinks: NavLinks = {
   creator: {
-    profile: creatorProfileNav,
+    profile: creatorNav,
     dashboard: creatorNav,
   },
   brand: {
-    profile: brandProfileNav,
+    profile: brandNav,
     dashboard: brandNav,
   },
 };

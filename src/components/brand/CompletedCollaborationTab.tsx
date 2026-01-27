@@ -212,6 +212,12 @@ export default function ApplicationsReceived() {
   //   router.push(`/dashboard/brand/application-inbox/${campaignId}`);
   // };
 
+  useEffect(() => {
+    if (campaigns.length > 0 && !selectedCampaignId) {
+      setSelectedCampaignId(campaigns[0].campaignId);
+    }
+  }, [campaigns, selectedCampaignId]);
+
   const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCampaignId(e.target.value);
   };
@@ -301,7 +307,7 @@ export default function ApplicationsReceived() {
 
       <div className="max-w-7xl mx-auto">
 
-        {applications.length > 0 && <div className="mb-6">
+        {campaigns.length > 0 && <div className="mb-6">
           <label className="block text-sm font-medium mb-2">
             Select Campaign
           </label>
@@ -358,8 +364,8 @@ export default function ApplicationsReceived() {
                     await handleStatusChange(app._id, nextStatus);
                   }
                 }}
-                isActiveCollaboration={isActiveTab}
-                videos={isActiveTab ? app.videos : undefined}
+                isActiveCollaboration={false}
+                videos={app.videos}
                 collaborationId={app._id}
                 expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
                 onApproveVideo={approveVideo}

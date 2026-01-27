@@ -309,7 +309,7 @@ export default function ApplicationsReceived() {
                                                 await handleStatusChange(app._id, nextStatus);
                                             }
                                         }}
-                                        isActiveCollaboration={isActiveTab}
+                                        isActiveCollaboration={true}
                                         videos={isActiveTab ? app.videos : undefined}
                                         collaborationId={app._id}
                                         expectedDeliverables={app?.campaignId?.expectedDeliverables || []}

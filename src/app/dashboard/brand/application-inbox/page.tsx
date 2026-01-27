@@ -142,7 +142,7 @@ const MyCampaignsPage = () => {
     if (error) {
         return (
             <ErrorState
-                title="Failed to load campaigns"
+                title="Failed to load Collaborations"
                 description={error}
                 onRetry={() => window.location.reload()}
                 fullPage
@@ -151,9 +151,9 @@ const MyCampaignsPage = () => {
     }
 
 
-    const filteredCampaigns = campaigns.filter((campaign) =>
-        campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // const filteredCampaigns = campaigns.filter((campaign) =>
+    //     campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
+    // );
 
     const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCampaignId(e.target.value);

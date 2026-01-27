@@ -14,6 +14,11 @@ import { useRouter } from "next/navigation";
 import { useParams, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
+import insta from "../../../../../../public/images/Insta.svg"
+import youtube from "../../../../../../public/images/Youtube.svg"
+import tiktok from "../../../../../../public/images/Tiktok.svg"
+
+
 
 import TikTokIcon from "@/components/icons/tiktok";
 import {
@@ -25,6 +30,7 @@ import {
     Mail,
     Share2,
 } from "lucide-react";
+import Image from "next/image";
 interface SocialLinks {
     primary?: { platform?: string; link?: string; followers?: number | string };
     secondary?: { platform?: string; link?: string; followers?: number | string };
@@ -102,6 +108,8 @@ const CreatorDetailsPage = () => {
     const status = searchParams.get("status");
     const collaborationId = searchParams.get('collaborationId') || '';
 
+    const ICON_SIZE = 40;
+
 
     useEffect(() => {
         const fetchCreator = async () => {
@@ -137,7 +145,7 @@ const CreatorDetailsPage = () => {
         }
         return age;
     };
-    
+
 
     const getSocialMediaIcon = (platform?: string) => {
         if (!platform) return <Share2 className="w-5 h-5" />;
@@ -174,6 +182,29 @@ const CreatorDetailsPage = () => {
                 return <Share2 className="w-5 h-5 text-gray-400" />;
         }
     };
+
+
+    const getSocialMediaIconPrimary = (platform?: string) => {
+        if (!platform) return <Share2 className="w-5 h-5" />;
+
+        const normalized = platform.toLowerCase().trim();
+
+        switch (normalized) {
+            case "instagram":
+                return <Image src={insta} alt="instagram" width={ICON_SIZE} height={ICON_SIZE} />;
+
+            case "youtube":
+            case "youtube reel":
+                return <Image src={youtube} alt="youtube" width={ICON_SIZE} height={ICON_SIZE} />;
+
+            case "tiktok":
+                return <Image src={tiktok} alt="tiktok" width={ICON_SIZE} height={ICON_SIZE} />;
+
+            default:
+                return <Share2 className="w-5 h-5" />;
+        }
+    };
+
 
     const formatNumber = (num?: number | string) => {
         if (!num) return "N/A";
@@ -441,41 +472,39 @@ const CreatorDetailsPage = () => {
 
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-5 flex flex-wrap md:flex-nowrap justify-between gap-4 w-full">
+                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-3 px-4 flex flex-nowrap justify-between gap-4 w-full overflow-x-auto">
 
                             {/* Average Views */}
                             {creator.averageView && (
-                                <div className="flex flex-col gap-1 border border-gray-200 dark:border-gray-700 rounded-xl px-5 py-4 min-w-[220px]">
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                                        <Eye className="w-4 h-4" />
-                                        Average Views
-                                    </p>
-                                    <p className="text-xl font-semibold text-gray-900 dark:text-white">
+                                <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl px-1 py-2 min-w-[320px]">
+                                    <p className="text-lg font-semibold text-gray-900 dark:text-white">
                                         {creator.averageView}
+                                    </p>
+                                    <p className="text-sm text-gray-700 dark:text-gray-400">
+                                        Average Views
                                     </p>
                                 </div>
                             )}
 
                             {/* Growth Rate */}
                             {creator.growthRate && (
-                                <div className="flex flex-col gap-1 border border-gray-200 dark:border-gray-700 rounded-xl px-5 py-4 min-w-[220px]">
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                                        <TrendingUp className="w-4 h-4" />
-                                        Growth Rate
-                                    </p>
+                                <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl min-w-[320px]">
                                     <p className="text-xl font-semibold text-gray-900 dark:text-white">
                                         {creator.growthRate}
+                                    </p>
+                                    <p className="text-sm text-gray-700 dark:text-gray-400">
+                                        Growth Rate
                                     </p>
                                 </div>
                             )}
 
-                            {/* Completed Campaigns (KEEP AS IS) */}
-                            <div className="flex flex-col gap-1 border border-gray-200 dark:border-gray-700 rounded-xl px-5 py-4 min-w-[220px]">
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Completed Campaigns
-                                </p>
+                            {/* Completed Campaigns */}
+                            <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl  min-w-[320px]">
                                 <p className="text-xl font-semibold text-gray-900 dark:text-white">
                                     {creator.completedCount}
+                                </p>
+                                <p className="text-sm text-gray-700 dark:text-gray-400">
+                                    Completed Campaigns
                                 </p>
                             </div>
 
@@ -510,8 +539,8 @@ const CreatorDetailsPage = () => {
                                         rel="noopener noreferrer"
                                         className="flex items-center gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                                     >
-                                        <div className="p-3 rounded-full bg-primary/10 dark:bg-primary/20">
-                                            {getSocialMediaIcon(creator.socialLinks.primary.platform)}
+                                        <div className="">
+                                            {getSocialMediaIconPrimary(creator.socialLinks.primary.platform)}
                                         </div>
 
                                         <div className="flex flex-col">
@@ -537,7 +566,7 @@ const CreatorDetailsPage = () => {
                                         className="flex items-center gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                                     >
                                         <div className="p-3 rounded-full bg-primary/10 dark:bg-primary/20">
-                                            {getSocialMediaIcon(creator.socialLinks.secondary.platform)}
+                                            {getSocialMediaIconPrimary(creator.socialLinks.secondary.platform)}
                                         </div>
 
                                         <div className="flex flex-col">

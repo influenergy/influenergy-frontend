@@ -9,6 +9,18 @@ import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
 import ErrorState from "@/components/common/ErrorState";
 import CampaignCard from "@/components/brand/CampaignCard";
+import { useQueryClient } from "@tanstack/react-query";
+
+
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAppSelector } from "@/store";
 
 interface Campaign {
     _id: string;
@@ -32,118 +44,193 @@ interface Modal {
     message: string;
 }
 
+
+const LIMIT = 6;
+const ALL_NICHES = "ALL";
+
 const MyCampaignsPage = () => {
-    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const user = useAppSelector((state) => state.auth.user);
+
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedNiche, setSelectedNiche] = useState("");
+
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+    const loadMoreRef = React.useRef<HTMLDivElement | null>(null);
+
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+    const router = useRouter();
+
+    const queryClient = useQueryClient();
+
+
     const [modal, setModal] = useState<Modal>({
         open: false,
         type: 'success',
         message: ''
     });
 
-    const router = useRouter();
-    const pathname = usePathname();
-
 
     // Fetch campaigns
+    // useEffect(() => {
+    //     const fetchCampaigns = async () => {
+    //         try {
+    //             setLoading(true);
+    //             setError(null);
+
+    //             const response = await postApi.getCampaigns();
+
+    //             if (!response || !response.status) {
+    //                 throw new Error("Failed to fetch campaigns");
+    //             }
+
+    //             setCampaigns(response.campaigns || []);
+    //         } catch (err) {
+    //             setError(err instanceof Error ? err.message : "Something went wrong");
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchCampaigns();
+    // }, []);
+
+
     useEffect(() => {
-        const fetchCampaigns = async () => {
-            try {
-                setLoading(true);
-                setError(null);
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+        }, 500); // ⏳ 500ms debounce
 
-                const response = await postApi.getCampaigns();
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
 
-                if (!response || !response.status) {
-                    throw new Error("Failed to fetch campaigns");
-                }
 
-                setCampaigns(response.campaigns || []);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : "Something went wrong");
-            } finally {
-                setLoading(false);
+
+    const {
+        data,
+        isLoading,
+        isError,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
+        queryKey: ["campaigns", debouncedSearch, selectedNiche],
+        enabled: !!user?._id,
+
+        initialPageParam: 1,
+
+        queryFn: async ({ pageParam }) => {
+            const res = await postApi.getCampaigns({
+                page: pageParam as number,
+                limit: LIMIT,
+                search: debouncedSearch,
+                niche: selectedNiche || undefined,
+            });
+
+            if (!res?.status) {
+                throw new Error(res?.message || "Failed to fetch campaigns");
             }
-        };
 
-        fetchCampaigns();
-    }, []);
+            return {
+                campaigns: res.campaigns.campaigns,
+                nextPage: res.campaigns.hasMore
+                    ? (pageParam as number) + 1
+                    : undefined,
+            };
+        },
+
+        getNextPageParam: (lastPage) => lastPage.nextPage,
+        staleTime: 1000 * 60 * 2,
+    });
+
+
+    const campaigns =
+        data?.pages.flatMap((page) => page.campaigns) ?? [];
+
+    /* Infinite scroll */
+    useEffect(() => {
+        if (!loadMoreRef.current || !hasNextPage) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasNextPage) {
+                    fetchNextPage();
+                }
+            },
+            { rootMargin: "300px" }
+        );
+
+        observer.observe(loadMoreRef.current);
+
+        return () => observer.disconnect();
+    }, [fetchNextPage, hasNextPage]);
+
 
 
     const handleCampaignAction = async (status: string, campaignId: string) => {
         if (status === "PUBLISHED") {
             router.push(`/dashboard/brand/posts/${campaignId}`);
-        } else if (status === "CLOSED") {
-            try {
-                setUpdatingId(campaignId);
-                setUpdatingStatus("UNPUBLISHED");
+            return;
+        }
 
-                await postApi.changeCampaignStatus(campaignId, "UNPUBLISHED");
+        const newStatus = status === "CLOSED" ? "UNPUBLISHED" : "PUBLISHED";
 
-                // Update local state
-                setCampaigns(prevCampaigns =>
-                    prevCampaigns.map(campaign =>
-                        campaign._id === campaignId
-                            ? { ...campaign, status: "UNPUBLISHED" }
-                            : campaign
-                    )
-                );
+        try {
+            setUpdatingId(campaignId);
+            setUpdatingStatus(newStatus);
 
-                setModal({
-                    open: true,
-                    type: "success",
-                    message: "Campaign unpublished successfully!",
-                });
-            } catch (error: any) {
-                const errorMessage = error?.response?.data?.message || error?.message || "Failed to publish campaign. Please try again.";
-                setModal({
-                    open: true,
-                    type: "error",
-                    message: errorMessage,
-                });
-            } finally {
-                setUpdatingId(null);
-                setUpdatingStatus(null);
-            }
-        } else {
-            // Publish the draft campaign
-            try {
-                setUpdatingId(campaignId);
-                setUpdatingStatus("PUBLISHED");
+            // 🔥 OPTIMISTIC UI UPDATE
+            queryClient.setQueryData(
+                ["campaigns", debouncedSearch, selectedNiche],
+                (oldData: any) => {
+                    if (!oldData) return oldData;
 
-                await postApi.changeCampaignStatus(campaignId, "PUBLISHED");
+                    return {
+                        ...oldData,
+                        pages: oldData.pages.map((page: any) => ({
+                            ...page,
+                            campaigns: page.campaigns.map((campaign: any) =>
+                                campaign._id === campaignId
+                                    ? { ...campaign, status: newStatus }
+                                    : campaign
+                            ),
+                        })),
+                    };
+                }
+            );
 
-                // Update local state
-                setCampaigns(prevCampaigns =>
-                    prevCampaigns.map(campaign =>
-                        campaign._id === campaignId
-                            ? { ...campaign, status: "PUBLISHED" }
-                            : campaign
-                    )
-                );
+            // 🔁 API call
+            await postApi.changeCampaignStatus(campaignId, newStatus);
 
-                setModal({
-                    open: true,
-                    type: "success",
-                    message: "Campaign published successfully!",
-                });
-            } catch (error: any) {
-                const errorMessage = error?.response?.data?.message || error?.message || "Failed to publish campaign. Please try again.";
-                setModal({
-                    open: true,
-                    type: "error",
-                    message: errorMessage,
-                });
-            } finally {
-                setUpdatingId(null);
-                setUpdatingStatus(null);
-            }
+            setModal({
+                open: true,
+                type: "success",
+                message:
+                    newStatus === "PUBLISHED"
+                        ? "Campaign published successfully!"
+                        : "Campaign unpublished successfully!",
+            });
+        } catch (error: any) {
+            // ❌ ROLLBACK on error
+            queryClient.invalidateQueries({
+                queryKey: ["campaigns"],
+            });
+
+            setModal({
+                open: true,
+                type: "error",
+                message:
+                    error?.response?.data?.message ||
+                    error?.message ||
+                    "Failed to update campaign. Please try again.",
+            });
+        } finally {
+            setUpdatingId(null);
+            setUpdatingStatus(null);
         }
     };
+
 
     const closeModal = () => {
         setModal({
@@ -154,47 +241,32 @@ const MyCampaignsPage = () => {
     };
 
     // Loading state
-    if (loading) {
+    if (isLoading) {
         return (
-            <div className="w-full h-full p-[2%] dark:bg-background">
-                <div className="max-w-7xl mx-auto">
-                    {/* Header Skeleton */}
-                    <div className="mb-6 space-y-2 animate-pulse">
-                        <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded" />
-                        <div className="h-4 w-80 bg-gray-200 dark:bg-gray-600 rounded" />
-                    </div>
-
-                    {/* Search Skeleton */}
-                    <div className="mb-6">
-                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse" />
-                    </div>
-
-                    {/* Campaign Cards Skeleton */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {Array.from({ length: 6 }).map((_, index) => (
-                            <CampaignSkeleton key={index} />
-                        ))}
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Array.from({ length: 6 }).map((_, i) => (
+                    <CampaignSkeleton key={i} />
+                ))}
             </div>
         );
     }
 
+
     // Error state
-    if (error) {
+    if (isError) {
         return (
             <ErrorState
                 title="Failed to load campaigns"
-                description={error}
+                description={(error as Error).message}
                 onRetry={() => window.location.reload()}
                 fullPage
             />
         );
     }
 
-    const filteredCampaigns = campaigns.filter((campaign) =>
-        campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+
+    const filteredCampaigns = data?.pages.flatMap((page) => page.campaigns) ?? [];
+
 
     return (
         <div className="w-full h-full p-[2%] dark:bg-background">
@@ -251,19 +323,47 @@ const MyCampaignsPage = () => {
                     <NewCampaignButton />
                 </div>
 
-                <div className="mb-6">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <div className="mb-6 flex flex-col md:flex-row gap-3">
+                    {/* Search */}
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
                             type="search"
                             placeholder="Search campaigns..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:border-gray-700"
+                            className="w-full pl-10 pr-4 py-2 border rounded-md"
                         />
                     </div>
 
+                    {/* Niche Select */}
+                    <Select
+                        value={selectedNiche}
+                        onValueChange={(value) =>
+                            setSelectedNiche(value === ALL_NICHES ? "" : value)
+                        }
+                    >
+                        <SelectTrigger className="w-full md:w-56">
+                            <SelectValue placeholder="Select niche" />
+                        </SelectTrigger>
 
+                        <SelectContent>
+                            <SelectItem value={ALL_NICHES}>All Niches</SelectItem>
+
+                            <SelectItem value="AI">AI</SelectItem>
+                            <SelectItem value="Beauty & Care">Beauty & Care</SelectItem>
+                            <SelectItem value="Business & Finance">Business & Finance</SelectItem>
+                            <SelectItem value="Fashion & Style">Fashion & Style</SelectItem>
+                            <SelectItem value="Food & Drinks">Food & Drinks</SelectItem>
+                            <SelectItem value="Gaming">Gaming</SelectItem>
+                            <SelectItem value="Health & Wellness">Health & Wellness</SelectItem>
+                            <SelectItem value="Lifestyle">Lifestyle</SelectItem>
+                            <SelectItem value="Sports & Fitness">Sports & Fitness</SelectItem>
+                            <SelectItem value="Tech">Tech</SelectItem>
+                            <SelectItem value="Travel">Travel</SelectItem>
+                            <SelectItem value="Others">Others</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Empty State */}
@@ -296,6 +396,14 @@ const MyCampaignsPage = () => {
                         ))}
                     </div>
                 )}
+
+                {isFetchingNextPage && (
+                    <div className="flex justify-center py-6">
+                        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                    </div>
+                )}
+
+                <div ref={loadMoreRef} />
             </div>
         </div>
     );

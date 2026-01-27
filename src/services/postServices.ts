@@ -46,16 +46,28 @@ export const postApi = {
       console.error("Error updating ad post:", error);
       throw error;
     }
-  }
-  ,
-  getCampaigns: async () => {
-    try {
-      const response = await api.get("/brand/get-campaigns");
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching campaigns:", error);
-      throw error;
-    }
+  },
+  getCampaigns: async ({
+    page,
+    limit,
+    search,
+    niche,
+  }: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    niche?: string;
+  } = {}) => {
+    const response = await api.get("/brand/get-campaigns", {
+      params: {
+        ...(page && { page }),
+        ...(limit && { limit }),
+        ...(search && { search }),
+        ...(niche && { niche }),
+      },
+    });
+
+    return response.data;
   },
 
   // Get a single campaign by ID
@@ -121,14 +133,16 @@ export const postApi = {
       throw error;
     }
   },
-  getAllCampaigns: async () => {
-    try {
-      const response = await api.get(`/creator/getAllCampaign`);
-      return response.data;
-    } catch (error) {
-      console.error("Error copying campaign:", error);
-      throw error;
-    }
+  getAllCampaigns: async ({
+    page = 1,
+    limit = 6,
+    search = "",
+    niche = "",
+  }) => {
+    const response = await api.get(`/creator/getAllCampaign`, {
+      params: { page, limit, search, niche },
+    });
+    return response.data;
   },
   copyCampaign: async (id: string, newName: string) => {
     try {
