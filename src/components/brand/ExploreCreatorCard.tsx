@@ -118,8 +118,7 @@ const ExploreCreatorCard = ({
             className={`
     flex flex-col bg-white rounded-2xl border shadow-sm
     transition-all duration-300 cursor-pointer
-    ${isActive ? "scale-105 ring-2 ring-primary z-20" : ""}
-    ${someActive && !isActive ? "opacity-40" : "hover:scale-105"}
+    
   `}
         >
             {/* IMAGE */}

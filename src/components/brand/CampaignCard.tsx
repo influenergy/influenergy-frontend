@@ -62,7 +62,7 @@ const CampaignCard = ({
         </span>
 
         {/* 3-dot menu */}
-        {(statusToShow !== "DRAFT" && statusToShow !== "UNPUBLISHED") && <div className="relative group">
+        {(statusToShow !== "DRAFT" && statusToShow !== "UNPUBLISHED" && user !== "creator") && <div className="relative group">
           <button className="p-1 rounded-full hover:bg-gray-100">
             <MoreVertical className="w-4 h-4 text-gray-500" />
           </button>
@@ -158,10 +158,10 @@ const CampaignCard = ({
       <div className="mt-4 pt-4">
         <Button
           className="w-full"
-          onClick={() =>
-            onActionClick(campaign.status, campaign._id)
-          }
-          disabled={isUpdating}
+          onClick={(e) => {
+            e.stopPropagation(); // 🚨 THIS IS THE KEY
+            onActionClick(campaign.status, campaign._id);
+          }}
         >
           {isUpdating ? (
             <>

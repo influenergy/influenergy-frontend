@@ -60,6 +60,8 @@ export default function ApplicationsReceived() {
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
     const params = useParams();
     const searchParams = useSearchParams();
+    const campaignIdFromUrl = searchParams.get("campaignId");
+
 
     const isActiveTab = true;
 
@@ -97,10 +99,25 @@ export default function ApplicationsReceived() {
 
 
     useEffect(() => {
+        // Priority 1: campaignId from URL
+        if (campaignIdFromUrl) {
+            setSelectedCampaignId(campaignIdFromUrl);
+            return;
+        }
+
+        // Priority 2: fallback to first campaign
         if (campaigns.length > 0 && !selectedCampaignId) {
             setSelectedCampaignId(campaigns[0].campaignId);
         }
-    }, [campaigns, selectedCampaignId]);
+    }, [campaignIdFromUrl, campaigns]);
+
+
+    useEffect(() => {
+        if (campaignIdFromUrl && selectedCampaignId) {
+            router.replace("/dashboard/brand/application-inbox?tab=active");
+        }
+    }, [selectedCampaignId]);
+
 
 
 
@@ -235,7 +252,7 @@ export default function ApplicationsReceived() {
 
             <div className="max-w-7xl mx-auto">
 
-                <div className="mb-6">
+                {applications.length > 0 && <div className="mb-6">
                     <label className="block text-sm font-medium mb-2">
                         Select Campaign
                     </label>
@@ -245,70 +262,70 @@ export default function ApplicationsReceived() {
                         onChange={handleCampaignSelect}
                         className="w-full max-w-md px-4 py-2 border border-gray-400 rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     >
-                        <option value="">-- Select a campaign --</option>
-
                         {campaigns.map((campaign: any) => (
                             <option key={campaign._id} value={campaign.campaignId}>
                                 {campaign.campaignTitle}
                             </option>
                         ))}
                     </select>
-                </div>
+                </div>}
 
-                {/* Campaign Cards */}
-                {!hasSelectedCampaign ? (
-                    /* NO CAMPAIGN SELECTED */
-                    <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
-                        <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
-                            Select a campaign to view collaborations
-                        </p>
-                        <p className="text-gray-400 dark:text-gray-500 text-sm">
-                            Choose a campaign from the dropdown above to see applications or active collaborations.
-                        </p>
-                    </div>
-                ) : applications.length === 0 ? (
-                    /* CAMPAIGN SELECTED BUT NO DATA */
-                    <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
-                        <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
-                            No {isActiveTab ? "active collaborations" : "applications"} found for this campaign.
-                        </p>
-                        <p className="text-gray-400 dark:text-gray-500 text-sm">
-                            {isActiveTab
-                                ? "Active collaborations will appear here once creators start working."
-                                : "Applications will appear here once influencers apply."}
-                        </p>
-                    </div>
-                ) : (
-                    /* DATA EXISTS */
-                    <div className="mt-6 space-y-4">
-                        {applications.map((app: Application) => (
-                            <CreatorCard
-                                key={app._id}
-                                creator={app.creatorId}
-                                status={app.status}
-                                coverMessage={app.coverMessage}
-                                onAction={async (nextStatus) => {
-                                    if (nextStatus === "Payment") {
-                                        await handlePayNow(app);
-                                    } else {
-                                        await handleStatusChange(app._id, nextStatus);
-                                    }
-                                }}
-                                isActiveCollaboration={isActiveTab}
-                                videos={isActiveTab ? app.videos : undefined}
-                                collaborationId={app._id}
-                                expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
-                                onApproveVideo={approveVideo}
-                                onRequestChanges={requestVideoChanges}
-                                isProcessing={
-                                    isApproving ||
-                                    isDeclining ||
-                                    actionLoadingId === app._id
-                                }
-                                onCompleteCollaboration={handleCompleteCollaboration}
-                            />
-                        ))}
-                    </div>
+                {/* Campaign Cards - Only show when NOT loading */}
+                {!isLoading && (
+                    <>
+                        {applications.length === 0 ? (
+                            /* CAMPAIGN SELECTED BUT NO DATA */
+                            <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+                                <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+                                    No active collaborations yet
+                                </p>
+                                <p className="text-gray-400 dark:text-gray-500 text-sm">
+                                    Active collaborations will appear here once creators accept offers and start working on campaign deliverables.
+                                </p>
+                            </div>
+                        ) : !hasSelectedCampaign ? (
+                            /* NO CAMPAIGN SELECTED */
+                            <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+                                <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+                                    Select a campaign to view collaborations
+                                </p>
+                                <p className="text-gray-400 dark:text-gray-500 text-sm">
+                                    Choose a campaign from the dropdown above to see applications or active collaborations.
+                                </p>
+                            </div>
+                        ) : (
+                            /* DATA EXISTS */
+                            <div className="mt-6 space-y-4">
+                                {applications.map((app: Application) => (
+                                    <CreatorCard
+                                        key={app._id}
+                                        creator={app.creatorId}
+                                        status={app.status}
+                                        coverMessage={app.coverMessage}
+                                        onAction={async (nextStatus) => {
+                                            if (nextStatus === "Payment") {
+                                                await handlePayNow(app);
+                                            } else {
+                                                await handleStatusChange(app._id, nextStatus);
+                                            }
+                                        }}
+                                        isActiveCollaboration={isActiveTab}
+                                        videos={isActiveTab ? app.videos : undefined}
+                                        collaborationId={app._id}
+                                        expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
+                                        onApproveVideo={approveVideo}
+                                        onRequestChanges={requestVideoChanges}
+                                        isProcessing={
+                                            isApproving ||
+                                            isDeclining ||
+                                            actionLoadingId === app._id
+                                        }
+                                        onCompleteCollaboration={handleCompleteCollaboration}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </>
                 )}
 
             </div>

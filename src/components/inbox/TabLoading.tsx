@@ -8,3 +8,4 @@ export const TabLoading = () => (
     </div>
   </div>
 );
+ 

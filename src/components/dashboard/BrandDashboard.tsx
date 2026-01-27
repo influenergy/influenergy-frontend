@@ -280,7 +280,11 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     campaign={campaign.campaignDetails}
                                     displayStatus="Ongoing"
                                     user="brand"
-                                    onActionClick={() => { }}
+                                    onActionClick={() =>
+                                        router.push(
+                                            `/dashboard/brand/application-inbox?tab=active&campaignId=${campaign.campaignDetails._id}`
+                                        )
+                                    }
                                     actionLabel={{
                                         published: "View Applications",
                                         draft: "View Applications",

@@ -38,9 +38,8 @@ export default function StatusModal({
 
         {/* Title */}
         <h2
-          className={`text-center text-xl font-semibold ${
-            isSuccess ? "text-green-600" : "text-red-600"
-          }`}
+          className={`text-center text-xl font-semibold ${isSuccess ? "text-green-600" : "text-red-600"
+            }`}
         >
           {isSuccess ? "Success!" : "Something went wrong"}
         </h2>
@@ -56,12 +55,8 @@ export default function StatusModal({
             onClick={onClose}
             className={`
               w-full rounded-xl py-2.5 text-sm font-medium
-              transition-all duration-200
-              ${
-                isSuccess
-                  ? "bg-green-600 text-white hover:bg-green-700"
-                  : "bg-red-600 text-white hover:bg-red-700"
-              }
+           duration-200
+              bg-primary hover:bg-indigo-700 text-white transition-colors
             `}
           >
             Okay

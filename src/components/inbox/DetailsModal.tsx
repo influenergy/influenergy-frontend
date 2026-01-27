@@ -28,6 +28,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Campaign, CampaignDetails } from "@/types/PostQuestionnaire";
+import TikTokIcon from "@/components/icons/tiktok";
 
 interface DetailsModalProps {
   open: boolean;
@@ -37,22 +38,38 @@ interface DetailsModalProps {
 }
 
 const getSocialMediaIcon = (platform?: string) => {
-  switch (platform?.toLowerCase()) {
+  if (!platform) return <Share2 className="w-5 h-5" />;
+
+  const normalized = platform.toLowerCase().trim();
+
+  switch (normalized) {
     case "instagram":
-      return <Instagram className="w-6 h-6 text-pink-500" />;
+      return <Instagram className="w-5 h-5 text-pink-500" />;
+
     case "youtube":
-      return <Youtube className="w-6 h-6 text-red-500" />;
+    case "youtube reel":
+      return <Youtube className="w-5 h-5 text-red-500" />;
+
     case "twitter":
     case "twitter / x":
-      return <Twitter className="w-6 h-6 text-sky-500" />;
+    case "x":
+      return <Twitter className="w-5 h-5 text-black" />;
+
     case "facebook":
-      return <Facebook className="w-6 h-6 text-blue-600" />;
+      return <Facebook className="w-5 h-5 text-blue-600" />;
+
     case "linkedin":
-      return <Linkedin className="w-6 h-6 text-blue-700" />;
+      return <Linkedin className="w-5 h-5 text-blue-700" />;
+
     case "newsletter":
-      return <Mail className="w-6 h-6 text-gray-600" />;
+    case "email":
+      return <Mail className="w-5 h-5 text-gray-600" />;
+
+    case "tiktok":
+      return <TikTokIcon size={20} />;
+
     default:
-      return <Share2 className="w-6 h-6 text-gray-500" />;
+      return <Share2 className="w-5 h-5 text-gray-400" />;
   }
 };
 

@@ -307,7 +307,7 @@ export default function ApplicationsReceived() {
 
       <div className="max-w-7xl mx-auto">
 
-        <div className="mb-6">
+        {applications.length > 0 && <div className="mb-6">
           <label className="block text-sm font-medium mb-2">
             Select Campaign
           </label>
@@ -317,7 +317,7 @@ export default function ApplicationsReceived() {
             onChange={handleCampaignSelect}
             className="w-full max-w-md px-4 py-2 border border-gray-400 rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="">-- Select a campaign --</option>
+            {/* <option value="">-- Select a campaign --</option> */}
 
             {campaigns.map((campaign: any) => (
               <option key={campaign._id} value={campaign.campaignId}>
@@ -325,10 +325,19 @@ export default function ApplicationsReceived() {
               </option>
             ))}
           </select>
-        </div>
+        </div>}
 
         {/* Campaign Cards */}
-        {!hasSelectedCampaign ? (
+        {applications.length === 0 ? (
+          /* CAMPAIGN SELECTED BUT NO DATA */
+          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+            <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+              No applications received yet
+            </p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm">
+              Applications from creators will appear here once they apply to this campaign.</p>
+          </div>
+        ) : !hasSelectedCampaign ? (
           /* NO CAMPAIGN SELECTED */
           <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
             <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
@@ -336,18 +345,6 @@ export default function ApplicationsReceived() {
             </p>
             <p className="text-gray-400 dark:text-gray-500 text-sm">
               Choose a campaign from the dropdown above to see applications or active collaborations.
-            </p>
-          </div>
-        ) : applications.length === 0 ? (
-          /* CAMPAIGN SELECTED BUT NO DATA */
-          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
-            <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
-              No {isActiveTab ? "active collaborations" : "applications"} found for this campaign.
-            </p>
-            <p className="text-gray-400 dark:text-gray-500 text-sm">
-              {isActiveTab
-                ? "Active collaborations will appear here once creators start working."
-                : "Applications will appear here once influencers apply."}
             </p>
           </div>
         ) : (

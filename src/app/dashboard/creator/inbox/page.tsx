@@ -11,6 +11,7 @@ import { Collaboration } from "@/types/Collaboration";
 import { pendingCollaborationCount, useAppSelector } from "@/store";
 import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "next/navigation";
+import { useCreatorNotificationCounts } from "@/hooks/useNotificationCounts";
 
 const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
   ssr: false,
@@ -25,6 +26,9 @@ const Page = () => {
   const DEFAULT_TAB = "Waiting Approval";
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
   const pendingCollabCount = useAppSelector(pendingCollaborationCount);
+
+  const { data: notificationCounts } = useCreatorNotificationCounts();
+
   const {
     data: campaignsData,
     isLoading,
@@ -56,45 +60,49 @@ const Page = () => {
       <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
         <div className="overflow-auto sticky top-0 z-10 bg-background">
           <TabsList className="w-full">
-            <TabsTrigger
-              value="Waiting Approval"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm relative"
-            >
-              <div className="flex items-center gap-1">
-                <span>All Opportunities</span>
-                {/* {pendingCollabCount !== 0 && (
-                  <Badge variant="destructive" className="pointer-events-none">
-                    {pendingCollabCount}
-                  </Badge>
-                )} */}
-              </div>
-            </TabsTrigger>
+            <TabsList className="w-full">
+              <TabsTrigger
+                value="Waiting Approval"
+                className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>All Opportunities</span>
+                  {notificationCounts?.allOpportunities > 0 && (
+                    <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                      {notificationCounts.allOpportunities}
+                    </span>
+                  )}
+                </div>
+              </TabsTrigger>
 
-            <TabsTrigger
-              value="Offer Accepted"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-            >
-              Accepted Collaboration
-            </TabsTrigger>
+              <TabsTrigger
+                value="Active"
+                className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>Ongoing Collaboration</span>
+                  {notificationCounts?.ongoingCollaboration > 0 && (
+                    <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                      {notificationCounts.ongoingCollaboration}
+                    </span>
+                  )}
+                </div>
+              </TabsTrigger>
 
-            <TabsTrigger
-              value="Active"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-            >
-              Ongoing Collaboration
-            </TabsTrigger>
-            <TabsTrigger
-              value="Completed"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-            >
-              Completed Collaboration
-            </TabsTrigger>
-            {/* <TabsTrigger
-              value="Payment"
-              className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-            >
-              Payment
-            </TabsTrigger> */}
+              <TabsTrigger
+                value="Completed"
+                className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+              >
+                <div className="flex items-center gap-1.5">
+                  <span>Completed Collaboration</span>
+                  {notificationCounts?.completedCollaboration > 0 && (
+                    <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                      {notificationCounts.completedCollaboration}
+                    </span>
+                  )}
+                </div>
+              </TabsTrigger>
+            </TabsList>
           </TabsList>
         </div>
 
@@ -260,11 +268,11 @@ const Page = () => {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background pb-3 md:pb-10 pt-5 md:pt-8 flex-1 h-full ">
+        <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
           <Suspense fallback={<TabLoading />}>
             {activeTab === "Completed" &&
               campaignsData?.collaborations?.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 gap-5 md:gap-10">
                   {campaignsData.collaborations.map(
                     (collaboration: Collaboration, index: number) => (
                       <InboxCard

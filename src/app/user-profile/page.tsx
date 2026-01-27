@@ -634,9 +634,9 @@ export default function Page() {
 
 
         {/* Complete Profile Section */}
-        {user && userType !== null && (
+        {/* {user && userType !== null && (
           <ProfileInfo user={user} userType={userType} />
-        )}
+        )} */}
       </div>
       {isPreviewOpen && (
         <div

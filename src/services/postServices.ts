@@ -180,6 +180,24 @@ export const postApi = {
       throw error;
     }
   },
+  getCreatorNotificationCounts: async () => {
+    try {
+      const response = await api.get(`/creator/notification-counts`);
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading post:", error);
+      throw error;
+    }
+  },
+  getBrandNotificationCounts: async () => {
+    try {
+      const response = await api.get(`/brand/notification-counts`);
+      return response.data;
+    } catch (error) {
+      console.error("Error uploading post:", error);
+      throw error;
+    }
+  },
   uploadVideoPost: async (data: FormData) => {
     try {
       const response = await api.post(`/creator/add_social_video`, data, {

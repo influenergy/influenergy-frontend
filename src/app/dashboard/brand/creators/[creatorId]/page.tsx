@@ -82,6 +82,7 @@ interface CreatorType {
     badge?: string;
     badgePrice?: string;
     email?: string;
+    completedCount?: string;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -136,8 +137,6 @@ const CreatorDetailsPage = () => {
         }
         return age;
     };
-
-    console.log("creator--->",creator);
     
 
     const getSocialMediaIcon = (platform?: string) => {
@@ -195,10 +194,6 @@ const CreatorDetailsPage = () => {
             setModalType('success');
             setModalMessage(`Successfully updated status to ${newStatus}!`);
             setShowModal(true);
-
-            // setTimeout(() => {
-            //     router.back();
-            // }, 2000);
 
         } catch (err: any) {
             setModalType('error');
@@ -346,16 +341,16 @@ const CreatorDetailsPage = () => {
                                         {creator.fullName}
                                     </h1>
 
-                                    {/* Stage Name */}
+                                    {/* Stage Name
                                     {creator.stageName && (
                                         <p className="text-sm text-primary font-medium truncate">
                                             aka "{creator.stageName}"
                                         </p>
-                                    )}
+                                    )} */}
 
                                     {/* Social Icons */}
                                     {(creator.socialLinks?.primary || creator.socialLinks?.secondary) && (
-                                        <div className="flex items-center gap-3 mt-1">
+                                        <div className="flex items-center mx-1">
                                             {/* Primary */}
                                             {creator.socialLinks?.primary?.link && (
                                                 <a
@@ -480,7 +475,7 @@ const CreatorDetailsPage = () => {
                                     Completed Campaigns
                                 </p>
                                 <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                                    20
+                                    {creator.completedCount}
                                 </p>
                             </div>
 

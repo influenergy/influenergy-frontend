@@ -266,7 +266,8 @@ export default function ExploreCreators() {
     // console.log(data,'data')
     const selectedFiltersCount = platforms.length + niches.length + followers.length;
 
-
+    console.log("datacre---->",data);
+    
     return (
         <div className="relative p-6">
             <div className="flex justify-between">
