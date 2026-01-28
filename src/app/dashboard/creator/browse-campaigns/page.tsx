@@ -38,6 +38,15 @@ const MyCampaignsPage = () => {
     const user = useAppSelector((state) => state.auth.user);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedNiche, setSelectedNiche] = useState("");
+    const [showApplyModal, setShowApplyModal] = useState(false);
+    const [coverMessage, setCoverMessage] = useState("");
+    const [creatorBudget, setCreatorBudget] = useState("");
+
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [submitError, setSubmitError] = useState("");
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [selectedCampaign, setSelectedCampaign] = useState("");
+    const [brandId, setBrandId] = useState("");
 
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const loadMoreRef = React.useRef<HTMLDivElement | null>(null);
@@ -111,6 +120,52 @@ const MyCampaignsPage = () => {
 
         return () => observer.disconnect();
     }, [fetchNextPage, hasNextPage]);
+
+
+    const handleSubmit = async () => {
+        if (!selectedCampaign) return;
+
+        if (!brandId) {
+            setSubmitError("Brand ID is missing");
+            return;
+        }
+
+        const payload = {
+            brandId: brandId,
+            // amount: Number(getMidAmount(selectedCampaign.budgetForCampaign)),
+            ...(coverMessage && { coverMessage }),
+            ...(creatorBudget && { creatorBudget }),
+            // ...(portfolioLink && { portfolioLink }),
+        };
+
+        try {
+            setSubmitLoading(true);
+            setSubmitError("");
+
+            const res = await postApi.createCollaboration(
+                selectedCampaign,
+                payload
+            );
+
+            if (!res?.status) {
+                throw new Error(res?.message || "Something went wrong");
+            }
+
+            // ✅ Close apply modal
+            setShowApplyModal(false);
+            setCoverMessage("");
+            // setPortfolioLink("");
+            setCreatorBudget("");
+
+            // ✅ Show success modal
+            setShowSuccess(true);
+
+        } catch (err: any) {
+            setSubmitError(err.response?.data?.message || err.message);
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
 
 
     /* Loading */
@@ -296,11 +351,12 @@ const MyCampaignsPage = () => {
                                     </span>
                                 ) : (
                                     <Button
-                                        onClick={() =>
-                                            router.push(
-                                                `/dashboard/creator/posts/${campaign._id}`
-                                            )
-                                        }
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedCampaign(campaign._id);
+                                            setBrandId(campaign.brandId);
+                                            setShowApplyModal(true);
+                                        }}
                                     >
                                         Apply
                                     </Button>
@@ -314,12 +370,96 @@ const MyCampaignsPage = () => {
 
                 {/* Bottom Loader */}
                 {isFetchingNextPage && (
-                    <div className="flex justify-center py-6">
+                    <div className="flex justify-center py-6 gap-3">
                         <Loader2 className="w-6 h-6 animate-spin text-primary" />
                         <p>Loading more...</p>
                     </div>
                 )}
             </div>
+
+
+            {showApplyModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-white dark:bg-background rounded-xl p-6 w-full max-w-lg relative">
+
+                        {/* Close */}
+                        <button
+                            onClick={() => setShowApplyModal(false)}
+                            className="absolute top-3 right-3 text-muted-foreground hover:text-foreground"
+                        >
+                            ✕
+                        </button>
+
+                        <h3 className="text-xl font-semibold mb-4">
+                            Apply to this Campaign
+                        </h3>
+
+                        <hr className="mb-4 border-gray-200 dark:border-gray-700" />
+
+                        <section className="space-y-4">
+                            {/* Error */}
+                            {submitError && (
+                                <p className="text-sm text-red-500">{submitError}</p>
+                            )}
+
+                            {/* Cover Message */}
+                            <textarea
+                                rows={4}
+                                value={coverMessage}
+                                onChange={(e) => setCoverMessage(e.target.value)}
+                                className="w-full rounded-xl border px-4 py-3 bg-background"
+                                placeholder="Write a short message..."
+                            />
+
+                            {/* Portfolio */}
+                            {/* <input
+                            type="string"
+                            value={creatorBudget}
+                            onChange={(e) => setCreatorBudget(e.target.value)}
+                            className="w-full rounded-xl border px-4 py-3 bg-background"
+                            placeholder="tell your expected buget"
+                          /> */}
+
+                            {/* Submit */}
+                            <button
+                                disabled={submitLoading}
+                                onClick={handleSubmit}
+                                className="
+                              w-full rounded-md bg-primary py-3
+                              text-white font-medium
+                              flex items-center justify-center gap-2
+                              disabled:opacity-60
+                            "
+                            >
+                                {submitLoading && (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                )}
+                                Submit Application
+                            </button>
+                        </section>
+                    </div>
+                </div>
+            )}
+
+
+            {showSuccess && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-white dark:bg-background rounded-xl py-10 px-10 w-full max-w-xl text-center">
+                        <p className="text-lg font-semibold mb-2">
+                            Application submitted successfully!
+                        </p>
+                        <p className="text-sm text-muted-foreground mb-4">
+                            The brand will review your application.
+                        </p>
+                        <button
+                            onClick={() => setShowSuccess(false)}
+                            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

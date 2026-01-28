@@ -220,7 +220,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
                 {/* Status Badge */}
                 <div className="flex-shrink-0 flex flex-col items-end gap-3">
-                  <span
+                  {data?.status !== "Interested" && <span
                     className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap ${data?.status === "Offered"
                       ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                       : data?.status === "Pending"
@@ -229,7 +229,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
                       }`}
                   >
                     {data?.status}
-                  </span>
+                  </span>}
 
                   {/* Action Buttons Based on Status - Right Side */}
                   {data?.status === "Offered" && (
@@ -282,6 +282,14 @@ const InboxCard: React.FC<InboxCardProps> = ({
                   </div>
                 )}
 
+                {data?.status === "Interested" && (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                      Your application is under review. The brand will respond soon.
+                    </p>
+                  </div>
+                )}
+
                 {data?.status === "Offer Accepted" && (
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
                     <p className="text-sm text-yellow-700 dark:text-yellow-400 text-center">
@@ -300,13 +308,19 @@ const InboxCard: React.FC<InboxCardProps> = ({
         open={isDetailsModalOpen}
         onOpenChange={setIsDetailsModalOpen}
         status={data?.status}
+        handleAccept={handleAccept}
+        handleDecline={handleDecline}
+        isAccepting={isAccepting}
+        isDeclining={declineLoading}
         data={data}
       />
+
 
       <CollaborationContractModal
         isOpen={contractModalOpen}
         onClose={handleContractModalClose}
-        handleCollaborate={handleAccept}
+        handleAccept={handleAccept}
+        handleDecline={handleDecline}
         isAccepting={isAccepting}
       />
 

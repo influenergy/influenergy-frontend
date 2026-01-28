@@ -73,16 +73,22 @@ const CreateCampaign = ({
         try {
             setIsSubmitting(true);
 
+            const raw = data.requirements?.trim();
+
+            const processedRequirements = raw
+                ? raw.includes(",") || raw.includes("\n")
+                    ? raw
+                        .replace(/\n+/g, ",")   // normalize new lines
+                        .split(",")             // split ONLY by commas now
+                        .map(r => r.trim())
+                        .filter(Boolean)
+                    : [raw]                     // paragraph → single item
+                : [];
+
             const processedData: CreateCampaignPayload = {
                 ...data,
-                requirements: data.requirements
-                    ? data.requirements
-                        .split(/\n|,/g)
-                        .map(r => r.trim()) 
-                        .filter(Boolean)
-                    : [],
+                requirements: processedRequirements,
             };
-            
 
             await postApi.createCampaign(processedData);
 
@@ -99,7 +105,6 @@ const CreateCampaign = ({
             setIsSubmitting(false);
         }
     };
-
 
     return (
         <div className="flex flex-col gap-4">
@@ -169,9 +174,9 @@ const CreateCampaign = ({
                                     : "Create Campaign"}
                         </Button>
 
-                        <Button type="button" variant="outline">
+                        {/* <Button type="button" variant="outline">
                             Cancel
-                        </Button>
+                        </Button> */}
                     </div>
 
                 </form>

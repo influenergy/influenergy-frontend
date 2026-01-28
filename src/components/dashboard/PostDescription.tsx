@@ -84,6 +84,7 @@ const PostDescription = ({ data, role }: PostDescriptionProps) => {
   const [creatorBudget, setCreatorBudget] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [showImageModal, setShowImageModal] = useState(false);
 
 
   const handleSubmit = async () => {
@@ -145,31 +146,41 @@ const PostDescription = ({ data, role }: PostDescriptionProps) => {
       </button>
 
       {/* Header */}
-      <div className="flex gap-6 items-center">
-        <Image
-          src={processedData.campaignImage}
-          alt="Campaign"
-          width={120}
-          height={120}
-          className="rounded-full border"
-        />
-
-        <div>
-          <h1 className="text-3xl font-semibold">
-            {processedData.campaignTitle}
-          </h1>
-          <p className="text-gray-500">{processedData.brandName}</p>
+      <div className="flex items-center gap-6">
+        {/* Image */}
+        <div
+          onClick={() => setShowImageModal(true)}
+          className="cursor-pointer shrink-0"
+        >
+          <Image
+            src={processedData.campaignImage}
+            alt="Campaign"
+            width={250}
+            height={250}
+            className="rounded-2xl border object-cover hover:scale-105 transition-transform"
+          />
         </div>
 
-        {(!processedData.applied && role === "CREATOR") && <Button
-          className="w-auto"
-          onClick={() => {
-            setShowApplyModal(true);
-          }}
-        >
-          Apply
-        </Button>}
+        {/* Title + Brand */}
+        <div className="flex-1">
+          <h1 className="text-3xl font-semibold text-gray-900">
+            {processedData.campaignTitle}
+          </h1>
+          <p className="text-gray-500 mt-1">
+            {processedData.brandName}
+          </p>
+        </div>
+
+        {/* Button with spacing */}
+        {!processedData.applied && role === "CREATOR" && (
+          <div className="ml-3">
+            <Button className="px-6 py-2 text-base">
+              Apply
+            </Button>
+          </div>
+        )}
       </div>
+
 
       {/* Description */}
       <section>
@@ -343,6 +354,27 @@ const PostDescription = ({ data, role }: PostDescriptionProps) => {
           </div>
         </div>
       )}
+
+      {showImageModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+          onClick={() => setShowImageModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl p-1 max-w-lg w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={processedData.campaignImage}
+              alt="Campaign Full"
+              width={600}
+              height={600}
+              className="rounded-xl object-contain w-full h-auto"
+            />
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

@@ -3,7 +3,10 @@ import * as yup from "yup";
 export const registerSchema = yup.object({
   fullName: yup
     .string()
-    .matches(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed")
+    .matches(
+      /^[A-Za-z\s.'-]+$/,
+      "Only letters, spaces, dots, hyphens and apostrophes are allowed"
+    )
     .min(2, "Full name must be at least 2 characters")
     .required("Required"),
   email: yup

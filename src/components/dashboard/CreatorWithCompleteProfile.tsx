@@ -62,27 +62,27 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
 
   const dispatch = useAppDispatch()
 
-  const fetchImprovementText = async () => {
-    try {
-      const improvementText = await userApi.getImprovementText();
-      return improvementText;
-    } catch (error) {
-      console.error("Error fetching improvement text:", error);
-      return "Unable to fetch improvement suggestions at this time.";
-    }
-  };
+  // const fetchImprovementText = async () => {
+  //   try {
+  //     const improvementText = await userApi.getImprovementText();
+  //     return improvementText;
+  //   } catch (error) {
+  //     console.error("Error fetching improvement text:", error);
+  //     return "Unable to fetch improvement suggestions at this time.";
+  //   }
+  // };
 
   const router = useRouter();
 
 
   useEffect(() => {
-    setImprovementLoading(true);
-    fetchImprovementText().then((text) => {
-      setImprovementText(text.data || "");
-      setCollaborationCount(text?.collaborationCount);
+    // setImprovementLoading(true);
+    // fetchImprovementText().then((text) => {
+    //   setImprovementText(text.data || "");
+    //   setCollaborationCount(text?.collaborationCount);
 
-      setImprovementLoading(false);
-    });
+    //   setImprovementLoading(false);
+    // });
 
     userApi
       .getCreatorHistoryData()

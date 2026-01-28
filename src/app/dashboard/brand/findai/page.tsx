@@ -99,7 +99,7 @@ export default function Page() {
                 <span>Active Collaboration</span>
                 <TabInfo text="This section shows ongoing campaign collaborations where creators are working and you can review their submitted work." />
                 {notificationCounts?.ongoingCollaboration > 0 && (
-                  <span className="absolute -top-1 -right-2 flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full z-20">
+                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full z-20">
                     {notificationCounts.ongoingCollaboration}
                   </span>
                 )}
@@ -115,7 +115,7 @@ export default function Page() {
                 <span>Completed Collaboration</span>
                 <TabInfo text="This section shows campaign collaborations that have been marked as completed." />
                 {notificationCounts?.completedCollaboration > 0 && (
-                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full z-20">
                     {notificationCounts.completedCollaboration}
                   </span>
                 )}

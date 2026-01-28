@@ -34,8 +34,13 @@ interface DetailsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   status: string;
+  handleDecline: () => void;
+  handleAccept: () => void;
+  isAccepting: boolean;
+  isDeclining: boolean;
   data: Collaboration;
 }
+
 
 const getSocialMediaIcon = (platform?: string) => {
   if (!platform) return <Share2 className="w-5 h-5" />;
@@ -77,22 +82,16 @@ export default function DetailsModal({
   open,
   onOpenChange,
   status,
+  handleAccept,
+  handleDecline,
+  isAccepting,
+  isDeclining,
   data,
 }: DetailsModalProps) {
   const campaign = data.campaignId || {};
   const collaborationId = data?._id;
 
   const [contractModalOpen, setContractModalOpen] = useState(false);
-
-  const { mutate: acceptCollaboration, isPending: isAccepting } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Active", {
-      onSuccess: () => onOpenChange(false),
-    });
-
-  const { mutate: declineCollaboration, isPending: declineLoading } =
-    useAcceptOrDeclineCollaboration(collaborationId, "Rejected", {
-      onSuccess: () => onOpenChange(false),
-    });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -237,28 +236,41 @@ export default function DetailsModal({
 
         {/* Footer */}
         {status === "Offered" && (
-          <div className="absolute bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-end gap-4">
-            <Button
-              onClick={() => setContractModalOpen(true)}
-              disabled={isAccepting || declineLoading}
-            >
-              {isAccepting ? "Accepting..." : "Accept"}
-            </Button>
+          <div className="absolute bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-between items-center">
 
-            <Button
-              variant="outline"
-              onClick={() => declineCollaboration()}
-              disabled={declineLoading || isAccepting}
-            >
-              {declineLoading ? "Rejecting..." : "Reject"}
-            </Button>
+            {/* Status text */}
+            {(isAccepting || isDeclining) && (
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {isAccepting ? "Accepting offer..." : "Rejecting offer..."}
+              </div>
+            )}
+
+            <div className="flex gap-4">
+              <Button
+                onClick={() => setContractModalOpen(true)}
+                disabled={isAccepting || isDeclining}
+              >
+                {isAccepting ? "Accepting..." : "Accept"}
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={handleDecline}
+                disabled={isDeclining || isAccepting}
+              >
+                {isDeclining ? "Rejecting..." : "Reject"}
+              </Button>
+            </div>
           </div>
         )}
+
 
         <CollaborationContractModal
           isOpen={contractModalOpen}
           onClose={() => setContractModalOpen(false)}
-          handleCollaborate={acceptCollaboration}
+          handleAccept={handleAccept}
+          handleDecline={handleDecline}
           isAccepting={isAccepting}
         />
       </DialogContent>

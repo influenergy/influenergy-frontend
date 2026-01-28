@@ -140,7 +140,7 @@ export default function DashboardPage() {
             userDetails?.data?.profileIcon && (
               <CreatorWithCompleteProfile fullName={userDetails?.data?.fullName} />
             )}
-        </>
+        </> 
       ) : (
         // Brand dashboard
         <div className="">

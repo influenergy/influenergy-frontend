@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card } from '../ui/card'
-import { ArrowRight } from "lucide-react";
+import { Lock } from "lucide-react";
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import CreatorWithCompleteProfileSkeleton from '../Skeletons/CreatorWithCompleteProfileSkeleton';
@@ -11,90 +11,94 @@ interface CreatorWithCompleteProfileProps {
     profileIcon?: string | null;
 }
 
+function NonVerifiedCreatorProfile({
+    fullName,
+}: CreatorWithCompleteProfileProps) {
 
-function NonVerifiedCreatorProfile({ fullName, isProfileCompleted, profileIcon }: CreatorWithCompleteProfileProps) {
-
-    if(!fullName){
+    if (!fullName) {
         return <CreatorWithCompleteProfileSkeleton />
     }
 
     return (
-        <div className="flex flex-col flex-1 lg:flex-col gap-6 pr-4">
-            <Card className="p-6 w-full flex gap-6">
-                <div className="">
-                    <video
-                        controls
-                        width="100%"
-                        height="100%"
-                        style={{ borderRadius: '12px', height: '100%', maxHeight: '100px', background: '#000' }}
-                    >
-                        {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" /> */}
-                        <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div className="flex-1 flex flex-col justify-center gap-2">
-                    <h2 className="text-xl font-semibold mb-2">
-                        Welcome, {fullName || "Creator"}!
-                    </h2>
-                    <p className="text-muted-foreground">
-                        Your creator dashboard is ready. Start exploring
-                        opportunities!
-                    </p>
-                </div>
-                {/* Video player for demo video */}
+        <div className="flex flex-col gap-6 pr-4">
+            {/* 🔒 LOCKED DASHBOARD */}
+            <div className="relative">
+                {/* BLURRED BACKGROUND */}
+                <div className="pointer-events-none select-none blur-[3px] opacity-90">
 
-            </Card>
-            <Card className='p-6 flex-1 h-full'>
-                <div className='bg-purple-gradient p-4 md:p-6  rounded-lg text-start text-white h-full flex flex-col items-start justify-center gap-4'>
-                    <h1 className='text-2xl mb-3 md:mb-5 lg:mb-10'>Let&apos;s get you discovered!</h1>
-
-                    {!isProfileCompleted && !profileIcon && <div className="">
-
-                        <p className="mb-3 md:mb-5 lg:mb-10 text-lg font-normal">
-                            Please complete the questionnaire and upload a profile image
-                            to personalize your dashboard and help us match
-                            you with the right brands.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                            <Link href="/questionnaire">
-                                <Button className='bg-transparent text-white border-white border-2 hover:bg-transparent p-2 py-4'>Complete Your Profile <ArrowRight /></Button>
-                            </Link>
+                    {/* STATS SECTION */}
+                    <div className="border border-gray-200 rounded-lg px-4 py-4 shadow-md">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {[1, 2, 3].map((_, idx) => (
+                                <div
+                                    key={idx}
+                                    className="flex items-center justify-between rounded-xl border bg-white p-5 shadow-sm"
+                                >
+                                    <div className="flex flex-col gap-2">
+                                        <div className="h-4 w-24 bg-gray-200 rounded" />
+                                        <div className="h-7 w-10 bg-gray-300 rounded" />
+                                    </div>
+                                    <div className="w-14 h-14 rounded-xl bg-gray-200" />
+                                </div>
+                            ))}
                         </div>
-                    </div>}
+                    </div>
 
-                    {!isProfileCompleted && profileIcon && <div className="">
-
-                        <p className="mb-3 md:mb-5 lg:mb-10 text-lg font-normal">
-                            Please complete the questionnaire to personalize your
-                            dashboard and help us match you with the right
-                            brands.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                            <Link href="/questionnaire">
-                                <Button className='bg-transparent text-white border-white border-2 hover:bg-transparent p-2 py-4'>Complete Your Profile <ArrowRight /></Button>
-                            </Link>
+                    {/* ONGOING COLLABS */}
+                    <div className="border border-gray-200 rounded-xl px-5 py-5 bg-white shadow-md">
+                        <div className="flex justify-between items-center mb-5">
+                            <div className="h-5 w-48 bg-gray-200 rounded" />
+                            <div className="h-4 w-16 bg-gray-200 rounded" />
                         </div>
-                    </div>}
-                    {isProfileCompleted && !profileIcon && <div className="">
-                        <h2 className="text-muted font-semibold mb-2">
-                            Add Your Profile Image
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {[1, 2, 3].map((_, idx) => (
+                                <div
+                                    key={idx}
+                                    className="h-40 rounded-xl bg-gray-100"
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* NEW OFFERS */}
+                    <div className="border border-gray-200 rounded-xl px-5 py-5 bg-white shadow-md">
+                        <div className="flex justify-between items-center mb-5">
+                            <div className="h-5 w-32 bg-gray-200 rounded" />
+                            <div className="h-4 w-16 bg-gray-200 rounded" />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {[1, 2, 3].map((_, idx) => (
+                                <div
+                                    key={idx}
+                                    className="h-40 rounded-xl bg-gray-100"
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* LOCK OVERLAY */}
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 rounded-xl">
+                    <div className="bg-white rounded-xl p-6 text-center max-w-sm">
+                        <Lock className="mx-auto mb-3 text-gray-700" />
+                        <h2 className="text-lg font-semibold mb-2">
+                            Dashboard Locked
                         </h2>
-                        <p className="mb-3 md:mb-5 lg:mb-10 text-lg font-normal">
-                            Please upload a profile image to complete your profile and
-                            get verified.
+                        <p className="text-sm text-gray-600 mb-4">
+                            Complete your profile to unlock full dashboard access
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                            <Link href="/user-profile">
-                                <Button className='bg-transparent text-white border-white border-2 hover:bg-transparent p-2 py-4'>Upload Profile Image <ArrowRight /></Button>
-                            </Link>
-                        </div>
-
-                    </div>}
+                        <Link href="/questionnaire">
+                            <Button className="w-full">
+                                Complete Profile
+                            </Button>
+                        </Link>
+                    </div>
                 </div>
-            </Card>
+            </div>
         </div>
     )
 }
 
-export default NonVerifiedCreatorProfile
+export default NonVerifiedCreatorProfile;

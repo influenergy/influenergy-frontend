@@ -138,6 +138,11 @@ export const postApi = {
     limit = 6,
     search = "",
     niche = "",
+  }: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    niche?: string;
   }) => {
     const response = await api.get(`/creator/getAllCampaign`, {
       params: { page, limit, search, niche },

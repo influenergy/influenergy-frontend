@@ -13,6 +13,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useInitiatePayment } from "@/hooks/usePayment";
 import StatusModal from "./StatusModal";
 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+
 interface CreatorProfile {
   socialLinks?: {
     primary?: {
@@ -57,22 +59,6 @@ interface Campaign {
 export default function ApplicationsReceived() {
   const router = useRouter();
 
-  // const {
-  //   // data: campaigns,
-  //   isLoading,
-  //   isError,
-  // } = useFindAiCampaignsList("Waiting Approval");
-
-  // const [status, setStatus] = useState("Waiting Approval");
-  // const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
-  // const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const campaignId = params.campaignId as string;
-  // const [updatingId, setUpdatingId] = useState<string | null>(null);
-  // const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
-
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
   // const [loadingApps, setLoadingApps] = useState(false);
 
@@ -88,32 +74,11 @@ export default function ApplicationsReceived() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const queryClient = useQueryClient();
+  const [selectedStatus, setSelectedStatus] = useState("All");
 
 
   const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
 
-  // Fetch campaigns
-  // useEffect(() => {
-  //   const fetchCampaigns = async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-
-  //       const response = await postApi.getCampaigns();
-  //       if (!response || !response.status) {
-  //         throw new Error("Failed to fetch campaigns");
-  //       }
-
-  //       setCampaigns(response.campaigns || []);
-  //     } catch (err) {
-  //       setError(err instanceof Error ? err.message : "Something went wrong");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchCampaigns();
-  // }, []);
 
   const {
     data: campaigns = [],
@@ -126,34 +91,16 @@ export default function ApplicationsReceived() {
   });
 
 
-
-
-  // const fetchApplications = async () => {
-  //   try {
-  //     setLoadingApps(true);
-
-  //     const response = await postApi.getCollabByCampaignIdForBrand(selectedCampaignId);
-
-  //     if (!response?.status) {
-  //       throw new Error("Failed to fetch applications");
-  //     }
-
-  //     setApplications(response.collaborations || []);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setLoadingApps(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!selectedCampaignId) {
-  //     setApplications([]);
-  //     return;
-  //   }
-
-  //   fetchApplications();
-  // }, [selectedCampaignId]);
+  const STATUS_OPTIONS = [
+    "All",
+    "Waiting Approval",
+    "Interested",
+    "Offered",
+    "Offer Accepted",
+    "Active",
+    "Completed",
+    "Rejected",
+  ];
 
 
   const {
@@ -223,6 +170,10 @@ export default function ApplicationsReceived() {
 
   const hasSelectedCampaign = Boolean(selectedCampaignId);
 
+  const filteredApplications = applications.filter((app: Application) => {
+    if (selectedStatus === "All") return true;
+    return app.status === selectedStatus;
+  });
 
   const handlePayNow = async (application: Application) => {
     try {
@@ -307,28 +258,56 @@ export default function ApplicationsReceived() {
 
       <div className="max-w-7xl mx-auto">
 
-        {applications.length > 0 && <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">
-            Select Campaign
-          </label>
+        {applications.length > 0 && (
+          <div className="mb-6 flex flex-wrap gap-4 items-end">
+            {/* Campaign Selector */}
+            <div className="flex-1 min-w-[240px]">
+              <label className="block text-sm font-medium mb-2">
+                Select Campaign
+              </label>
 
-          <select
-            value={selectedCampaignId}
-            onChange={handleCampaignSelect}
-            className="w-full max-w-md px-4 py-2 border border-gray-400 rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            {/* <option value="">-- Select a campaign --</option> */}
+              <select
+                value={selectedCampaignId}
+                onChange={handleCampaignSelect}
+                className="w-full px-4 py-2 border border-gray-400 rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                {campaigns.map((campaign: any) => (
+                  <option key={campaign._id} value={campaign.campaignId}>
+                    {campaign.campaignTitle}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            {campaigns.map((campaign: any) => (
-              <option key={campaign._id} value={campaign.campaignId}>
-                {campaign.campaignTitle}
-              </option>
-            ))}
-          </select>
-        </div>}
+            {/* Status Selector */}
+            <div className="w-[220px]">
+              <label className="block text-sm font-medium mb-2">
+                Filter by Status
+              </label>
+
+              <Select
+                value={selectedStatus}
+                onValueChange={(value) => setSelectedStatus(value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {STATUS_OPTIONS.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        )}
+
 
         {/* Campaign Cards */}
-        {applications.length === 0 ? (
+        {filteredApplications.length === 0 ? (
           /* CAMPAIGN SELECTED BUT NO DATA */
           <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
             <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
@@ -350,7 +329,7 @@ export default function ApplicationsReceived() {
         ) : (
           /* DATA EXISTS */
           <div className="mt-6 space-y-4">
-            {applications.map((app: Application) => (
+            {filteredApplications.map((app: Application) => (
               <CreatorCard
                 key={app._id}
                 creator={app.creatorId}

@@ -5,14 +5,15 @@ import { useAppSelector } from "@/store";
 interface CollaborationContractModalProps {
   isOpen: boolean;
   onClose: () => void;
-  handleCollaborate: () => void;
+  handleDecline: () => void;
+  handleAccept: () => void;
   isAccepting: boolean;
 }
 
 
 export const CollaborationContractModal: React.FC<
   CollaborationContractModalProps
-> = ({ isOpen, onClose, handleCollaborate, isAccepting }) => {
+> = ({ isOpen, onClose, handleDecline, handleAccept, isAccepting }) => {
   const [accepted, setAccepted] = useState(false);
 
   const userType = useAppSelector((state) => state.auth.userType);
@@ -20,17 +21,29 @@ export const CollaborationContractModal: React.FC<
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <div className="bg-white rounded-xl shadow-lg max-w-sm w-full p-6">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose} 
+    >
+      <div
+        className="bg-white rounded-xl shadow-lg max-w-sm w-full p-6"
+        onClick={(e) => e.stopPropagation()} 
+      >
         <h2 className="text-lg font-semibold text-gray-900">
           Accept Collaboration Contract
         </h2>
+
         <p className="text-sm text-gray-600 mt-2">
           Please read and accept the collaboration deal contract before proceeding.
         </p>
+
         <div className="mt-4">
           <a
-            href={userType === "creator" ? "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Master Brand Deal Contract (Creators).pdf" : "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Master Brand Deal Contract (Brands).pdf"}
+            href={
+              userType === "creator"
+                ? "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Master Brand Deal Contract (Creators).pdf"
+                : "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Master Brand Deal Contract (Brands).pdf"
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 text-sm underline"
@@ -55,15 +68,15 @@ export const CollaborationContractModal: React.FC<
         <div className="mt-6 flex justify-end gap-2">
           <Button
             variant="secondary"
+            onClick={handleDecline}
             disabled={isAccepting}
-            onClick={onClose}
           >
             Decline
           </Button>
 
           <Button
             type="button"
-            onClick={handleCollaborate}
+            onClick={handleAccept}
             disabled={!accepted || isAccepting}
             className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
           >
@@ -73,7 +86,6 @@ export const CollaborationContractModal: React.FC<
             {isAccepting ? "Accepting & Proceeding..." : "Accept & Proceed"}
           </Button>
         </div>
-
       </div>
     </div>
   );

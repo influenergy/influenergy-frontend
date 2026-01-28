@@ -56,6 +56,7 @@ const MyCampaignsPage = () => {
 
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const loadMoreRef = React.useRef<HTMLDivElement | null>(null);
+    const searchInputRef = React.useRef<HTMLInputElement | null>(null);
 
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
@@ -69,31 +70,6 @@ const MyCampaignsPage = () => {
         type: 'success',
         message: ''
     });
-
-
-    // Fetch campaigns
-    // useEffect(() => {
-    //     const fetchCampaigns = async () => {
-    //         try {
-    //             setLoading(true);
-    //             setError(null);
-
-    //             const response = await postApi.getCampaigns();
-
-    //             if (!response || !response.status) {
-    //                 throw new Error("Failed to fetch campaigns");
-    //             }
-
-    //             setCampaigns(response.campaigns || []);
-    //         } catch (err) {
-    //             setError(err instanceof Error ? err.message : "Something went wrong");
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchCampaigns();
-    // }, []);
 
 
     useEffect(() => {
@@ -117,7 +93,6 @@ const MyCampaignsPage = () => {
     } = useInfiniteQuery({
         queryKey: ["campaigns", debouncedSearch, selectedNiche],
         enabled: !!user?._id,
-
         initialPageParam: 1,
 
         queryFn: async ({ pageParam }) => {
@@ -243,10 +218,65 @@ const MyCampaignsPage = () => {
     // Loading state
     if (isLoading) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Array.from({ length: 6 }).map((_, i) => (
-                    <CampaignSkeleton key={i} />
-                ))}
+            <div className="w-full h-full p-[2%] dark:bg-background">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h1 className="text-xl font-semibold mb-2">My Campaigns</h1>
+                            <p className="text-muted-foreground text-md">
+                                View all active campaigns on the platform
+                            </p>
+                        </div>
+                        <NewCampaignButton />
+                    </div>
+
+                    {/* Search and Filter */}
+                    <div className="mb-6 flex flex-col md:flex-row gap-3">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <input
+                                type="search"
+                                placeholder="Search campaigns..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full pl-10 pr-4 py-2 border rounded-md"
+                            />
+                        </div>
+                        <Select
+                            value={selectedNiche}
+                            onValueChange={(value) =>
+                                setSelectedNiche(value === ALL_NICHES ? "" : value)
+                            }
+                        >
+                            <SelectTrigger className="w-full md:w-56">
+                                <SelectValue placeholder="Select niche" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value={ALL_NICHES}>All Niches</SelectItem>
+                                <SelectItem value="AI">AI</SelectItem>
+                                <SelectItem value="Beauty & Care">Beauty & Care</SelectItem>
+                                <SelectItem value="Business & Finance">Business & Finance</SelectItem>
+                                <SelectItem value="Fashion & Style">Fashion & Style</SelectItem>
+                                <SelectItem value="Food & Drinks">Food & Drinks</SelectItem>
+                                <SelectItem value="Gaming">Gaming</SelectItem>
+                                <SelectItem value="Health & Wellness">Health & Wellness</SelectItem>
+                                <SelectItem value="Lifestyle">Lifestyle</SelectItem>
+                                <SelectItem value="Sports & Fitness">Sports & Fitness</SelectItem>
+                                <SelectItem value="Tech">Tech</SelectItem>
+                                <SelectItem value="Travel">Travel</SelectItem>
+                                <SelectItem value="Others">Others</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Loading skeleton */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                            <CampaignSkeleton key={i} />
+                        ))}
+                    </div>
+                </div>
             </div>
         );
     }
@@ -328,11 +358,13 @@ const MyCampaignsPage = () => {
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
+                            ref={searchInputRef}
                             type="search"
                             placeholder="Search campaigns..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 border rounded-md"
+                            autoComplete="off"
                         />
                     </div>
 
@@ -367,6 +399,7 @@ const MyCampaignsPage = () => {
                 </div>
 
                 {/* Empty State */}
+                {/* Campaign Section */}
                 {filteredCampaigns.length === 0 ? (
                     <div className="flex flex-col items-center gap-7 py-12">
                         <Briefcase className="text-primary h-10 w-10" />
@@ -376,14 +409,13 @@ const MyCampaignsPage = () => {
                             </h2>
                             <p className="text-muted-foreground mb-6 text-md">
                                 {searchQuery
-                                    ? "Try adjusting your search to find what you're looking for"
-                                    : "Start your first campaign to attract the right creators and kick-off your brand's growth"
+                                    ? "Try adjusting your search"
+                                    : "Start your first campaign"
                                 }
                             </p>
                         </div>
                     </div>
                 ) : (
-                    /* Campaign Grid */
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredCampaigns.map((campaign) => (
                             <CampaignCard
