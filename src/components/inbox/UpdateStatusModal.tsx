@@ -21,7 +21,7 @@ interface StatusModalProps {
   collaborationId: string;
   campaignId: string;
   data: Video[];
-  status: string;
+  status: string; // Main collaboration status (not used for upload control now)
 }
 
 interface DeliverableUpload {
@@ -200,8 +200,27 @@ export default function UpdateStatusModal({
     return "📎";
   };
 
+  // ✅ CORRECTED: Upload based on INDIVIDUAL VIDEO STATUS only
+  // Upload allowed when video status is: null, "Pending", "Rejected", or "Declined"
+  // Upload NOT allowed when video status is: "Approved" or "Waiting Approval"
   const canUpload = (deliverable: DeliverableUpload) => {
-    return deliverable.status !== "Approved" && deliverable.status !== "Waiting Approval";
+    const videoStatus = deliverable.status;
+
+    // If no status (not submitted yet), allow upload
+    if (!videoStatus) {
+      return true;
+    }
+
+    // Allow upload for Pending, Rejected, Declined
+    const allowedStatuses = ["Pending", "Declined"];
+    return allowedStatuses.includes(videoStatus);
+  };
+
+  const isInputDisabled = (deliverable: DeliverableUpload) => {
+    const videoStatus = deliverable.status;
+
+    // Disable only if video is Approved or Waiting Approval
+    return videoStatus === "Approved" || videoStatus === "Waiting Approval";
   };
 
 
@@ -232,8 +251,37 @@ export default function UpdateStatusModal({
                       {campaignDetails.socialPlatforms}
                     </span>
                   </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    <span className="font-medium">Collaboration Status:</span>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${status === "Active"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : status === "Completed"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                      }`}>
+                      {status}
+                    </span>
+                  </div>
                 </div>
               )}
+
+              {/* ✅ Info notice about upload rules */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-blue-800 dark:text-blue-300">
+                      Upload Information
+                    </p>
+                    <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">
+                      You can upload or re-upload videos that are <strong>Not Submitted</strong>, <strong>Pending</strong>, or <strong>Declined</strong>.
+                    </p>
+                    <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">
+                      Videos that are <strong>Approved</strong> or <strong>Waiting Approval</strong> cannot be changed.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -258,18 +306,19 @@ export default function UpdateStatusModal({
                     const showUploadButton = canUpload(deliverable);
                     const isUploading = uploadingIndex === index;
                     const isWaitingApproval = deliverable.status === "Waiting Approval";
+                    const inputDisabled = isInputDisabled(deliverable) || isUploading;
 
 
                     return (
                       <div
                         key={index}
                         className={`border rounded-lg p-4 ${isApproved
-                          ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20"
-                          : isPending
-                            ? "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
-                            : isDeclined
-                              ? "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20"
-                              : "border-gray-200 dark:border-gray-700"
+                            ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20"
+                            : isPending
+                              ? "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
+                              : isDeclined
+                                ? "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20"
+                                : "border-gray-200 dark:border-gray-700"
                           }`}
                       >
                         <div className="flex items-start justify-between mb-3">
@@ -290,21 +339,19 @@ export default function UpdateStatusModal({
                           {deliverable.status ? (
                             <span
                               className={`text-xs px-2 py-1 rounded-full ${isApproved
-                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                : isWaitingApproval
-                                  ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                  : isPending
-                                    ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                    : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                  : isWaitingApproval
+                                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                    : isPending
+                                      ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                                      : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                                 }`}
                             >
                               {deliverable.status}
                             </span>
                           ) : (
-                            <span
-                              className={`text-xs px-2 py-1 rounded-full "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"}`}
-                            >
-                              Pending
+                            <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400">
+                              Not Submitted
                             </span>
                           )}
                         </div>
@@ -318,8 +365,8 @@ export default function UpdateStatusModal({
                                 placeholder={`Enter ${deliverable.type} link`}
                                 value={deliverable.link}
                                 onChange={(e) => handleLinkChange(index, e.target.value)}
-                                disabled={isApproved || isUploading || isWaitingApproval}
-                                className="pl-10"
+                                disabled={inputDisabled}
+                                className={`pl-10 ${inputDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}
                               />
                             </div>
 
@@ -338,7 +385,7 @@ export default function UpdateStatusModal({
                                 ) : (
                                   <>
                                     <Upload className="h-4 w-4 mr-2" />
-                                    Upload
+                                    {deliverable.status ? 'Re-upload' : 'Upload'}
                                   </>
                                 )}
                               </Button>
@@ -348,19 +395,47 @@ export default function UpdateStatusModal({
                           {isApproved && (
                             <div className="flex items-center gap-2 text-xs text-green-600 dark:text-green-400">
                               <Check className="h-4 w-4" />
-                              <span>This deliverable has been approved</span>
+                              <span>This deliverable has been approved ✓</span>
                             </div>
                           )}
 
-                          {isDeclined && deliverable.message && (
-                            <div className="p-2 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded text-sm">
+                          {isWaitingApproval && (
+                            <div className="flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              <span>Waiting for brand approval...</span>
+                            </div>
+                          )}
+
+                          {/* Show feedback for ANY status with messages */}
+                          {deliverable.message && (
+                            <div className={`p-3 border rounded-lg text-sm ${isDeclined
+                                ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"
+                                : isPending
+                                  ? "bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-800"
+                                  : "bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800"
+                              }`}>
                               <div className="flex items-start gap-2">
-                                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <p className="text-red-800 dark:text-red-200 font-medium text-xs mb-1">
-                                    Feedback:
+                                <AlertCircle className={`h-4 w-4 mt-0.5 flex-shrink-0 ${isDeclined
+                                    ? "text-red-600 dark:text-red-400"
+                                    : isPending
+                                      ? "text-yellow-600 dark:text-yellow-400"
+                                      : "text-blue-600 dark:text-blue-400"
+                                  }`} />
+                                <div className="flex-1">
+                                  <p className={`font-medium text-xs mb-1 ${isDeclined
+                                      ? "text-red-800 dark:text-red-200"
+                                      : isPending
+                                        ? "text-yellow-800 dark:text-yellow-200"
+                                        : "text-blue-800 dark:text-blue-200"
+                                    }`}>
+                                    {isDeclined ? "❌ Declined - Feedback:" : "💬 Feedback:"}
                                   </p>
-                                  <p className="text-red-700 dark:text-red-300 text-xs">
+                                  <p className={`text-xs ${isDeclined
+                                      ? "text-red-700 dark:text-red-300"
+                                      : isPending
+                                        ? "text-yellow-700 dark:text-yellow-300"
+                                        : "text-blue-700 dark:text-blue-300"
+                                    }`}>
                                     {deliverable.message}
                                   </p>
                                 </div>
@@ -398,8 +473,8 @@ export default function UpdateStatusModal({
           <DialogHeader>
             <DialogTitle
               className={`text-base ${statusModal.type === "error"
-                ? "text-red-600"
-                : "text-green-600"
+                  ? "text-red-600"
+                  : "text-green-600"
                 }`}
             >
               {statusModal.title}

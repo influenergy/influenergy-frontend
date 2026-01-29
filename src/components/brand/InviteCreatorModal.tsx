@@ -21,7 +21,9 @@ export default function InviteCreatorModal({
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const res = await postApi.getAllCampaigns();
+      const res = await postApi.getCampaigns({
+        all: true,
+      });
       setCampaigns(res.campaigns.filter((c: any) => c.status === "PUBLISHED"));
       setLoading(false);
     };

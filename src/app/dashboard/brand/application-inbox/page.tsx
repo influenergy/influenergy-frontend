@@ -55,7 +55,9 @@ const MyCampaignsPage = () => {
                 setLoading(true);
                 setError(null);
 
-                const response = await postApi.getCampaigns();
+                const response = await postApi.getCampaigns({
+                    all: true,
+                });
                 if (!response || !response.status) {
                     throw new Error("Failed to fetch campaigns");
                 }
@@ -207,7 +209,7 @@ const MyCampaignsPage = () => {
                 <Page />
 
                 {/* Applications Section */}
-                
+
 
 
             </div>

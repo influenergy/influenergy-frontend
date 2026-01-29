@@ -52,11 +52,13 @@ export const postApi = {
     limit,
     search,
     niche,
+    all,
   }: {
     page?: number;
     limit?: number;
     search?: string;
     niche?: string;
+    all?: boolean;
   } = {}) => {
     const response = await api.get("/brand/get-campaigns", {
       params: {
@@ -64,6 +66,7 @@ export const postApi = {
         ...(limit && { limit }),
         ...(search && { search }),
         ...(niche && { niche }),
+        ...(all && { all }),
       },
     });
 
@@ -138,14 +141,16 @@ export const postApi = {
     limit = 6,
     search = "",
     niche = "",
+    all = false,
   }: {
     page?: number;
     limit?: number;
     search?: string;
     niche?: string;
+    all?: boolean;
   }) => {
     const response = await api.get(`/creator/getAllCampaign`, {
-      params: { page, limit, search, niche },
+      params: { page, limit, search, niche, all },
     });
     return response.data;
   },

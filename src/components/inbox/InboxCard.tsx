@@ -143,7 +143,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
       setIsLoading(false);
     }
   };
-
+  
   // Handle status modal close - refetch when user manually closes it
   const handleStatusModalClose = () => {
     setStatusMessage(null);

@@ -14,7 +14,9 @@ export const useCampaigns = () => {
   return useQuery({
     queryKey: [queryKeys.campaigns],
     queryFn: async () => {
-      return await postApi.getCampaigns();
+      return await postApi.getCampaigns({
+        all: true,
+      });
     },
     // Set staleTime to 5 seconds
     staleTime: 5000,
@@ -22,11 +24,11 @@ export const useCampaigns = () => {
 };
 
 // Hook for fetching a single campaign by ID
-export const useCampaign = (id: string, creatorId: string, status:string) => {
+export const useCampaign = (id: string, creatorId: string, status: string) => {
   return useQuery({
     queryKey: queryKeys.campaign(id),
     queryFn: async () => {
-      return await postApi.getCampaignById(id,creatorId,status);
+      return await postApi.getCampaignById(id, creatorId, status);
     },
     enabled: !!id, // Only run query if id is provided
     // Set staleTime to 5 seconds
@@ -67,12 +69,12 @@ export const useCollaborationStatusDetails = (status: string) => {
   });
 };
 
-export const useGetAISummary = (creatorId:string,campaignId: string) => {
+export const useGetAISummary = (creatorId: string, campaignId: string) => {
   return useQuery({
     queryKey: [queryKeys.getAISummary],
     queryFn: async () => {
       try {
-        return await postApi.getAISummary(creatorId,campaignId);
+        return await postApi.getAISummary(creatorId, campaignId);
       } catch (error) {
         // Log the error but don't retry
         console.error("Error fetching posts:", error);
