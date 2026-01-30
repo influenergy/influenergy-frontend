@@ -23,6 +23,7 @@ export interface Field {
   placeholder?: string;
   prefix?: string;
   suffix?: string;
+  info?: string;
   groups?: {
     label: string,
     options: string[]

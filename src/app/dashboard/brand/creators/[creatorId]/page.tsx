@@ -351,11 +351,11 @@ const CreatorDetailsPage = () => {
                                         }}
                                     />
 
-                                    {creator.isProfileCompleted && (
+                                    {/* {creator.isProfileCompleted && (
                                         <div className="absolute bottom-0 right-0 bg-green-500 rounded-full p-1.5 border-2 border-white dark:border-gray-700">
                                             <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             ) : (
                                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 via-primary/30 to-primary/40 flex items-center justify-center text-3xl font-bold text-primary flex-shrink-0 shadow-md border-2 border-primary/20">
@@ -388,7 +388,7 @@ const CreatorDetailsPage = () => {
                                                     href={creator.socialLinks.primary.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="px-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors"
+                                                    className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors"
                                                     title={creator.socialLinks.primary.platform}
                                                 >
                                                     {getSocialMediaIcon(creator.socialLinks.primary.platform)}
@@ -715,7 +715,7 @@ const CreatorDetailsPage = () => {
 
                         {
                             status === "Offer Accepted" && (
-                                <>
+                                <div className="flex gap-3">
                                     <Button onClick={() => handleStatus("Payment", collaborationId)} className="flex">
                                         <CreditCard className="w-4 h-4" />
                                         Proceed to Payment
@@ -725,7 +725,7 @@ const CreatorDetailsPage = () => {
                                         <CircleX className="w-4 h-4" />
                                         Reject
                                     </Button>
-                                </>
+                                </div>
                             )}
                     </div>
                 )}

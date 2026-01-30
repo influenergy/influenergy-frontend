@@ -76,13 +76,24 @@ const CreateCampaign = ({
             const raw = data.requirements?.trim();
 
             const processedRequirements = raw
-                ? raw.includes(",") || raw.includes("\n")
-                    ? raw
-                        .replace(/\n+/g, ",")   // normalize new lines
-                        .split(",")             // split ONLY by commas now
-                        .map(r => r.trim())
-                        .filter(Boolean)
-                    : [raw]                     // paragraph → single item
+                ? (() => {
+                    // First, split by newlines
+                    const lines = raw.split(/\n+/).map(l => l.trim()).filter(Boolean);
+
+                    // If we got multiple lines, use those
+                    if (lines.length > 1) {
+                        return lines;
+                    }
+
+                    // Single line - check if it has commas that aren't in numbers
+                    const singleLine = lines[0] || raw;
+
+                    // Split by comma, but only if followed by space (not part of number)
+                    const parts = singleLine.split(/,\s+/).map(r => r.trim()).filter(Boolean);
+
+                    // If we got multiple parts, use those; otherwise treat as single item
+                    return parts.length > 1 ? parts : [singleLine];
+                })()
                 : [];
 
             const processedData: CreateCampaignPayload = {

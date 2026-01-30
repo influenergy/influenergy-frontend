@@ -542,27 +542,37 @@ export const FormField = ({ field }: FormFieldProps) => {
   // DEADLINE INPUT - Number with "days" suffix (stores as "4 days")
   if (field.category === "number-with-suffix" && field.suffix) {
     const value = watch(fieldName) || "";
-    // Remove suffix if it exists to show clean number in input
-    const displayValue = typeof value === 'string' ? value.replace(/\s*days?$/i, '') : value;
+    const displayValue =
+      typeof value === "string"
+        ? value.replace(/\s*days?$/i, "")
+        : value;
 
     return (
       <div className="relative w-full">
         <input
           type="number"
           value={displayValue}
+          min="3"
+          step="1"
           onChange={(e) => {
-            const numValue = e.target.value;
-            // Store with "days" suffix (singular for 1, plural for others)
+            let numValue = e.target.value;
+
+            // prevent values < 5
+            if (numValue && Number(numValue) < 5) {
+              numValue = "3";
+            }
+
             const formattedValue = numValue
-              ? `${numValue} ${numValue === '1' ? 'day' : 'days'}`
-              : '';
+              ? `${numValue} ${numValue === "1" ? "day" : "days"}`
+              : "";
+
             setValue(fieldName, formattedValue, { shouldValidate: true });
           }}
-          placeholder={field.placeholder || "0"}
-          className={`w-full p-3 pr-16 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error ? "border-red-500 focus:ring-red-500" : "focus:ring-primary"
+          placeholder={field.placeholder || "5"}
+          className={`w-full p-3 pr-16 rounded-lg transition-all duration-200 bg-[#F3F3F5] dark:bg-gray-900 dark:text-gray-100 ${error
+            ? "border-red-500 focus:ring-red-500"
+            : "focus:ring-primary"
             } focus:outline-none focus:ring-2`}
-          min="1"
-          step="1"
         />
         <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
           {field.suffix}
@@ -680,10 +690,10 @@ export const Step = ({ fields, mode }: StepProps) => {
           <div
             key={rowIndex}
             className={`grid gap-4 ${isRow2
-                ? 'grid-cols-1 md:grid-cols-3'
-                : isRow0or2
-                  ? 'grid-cols-1 md:grid-cols-2'
-                  : 'grid-cols-1'
+              ? 'grid-cols-1 md:grid-cols-3'
+              : isRow0or2
+                ? 'grid-cols-1 md:grid-cols-2'
+                : 'grid-cols-1'
               }`}
           >
             {rowFields.map((field) => {
@@ -696,11 +706,52 @@ export const Step = ({ fields, mode }: StepProps) => {
 
               return (
                 <div key={field.title} className="space-y-2">
-                  <label className="block text-sm font-medium text-black dark:text-gray-200">
-                    {field.title}
-                    {required && <span className="text-red-500 ml-1">*</span>}
+                  <label className="flex items-center gap-2 text-sm font-medium text-black dark:text-gray-200">
+                    <span>
+                      {field.title}
+                      {required && <span className="text-red-500 ml-1">*</span>}
+                    </span>
+
+                    {field.info && (
+                      <div className="relative group">
+                        {/* Info Icon */}
+                        <div
+                          className="w-4 h-4 rounded-full border border-gray-400 dark:border-gray-500
+                     bg-white dark:bg-gray-800
+                     text-gray-600 dark:text-gray-400 
+                     text-xs flex items-center justify-center 
+                     cursor-help leading-none
+                     hover:border-gray-600 dark:hover:border-gray-300
+                     hover:bg-gray-50 dark:hover:bg-gray-700
+                     transition-colors duration-200"
+                        >
+                          i
+                        </div>
+
+                        {/* Tooltip */}
+                        <div
+                          className="absolute left-full top-1/2 ml-2 -translate-y-1/2
+                     invisible group-hover:visible opacity-0 group-hover:opacity-100
+                     transition-opacity duration-200
+                     bg-gray-900 dark:bg-gray-800 text-white text-xs
+                     px-3 py-2 rounded-md
+                     shadow-lg border border-gray-700
+                     z-50 pointer-events-none
+                     w-64 leading-relaxed"
+                        >
+                          {/* Arrow */}
+                          <div
+                            className="absolute right-full top-1/2 -translate-y-1/2
+                       border-4 border-transparent border-r-gray-900 dark:border-r-gray-800"
+                          />
+                          {field.info}
+                        </div>
+                      </div>
+                    )}
                   </label>
+
                   <FormField field={field} mode={mode} />
+
                   {error && (
                     <p className="text-red-500 text-sm mt-1">
                       {error.message as string}

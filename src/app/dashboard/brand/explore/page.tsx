@@ -181,6 +181,7 @@ export default function ExploreCreators() {
     const queryClient = useQueryClient();
 
     const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite({
+        filters: filters, // Pass filters here
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["exploreCreators", filters] });
         },
@@ -265,7 +266,7 @@ export default function ExploreCreators() {
 
     const selectedFiltersCount = platforms.length + niches.length + followers.length;
 
-    
+
     const hasCreators =
         data?.pages?.some(
             (page) => page.creators && page.creators.length > 0

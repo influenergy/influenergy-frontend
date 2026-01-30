@@ -141,30 +141,62 @@ export const useAcceptOrDeclineVideo = ({ onSuccess }: { onSuccess?: () => void 
   });
 };
 
-export const useToggleFavorite = (options?: { onSuccess?: () => void,status?:string }) => {
+export const useToggleFavorite = (options?: { onSuccess?: () => void, filters?: any }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      creatorId
-    }: {
-      creatorId: string;
-    }) => {
-      try{
-
-        const res =  await postApi.toggleFavoriteCreator(creatorId);
-        return res.data
-      }
-      catch(error){
-        console.error("Error in favoriteToggle :", error);
+    mutationFn: async ({ creatorId }: { creatorId: string }) => {
+      try {
+        const res = await postApi.toggleFavoriteCreator(creatorId);
+        return res.data;
+      } catch (error) {
+        console.error("Error in favoriteToggle:", error);
         throw error;
       }
     },
-    onSuccess: () => {
-      // refresh campaigns/collabs so isFavourite updates
-      queryClient.invalidateQueries({ queryKey: ["finddaiCampaignsList"] });
-      // queryClient.invalidateQueries({ queryKey: ["collaborations"] });
 
+    // ✨ OPTIMISTIC UPDATE - runs immediately when toggleFavorite is called
+    onMutate: async ({ creatorId }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["exploreCreators", options?.filters] });
+
+      // Snapshot the previous value
+      const previousCreators = queryClient.getQueryData(["exploreCreators", options?.filters]);
+
+      // Optimistically update the UI
+      queryClient.setQueryData(["exploreCreators", options?.filters], (old: any) => {
+        if (!old?.pages) return old;
+
+        return {
+          ...old,
+          pages: old.pages.map((page: any) => ({
+            ...page,
+            creators: page.creators?.map((creator: any) =>
+              creator._id === creatorId
+                ? { ...creator, isFavorite: !creator.isFavorite }
+                : creator
+            ),
+          })),
+        };
+      });
+
+      // Return context with the snapshot
+      return { previousCreators };
+    },
+
+    // If mutation fails, rollback to previous value
+    onError: (err, variables, context) => {
+      if (context?.previousCreators) {
+        queryClient.setQueryData(
+          ["exploreCreators", options?.filters],
+          context.previousCreators
+        );
+      }
+    },
+
+    // Always refetch after success to ensure data consistency
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["finddaiCampaignsList"] });
       if (options?.onSuccess) options.onSuccess();
     },
   });
@@ -182,3 +214,77 @@ export const useDeleteCollab = (status: string) => {
   });
 };
 
+
+export const useApplyCampaign = (filters: { search: string; niche: string }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      campaignId,
+      payload,
+    }: {
+      campaignId: string;
+      payload: any;
+    }) => {
+      const res = await postApi.createCollaboration(campaignId, payload);
+      if (!res?.status) {
+        throw new Error(res?.message || "Something went wrong");
+      }
+      return res;
+    },
+
+    // ✨ OPTIMISTIC UPDATE - runs immediately
+    onMutate: async ({ campaignId }) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ 
+        queryKey: ["campaigns", filters.search, filters.niche] 
+      });
+
+      // Snapshot previous value
+      const previousCampaigns = queryClient.getQueryData([
+        "campaigns",
+        filters.search,
+        filters.niche,
+      ]);
+
+      // Optimistically update the UI
+      queryClient.setQueryData(
+        ["campaigns", filters.search, filters.niche],
+        (old: any) => {
+          if (!old?.pages) return old;
+
+          return {
+            ...old,
+            pages: old.pages.map((page: any) => ({
+              ...page,
+              campaigns: page.campaigns.map((campaign: any) =>
+                campaign._id === campaignId
+                  ? { ...campaign, applied: true }
+                  : campaign
+              ),
+            })),
+          };
+        }
+      );
+
+      return { previousCampaigns };
+    },
+
+    // If mutation fails, rollback
+    onError: (err, variables, context) => {
+      if (context?.previousCampaigns) {
+        queryClient.setQueryData(
+          ["campaigns", filters.search, filters.niche],
+          context.previousCampaigns
+        );
+      }
+    },
+
+    // Refetch after success to ensure sync
+    onSettled: () => {
+      queryClient.invalidateQueries({ 
+        queryKey: ["campaigns", filters.search, filters.niche] 
+      });
+    },
+  });
+};

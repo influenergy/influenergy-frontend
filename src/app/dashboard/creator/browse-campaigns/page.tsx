@@ -27,6 +27,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { useApplyCampaign } from "@/hooks/usePost";
 
 
 const LIMIT = 6;
@@ -42,7 +43,6 @@ const MyCampaignsPage = () => {
     const [coverMessage, setCoverMessage] = useState("");
     const [creatorBudget, setCreatorBudget] = useState("");
 
-    const [submitLoading, setSubmitLoading] = useState(false);
     const [submitError, setSubmitError] = useState("");
     const [showSuccess, setShowSuccess] = useState(false);
     const [selectedCampaign, setSelectedCampaign] = useState("");
@@ -51,10 +51,16 @@ const MyCampaignsPage = () => {
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const loadMoreRef = React.useRef<HTMLDivElement | null>(null);
 
+    // 👇 Use the custom hook
+    const { mutate: applyCampaign, isPending: submitLoading } = useApplyCampaign({
+        search: debouncedSearch,
+        niche: selectedNiche,
+    });
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(searchQuery);
-        }, 500); // ⏳ 500ms debounce
+        }, 500);
 
         return () => clearTimeout(timer);
     }, [searchQuery]);
@@ -70,8 +76,6 @@ const MyCampaignsPage = () => {
     } = useInfiniteQuery({
         queryKey: ["campaigns", debouncedSearch, selectedNiche],
         enabled: !!user?._id,
-
-        // ✅ REQUIRED IN v5
         initialPageParam: 1,
 
         queryFn: async ({ pageParam }) => {
@@ -103,7 +107,6 @@ const MyCampaignsPage = () => {
     const campaigns =
         data?.pages.flatMap((page) => page.campaigns) ?? [];
 
-    /* Infinite scroll */
     useEffect(() => {
         if (!loadMoreRef.current || !hasNextPage) return;
 
@@ -132,39 +135,30 @@ const MyCampaignsPage = () => {
 
         const payload = {
             brandId: brandId,
-            // amount: Number(getMidAmount(selectedCampaign.budgetForCampaign)),
             ...(coverMessage && { coverMessage }),
             ...(creatorBudget && { creatorBudget }),
-            // ...(portfolioLink && { portfolioLink }),
         };
 
-        try {
-            setSubmitLoading(true);
-            setSubmitError("");
+        setSubmitError("");
 
-            const res = await postApi.createCollaboration(
-                selectedCampaign,
-                payload
-            );
+        // 👇 Use the mutate function with optimistic update
+        applyCampaign(
+            { campaignId: selectedCampaign, payload },
+            {
+                onSuccess: () => {
+                    // ✅ Close apply modal
+                    setShowApplyModal(false);
+                    setCoverMessage("");
+                    setCreatorBudget("");
 
-            if (!res?.status) {
-                throw new Error(res?.message || "Something went wrong");
+                    // ✅ Show success modal
+                    setShowSuccess(true);
+                },
+                onError: (err: any) => {
+                    setSubmitError(err.response?.data?.message || err.message);
+                },
             }
-
-            // ✅ Close apply modal
-            setShowApplyModal(false);
-            setCoverMessage("");
-            // setPortfolioLink("");
-            setCreatorBudget("");
-
-            // ✅ Show success modal
-            setShowSuccess(true);
-
-        } catch (err: any) {
-            setSubmitError(err.response?.data?.message || err.message);
-        } finally {
-            setSubmitLoading(false);
-        }
+        );
     };
 
 
@@ -233,7 +227,6 @@ const MyCampaignsPage = () => {
 
                         <SelectContent>
                             <SelectItem value={ALL_NICHES}>All Niches</SelectItem>
-
                             <SelectItem value="AI">AI</SelectItem>
                             <SelectItem value="Beauty & Care">Beauty & Care</SelectItem>
                             <SelectItem value="Business & Finance">Business & Finance</SelectItem>
@@ -410,15 +403,6 @@ const MyCampaignsPage = () => {
                                 className="w-full rounded-xl border px-4 py-3 bg-background"
                                 placeholder="Write a short message..."
                             />
-
-                            {/* Portfolio */}
-                            {/* <input
-                            type="string"
-                            value={creatorBudget}
-                            onChange={(e) => setCreatorBudget(e.target.value)}
-                            className="w-full rounded-xl border px-4 py-3 bg-background"
-                            placeholder="tell your expected buget"
-                          /> */}
 
                             {/* Submit */}
                             <button
