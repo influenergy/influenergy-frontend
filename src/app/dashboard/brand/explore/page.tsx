@@ -263,11 +263,15 @@ export default function ExploreCreators() {
         setInviteModal(true);
     };
 
-    // console.log(data,'data')
     const selectedFiltersCount = platforms.length + niches.length + followers.length;
 
-    console.log("datacre---->",data);
     
+    const hasCreators =
+        data?.pages?.some(
+            (page) => page.creators && page.creators.length > 0
+        );
+
+
     return (
         <div className="relative p-6">
             <div className="flex justify-between">
@@ -314,7 +318,7 @@ export default function ExploreCreators() {
                             >
                                 Favorites
                             </Button>
-                            <Button
+                            {/* <Button
                                 onClick={() => handleSort("featured")}
                                 className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "featured"
                                     ? "border-blue-500 text-blue-500"
@@ -322,7 +326,7 @@ export default function ExploreCreators() {
                                     }`}
                             >
                                 Featured
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                 </div>
@@ -426,36 +430,50 @@ export default function ExploreCreators() {
             )}
 
             {/* Creator Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {data?.pages.flatMap((page) =>
-                    page.creators.map((creator: Creator) => {
-                        const isLongDescription =
-                            (creator.profile?.aboutYourself?.length || 0) > 120;
-                        const isExpanded = expanded[creator._id] || false;
-                        const isActive = activeCardId === creator._id;
-                        const someActive = !!activeCardId;
-                        const badge = creator.badge
-                        const level = Levels.filter(l => l.key === badge)[0]
-                        const badgePrice = creator.badgePrice || ""
-                        // console.log(badgePrice, 'badgePrice')
-                        return (
-                            <ExploreCreatorCard
-                                creator={creator}
-                                isExpanded={expanded[creator._id]}
-                                isActive={activeCardId === creator._id}
-                                someActive={!!activeCardId}
-                                level={level}
-                                badgePrice={badgePrice}
-                                isToggling={isToggling}
-                                onToggleBio={() => toggleBio(creator._id)}
-                                onToggleFavorite={() => toggleFavorite({ creatorId: creator._id })}
-                                onInvite={() => handleSelecteCreatorForCampaign(creator._id)}
-                            />
+            {!hasCreators ? (
+                <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+                    <p className="text-lg font-semibold text-gray-700">
+                        No creators found
+                    </p>
 
-                        );
-                    })
-                )}
-            </div>
+                    <p className="mt-2 max-w-md text-sm text-gray-500">
+                        Try adjusting your filters or removing some selections to see more creators.
+                    </p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {data?.pages.flatMap((page) =>
+                        page.creators
+                            ? page.creators.map((creator: Creator) => {
+                                const isExpanded = expanded[creator._id] || false;
+                                const badge = creator.badge;
+                                const level = Levels.find((l) => l.key === badge);
+                                const badgePrice = creator.badgePrice || "";
+
+                                return (
+                                    <ExploreCreatorCard
+                                        key={creator._id}
+                                        creator={creator}
+                                        isExpanded={isExpanded}
+                                        isActive={activeCardId === creator._id}
+                                        someActive={!!activeCardId}
+                                        level={level}
+                                        badgePrice={badgePrice}
+                                        isToggling={isToggling}
+                                        onToggleBio={() => toggleBio(creator._id)}
+                                        onToggleFavorite={() =>
+                                            toggleFavorite({ creatorId: creator._id })
+                                        }
+                                        onInvite={() =>
+                                            handleSelecteCreatorForCampaign(creator._id)
+                                        }
+                                    />
+                                );
+                            })
+                            : null
+                    )}
+                </div>
+            )}
 
             {/* Load More */}
             <div ref={loadMoreRef} className="h-10 flex justify-center items-center mt-4">

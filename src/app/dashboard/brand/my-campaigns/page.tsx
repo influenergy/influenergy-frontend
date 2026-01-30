@@ -108,8 +108,8 @@ const MyCampaignsPage = () => {
             }
 
             return {
-                campaigns: res.campaigns.campaigns,
-                nextPage: res.campaigns.hasMore
+                campaigns: res.campaigns,
+                nextPage: res.hasMore
                     ? (pageParam as number) + 1
                     : undefined,
             };
@@ -165,11 +165,13 @@ const MyCampaignsPage = () => {
                         ...oldData,
                         pages: oldData.pages.map((page: any) => ({
                             ...page,
-                            campaigns: page.campaigns.map((campaign: any) =>
-                                campaign._id === campaignId
-                                    ? { ...campaign, status: newStatus }
-                                    : campaign
-                            ),
+                            campaigns: Array.isArray(page.campaigns)
+                                ? page.campaigns.filter(Boolean).map((campaign: any) =>
+                                    campaign._id === campaignId
+                                        ? { ...campaign, status: newStatus }
+                                        : campaign
+                                )
+                                : [],
                         })),
                     };
                 }
@@ -417,15 +419,21 @@ const MyCampaignsPage = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredCampaigns.map((campaign) => (
-                            <CampaignCard
-                                key={campaign._id}
-                                campaign={campaign}
-                                isUpdating={updatingId === campaign._id}
-                                onActionClick={handleCampaignAction}
-                                user="brand"
-                            />
-                        ))}
+                        {filteredCampaigns
+                            .filter(
+                                (campaign): campaign is Campaign =>
+                                    Boolean(campaign && campaign._id)
+                            )
+                            .map((campaign) => (
+                                <CampaignCard
+                                    key={campaign._id}
+                                    campaign={campaign}
+                                    isUpdating={updatingId === campaign._id}
+                                    onActionClick={handleCampaignAction}
+                                    user="brand"
+                                />
+                            ))}
+
                     </div>
                 )}
 

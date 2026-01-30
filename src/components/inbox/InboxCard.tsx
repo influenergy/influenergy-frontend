@@ -59,10 +59,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
     useAcceptOrDeclineCollaboration(collaborationId, "Rejected");
 
   const handleAccept = () => {
-    console.log("🔵 Accept clicked");
     acceptCollaboration(undefined, {
       onSuccess: () => {
-        console.log("✅ Accept successful, invalidating queries");
         queryClient.invalidateQueries({
           queryKey: ["collaborationStatusDetails"]
         });
@@ -89,10 +87,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
   };
 
   const handleDecline = () => {
-    console.log("🔵 Decline clicked");
     declineCollaboration(undefined, {
       onSuccess: () => {
-        console.log("✅ Decline successful, invalidating queries");
         queryClient.invalidateQueries({
           queryKey: ["collaborationStatusDetails"]
         });

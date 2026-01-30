@@ -186,30 +186,7 @@ const MyCampaignsPage = () => {
                     <NewCampaignButton />
                 </div>
 
-                {/* <div className="mb-6">
-                    <label className="block text-sm font-medium mb-2">
-                        Select Campaign
-                    </label>
-
-                    <select
-                        value={selectedCampaignId}
-                        onChange={handleCampaignSelect}
-                        className="w-full max-w-md px-4 py-2 border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    >
-                        <option value="">-- Select a campaign --</option>
-
-                        {campaigns.map((campaign) => (
-                            <option key={campaign._id} value={campaign._id}>
-                                {campaign.campaignTitle}
-                            </option>
-                        ))}
-                    </select>
-                </div> */}
-
                 <Page />
-
-                {/* Applications Section */}
-
 
 
             </div>

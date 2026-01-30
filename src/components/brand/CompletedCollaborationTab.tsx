@@ -57,22 +57,6 @@ interface Campaign {
 export default function ApplicationsReceived() {
   const router = useRouter();
 
-  // const {
-  //   // data: campaigns,
-  //   isLoading,
-  //   isError,
-  // } = useFindAiCampaignsList("Waiting Approval");
-
-  // const [status, setStatus] = useState("Waiting Approval");
-  // const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
-  // const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const campaignId = params.campaignId as string;
-  // const [updatingId, setUpdatingId] = useState<string | null>(null);
-  // const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
-
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
   // const [loadingApps, setLoadingApps] = useState(false);
 
@@ -91,29 +75,6 @@ export default function ApplicationsReceived() {
 
 
   const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
-
-  // Fetch campaigns
-  // useEffect(() => {
-  //   const fetchCampaigns = async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-
-  //       const response = await postApi.getCampaigns();
-  //       if (!response || !response.status) {
-  //         throw new Error("Failed to fetch campaigns");
-  //       }
-
-  //       setCampaigns(response.campaigns || []);
-  //     } catch (err) {
-  //       setError(err instanceof Error ? err.message : "Something went wrong");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchCampaigns();
-  // }, []);
 
   const {
     data: campaigns = [],

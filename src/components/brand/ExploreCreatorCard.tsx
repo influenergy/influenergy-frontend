@@ -80,7 +80,7 @@ export const getSocialMediaIcon = (platform?: string) => {
             return <Mail className="w-5 h-5 text-gray-600" />;
 
         case "tiktok":
-            return  <TikTokIcon size={20} />;
+            return <TikTokIcon size={20} />;
 
         default:
             return <Share2 className="w-5 h-5 text-gray-400" />;
@@ -111,7 +111,7 @@ const ExploreCreatorCard = ({
 
     const handleCardClick = (creatorId: string) => {
         router.push(`/dashboard/brand/creators/${creatorId}`);
-    };    
+    };
 
     return (
         <Card onClick={() => handleCardClick(creator._id)}
@@ -248,7 +248,10 @@ const ExploreCreatorCard = ({
             {/* ACTION */}
             {showInviteButton && (
                 <div className="px-4 pb-4 mt-auto">
-                    <Button size="sm" className="w-full" onClick={onInvite}>
+                    <Button size="sm" className="w-full" onClick={(e) => {
+                        e.stopPropagation();
+                        onInvite?.();
+                    }}>
                         Invite for Campaign
                     </Button>
                 </div>

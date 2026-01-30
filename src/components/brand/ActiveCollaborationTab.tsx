@@ -135,7 +135,7 @@ export default function ApplicationsReceived() {
             collaborationId,
             videoId,
             status: "Approved",
-            message: "Approved"
+            message: "Approved" 
         });
     };
 

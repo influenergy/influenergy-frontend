@@ -174,7 +174,10 @@ const PostDescription = ({ data, role }: PostDescriptionProps) => {
         {/* Button with spacing */}
         {!processedData.applied && role === "CREATOR" && (
           <div className="ml-3">
-            <Button className="px-6 py-2 text-base">
+            <Button className="px-6 py-2 text-base" onClick={(e) => {
+              e.stopPropagation();
+              setShowApplyModal(true);
+            }}>
               Apply
             </Button>
           </div>
