@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { selectUser, useAppSelector } from "@/store";
 import { Step } from "./PostSteps";
 import { postApi } from "@/services/postServices";
-import { ChevronsLeft } from "lucide-react";
+import { ChevronsLeft,Bookmark } from "lucide-react";
 
 const CreateCampaign = ({
     mode = "create",
@@ -44,16 +44,16 @@ const CreateCampaign = ({
     // ✅ Helper function to ensure correct types
     const sanitizeDefaultValues = (values?: Partial<CampaignQuestionnaireData>) => {
         if (!values) return {};
-        
+
         return {
             ...values,
             // ✅ Ensure expectedDeliverables is always a string
-            expectedDeliverables: Array.isArray(values.expectedDeliverables) 
-                ? "" 
+            expectedDeliverables: Array.isArray(values.expectedDeliverables)
+                ? ""
                 : (values.expectedDeliverables || ""),
             // ✅ Ensure targetNiche is always an array
-            targetNiche: Array.isArray(values.targetNiche) 
-                ? values.targetNiche 
+            targetNiche: Array.isArray(values.targetNiche)
+                ? values.targetNiche
                 : [],
         };
     };
@@ -157,6 +157,12 @@ const CreateCampaign = ({
         }
     };
 
+    const submitWithStatus = (status: "PUBLISHED" | "DRAFT") => {
+        setValue("status", status, { shouldValidate: false });
+        handleSubmit(onSubmit)();
+    };
+
+
     return (
         <div className="flex flex-col gap-4">
             <button
@@ -203,45 +209,29 @@ const CreateCampaign = ({
                         </div>
                     )}
 
-                    {/* 🔹 Publish / Draft */}
-                    <div className="space-y-3">
-                        <label className="text-sm font-medium">Campaign Status</label>
-
-                        <div className="flex items-center gap-10">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    value="PUBLISHED"
-                                    checked={watch("status") === "PUBLISHED"}
-                                    onChange={() => setValue("status", "PUBLISHED")}
-                                    className="cursor-pointer"
-                                />
-                                Publish now
-                            </label>
-
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="radio"
-                                    value="DRAFT"
-                                    checked={watch("status") === "DRAFT"}
-                                    onChange={() => setValue("status", "DRAFT")}
-                                    className="cursor-pointer"
-                                />
-                                Save as draft
-                            </label>
-                        </div>
-                    </div>
-
                     {/* 🔹 Actions */}
                     <div className="flex w-full gap-3">
-                        <Button type="submit" disabled={isSubmitting} className="flex-1">
-                            {isSubmitting
-                                ? "Saving..."
-                                : mode === "edit"
-                                    ? "Update Campaign"
-                                    : "Create Campaign"}
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className="flex-1"
+                            disabled={isSubmitting}
+                            onClick={() => submitWithStatus("DRAFT")}
+                        >
+                            {isSubmitting ? "Saving..." : "Save as Draft"}
+                            <Bookmark/>
+                        </Button>
+
+                        <Button
+                            type="button"
+                            className="flex-1"
+                            disabled={isSubmitting}
+                            onClick={() => submitWithStatus("PUBLISHED")}
+                        >
+                            {isSubmitting ? "Publishing..." : mode === "edit" ? "Update & Publish" : "Publish Campaign"}
                         </Button>
                     </div>
+
 
                 </form>
             </FormProvider>

@@ -166,10 +166,10 @@ const MyCampaignsPage = () => {
 
 
     return (
-        <div className="w-full h-full p-[2%] dark:bg-background">
+        <div className="w-full h-full pt-[2%] px-[2%] dark:bg-background">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
                         <h1 className="text-2xl font-semibold mb-2">Collaboration Manager</h1>
                         <p className="text-muted-foreground text-md">

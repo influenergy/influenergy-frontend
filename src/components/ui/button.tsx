@@ -19,7 +19,15 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        blue: "bg-[#2B7FFF] text-white shadow hover:bg-[#2B7FFF]/90 focus-visible:ring-[#2B7FFF]",
+
+        blue:
+          "bg-[#2B7FFF] text-white shadow hover:bg-[#2B7FFF]/90 focus-visible:ring-[#2B7FFF]",
+
+        green:
+          "bg-[#1AB156] text-white shadow-sm hover:bg-[#159A4A] focus-visible:ring-[#1AB156]",
+
+        yellow:
+          "bg-[#FFC857] text-white shadow-sm hover:bg-[#FFB703] focus-visible:ring-[#FFC857]",
       },
       size: {
         default: "h-9 px-4 py-2",

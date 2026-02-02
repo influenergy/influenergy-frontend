@@ -163,8 +163,6 @@ export default function CreatorCard({
     return age;
   };
 
-  console.log("cratro--->", creator);
-
   return (
     <>
       {isProcessing && <LoaderOverlay />}
@@ -587,13 +585,13 @@ export default function CreatorCard({
               <>
                 <Button
                   onClick={() => onAction("Interested")}
-                  variant="blue"
+                  variant="yellow"
                   className="flex"
                 >
                   <Clock className="w-4 h-4" />
                   Mark Interested
                 </Button>
-                <Button onClick={() => onAction("Offered")} className="flex">
+                <Button onClick={() => onAction("Offered")} className="flex" variant="green">
                   <CircleCheckBig className="w-4 h-4" />
                   Send Offer
                 </Button>
@@ -606,7 +604,7 @@ export default function CreatorCard({
 
             {status === "Interested" && (
               <>
-                <Button onClick={() => onAction("Offered")} className="flex">
+                <Button onClick={() => onAction("Offered")} className="flex" variant="green">
                   <CircleCheckBig className="w-4 h-4" />
                   Send Offer
                 </Button>
@@ -624,7 +622,7 @@ export default function CreatorCard({
 
             {status === "Offered" && isOfferExpired && (
               <div className="flex gap-3 mt-2">
-                <Button onClick={() => onAction("Offered")} className="flex">
+                <Button onClick={() => onAction("Offered")} className="flex" variant="green">
                   <CircleCheckBig className="w-4 h-4" />
                   Re-Send Offer
                 </Button>

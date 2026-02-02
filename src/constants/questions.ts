@@ -276,6 +276,7 @@ export const CREATOR_QUESTIONS: Questions = {
           "Instagram",
           "TikTok",
           "Youtube",
+          "Chatgpt"
         ],
         placeholder: "Select secondary platform (optional)",
       },

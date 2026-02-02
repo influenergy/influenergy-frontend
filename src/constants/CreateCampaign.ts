@@ -103,6 +103,7 @@
                     "Instagram",
                     "YouTube",
                     "TikTok",
+                    "Chatgpt",
                 ],
                 placeholder: "Select social platform(s)",
             },

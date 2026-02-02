@@ -241,7 +241,7 @@ const MyCampaignsPage = () => {
                                 placeholder="Search campaigns..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 border rounded-md"
+                                className="w-full h-10 pl-10 pr-4 border rounded-md"
                             />
                         </div>
                         <Select
@@ -250,7 +250,7 @@ const MyCampaignsPage = () => {
                                 setSelectedNiche(value === ALL_NICHES ? "" : value)
                             }
                         >
-                            <SelectTrigger className="w-full md:w-56">
+                            <SelectTrigger className="w-full md:w-56 h-10">
                                 <SelectValue placeholder="Select niche" />
                             </SelectTrigger>
                             <SelectContent>
@@ -355,34 +355,27 @@ const MyCampaignsPage = () => {
                 </div>
 
                 <div className="mb-6 flex flex-col md:flex-row gap-3">
-                    {/* Search */}
                     <div className="relative flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
-                            ref={searchInputRef}
                             type="search"
                             placeholder="Search campaigns..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border rounded-md"
-                            autoComplete="off"
+                            className="w-full h-10 pl-10 pr-4 border rounded-md"
                         />
                     </div>
-
-                    {/* Niche Select */}
                     <Select
                         value={selectedNiche}
                         onValueChange={(value) =>
                             setSelectedNiche(value === ALL_NICHES ? "" : value)
                         }
                     >
-                        <SelectTrigger className="w-full md:w-56">
+                        <SelectTrigger className="w-full md:w-56 h-10">
                             <SelectValue placeholder="Select niche" />
                         </SelectTrigger>
-
                         <SelectContent>
                             <SelectItem value={ALL_NICHES}>All Niches</SelectItem>
-
                             <SelectItem value="AI">AI</SelectItem>
                             <SelectItem value="Beauty & Care">Beauty & Care</SelectItem>
                             <SelectItem value="Business & Finance">Business & Finance</SelectItem>

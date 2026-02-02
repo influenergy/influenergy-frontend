@@ -10,6 +10,7 @@ import CampaignCard from "../brand/CampaignCard";
 import ExploreCreatorCard from "../brand/ExploreCreatorCard";
 import { useQuery } from "@tanstack/react-query";
 import total_campaigns from "../../../public/images/total_campaigns.svg"
+import InviteCreatorModal from "../brand/InviteCreatorModal";
 
 type CreatorBrief = {
     fullName?: string;
@@ -106,6 +107,10 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
     const [loading, setLoading] = useState(true);
 
+
+    const [inviteModal, setInviteModal] = useState(false);
+    const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
+
     const toggleExpand = (id: string) => {
         setExpanded((prev) => ({
             ...prev,
@@ -161,6 +166,12 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
         { id: "favorites", label: "Favorite Creators", count: favCreators.length },
         { id: "recent", label: "Recently Worked With", count: recentCreators.length },
     ];
+
+
+    const handleSelecteCreatorForCampaign = (creatorId: string) => {
+        setSelectedCreator(creatorId);
+        setInviteModal(true);
+    };
 
     return (
         <div className="flex flex-col gap-4">
@@ -363,9 +374,6 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                 {/* EMPTY STATE */}
                                 {!isLoading && !isError && campaigns.length === 0 && (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
-                                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                                            📭
-                                        </div>
                                         <p className="text-sm font-medium text-gray-700">
                                             No ongoing collaborations
                                         </p>
@@ -417,9 +425,6 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
                                 {favCreators.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
-                                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                                            ⭐
-                                        </div>
                                         <p className="text-sm font-medium text-gray-700">
                                             No favorite creators yet
                                         </p>
@@ -435,6 +440,9 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                                 creator={creator}
                                                 showInviteButton
                                                 showFavoriteIcon={false}
+                                                onInvite={() =>
+                                                    handleSelecteCreatorForCampaign(creator._id)
+                                                }
                                             />
                                         ))}
                                     </div>
@@ -459,9 +467,6 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
                                 {recentCreators.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
-                                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                                            🤝
-                                        </div>
                                         <p className="text-sm font-medium text-gray-700">
                                             No recent collaborations
                                         </p>
@@ -477,6 +482,9 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                                 creator={creator}
                                                 showInviteButton
                                                 showFavoriteIcon={false}
+                                                onInvite={() =>
+                                                    handleSelecteCreatorForCampaign(creator._id)
+                                                }
                                             />
                                         ))}
                                     </div>
@@ -487,6 +495,14 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                 </div>
 
             </div>
+
+            {inviteModal && selectedCreator && (
+                <InviteCreatorModal
+                    creatorId={selectedCreator}
+                    onClose={() => setInviteModal(false)}
+                />
+
+            )}
         </div>
     )
 }

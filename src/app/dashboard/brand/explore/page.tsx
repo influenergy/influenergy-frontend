@@ -4,13 +4,6 @@ import { useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect, useState } from "react";
 import { userApi } from "@/services/userServices";
 import {
-    Instagram,
-    Youtube,
-    Twitter,
-    Facebook,
-    Linkedin,
-    Mail,
-    Share2,
     SlidersHorizontal,
     X,
 
@@ -64,29 +57,6 @@ const Levels = [
     },
 ];
 
-// // Social media icon resolver
-// const getSocialMediaIcon = (platform: string) => {
-//     switch (platform?.toLowerCase()) {
-//         case "instagram":
-//             return <Instagram className="w-5 h-5" />;
-//         case "youtube":
-//         case "youtube reel":
-//             return <Youtube className="w-5 h-5" />;
-//         case "twitter":
-//         case "twitter / x":
-//             return <Twitter className="w-5 h-5" />;
-//         case "facebook":
-//             return <Facebook className="w-5 h-5" />;
-//         case "linkedin":
-//             return <Linkedin className="w-5 h-5" />;
-//         case "newsletter":
-//             return <Mail className="w-5 h-5" />;
-//         case "tiktok":
-//             return <TikTokIcon />;
-//         default:
-//             return <Share2 className="w-5 h-5" />;
-//     }
-// };
 
 type Creator = {
     _id: string;

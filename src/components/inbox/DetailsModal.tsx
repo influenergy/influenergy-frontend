@@ -17,8 +17,6 @@ import {
   Instagram,
   Youtube,
   Twitter,
-  Facebook,
-  Linkedin,
   Mail,
   Share2,
   CircleCheckBig,
@@ -58,12 +56,6 @@ const getSocialMediaIcon = (platform?: string) => {
     case "twitter / x":
     case "x":
       return <Twitter className="w-5 h-5 text-black" />;
-
-    case "facebook":
-      return <Facebook className="w-5 h-5 text-blue-600" />;
-
-    case "linkedin":
-      return <Linkedin className="w-5 h-5 text-blue-700" />;
 
     case "newsletter":
     case "email":
