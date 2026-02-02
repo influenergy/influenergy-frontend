@@ -2,16 +2,13 @@
 import { AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, lazy, Suspense, useEffect } from "react";
-import Loader from "@/components/brand/Loader";
 import ShortlistedApplications from "@/components/brand/ShortlistedApplications";
-import { CampaignManagerGridSkeleton } from "@/components/Skeletons/CampaignManagerGridSkeleton";
 
 import { Info } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useBrandNotificationCounts } from "@/hooks/useNotificationCounts";
 import ApplicationsReceivedSkeleton from "@/components/Skeletons/ApplicationsReceivedSkeleton";
 
-const AIFindTab = lazy(() => import("@/components/brand/AIFindTab"));
 const ApplicationsReceived = lazy(() => import("@/components/brand/ApplicationsReceived"));
 const ActiveCollaborationTab = lazy(
   () => import("@/components/brand/ActiveCollaborationTab")
@@ -22,7 +19,7 @@ const PendingCollaborationTab = lazy(
 const CompletedCollaborationTab = lazy(
   () => import("@/components/brand/CompletedCollaborationTab")
 );
-
+ 
 // Loading component for Suspense fallback
 const TabLoading = () => (
   <div className="w-full mt-5 sm:mt-8 mb-5 md:mb-10">
@@ -59,11 +56,11 @@ export default function Page() {
     <span className="relative inline-flex items-center ml-0.5">
       <span className="group relative">
         <Info
-          size={14}
+          size={14} 
           className="text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         />
 
-        <span className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute z-[100] w-56 sm:w-64 rounded-lg bg-gray-900 dark:bg-gray-800 px-3 py-2.5 text-xs leading-relaxed text-white shadow-xl bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-normal after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-[6px] after:border-transparent after:border-t-gray-900 dark:after:border-t-gray-800">
+        <span className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 absolute z-[100] w-56 sm:w-64 rounded-lg bg-primary text-primary-foreground shadow hover:bg-primary/90 px-3 py-2.5 text-xs leading-relaxed bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-normal after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-[6px] after:border-transparent after:border-t-primary dark:after:border-t-primary/90">
           {text}
         </span>
       </span>

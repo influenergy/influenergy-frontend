@@ -1,11 +1,8 @@
-import { Campaign } from "@/types/PostQuestionnaire";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useFindAiCampaignsList } from "@/hooks/useFindAi";
-import CampaignCard from "./CampaignCard";
 import Loader from "./Loader";
-import React, { useEffect, useState } from "react";
-import CreatorCards from "./CreatorCards";
+import React, { useState } from "react";
 
 
 export default function ShortlistedApplications() {

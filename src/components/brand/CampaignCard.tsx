@@ -10,7 +10,6 @@ import {
   MoreVertical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { postApi } from "@/services/postServices";
 import { useRouter } from "next/navigation";
 
 

@@ -9,7 +9,6 @@ import { TabLoading } from "@/components/inbox/TabLoading";
 import { useCollaborationStatusDetails } from "@/hooks/useQueryCampaigns";
 import { Collaboration } from "@/types/Collaboration";
 import { pendingCollaborationCount, useAppSelector } from "@/store";
-import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "next/navigation";
 import { useCreatorNotificationCounts } from "@/hooks/useNotificationCounts";
 

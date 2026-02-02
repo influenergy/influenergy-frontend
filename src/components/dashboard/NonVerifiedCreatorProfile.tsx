@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card } from '../ui/card'
 import { Lock } from "lucide-react";
 import Link from 'next/link';
 import { Button } from '../ui/button';
@@ -13,11 +12,20 @@ interface CreatorWithCompleteProfileProps {
 
 function NonVerifiedCreatorProfile({
     fullName,
+    isProfileCompleted,
+    profileIcon,
 }: CreatorWithCompleteProfileProps) {
 
     if (!fullName) {
         return <CreatorWithCompleteProfileSkeleton />
     }
+
+    const lockState = !isProfileCompleted
+        ? "PROFILE_INCOMPLETE"
+        : !profileIcon
+            ? "PROFILE_IMAGE_MISSING"
+            : null;
+
 
     return (
         <div className="flex flex-col gap-6 pr-4">
@@ -80,22 +88,33 @@ function NonVerifiedCreatorProfile({
                 </div>
 
                 {/* LOCK OVERLAY */}
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 rounded-xl">
-                    <div className="bg-white rounded-xl p-6 text-center max-w-sm">
-                        <Lock className="mx-auto mb-3 text-gray-700" />
-                        <h2 className="text-lg font-semibold mb-2">
-                            Dashboard Locked
-                        </h2>
-                        <p className="text-sm text-gray-600 mb-4">
-                            Complete your profile to unlock full dashboard access
-                        </p>
-                        <Link href="/questionnaire">
-                            <Button className="w-full">
-                                Complete Profile
-                            </Button>
-                        </Link>
+                {lockState && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 rounded-xl">
+                        <div className="bg-white rounded-xl p-6 text-center max-w-sm shadow-lg">
+                            <Lock className="mx-auto mb-3 text-gray-700" />
+
+                            <h2 className="text-lg font-semibold mb-2">
+                                Dashboard Locked
+                            </h2>
+
+                            <p className="text-sm text-gray-600 mb-4">
+                                {lockState === "PROFILE_INCOMPLETE"
+                                    ? "Complete your profile to unlock full dashboard access"
+                                    : "Upload your profile picture to continue"}
+                            </p>
+
+                            <Link href={lockState === "PROFILE_INCOMPLETE" ? "/questionnaire" : "/user-profile"}>
+                                <Button className="w-full">
+                                    {lockState === "PROFILE_INCOMPLETE"
+                                        ? "Complete Profile"
+                                        : "Upload Profile"}
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                )}
+
+
             </div>
         </div>
     )

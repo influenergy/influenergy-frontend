@@ -1,15 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Card } from "../ui/card";
 import Image from "next/image";
-import { Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, Contact, DollarSign, CircleCheckBig, Megaphone, Send, Clock4 } from "lucide-react";
+import { Contact, DollarSign, CircleCheckBig, Send, Clock4 } from "lucide-react";
 import { userApi } from "@/services/userServices";
-import PieChart from "../brand/PieChart";
-import { Button } from "../ui/button";
 import { postApi } from "@/services/postServices";
 import BrandDashboardSkeleton from "../Skeletons/BrandDashboardSkeleton";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import CampaignCard from "../brand/CampaignCard";
 import ExploreCreatorCard from "../brand/ExploreCreatorCard";
 import { useQuery } from "@tanstack/react-query";
@@ -290,35 +286,39 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                 {/* TABS SECTION */}
                 <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
                     {/* TABS HEADER - TOP */}
-                    <div className="border-b border-gray-200 bg-gray-50 px-5 py-4">
-                        <div className="flex gap-2">
-                            {tabs.map((tab) => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                                    className={`
-                                        px-6 py-3 rounded-lg
-                                        transition-all duration-200
-                                        flex items-center gap-2
-                                        font-medium text-sm
-                                        ${activeTab === tab.id
-                                            ? "bg-primary text-white shadow-md"
-                                            : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
-                                        }
-                                    `}
-                                >
-                                    <span>{tab.label}</span>
-                                    {/* <span className={`
-                                        text-xs px-2 py-0.5 rounded-full
-                                        ${activeTab === tab.id
-                                            ? "bg-white/20 text-white"
-                                            : "bg-gray-200 text-gray-600"
-                                        }
-                                    `}>
-                                        {tab.count}
-                                    </span> */}
-                                </button>
-                            ))}
+                    <div className="border-b border-gray-200 bg-gray-50 px-3">
+                        <div className="flex gap-6">
+                            {tabs.map((tab) => {
+                                const isActive = activeTab === tab.id;
+
+                                return (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                                        className={`
+            relative pb-3 pt-4
+            text-sm font-medium
+            transition-colors duration-200
+            ${isActive
+                                                ? "text-primary"
+                                                : "text-gray-600 hover:text-gray-800"
+                                            }
+          `}
+                                    >
+                                        <span>{tab.label}</span>
+
+                                        {/* bottom indicator */}
+                                        {isActive && (
+                                            <span
+                                                className="
+                absolute left-0 right-0 -bottom-[1px]
+                h-[2px] bg-primary rounded-full
+              "
+                                            />
+                                        )}
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
 

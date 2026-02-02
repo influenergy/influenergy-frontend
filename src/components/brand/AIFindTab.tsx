@@ -1,8 +1,5 @@
-import { Campaign } from "@/types/PostQuestionnaire";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useFindAiCampaignsList } from "@/hooks/useFindAi";
-import CampaignCard from "./CampaignCard";
 import Loader from "./Loader";
 
 export default function AIFindTab() {

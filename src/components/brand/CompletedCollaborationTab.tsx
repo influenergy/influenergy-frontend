@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { postApi } from "@/services/postServices";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useFindAiCampaignsList } from "@/hooks/useFindAi";
+import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
 import CreatorCard from "./CreatorCards";
 import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
@@ -85,37 +83,7 @@ export default function ApplicationsReceived() {
     queryFn: () => postApi.getCollabByStatus("Completed"),
     select: (res) => res.campaigns || []
   });
-
-
-
-
-  // const fetchApplications = async () => {
-  //   try {
-  //     setLoadingApps(true);
-
-  //     const response = await postApi.getCollabByCampaignIdForBrand(selectedCampaignId);
-
-  //     if (!response?.status) {
-  //       throw new Error("Failed to fetch applications");
-  //     }
-
-  //     setApplications(response.collaborations || []);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setLoadingApps(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!selectedCampaignId) {
-  //     setApplications([]);
-  //     return;
-  //   }
-
-  //   fetchApplications();
-  // }, [selectedCampaignId]);
-
+  
 
   const {
     data: applications = [],
@@ -123,7 +91,7 @@ export default function ApplicationsReceived() {
   } = useQuery({
     queryKey: ["applications", selectedCampaignId],
     queryFn: () =>
-      postApi.getCollabByCampaignIdForBrand(selectedCampaignId),
+      postApi.getCollabByCampaignIdForBrand(selectedCampaignId,"Completed"),
     enabled: !!selectedCampaignId,
     select: (res) => res.collaborations || []
   });
@@ -289,57 +257,61 @@ export default function ApplicationsReceived() {
         </div>}
 
         {/* Campaign Cards */}
-        {applications.length === 0 ? (
-          /* CAMPAIGN SELECTED BUT NO DATA */
-          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
-            <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
-              No completed collaborations yet
-            </p>
-            <p className="text-gray-400 dark:text-gray-500 text-sm">
-              Completed collaborations will appear here once all deliverables are approved and the campaign is marked as completed.
-            </p>
-          </div>
-        ) : !hasSelectedCampaign ? (
-          /* NO CAMPAIGN SELECTED */
-          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
-            <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
-              Select a campaign to view collaborations
-            </p>
-            <p className="text-gray-400 dark:text-gray-500 text-sm">
-              Choose a campaign from the dropdown above to see applications or active collaborations.
-            </p>
-          </div>
-        ) : (
-          /* DATA EXISTS */
-          <div className="mt-6 space-y-4">
-            {applications.map((app: Application) => (
-              <CreatorCard
-                key={app._id}
-                creator={app.creatorId}
-                status={app.status}
-                coverMessage={app.coverMessage}
-                onAction={async (nextStatus) => {
-                  if (nextStatus === "Payment") {
-                    await handlePayNow(app);
-                  } else {
-                    await handleStatusChange(app._id, nextStatus);
-                  }
-                }}
-                isActiveCollaboration={false}
-                videos={app.videos}
-                collaborationId={app._id}
-                expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
-                onApproveVideo={approveVideo}
-                onRequestChanges={requestVideoChanges}
-                isProcessing={
-                  isApproving ||
-                  isDeclining ||
-                  actionLoadingId === app._id
-                }
-                onCompleteCollaboration={handleCompleteCollaboration}
-              />
-            ))}
-          </div>
+        {!isLoading && (
+          <>
+            {applications.length === 0 ? (
+              /* CAMPAIGN SELECTED BUT NO DATA */
+              <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+                <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+                  No completed collaborations yet
+                </p>
+                <p className="text-gray-400 dark:text-gray-500 text-sm">
+                  Completed collaborations will appear here once all deliverables are approved and the campaign is marked as completed.
+                </p>
+              </div>
+            ) : !hasSelectedCampaign ? (
+              /* NO CAMPAIGN SELECTED */
+              <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-lg border">
+                <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+                  Select a campaign to view collaborations
+                </p>
+                <p className="text-gray-400 dark:text-gray-500 text-sm">
+                  Choose a campaign from the dropdown above to see applications or active collaborations.
+                </p>
+              </div>
+            ) : (
+              /* DATA EXISTS */
+              <div className="mt-6 space-y-4">
+                {applications.map((app: Application) => (
+                  <CreatorCard
+                    key={app._id}
+                    creator={app.creatorId}
+                    status={app.status}
+                    coverMessage={app.coverMessage}
+                    onAction={async (nextStatus) => {
+                      if (nextStatus === "Payment") {
+                        await handlePayNow(app);
+                      } else {
+                        await handleStatusChange(app._id, nextStatus);
+                      }
+                    }}
+                    isActiveCollaboration={false}
+                    videos={app.videos}
+                    collaborationId={app._id}
+                    expectedDeliverables={app?.campaignId?.expectedDeliverables || []}
+                    onApproveVideo={approveVideo}
+                    onRequestChanges={requestVideoChanges}
+                    isProcessing={
+                      isApproving ||
+                      isDeclining ||
+                      actionLoadingId === app._id
+                    }
+                    onCompleteCollaboration={handleCompleteCollaboration}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
 
       </div>

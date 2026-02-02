@@ -733,16 +733,16 @@ export const Step = ({ fields, mode }: StepProps) => {
                           className="absolute left-full top-1/2 ml-2 -translate-y-1/2
                      invisible group-hover:visible opacity-0 group-hover:opacity-100
                      transition-opacity duration-200
-                     bg-gray-900 dark:bg-gray-800 text-white text-xs
+                     bg-primary dark:bg-primary/90 text-white text-xs
                      px-3 py-2 rounded-md
-                     shadow-lg border border-gray-700
+                     shadow-lg border border-primary
                      z-50 pointer-events-none
                      w-64 leading-relaxed"
                         >
                           {/* Arrow */}
                           <div
                             className="absolute right-full top-1/2 -translate-y-1/2
-                       border-4 border-transparent border-r-gray-900 dark:border-r-gray-800"
+                       border-4 border-transparent border-r-primary dark:border-r-primary/90"
                           />
                           {field.info}
                         </div>

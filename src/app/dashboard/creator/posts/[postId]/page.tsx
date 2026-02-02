@@ -2,7 +2,6 @@
 import PostDescription from "@/components/dashboard/PostDescription";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Loader2 } from "lucide-react";
 import { useCampaign } from "@/hooks/useQueryCampaigns";
 import { NewCampaignResponse, Collaboration } from "@/types/PostTypes";
 import { useAppSelector } from "@/store";

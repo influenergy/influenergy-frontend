@@ -86,7 +86,7 @@
                 category: "number-with-suffix",
                 suffix: "days",
                 placeholder: "Enter number of days",
-                info: "Minimum deadline is 5 days"
+                info: "Minimum deadline is 3 days"
             },
             {
                 title: "Requirements",

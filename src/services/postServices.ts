@@ -1,6 +1,6 @@
 import { transformPostData } from "@/utils/transformQuestionnaire";
 import { api } from "./api";
-import { PostQuestionnaireData, CampaignQuestionnaireData, CreateCampaignPayload } from "@/types/Questionnaire";
+import { PostQuestionnaireData, CreateCampaignPayload } from "@/types/Questionnaire";
 
 export const postApi = {
   createAdPost: async (formData: PostQuestionnaireData) => {
@@ -108,9 +108,15 @@ export const postApi = {
     }
   },
 
-  getCollabByCampaignIdForBrand: async (campaignId: string) => {
+  getCollabByCampaignIdForBrand: async (campaignId: string, status?: string) => {
     try {
-      const response = await api.get(`/brand/collab/campaign/${campaignId}`);
+      const response = await api.get(`/brand/collab/campaign/${campaignId}`,
+        {
+          params: {
+            status,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching getCollabByStatus :", error);

@@ -12,13 +12,9 @@ import { CampaignQuestionnaireData, CreateCampaignPayload } from "@/types/Questi
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { selectUser, useAppSelector } from "@/store";
-import { Step } from "./PostSteps"; // reuse field renderer
+import { Step } from "./PostSteps";
 import { postApi } from "@/services/postServices";
-import { useFormContext } from "react-hook-form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { ChevronsLeft } from "lucide-react";
-
 
 const CreateCampaign = ({
     mode = "create",
@@ -33,7 +29,6 @@ const CreateCampaign = ({
     const router = useRouter();
     const user = useAppSelector(selectUser);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // const status = watch("status");
 
     // 🔐 Auth check
     useEffect(() => {
@@ -46,8 +41,27 @@ const CreateCampaign = ({
         }
     }, [user, toast, router]);
 
+    // ✅ Helper function to ensure correct types
+    const sanitizeDefaultValues = (values?: Partial<CampaignQuestionnaireData>) => {
+        if (!values) return {};
+        
+        return {
+            ...values,
+            // ✅ Ensure expectedDeliverables is always a string
+            expectedDeliverables: Array.isArray(values.expectedDeliverables) 
+                ? "" 
+                : (values.expectedDeliverables || ""),
+            // ✅ Ensure targetNiche is always an array
+            targetNiche: Array.isArray(values.targetNiche) 
+                ? values.targetNiche 
+                : [],
+        };
+    };
+
     const methods = useForm<CampaignQuestionnaireData>({
         resolver: yupResolver(createCampaignSchema),
+        mode: "onBlur", // ✅ Validate when user leaves field
+        reValidateMode: "onChange", // ✅ Re-validate on change after first error
         defaultValues: {
             campaignTitle: "",
             brandName: "",
@@ -55,17 +69,43 @@ const CreateCampaign = ({
             targetNiche: [],
             budgetForCampaign: "",
             socialPlatforms: "",
-            expectedDeliverables: "",
+            expectedDeliverables: "", // ✅ MUST be empty string, NOT array
+            requirements: "",
             applicationQuestions: "",
             status: "DRAFT",
+            ...sanitizeDefaultValues(defaultValues), // ✅ Sanitize incoming defaults
         },
     });
 
-    const { handleSubmit, reset, watch, setValue } = methods;
+    const { handleSubmit, reset, watch, setValue, formState: { errors, isValid } } = methods;
+
+    // ✅ Watch for type mismatches and fix them
+    useEffect(() => {
+        const subscription = watch((value, { name }) => {
+            // Fix expectedDeliverables if it becomes an array
+            if (name === "expectedDeliverables" && Array.isArray(value.expectedDeliverables)) {
+                const firstValue = value.expectedDeliverables[0];
+                setValue("expectedDeliverables", firstValue || "", { shouldValidate: true });
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, [watch, setValue]);
 
     useEffect(() => {
         if (defaultValues) {
-            reset(defaultValues);
+            reset({
+                campaignTitle: "",
+                brandName: "",
+                campaignDescription: "",
+                targetNiche: [],
+                budgetForCampaign: "",
+                socialPlatforms: "",
+                expectedDeliverables: "",
+                requirements: "",
+                applicationQuestions: "",
+                status: "DRAFT",
+                ...sanitizeDefaultValues(defaultValues),
+            });
         }
     }, [defaultValues, reset]);
 
@@ -147,33 +187,50 @@ const CreateCampaign = ({
                     {/* 🔹 Form Fields */}
                     <Step fields={CREATE_CAMPAIGN_FORM.fields} mode={mode} />
 
+                    {/* ✅ User-friendly validation errors */}
+                    {Object.keys(errors).length > 0 && (
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                            <h3 className="text-sm font-medium text-red-800 dark:text-red-200 mb-2">
+                                Please complete the following:
+                            </h3>
+                            <ul className="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-300">
+                                {Object.entries(errors).map(([field, error]) => (
+                                    <li key={field}>
+                                        {error?.message?.toString()}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                     {/* 🔹 Publish / Draft */}
                     <div className="space-y-3">
                         <label className="text-sm font-medium">Campaign Status</label>
 
                         <div className="flex items-center gap-10">
-                            <label className="flex items-center gap-2">
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
                                     value="PUBLISHED"
                                     checked={watch("status") === "PUBLISHED"}
                                     onChange={() => setValue("status", "PUBLISHED")}
+                                    className="cursor-pointer"
                                 />
                                 Publish now
                             </label>
 
-                            <label className="flex items-center gap-2">
+                            <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
                                     value="DRAFT"
                                     checked={watch("status") === "DRAFT"}
                                     onChange={() => setValue("status", "DRAFT")}
+                                    className="cursor-pointer"
                                 />
                                 Save as draft
                             </label>
                         </div>
                     </div>
-
 
                     {/* 🔹 Actions */}
                     <div className="flex w-full gap-3">
@@ -184,10 +241,6 @@ const CreateCampaign = ({
                                     ? "Update Campaign"
                                     : "Create Campaign"}
                         </Button>
-
-                        {/* <Button type="button" variant="outline">
-                            Cancel
-                        </Button> */}
                     </div>
 
                 </form>

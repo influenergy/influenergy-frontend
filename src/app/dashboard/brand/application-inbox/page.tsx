@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { DollarSign, Target, Package, Loader2, Megaphone, Calendar, Search, Briefcase, CircleCheckBig, CircleX, Clock } from 'lucide-react';
 import { postApi } from "@/services/postServices";
 import { useRouter, usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import Page from "../findai/page";
 import { CampaignManagerGridSkeleton } from "@/components/Skeletons/CampaignManagerGridSkeleton";
@@ -153,10 +151,6 @@ const MyCampaignsPage = () => {
     }
 
 
-    // const filteredCampaigns = campaigns.filter((campaign) =>
-    //     campaign.campaignTitle.toLowerCase().includes(searchQuery.toLowerCase())
-    // );
-
     const handleCampaignSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCampaignId(e.target.value);
     };
@@ -187,7 +181,6 @@ const MyCampaignsPage = () => {
                 </div>
 
                 <Page />
-
 
             </div>
 

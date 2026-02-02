@@ -8,7 +8,6 @@ import { PaymentModal } from "./PaymentModal";
 import { Button } from "../ui/button";
 import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
 import { CollaborationContractModal } from "../ui/ContractModal";
-import { Card } from "../ui/card";
 import UpdateStatusModal from "./UpdateStatusModal";
 import StatusModal from "../brand/StatusModal";
 
@@ -139,7 +138,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
       setIsLoading(false);
     }
   };
-  
+
   // Handle status modal close - refetch when user manually closes it
   const handleStatusModalClose = () => {
     setStatusMessage(null);
@@ -171,6 +170,33 @@ const InboxCard: React.FC<InboxCardProps> = ({
     e.stopPropagation();
     callback();
   };
+
+
+  const statusStyles: Record<string, string> = {
+    Pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+
+    "Waiting Approval":
+      "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400",
+
+    Interested:
+      "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+
+    Offered:
+      "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+
+    "Offer Accepted":
+      "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+
+    Active:
+      "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
+
+    Completed:
+      "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
+
+    Rejected:
+      "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+  };
+
 
   return (
     <div className="relative flex flex-col dark:bg-background">
@@ -216,16 +242,16 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
                 {/* Status Badge */}
                 <div className="flex-shrink-0 flex flex-col items-end gap-3">
-                  {data?.status !== "Interested" && <span
-                    className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap ${data?.status === "Offered"
-                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                      : data?.status === "Pending"
-                        ? "bg-[#FEF9C2] text-[#A65F00]"
-                        : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                      }`}
-                  >
-                    {data?.status}
-                  </span>}
+                  {data?.status && (
+                    <span
+                      className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap
+      ${statusStyles[data.status] ??
+                        "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-400"}
+    `}
+                    >
+                      {data.status}
+                    </span>
+                  )}
 
                   {/* Action Buttons Based on Status - Right Side */}
                   {data?.status === "Offered" && (
@@ -260,10 +286,10 @@ const InboxCard: React.FC<InboxCardProps> = ({
               </div>
 
               {/* Brand Request Notice */}
-              {data?.source === "Brand" && (
+              {(data?.source === "Brand" && data?.status === "Offered") && (
                 <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 mt-4">
                   <p className="text-sm text-yellow-700 dark:text-yellow-400 font-medium">
-                    🤝 A brand has sent you a collaboration request.
+                    A brand has sent you a collaboration request.
                   </p>
                 </div>
               )}
@@ -288,8 +314,8 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
                 {data?.status === "Offer Accepted" && (
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-                    <p className="text-sm text-yellow-700 dark:text-yellow-400 text-center">
-                      ⏳ Please wait. The brand will enable video submissions shortly.
+                    <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                      Please wait. The brand will enable video submissions shortly.
                     </p>
                   </div>
                 )}

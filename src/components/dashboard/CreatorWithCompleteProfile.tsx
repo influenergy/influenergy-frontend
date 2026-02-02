@@ -1,14 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Card } from "../ui/card";
 import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithCompleteProfileSkeleton";
 import { selectUser, useAppDispatch, useAppSelector } from "@/store";
-import FeaturedCard from "./FeaturedCard";
-import FeaturedModal from "./FeaturedModal";
 import total_campaigns from "../../../public/images/total_campaigns.svg"
-import { Instagram, Youtube, Twitter, Facebook, Linkedin, Mail, Share2, Contact, DollarSign, CircleCheckBig, Megaphone, Send, Clock4, Activity } from "lucide-react";
+import { CircleCheckBig, Activity } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
 import { useRouter } from "next/navigation";

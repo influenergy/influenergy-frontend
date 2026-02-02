@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import { postApi } from "@/services/postServices";
 import {
-    ChevronsLeft, MapPin, Users, TrendingUp, Award, ExternalLink, Tag,
-    Calendar, Globe, DollarSign, Heart, Video, User, Target,
-    BarChart3, Languages, CreditCard, Sparkles, CheckCircle2, XCircle, Clock,
-    Loader2, X, Eye, Briefcase, Star, Link as LinkIcon,
+    ChevronsLeft, CreditCard, CheckCircle2, XCircle, Clock,
+    Loader2, X,
     CircleCheckBig,
     CircleX
 } from "lucide-react";
@@ -459,7 +457,7 @@ const CreatorDetailsPage = () => {
                                         {creator.category.map((cat, idx) => (
                                             <span
                                                 key={idx}
-                                                className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300 font-medium border border-gray-200 dark:border-gray-600"
+                                                className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300 font-medium border border-yellow-100 dark:border-yellow-100"
                                             >
                                                 {cat}
                                             </span>

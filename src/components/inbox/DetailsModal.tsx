@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { useAcceptOrDeclineCollaboration } from "@/hooks/usePost";
 import { Collaboration } from "@/types/Collaboration";
 import { Button } from "../ui/button";
 import { CollaborationContractModal } from "../ui/ContractModal";

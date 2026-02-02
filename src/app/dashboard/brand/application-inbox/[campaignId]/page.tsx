@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { postApi } from "@/services/postServices";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Loader2, Clock, CircleCheckBig, CircleX, ChevronsLeft } from "lucide-react";
+import { Loader2, CircleCheckBig, CircleX, ChevronsLeft } from "lucide-react";
 import Image from "next/image";
 import CreatorCard from "@/components/brand/CreatorCards";
 import { useInitiatePayment } from "@/hooks/usePayment";

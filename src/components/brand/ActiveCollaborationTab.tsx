@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { postApi } from "@/services/postServices";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { useFindAiCampaignsList } from "@/hooks/useFindAi";
+import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
 import CreatorCard from "./CreatorCards";
 import { useAcceptOrDeclineVideo } from "@/hooks/usePost";
@@ -92,7 +90,7 @@ export default function ApplicationsReceived() {
     } = useQuery({
         queryKey: ["applications", selectedCampaignId],
         queryFn: () =>
-            postApi.getCollabByCampaignIdForBrand(selectedCampaignId),
+            postApi.getCollabByCampaignIdForBrand(selectedCampaignId, "Active"),
         enabled: !!selectedCampaignId,
         select: (res) => res.collaborations || []
     });

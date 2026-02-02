@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, ExternalLink, MessageSquare, AlertCircle, ChevronDown, ChevronUp, CircleCheckBig, CircleX, Clock } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Video {
   _id: string;
@@ -43,6 +43,7 @@ interface CreatorCardProps {
   onRequestChanges?: (collaborationId: string, videoId: string, message: string) => void;
   onCompleteCollaboration?: (collaborationId: string) => Promise<void>;
   isProcessing?: boolean;
+  isOfferExpired?: boolean;
 }
 
 export default function CreatorCard({
@@ -58,6 +59,7 @@ export default function CreatorCard({
   onRequestChanges,
   onCompleteCollaboration,
   isProcessing = false,
+  isOfferExpired = false,
 }: CreatorCardProps) {
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState("");
@@ -161,6 +163,7 @@ export default function CreatorCard({
     return age;
   };
 
+  console.log("cratro--->", creator);
 
   return (
     <>
@@ -222,7 +225,7 @@ export default function CreatorCard({
                 {/* Followers */}
                 {creator.profile?.socialLinks?.primary?.followers && (
                   <div className="flex items-center gap-1.5">
-                    <div className="flex items-center gap-1 bg-primary/10 dark:bg-primary/20 rounded-full">
+                    <div className="flex items-center gap-1 rounded-full">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
@@ -242,7 +245,7 @@ export default function CreatorCard({
                 {creator.profile.category.map((cat, idx) => (
                   <span
                     key={idx}
-                    className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 dark:text-gray-200 font-medium border border-gray-200 dark:border-gray-600 hover:shadow-sm transition-shadow"
+                    className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 dark:text-gray-200 font-medium border border-yellow-100 dark:border-yellow-100 hover:shadow-sm transition-shadow"
                   >
                     {cat}
                   </span>
@@ -614,8 +617,23 @@ export default function CreatorCard({
               </>
             )}
 
-            {status === "Offered" && (
+            {status === "Offered" && !isOfferExpired && (
               <p className="font-medium text-primary">Waiting for the creator to accept the offer</p>
+            )}
+
+
+            {status === "Offered" && isOfferExpired && (
+              <div className="flex gap-3 mt-2">
+                <Button onClick={() => onAction("Offered")} className="flex">
+                  <CircleCheckBig className="w-4 h-4" />
+                  Re-Send Offer
+                </Button>
+
+                <Button onClick={() => onAction("Rejected")} variant="destructive" className="flex">
+                  <CircleX className="w-4 h-4" />
+                  Cancel Offer
+                </Button>
+              </div>
             )}
 
             {

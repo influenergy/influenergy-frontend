@@ -215,7 +215,10 @@ export const useDeleteCollab = (status: string) => {
 };
 
 
-export const useApplyCampaign = (filters: { search: string; niche: string }) => {
+export const useApplyCampaign = (filters: {
+  search: string;
+  niche: string;
+}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -227,27 +230,18 @@ export const useApplyCampaign = (filters: { search: string; niche: string }) => 
       payload: any;
     }) => {
       const res = await postApi.createCollaboration(campaignId, payload);
+
       if (!res?.status) {
         throw new Error(res?.message || "Something went wrong");
       }
-      return res;
+
+      return { ...res, campaignId };
     },
 
-    // ✨ OPTIMISTIC UPDATE - runs immediately
-    onMutate: async ({ campaignId }) => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({ 
-        queryKey: ["campaigns", filters.search, filters.niche] 
-      });
+    // ✅ UPDATE UI IMMEDIATELY AFTER SUCCESS
+    onSuccess: (data) => {
+      const campaignId = data.campaignId;
 
-      // Snapshot previous value
-      const previousCampaigns = queryClient.getQueryData([
-        "campaigns",
-        filters.search,
-        filters.niche,
-      ]);
-
-      // Optimistically update the UI
       queryClient.setQueryData(
         ["campaigns", filters.search, filters.niche],
         (old: any) => {
@@ -266,25 +260,14 @@ export const useApplyCampaign = (filters: { search: string; niche: string }) => 
           };
         }
       );
-
-      return { previousCampaigns };
     },
 
-    // If mutation fails, rollback
-    onError: (err, variables, context) => {
-      if (context?.previousCampaigns) {
-        queryClient.setQueryData(
-          ["campaigns", filters.search, filters.niche],
-          context.previousCampaigns
-        );
-      }
-    },
-
-    // Refetch after success to ensure sync
+    // Optional safety refetch
     onSettled: () => {
-      queryClient.invalidateQueries({ 
-        queryKey: ["campaigns", filters.search, filters.niche] 
+      queryClient.invalidateQueries({
+        queryKey: ["campaigns", filters.search, filters.niche],
       });
     },
   });
 };
+
