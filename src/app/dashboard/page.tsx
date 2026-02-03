@@ -11,11 +11,11 @@ import { isAxiosError } from "axios";
 import CreatorWithCompleteProfile from "@/components/dashboard/CreatorWithCompleteProfile";
 import NonVerifiedCreatorProfile from "@/components/dashboard/NonVerifiedCreatorProfile";
 import BrandDashboard from "@/components/dashboard/BrandDashboard";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import FeaturedModal from "@/components/dashboard/FeaturedModal";
-import Image from "next/image";
-import { useDispatch } from "react-redux";
-import { setUserBadge } from "@/store/features/authSlice";
+// import Image from "next/image";
+// import { useDispatch } from "react-redux";
+// import { setUserBadge } from "@/store/features/authSlice";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 
 
@@ -43,7 +43,7 @@ const Levels = [
 
 export default function DashboardPage() {
   const isAuthenticated = useRouteProtection();
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const userType = useAppSelector((state) => state.auth.userType);
   const { data: userDetails, isLoading, error } = useUserDetails();
   const [showFeatured, setShowFeatured] = React.useState(false);
@@ -90,21 +90,32 @@ export default function DashboardPage() {
     );
   }
 
-  const badgeLevel =
-    userDetails?.data?.type === "UGC" && userDetails?.data?.badge
-      ? Levels.find((lvl) => lvl.key === userDetails.data.badge)
-      : null;
 
-    if(badgeLevel){
-      dispatch(setUserBadge(badgeLevel.key))
-    }
+  const isProfileStateReady =
+    typeof userDetails?.data?.isProfileCompleted === "boolean" &&
+    typeof userDetails?.data?.profileIcon === "boolean";
+
+
+  // const badgeLevel =
+  //   userDetails?.data?.type === "UGC" && userDetails?.data?.badge
+  //     ? Levels.find((lvl) => lvl.key === userDetails.data.badge)
+  //     : null;
+
+  // if (badgeLevel) {
+  //   dispatch(setUserBadge(badgeLevel.key))
+  // }
   // console.log(badgeLevel, "🏅 User Badge Level");
+
+
+  if (userType === "creator" && !isProfileStateReady) {
+    return <Loader />;
+  }
 
   return (
     <div className="relative p-2 px-5 flex flex-col h-full">
       <div className="flex justify-between items-center mb-4 pr-4 ">
         <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
-        {badgeLevel && (
+        {/* {badgeLevel && (
           <Button
             onClick={() => setShowFeatured(true)}
             className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border shadow-sm hover:opacity-90 transition"
@@ -125,27 +136,27 @@ export default function DashboardPage() {
               {badgeLevel.title.split("-")[1]?.trim()}
             </span>
           </Button>
-        )}
-        {userType === "brand" && <NewCampaignButton/>}
+        )} */}
+        {userType === "brand" && <NewCampaignButton />}
       </div>
 
       {userType === "creator" ? (
         <>
-
-          {(!userDetails?.data?.isProfileCompleted || !userDetails?.data?.profileIcon) &&
-            <NonVerifiedCreatorProfile isProfileCompleted={userDetails?.data?.isProfileCompleted} profileIcon={userDetails?.data?.profileIcon} fullName={userDetails?.data?.fullName} />}
-
-
-          {userDetails?.data?.isProfileCompleted &&
-            userDetails?.data?.profileIcon && (
-              <CreatorWithCompleteProfile fullName={userDetails?.data?.fullName} />
-            )}
-        </> 
+          {!userDetails.data.isProfileCompleted ||
+            !userDetails.data.profileIcon ? (
+            <NonVerifiedCreatorProfile
+              isProfileCompleted={userDetails.data.isProfileCompleted}
+              profileIcon={userDetails.data.profileIcon}
+              fullName={userDetails.data.fullName}
+            />
+          ) : (
+            <CreatorWithCompleteProfile
+              fullName={userDetails.data.fullName}
+            />
+          )}
+        </>
       ) : (
-        // Brand dashboard
-        <div className="">
-          <BrandDashboard fullName={userDetails?.data?.fullName} />
-        </div>
+        <BrandDashboard fullName={userDetails?.data?.fullName} />
       )}
       <FeaturedModal isOpen={showFeatured} onClose={() => setShowFeatured(false)} showBtn={false} />
     </div>

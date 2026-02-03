@@ -88,7 +88,7 @@ const brandNav: NavItem[] = [
     label: "Collaboration Manager",
     href: "/dashboard/brand/application-inbox",
     icon: Mail,
-    slug: "p",
+    slug: "manager",
     matchPaths: ["/dashboard/brand/xyz", "/dashboard/brand/xyz"],
   },
   // {
@@ -109,7 +109,6 @@ const brandNav: NavItem[] = [
     slug: "explore",
 
   },
-
 ];
 
 const creatorProfileNav: NavItem[] = [
@@ -202,7 +201,7 @@ const brandProfileNav: NavItem[] = [
     label: "Collaboration Manager",
     href: "/dashboard/brand/application-inbox",
     icon: Mail,
-    slug: "p",
+    slug: "manager",
     matchPaths: ["/dashboard/brand/xyz", "/dashboard/brand/xyz"],
   },
   // {

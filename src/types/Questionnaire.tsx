@@ -128,6 +128,7 @@ export interface CampaignQuestionnaireData {
   requirements?: string;
   applicationQuestions?: string;
   status: "DRAFT" | "PUBLISHED";
+  customNiche?: string;
 }
 
 export interface CreateCampaignPayload

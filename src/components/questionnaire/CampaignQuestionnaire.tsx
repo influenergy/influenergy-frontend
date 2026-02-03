@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { selectUser, useAppSelector } from "@/store";
 import { Step } from "./PostSteps";
 import { postApi } from "@/services/postServices";
-import { ChevronsLeft,Bookmark } from "lucide-react";
+import { ChevronsLeft, Bookmark } from "lucide-react";
 
 const CreateCampaign = ({
     mode = "create",
@@ -73,6 +73,7 @@ const CreateCampaign = ({
             requirements: "",
             applicationQuestions: "",
             status: "DRAFT",
+            customNiche: "",
             ...sanitizeDefaultValues(defaultValues), // ✅ Sanitize incoming defaults
         },
     });
@@ -104,6 +105,7 @@ const CreateCampaign = ({
                 requirements: "",
                 applicationQuestions: "",
                 status: "DRAFT",
+                customNiche: "",
                 ...sanitizeDefaultValues(defaultValues),
             });
         }
@@ -112,6 +114,21 @@ const CreateCampaign = ({
     const onSubmit = async (data: CampaignQuestionnaireData) => {
         try {
             setIsSubmitting(true);
+
+
+            /* ---------- 🔥 HANDLE OTHERS NICHE ---------- */
+            let finalNiches = data.targetNiche || [];
+
+            if (finalNiches.includes("Others")) {
+                if (data.customNiche?.trim()) {
+                    finalNiches = finalNiches
+                        .filter((n) => n !== "Others")
+                        .concat(data.customNiche.trim());
+                } else {
+                    // safety: remove Others if no custom value
+                    finalNiches = finalNiches.filter((n) => n !== "Others");
+                }
+            }
 
             const raw = data.requirements?.trim();
 
@@ -138,8 +155,14 @@ const CreateCampaign = ({
 
             const processedData: CreateCampaignPayload = {
                 ...data,
+                targetNiche: finalNiches.filter(
+                    (value, index, self) => self.indexOf(value) === index
+                ),
                 requirements: processedRequirements,
             };
+
+            delete (processedData as any).customNiche;
+
 
             await postApi.createCampaign(processedData);
 
@@ -219,7 +242,7 @@ const CreateCampaign = ({
                             onClick={() => submitWithStatus("DRAFT")}
                         >
                             {isSubmitting ? "Saving..." : "Save as Draft"}
-                            <Bookmark/>
+                            <Bookmark />
                         </Button>
 
                         <Button

@@ -260,81 +260,81 @@ export default function ApplicationsReceived() {
           </select>
         </div>}
 
-
-        <h3 className="mb-2 text-md font-semibold text-primary">
-          Campaign Details
-        </h3>
-
         {selectedCampaign && (
-          <div className="mb-4 rounded-xl border-2 border-primary bg-white dark:bg-gray-900 shadow-sm">
-            <div className="flex gap-4 p-4">
+          <>
+            <h3 className="mb-2 text-sm font-semibold text-primary">
+              Campaign Details
+            </h3>
+            <div className="mb-4 rounded-xl border-2 border-primary bg-white dark:bg-gray-900 shadow-sm">
+              <div className="flex gap-4 p-4">
 
-              {/* Image */}
-              <div className="w-24 h-24 rounded-md overflow-hidden border bg-gray-100 shrink-0">
-                <img
-                  src={selectedCampaign.campaignImage}
-                  alt={selectedCampaign.campaignTitle}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-
-                {/* Top Row */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
-                      {selectedCampaign.campaignTitle}
-                    </h2>
-                    <p className="text-xs text-gray-500 truncate">
-                      {selectedCampaign.brandName}
-                    </p>
-                  </div>
+                {/* Image */}
+                <div className="w-24 h-24 rounded-md overflow-hidden border bg-gray-100 shrink-0">
+                  <img
+                    src={selectedCampaign.campaignImage}
+                    alt={selectedCampaign.campaignTitle}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
 
-                {/* Description */}
-                <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {selectedCampaign.campaignDescription}
-                </p>
+                {/* Content */}
+                <div className="flex-1 min-w-0">
 
-                {/* Meta */}
-                <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Budget:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {selectedCampaign.budgetForCampaign}
-                    </span>
+                  {/* Top Row */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
+                        {selectedCampaign.campaignTitle}
+                      </h2>
+                      <p className="text-xs text-gray-500 truncate">
+                        {selectedCampaign.brandName}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Platform:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {selectedCampaign.socialPlatforms}
-                    </span>
-                  </div>
+                  {/* Description */}
+                  <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {selectedCampaign.campaignDescription}
+                  </p>
 
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Deadline:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {selectedCampaign.deadline}
-                    </span>
-                  </div>
+                  {/* Meta */}
+                  <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-500">Budget:</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {selectedCampaign.budgetForCampaign}
+                      </span>
+                    </div>
 
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Created:</span>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {new Date(selectedCampaign.campaignCreatedAt).toLocaleDateString("en-US", {
-                        month: "2-digit",
-                        day: "2-digit",
-                        year: "2-digit",
-                      })}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-500">Platform:</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {selectedCampaign.socialPlatforms}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-500">Deadline:</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {selectedCampaign.deadline}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-500">Created:</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {new Date(selectedCampaign.campaignCreatedAt).toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          year: "2-digit",
+                        })}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </>
         )}
 
         {/* Campaign Cards */}
@@ -363,7 +363,7 @@ export default function ApplicationsReceived() {
             ) : (
               /* DATA EXISTS */
               <div className="mt-6 space-y-3">
-                <p className="text-md font-semibold text-primary">
+                <p className="text-sm font-semibold text-primary">
                   Creator Applications
                 </p>
                 {applications.map((app: Application) => (

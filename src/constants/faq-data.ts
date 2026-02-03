@@ -15,7 +15,7 @@ export const faqData = [
     id: 3,
     trigger: "What is Influenergy’s AI-Find Feature?",
     content:
-      "The AI-Find Feature is your brand’s secret weapon for discovering the right creators at the right time. It’s an AI-powered matching tool that helps brands instantly connect with verified, high-performing UGC creators across platforms like Instagram, TikTok, LinkedIn, YouTube & more.",
+      "The AI-Find Feature is your brand’s secret weapon for discovering the right creators at the right time. It’s an AI-powered matching tool that helps brands instantly connect with verified, high-performing UGC creators across platforms like Instagram, TikTok, YouTube & more.",
   },
   {
     id: 4,

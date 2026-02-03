@@ -273,8 +273,11 @@ export const FormField = ({ field }: FormFieldProps) => {
   // MULTISELECT with placeholder
   if (field.category === "multiselect") {
     const selectedOptions = watch(fieldName) || [];
+    const hasOthers = selectedOptions.includes("Others");
+
     return (
-      <div>
+      <div className="space-y-3">
+        {/* Existing multiselect */}
         <Select
           isMulti
           options={field.options?.map((option) => ({
@@ -291,37 +294,21 @@ export const FormField = ({ field }: FormFieldProps) => {
           }}
           placeholder={field.placeholder || "Select options..."}
           classNamePrefix="react-select"
-          className="dark:bg-gray-900 dark:text-gray-100"
-          styles={{
-            control: (base) => ({
-              ...base,
-              backgroundColor: "#F3F3F5",
-              border: "none",
-              boxShadow: "none",
-              "&:hover": {
-                border: "none",
-              },
-            }),
-            menu: (base) => ({
-              ...base,
-              backgroundColor: "#F3F3F5",
-            }),
-            option: (base, state) => ({
-              ...base,
-              backgroundColor: state.isSelected ? "#7544DB" : "#F3F3F5",
-              color: state.isSelected ? "#FFFFFF" : "#000000",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                backgroundColor: "#7544DB",
-                color: "#FFFFFF",
-              },
-              "&:active": {
-                backgroundColor: "#7544DB",
-              },
-            }),
-          }}
         />
+
+        {/* 👇 Show input ONLY if Others is selected */}
+        {hasOthers && (
+          <input
+            type="text"
+            placeholder="Enter your niche"
+            onChange={(e) =>
+              setValue("customNiche" as any, e.target.value, {
+                shouldDirty: true,
+              })
+            }
+            className="w-full p-3 rounded-lg bg-[#F3F3F5] focus:ring-primary focus:outline-none"
+          />
+        )}
       </div>
     );
   }

@@ -130,16 +130,16 @@ const CampaignCard = ({
       {campaign.targetNiche?.length > 0 && (
         <div className="flex items-start gap-2 mb-3 text-sm text-muted-foreground">
           <Target className="w-4 h-4 mt-0.5 text-primary" />
-          <div className="flex flex-wrap gap-1">
-            {campaign.targetNiche.slice(0, 2).map((niche: string, idx: number) => (
-              <span key={idx}>{niche}</span>
-            ))}
-            {campaign.targetNiche.length > 2 && (
-              <span>+{campaign.targetNiche.length - 2}</span>
-            )}
-          </div>
+
+          <span>
+            {campaign.targetNiche.slice(0, 2).join(", ")}
+
+            {campaign.targetNiche.length > 2 &&
+              `, +${campaign.targetNiche.length - 2} more`}
+          </span>
         </div>
       )}
+
 
       {/* Deliverables */}
       {campaign.expectedDeliverables?.length > 0 && (

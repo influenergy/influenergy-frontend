@@ -215,6 +215,7 @@ const MyCampaignsPage = () => {
                     </div>
 
                     {/* Niche Select */}
+                    {/* Niche Select */}
                     <Select
                         value={selectedNiche}
                         onValueChange={(value) =>
@@ -227,18 +228,34 @@ const MyCampaignsPage = () => {
 
                         <SelectContent>
                             <SelectItem value={ALL_NICHES}>All Niches</SelectItem>
+
                             <SelectItem value="AI">AI</SelectItem>
-                            <SelectItem value="Beauty & Care">Beauty & Care</SelectItem>
-                            <SelectItem value="Business & Finance">Business & Finance</SelectItem>
-                            <SelectItem value="Fashion & Style">Fashion & Style</SelectItem>
-                            <SelectItem value="Food & Drinks">Food & Drinks</SelectItem>
-                            <SelectItem value="Gaming">Gaming</SelectItem>
-                            <SelectItem value="Health & Wellness">Health & Wellness</SelectItem>
-                            <SelectItem value="Lifestyle">Lifestyle</SelectItem>
-                            <SelectItem value="Sports & Fitness">Sports & Fitness</SelectItem>
-                            <SelectItem value="Tech">Tech</SelectItem>
-                            <SelectItem value="Travel">Travel</SelectItem>
-                            <SelectItem value="Others">Others</SelectItem>
+                            <SelectItem value="Lifestyle & Vlogging">Lifestyle & Vlogging</SelectItem>
+                            <SelectItem value="Fashion & Beauty">Fashion & Beauty</SelectItem>
+                            <SelectItem value="Health, Fitness & Wellness">
+                                Health, Fitness & Wellness
+                            </SelectItem>
+                            <SelectItem value="Food & Beverages">Food & Beverages</SelectItem>
+                            <SelectItem value="Technology & Gadgets">Technology & Gadgets</SelectItem>
+                            <SelectItem value="Gaming & Esports">Gaming & Esports</SelectItem>
+                            <SelectItem value="Finance & Business">Finance & Business</SelectItem>
+                            <SelectItem value="Education & Learning">Education & Learning</SelectItem>
+                            <SelectItem value="Travel & Hospitality">Travel & Hospitality</SelectItem>
+                            <SelectItem value="Entertainment & Media">Entertainment & Media</SelectItem>
+                            <SelectItem value="Home, Decor & DIY">Home, Decor & DIY</SelectItem>
+                            <SelectItem value="Parenting & Family">Parenting & Family</SelectItem>
+                            <SelectItem value="Automobile & Mobility">Automobile & Mobility</SelectItem>
+                            <SelectItem value="Sports & Outdoor">Sports & Outdoor</SelectItem>
+                            <SelectItem value="Pets & Animals">Pets & Animals</SelectItem>
+                            <SelectItem value="E-commerce & Product Reviews">
+                                E-commerce & Product Reviews
+                            </SelectItem>
+                            <SelectItem value="Sustainability & Social Impact">
+                                Sustainability & Social Impact
+                            </SelectItem>
+                            <SelectItem value="B2B & Professional Content">
+                                B2B & Professional Content
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                 </div>

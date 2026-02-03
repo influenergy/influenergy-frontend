@@ -30,11 +30,6 @@ export const createCampaignSchema = yup.object({
     .string()
     .required("Please provide a campaign description")
     .test(
-      "min-150-words",
-      "Campaign description should be at least 150 words",
-      (value) => wordCount(value) >= 150
-    )
-    .test(
       "max-200-words",
       "Campaign description should be maximum 200 words",
       (value) => wordCount(value) <= 200
@@ -44,7 +39,6 @@ export const createCampaignSchema = yup.object({
   targetNiche: yup
     .array()
     .of(yup.string().required())
-    .min(3, "Please select at least 3 niches")
     .max(8, "You can select maximum 8 niches")
     .required("Please select target niches"),
 
@@ -73,11 +67,6 @@ export const createCampaignSchema = yup.object({
   requirements: yup
     .string()
     .optional()
-    .test(
-      "min-80-words",
-      "Requirements should be at least 80 words",
-      (value) => !value || wordCount(value) >= 80
-    )
     .test(
       "max-120-words",
       "Requirements should be maximum 120 words",
