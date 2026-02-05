@@ -124,15 +124,18 @@ export const postApi = {
     }
   },
 
-  findAIMatch: async (campaignId: string, creatorId: string) => {
-    try {
-      const response = creatorId ? await api.get(`/brand/ai-find/${campaignId}?creatorId=${creatorId}`) : await api.get(`/brand/ai-find/${campaignId}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching campaigns:", error);
-      throw error;
-    }
+  findAIMatch: async (
+    campaignId: string,
+    page: number,
+    limit = 12,
+    filter?: string
+  ) => {
+    const url = `/brand/ai-find/${campaignId}?page=${page}&limit=${limit}&filter=${filter}`;
+    
+    const response = await api.get(url);
+    return response.data;
   },
+
   getCreatorVideos: async (id: string) => {
     try {
       const response = await api.get(`/brand/social-videos/${id}`);

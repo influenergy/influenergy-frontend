@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
 import { AxiosError } from "axios";
 
@@ -46,25 +46,32 @@ export const useCampaignProfileDetails = (id: string) => {
   });
 };
 
-export const useFindAiCampaign = (id: string,creatorId:string) => {
-  return useQuery({
-    queryKey: ["findaiCampaign", id],
-    queryFn: async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+export const useInfiniteFindAiCampaign = (
+  campaignId: string,
+  filter?: string,
+) => {
+  return useInfiniteQuery({
+    queryKey: ["findAiCampaign", campaignId, filter],
+    queryFn: ({ pageParam = 1 }) =>
+      postApi.findAIMatch(campaignId, pageParam, 12, filter),
 
-        return await postApi.findAIMatch(id,creatorId);
-      } catch (error) {
-        console.error(`Error fetching AI match for ID ${id}:`, error);
-        throw error;
+    initialPageParam: 1,
+
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.data;
+
+      if (page < totalPages) {
+        return page + 1;
       }
+      return undefined;
     },
-    enabled: !!id,
+
+    enabled: !!campaignId,
     retry: false,
-    // Set staleTime to 5 seconds
-    staleTime: 5000,
   });
 };
+
+
 
 export const useGetCreatorVideos = (id: string) => {
   return useQuery({

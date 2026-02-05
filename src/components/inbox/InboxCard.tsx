@@ -279,7 +279,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
                       onClick={(e) => handleButtonClick(e, () => setIsStatusModalOpen(true))}
                       className="bg-[#7544DB] hover:bg-[#6339c4] text-white font-semibold py-2 px-4 text-sm rounded-lg transition-colors duration-200 min-w-[140px]"
                     >
-                      Update Status
+                      Upload Video
                     </Button>
                   )}
                 </div>

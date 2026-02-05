@@ -70,8 +70,10 @@ const CampaignCard = ({
           <div className="absolute right-0 top-6 z-10 hidden group-hover:block">
             <div className="bg-white border border-gray-200 rounded-md shadow-md w-32">
               <button
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation()
                   onActionClick("CLOSED", campaign._id)
+                }
                 }
                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 text-red-600"
               >

@@ -12,6 +12,8 @@ import { useInitiatePayment } from "@/hooks/usePayment";
 import StatusModal from "./StatusModal";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
+import { Button } from "../ui/button";
+import { WandSparkles } from "lucide-react";
 
 interface CreatorProfile {
   socialLinks?: {
@@ -181,6 +183,12 @@ export default function ApplicationsReceived() {
     setSelectedCampaignId(e.target.value);
   };
 
+  const handleAIFind = (campaignId: string) => {
+    router.push(
+      `/dashboard/brand/ai-find/${campaignId}`
+    );
+  }
+
   const hasSelectedCampaign = Boolean(selectedCampaignId);
 
   const filteredApplications = applications.filter((app: Application) => {
@@ -345,13 +353,25 @@ export default function ApplicationsReceived() {
 
                   {/* Top Row */}
                   <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
-                        {selectedCampaign.campaignTitle}
-                      </h2>
-                      <p className="text-xs text-gray-500 truncate">
-                        {selectedCampaign.brandName}
-                      </p>
+                    <div className="flex justify-between w-full">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
+                          {selectedCampaign.campaignTitle}
+                        </h2>
+                        <p className="text-xs text-gray-500 truncate">
+                          {selectedCampaign.brandName}
+                        </p>
+                      </div>
+                      <div>
+                        <Button
+                          variant="default"
+                          className="flex"
+                          onClick={() => handleAIFind(selectedCampaign.campaignId)}
+                        >
+                          <WandSparkles />
+                          AI-Find
+                        </Button>
+                      </div>
                     </div>
                   </div>
 

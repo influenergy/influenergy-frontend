@@ -382,10 +382,6 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
                   displayStatus="Offered"
                   user="creator"
                   onActionClick={() => handleNewOffer()}
-                // actionLabel={{
-                //   published: "View Applications",
-                //   draft: "View Applications",
-                // }}
                 />
               ))}
             </div>

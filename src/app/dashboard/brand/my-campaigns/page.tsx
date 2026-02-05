@@ -90,7 +90,12 @@ const MyCampaignsPage = () => {
         hasNextPage,
         isFetchingNextPage,
     } = useInfiniteQuery({
-        queryKey: ["campaigns", debouncedSearch, selectedNiche],
+        queryKey: [
+            "campaigns",
+            user?._id,
+            debouncedSearch,
+            selectedNiche
+        ],
         enabled: !!user?._id,
         initialPageParam: 1,
 
@@ -156,7 +161,7 @@ const MyCampaignsPage = () => {
 
             // 🔥 OPTIMISTIC UI UPDATE
             queryClient.setQueryData(
-                ["campaigns", debouncedSearch, selectedNiche],
+                ["campaigns", user?._id, debouncedSearch, selectedNiche],
                 (oldData: any) => {
                     if (!oldData) return oldData;
 
@@ -164,17 +169,16 @@ const MyCampaignsPage = () => {
                         ...oldData,
                         pages: oldData.pages.map((page: any) => ({
                             ...page,
-                            campaigns: Array.isArray(page.campaigns)
-                                ? page.campaigns.filter(Boolean).map((campaign: any) =>
-                                    campaign._id === campaignId
-                                        ? { ...campaign, status: newStatus }
-                                        : campaign
-                                )
-                                : [],
+                            campaigns: page.campaigns.map((campaign: any) =>
+                                campaign._id === campaignId
+                                    ? { ...campaign, status: newStatus }
+                                    : campaign
+                            ),
                         })),
                     };
                 }
             );
+
 
             // 🔁 API call
             await postApi.changeCampaignStatus(campaignId, newStatus);
@@ -219,85 +223,7 @@ const MyCampaignsPage = () => {
     // Loading state
     if (isLoading) {
         return (
-            <div className="w-full h-full p-[2%] dark:bg-background">
-                <div className="max-w-7xl mx-auto">
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-6">
-                        <div>
-                            <h1 className="text-xl font-semibold mb-2">My Campaigns</h1>
-                            <p className="text-muted-foreground text-md">
-                                View all active campaigns on the platform
-                            </p>
-                        </div>
-                        <NewCampaignButton />
-                    </div>
-
-                    {/* Search and Filter */}
-                    <div className="mb-6 flex flex-col md:flex-row gap-3">
-                        <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <input
-                                type="search"
-                                placeholder="Search campaigns..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full h-10 pl-10 pr-4 border rounded-md"
-                            />
-                        </div>
-                        {/* Niche Select */}
-                        <Select
-                            value={selectedNiche}
-                            onValueChange={(value) =>
-                                setSelectedNiche(value === ALL_NICHES ? "" : value)
-                            }
-                        >
-                            <SelectTrigger className="w-full md:w-56">
-                                <SelectValue placeholder="Select niche" />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectItem value={ALL_NICHES}>All Niches</SelectItem>
-
-                                <SelectItem value="AI">AI</SelectItem>
-                                <SelectItem value="Lifestyle & Vlogging">Lifestyle & Vlogging</SelectItem>
-                                <SelectItem value="Fashion & Beauty">Fashion & Beauty</SelectItem>
-                                <SelectItem value="Health, Fitness & Wellness">
-                                    Health, Fitness & Wellness
-                                </SelectItem>
-                                <SelectItem value="Food & Beverages">Food & Beverages</SelectItem>
-                                <SelectItem value="Technology & Gadgets">Technology & Gadgets</SelectItem>
-                                <SelectItem value="Gaming & Esports">Gaming & Esports</SelectItem>
-                                <SelectItem value="Finance & Business">Finance & Business</SelectItem>
-                                <SelectItem value="Education & Learning">Education & Learning</SelectItem>
-                                <SelectItem value="Travel & Hospitality">Travel & Hospitality</SelectItem>
-                                <SelectItem value="Entertainment & Media">Entertainment & Media</SelectItem>
-                                <SelectItem value="Home, Decor & DIY">Home, Decor & DIY</SelectItem>
-                                <SelectItem value="Parenting & Family">Parenting & Family</SelectItem>
-                                <SelectItem value="Automobile & Mobility">Automobile & Mobility</SelectItem>
-                                <SelectItem value="Sports & Outdoor">Sports & Outdoor</SelectItem>
-                                <SelectItem value="Pets & Animals">Pets & Animals</SelectItem>
-                                <SelectItem value="E-commerce & Product Reviews">
-                                    E-commerce & Product Reviews
-                                </SelectItem>
-                                <SelectItem value="Sustainability & Social Impact">
-                                    Sustainability & Social Impact
-                                </SelectItem>
-                                <SelectItem value="B2B & Professional Content">
-                                    B2B & Professional Content
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-
-                    </div>
-
-                    {/* Loading skeleton */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                            <CampaignSkeleton key={i} />
-                        ))}
-                    </div>
-                </div>
-            </div>
+            <CampaignSkeleton />
         );
     }
 
@@ -364,7 +290,7 @@ const MyCampaignsPage = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h1 className="text-xl font-semibold mb-2">My Campaigns</h1>
+                        <h1 className="text-xl font-semibold mb-2">My Campaignsss</h1>
                         <p className="text-muted-foreground text-md">
                             View all active campaigns on the platform
                         </p>

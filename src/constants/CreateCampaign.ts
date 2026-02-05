@@ -94,7 +94,7 @@ export const CREATE_CAMPAIGN_FORM: SingleForm = {
             category: "number-with-suffix",
             suffix: "days",
             placeholder: "Enter number of days",
-            info: "Minimum deadline is 3 days"
+            info: "Minimum deadline is 4 days"
         },
         {
             title: "Requirements",

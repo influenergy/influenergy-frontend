@@ -4,6 +4,7 @@ import { useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect, useState } from "react";
 import { userApi } from "@/services/userServices";
 import {
+    Search,
     SlidersHorizontal,
     X,
 
@@ -12,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToggleFavorite } from "@/hooks/usePost";
 import SkeletonCard from "@/components/Skeletons/ExploreCreatorsSkeleton";
-import TikTokIcon from "@/components/icons/tiktok";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import InviteCreatorModal from "@/components/brand/InviteCreatorModal";
 import ExploreCreatorCard from "@/components/brand/ExploreCreatorCard";
@@ -110,11 +110,13 @@ type ExploreResponse = {
 const fetchCreators = async ({
     pageParam = 1,
     filters,
+    debouncedSearch
 }: {
     pageParam?: number;
     filters: Record<string, string>;
+    debouncedSearch: string;
 }): Promise<ExploreResponse> => {
-    const res = await userApi.getExploredCreators(pageParam, 12, filters);
+    const res = await userApi.getExploredCreators(pageParam, 12, filters, debouncedSearch);
     return res;
 };
 
@@ -125,10 +127,14 @@ export default function ExploreCreators() {
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [niches, setNiches] = useState<string[]>([]);
     const [followers, setFollowers] = useState<string[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const searchInputRef = useRef<HTMLInputElement | null>(null);
 
     const searchParams = useSearchParams();
     const sortFromUrl = searchParams.get("sort") || "";
     const router = useRouter();
+
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
     const [filters, setFilters] = useState({
         sort: sortFromUrl, // 👈 key change
@@ -195,10 +201,12 @@ export default function ExploreCreators() {
         hasNextPage,
         isFetchingNextPage,
         status,
+        isLoading,      // 👈 first load only
+        isFetching,
         refetch,
     } = useInfiniteQuery({
-        queryKey: ["exploreCreators", filters],
-        queryFn: ({ pageParam = 1 }) => fetchCreators({ pageParam, filters }),
+        queryKey: ["exploreCreators", debouncedSearch, filters],
+        queryFn: ({ pageParam = 1 }) => fetchCreators({ pageParam, filters, debouncedSearch }),
         initialPageParam: 1,
         getNextPageParam: (lastPage: ExploreResponse) => {
             if (lastPage.page < lastPage.totalPages) {
@@ -227,6 +235,21 @@ export default function ExploreCreators() {
         };
     }, [fetchNextPage, hasNextPage]);
 
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    useEffect(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.focus();
+        }
+    }, [data]);
+
     // filter handlers
     const handleSort = (sort: string) => {
         const newSort = sort === filters.sort ? "" : sort;
@@ -242,7 +265,7 @@ export default function ExploreCreators() {
         refetch();
     };
 
-    if (status === "pending") return <SkeletonCard />;
+    // if (status === "pending") return <SkeletonCard />;
     if (status === "error") return <p>Failed to load creators</p>;
 
     const handleSelecteCreatorForCampaign = (creatorId: string) => {
@@ -260,10 +283,29 @@ export default function ExploreCreators() {
 
 
     return (
-        <div className="relative p-6">
+        <div className="relative p-6 flex flex-col gap-4">
             <div className="flex justify-between">
-                <h1 className="text-xl font-bold mb-4">Explore Creators</h1>
+                <h1 className="text-xl font-semibold mb-4">Explore Creators</h1>
                 <NewCampaignButton />
+            </div>
+
+            <div className="relative w-1/2">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                    ref={searchInputRef}
+                    type="search"
+                    placeholder="Search by niche..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="
+  w-full pl-10 pr-4 py-2
+  border border-primary
+  rounded-md
+  focus:outline-none
+  focus:ring-0
+  focus:border-primary/95
+"
+                />
             </div>
 
             {/* Filter Options */}
@@ -416,13 +458,19 @@ export default function ExploreCreators() {
                 </>
             )}
 
+            {isFetching && !isLoading && (
+                <p className="text-sm text-muted-foreground">Updating results…</p>
+            )}
+
+
             {/* Creator Grid */}
-            {!hasCreators ? (
+            {isLoading ? (
+                <SkeletonCard />
+            ) : !hasCreators ? (
                 <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
                     <p className="text-lg font-semibold text-gray-700">
                         No creators found
                     </p>
-
                     <p className="mt-2 max-w-md text-sm text-gray-500">
                         Try adjusting your filters or removing some selections to see more creators.
                     </p>

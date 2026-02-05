@@ -436,25 +436,35 @@ export const FormField = ({ field }: FormFieldProps) => {
     return (
       <input
         type="file"
-        accept="image/jpeg, image/png, image/jpg, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        accept="image/jpeg,image/png,image/jpg"
         onChange={(e) => {
           const file = e.target.files?.[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-              if (typeof reader.result === "string") {
-                setValue(fieldName, reader.result, { shouldValidate: true });
-              }
-            };
+          if (!file) return;
+
+          // 🔒 HARD VALIDATION
+          const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+          if (!allowedTypes.includes(file.type)) {
+            alert("Only JPG, JPEG, and PNG images are allowed");
+            e.target.value = ""; // reset input
+            return;
           }
+
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            if (typeof reader.result === "string") {
+              setValue(fieldName, reader.result, { shouldValidate: true });
+            }
+          };
         }}
         className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-          : "border-gray-300 focus:ring-primary dark:border-gray-700"
+            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+            : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
       />
     );
+
   }
 
   // RANGE slider
@@ -539,14 +549,14 @@ export const FormField = ({ field }: FormFieldProps) => {
         <input
           type="number"
           value={displayValue}
-          min="3"
+          min="4"
           step="1"
           onChange={(e) => {
             let numValue = e.target.value;
 
-            // prevent values < 5
-            if (numValue && Number(numValue) < 5) {
-              numValue = "3";
+            // prevent values < 4
+            if (numValue && Number(numValue) < 4) {
+              numValue = "4";
             }
 
             const formattedValue = numValue

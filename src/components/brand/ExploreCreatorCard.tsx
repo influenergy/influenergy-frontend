@@ -30,6 +30,7 @@ interface CreatorCardProps {
     onInvite?: () => void;
     isToggling?: boolean;
     showInviteButton?: boolean;
+    similarity?: number;
 }
 
 const calculateAge = (dob: string) => {
@@ -48,6 +49,7 @@ const calculateAge = (dob: string) => {
 
     return age;
 };
+
 
 export const getSocialMediaIcon = (platform?: string) => {
     if (!platform) return <Share2 className="w-5 h-5" />;
@@ -95,6 +97,7 @@ const ExploreCreatorCard = ({
     onInvite,
     isToggling,
     showInviteButton = true,
+    similarity,
 }: CreatorCardProps) => {
     const isLongDescription =
         (creator.profile?.aboutYourself?.length || 0) > 120;
@@ -104,6 +107,13 @@ const ExploreCreatorCard = ({
     const handleCardClick = (creatorId: string) => {
         router.push(`/dashboard/brand/creators/${creatorId}`);
     };
+
+
+    const matchPercentage =
+        typeof similarity === "number"
+            ? Math.round(similarity * 100)
+            : null;
+
 
     return (
         <Card onClick={() => handleCardClick(creator._id)}
@@ -123,6 +133,16 @@ const ExploreCreatorCard = ({
                     className="w-full h-40 object-cover rounded-xl bg-gray-100"
                 />
 
+                {/* MATCH PERCENTAGE (LEFT) */}
+                {matchPercentage !== null && (
+                    <div className="absolute top-4 left-4 z-10 
+      bg-primary text-white text-xs font-semibold 
+      px-2 py-1 rounded-full shadow">
+                        {matchPercentage}% Match
+                    </div>
+                )}
+
+                {/* FAVORITE ICON (RIGHT) */}
                 {showFavoriteIcon && (
                     <button
                         onClick={(e) => {
@@ -132,12 +152,13 @@ const ExploreCreatorCard = ({
                         className="absolute top-4 right-4 z-10 bg-white/90 rounded-full p-1 shadow"
                     >
                         <Heart
-                            className={`w-6 h-6 ${creator?.isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"
+                            className={`w-6 h-6 ${creator?.isFavorite
+                                    ? "fill-red-500 text-red-500"
+                                    : "text-gray-500"
                                 }`}
                         />
                     </button>
                 )}
-
             </div>
 
             {/* CONTENT */}
@@ -227,7 +248,7 @@ const ExploreCreatorCard = ({
 
                         {isLongDescription && (
                             <button
-                                onClick={onToggleBio}
+                                onClick={() => handleCardClick(creator._id)}
                                 className="text-xs text-primary mt-1 hover:underline"
                             >
                                 {isExpanded ? "View less" : "View more"}
