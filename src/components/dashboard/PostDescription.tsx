@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ChevronsLeft,
   Instagram,
   Youtube,
   Twitter,
@@ -13,6 +12,7 @@ import {
   DollarSign,
   Calendar,
   Loader2,
+  ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { postApi } from "@/services/postServices";
@@ -133,7 +133,7 @@ const PostDescription = ({ data, role }: PostDescriptionProps) => {
         onClick={() => router.back()}
         className="flex items-center gap-1 text-sm text-gray-600 hover:text-black"
       >
-        <ChevronsLeft className="w-5 h-5" />
+        <ArrowLeft className="w-5 h-5" />
         Back
       </button>
 

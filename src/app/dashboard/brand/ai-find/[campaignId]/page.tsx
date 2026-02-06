@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { MdVerified } from "react-icons/md";
 import Link from "next/link";
 import { useInfiniteFindAiCampaign } from "@/hooks/useFindAi";
-import { Badge, ChevronsLeft, SlidersHorizontal, X } from "lucide-react";
+import { Badge, ArrowLeft, SlidersHorizontal, X } from "lucide-react";
 import { CreatorAPIResponse } from "@/types/Creator";
 import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/brand/Loader";
@@ -123,7 +123,7 @@ export default function ProfileMatch() {
           onClick={() => router.back()}
           className="flex items-center gap-1 mb-4"
         >
-          <ChevronsLeft className="h-5 w-5" />
+          <ArrowLeft className="h-5 w-5" />
           Back
         </button>
 
@@ -147,7 +147,7 @@ export default function ProfileMatch() {
           onClick={() => router.back()}
           className="flex items-center gap-1 mb-4"
         >
-          <ChevronsLeft className="h-5 w-5" />
+          <ArrowLeft className="h-5 w-5" />
           Back
         </button>
       </div>
@@ -203,8 +203,6 @@ export default function ProfileMatch() {
           })}
         </div>
       }
-
-
 
 
       {/* Load More */}

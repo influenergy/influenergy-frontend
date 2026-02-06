@@ -7,7 +7,7 @@ import ProfileActions from "@/components/userProfile/ProfileActions";
 
 import { EditProfileModal } from "@/components/userProfile/EditProfileModal";
 import { EditBrandProfileModal } from "@/components/userProfile/EditBrandProfileModal";
-import { ChevronsLeft, PenLine, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, PenLine, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import { selectUser, useAppSelector } from "@/store";
@@ -273,7 +273,7 @@ export default function Page() {
             href="/dashboard"
             className="flex items-center gap-2 text-gray-400 underline"
           >
-            <ChevronsLeft />
+            <ArrowLeft />
             Back
           </Link>
         </div>

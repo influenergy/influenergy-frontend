@@ -45,7 +45,7 @@ const CampaignCard = ({
       router.push(`/dashboard/brand/posts/${campaign._id}`)
     }>
       {/* Status + Actions */}
-      <div className="flex justify-end items-center gap-2 mb-3 relative">
+      <div className="flex justify-between items-center gap-2 mb-3 relative">
         <span
           className={`
       px-2 py-1 rounded-full text-xs font-medium

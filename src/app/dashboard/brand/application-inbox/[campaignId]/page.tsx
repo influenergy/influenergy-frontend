@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { postApi } from "@/services/postServices";
 import { Button } from "@/components/ui/button";
-import { Loader2, CircleCheckBig, CircleX, ChevronsLeft } from "lucide-react";
+import { Loader2, CircleCheckBig, CircleX, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import CreatorCard from "@/components/brand/CreatorCards";
 import { useInitiatePayment } from "@/hooks/usePayment";
@@ -267,7 +267,7 @@ export default function CampaignDetailsPage() {
           onClick={() => router.back()}
           className="group flex items-center gap-2 text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-all duration-200 font-medium"
         >
-          <ChevronsLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-200" />
+          <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform duration-200" />
           Back
         </button>
 

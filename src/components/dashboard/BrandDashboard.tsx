@@ -122,18 +122,13 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
     useEffect(() => {
         Promise.all([
-            userApi.getRegionAnalysis(),
+            // userApi.getRegionAnalysis(),
             postApi.getCollaborationHistory(),
             postApi.getCampaignHistory(),
         ])
-            .then(([regionData, collabData, campaignData]) => {
+            .then(([collabData, campaignData]) => {
                 // Region data
-                setRegionAnalysis(regionData.regionAnalysis);
-
-                // setCollaborationCount(collabData?.collaborations?.counts)
-
-                // const completed = collabData?.collaborations?.completedCollabs ?? [];
-                // setCompletedCollabs(completed);
+                // setRegionAnalysis(regionData.regionAnalysis);
 
                 const completedCount = campaignData?.campaign?.counts;
                 setCampaignCount(completedCount);
@@ -298,7 +293,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                 <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
                     {/* TABS HEADER - TOP */}
                     <div className="border-b border-gray-200 bg-gray-50 px-3">
-                        <div className="flex gap-6">
+                        <div className="flex gap-10">
                             {tabs.map((tab) => {
                                 const isActive = activeTab === tab.id;
 
@@ -322,7 +317,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                         {isActive && (
                                             <span
                                                 className="
-                absolute left-0 right-0 -bottom-[1px]
+                absolute left-0 right-0 bottom-[5px]
                 h-[2px] bg-primary rounded-full
               "
                                             />

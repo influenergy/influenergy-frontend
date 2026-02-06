@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { selectUser, useAppSelector } from "@/store";
 import { Step } from "./PostSteps";
 import { postApi } from "@/services/postServices";
-import { ChevronsLeft, Bookmark } from "lucide-react";
+import {Bookmark, ArrowLeft } from "lucide-react";
 
 const CreateCampaign = ({
     mode = "create",
@@ -193,7 +193,7 @@ const CreateCampaign = ({
                 onClick={() => router.back()}
                 className="text-gray-600 hover:text-gray-900 transition-colors dark:text-gray-300 dark:hover:text-white duration-200 flex items-center gap-1"
             >
-                <ChevronsLeft className="h-5 w-5" />
+                <ArrowLeft className="h-5 w-5" />
                 Back
             </button>
 

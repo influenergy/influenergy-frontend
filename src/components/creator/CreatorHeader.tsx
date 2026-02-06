@@ -3,7 +3,7 @@ import Image from "next/image";
 import { MdVerified } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { UserProfile } from "@/types/CreatorDetails";
-import { ChevronsLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const CreatorHeader = ({ creator }: UserProfile) => {
   const router = useRouter();
@@ -14,7 +14,7 @@ const CreatorHeader = ({ creator }: UserProfile) => {
         onClick={() => router.back()}
         className="text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center w-fit gap-1 bg-gray-200 p-1.5 rounded-md"
       >
-        <ChevronsLeft className="h-5 w-5" />
+        <ArrowLeft className="h-5 w-5" />
         Back
       </button>
       <div className="bg-white rounded-lg dark:bg-gray-900 shadow-sm p-4 flex flex-col md:flex-row items-center md:items-start gap-5">

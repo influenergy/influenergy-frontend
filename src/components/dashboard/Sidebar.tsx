@@ -188,7 +188,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
               <Button
                 variant="ghost"
                 className={cn(
-                  "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
+                  "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors rounded-lg",
                   item.matchPaths?.some((matchPath) =>
                     pathname.startsWith(matchPath)
                   ) || pathname === item.href
@@ -199,26 +199,21 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
                 {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
                 <p className="text-sm md:block">{item.label}</p>
               </Button>
-              {/* {item.label === "Inbox" && pendingCollaborationCount > 0 && (
-                <Badge variant="destructive" className="absolute right-1 px-2 pointer-events-none">
-                  {pendingCollaborationCount}
-                </Badge>
-              )} */}
-
-
             </Link>
           ))}
         </nav>
 
+        <hr className="border-white my-5" />
+
         {/* Settings button */}
-        <div className=" mt-auto text-center">
-          <nav className="grid items-start gap-1 md:gap-2 mt-2">
+        <div className="text-center">
+          <nav className="grid items-start gap-1 md:gap-2">
             {commonLinks.map((item: NavItem) => (
               <Link key={item.slug} href={item.href || "#"} onClick={onClose}>
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors",
+                    "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-colors rounded-lg",
                     item.matchPaths?.some((matchPath) =>
                       pathname.startsWith(matchPath)
                     ) || pathname === item.href
@@ -242,8 +237,10 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
             <LogOut className="h-4 w-4 flex-shrink-0" />
             <p className="text-sm md:block">Logout</p>
           </Button>
-          <hr className="my-2 opacity-30" />
-          <p className="text-xs md:text-sm text-white hidden md:block">
+
+          <hr className="border-white mt-5 mb-10" />
+
+          <p className="text-sm md:text-sm text-white hidden md:block text-center">
             © 2026 influenergy
           </p>
         </div>

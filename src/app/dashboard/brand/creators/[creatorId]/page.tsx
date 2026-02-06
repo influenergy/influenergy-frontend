@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { postApi } from "@/services/postServices";
 import {
-    ChevronsLeft, CreditCard, CheckCircle2, XCircle, Clock,
+    ArrowLeft, CreditCard, CheckCircle2, XCircle, Clock,
     Loader2, X,
     CircleCheckBig,
     CircleX
@@ -320,7 +320,7 @@ const CreatorDetailsPage = () => {
                     onClick={() => router.back()}
                     className="group flex items-center gap-2 text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-all duration-200 font-medium"
                 >
-                    <ChevronsLeft className="h-5 w-5" />
+                    <ArrowLeft className="h-5 w-5" />
                     Back
                 </button>
 
@@ -669,7 +669,7 @@ const CreatorDetailsPage = () => {
                             <div className="flex gap-3">
                                 <Button
                                     onClick={() => handleStatus("Interested", collaborationId)}
-                                    variant="yellow"
+                                    variant="blue"
                                     className="flex"
                                 >
                                     <Clock className="w-4 h-4" />

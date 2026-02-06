@@ -126,7 +126,7 @@ const ExploreCreatorCard = ({
             {/* IMAGE */}
             <div className="relative p-3">
                 <Image
-                    src={creator.profileIcon || "/default-avatar.png"}
+                    src={creator.profileIcon || "/images/default-avatar.png"}
                     alt={creator.fullName}
                     width={300}
                     height={200}

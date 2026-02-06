@@ -13,7 +13,6 @@ import { Button } from "../ui/button";
 import { CollaborationContractModal } from "../ui/ContractModal";
 import { useState } from "react";
 import {
-  ChevronsLeft,
   Instagram,
   Youtube,
   Twitter,

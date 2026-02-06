@@ -580,12 +580,12 @@ export default function CreatorCard({
 
         {/* Action Buttons - Only for non-Active statuses */}
         {!isActiveCollaboration && (
-          <div className="flex gap-3">
+          <div className="flex gap-3 w-full">
             {status === "Waiting Approval" && (
               <>
                 <Button
                   onClick={() => onAction("Interested")}
-                  variant="yellow"
+                  variant="blue"
                   className="flex"
                 >
                   <Clock className="w-4 h-4" />
@@ -617,7 +617,7 @@ export default function CreatorCard({
 
             {status === "Offered" && !isOfferExpired && (
               <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                <p className="text-sm text-blue-700 dark:text-blue-300">
+                <p className="text-sm text-blue-700 dark:text-blue-300 w-full">
                   Waiting for the creator to accept the offer
                 </p>
               </div>

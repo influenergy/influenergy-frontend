@@ -290,7 +290,7 @@ const MyCampaignsPage = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h1 className="text-xl font-semibold mb-2">My Campaignsss</h1>
+                        <h1 className="text-xl font-semibold mb-2">My Campaigns</h1>
                         <p className="text-muted-foreground text-md">
                             View all active campaigns on the platform
                         </p>
@@ -363,7 +363,7 @@ const MyCampaignsPage = () => {
                         <Briefcase className="text-primary h-10 w-10" />
                         <div className="text-center">
                             <h2 className="text-lg font-medium mb-2">
-                                {searchQuery ? "No campaigns found" : "You Haven't Created Any Campaigns Yet"}
+                                {searchQuery ? "No campaigns found" : `You haven't created any campaigns yet for ${selectedNiche}`}
                             </h2>
                             <p className="text-muted-foreground mb-6 text-md">
                                 {searchQuery
