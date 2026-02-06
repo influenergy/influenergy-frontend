@@ -34,7 +34,7 @@ export default function Stats() {
             id="influencers"
         >
             <motion.h1
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 text-[#352547]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
@@ -43,7 +43,7 @@ export default function Stats() {
                 Brand success, powered by Influenergy
             </motion.h1>
             <motion.h3
-                className="font-light sm:text-sm text-base text-center mb-4 sm:mb-6 md:mb-8 text-gray-600"
+                className="text-gray-900 text-sm md:text-xl leading-relaxed text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
@@ -55,13 +55,9 @@ export default function Stats() {
 
             <div className="w-full py-12 px-4 text-center grid grid-cols-2 sm:grid-cols-4 gap-6  max-w-6xl mx-auto">
                 <div className="flex flex-col items-center">
-                    <h3 className="text-2xl md:text-4xl lg:text-6xl font-bold text-primary">{stats?.usStats.usPercentage}%</h3>
-                    <p className="text-sm text-gray-700 font-semibold">U.S-based creators</p>
+                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stats?.usStats.usPercentage}%</h3>
+                    <p className="text-sm text-gray-700 font-semibold">US Audience</p>
                 </div>
-                {/* <div className="flex flex-col items-center">
-                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">50%</h3>
-                    <p className="text-sm text-gray-700 font-semibold">Average Followers</p>
-                </div> */}
                 {
                     stats?.typeStats.map((stat, index) => (
                         <div key={index} className="flex flex-col items-center">
@@ -70,10 +66,6 @@ export default function Stats() {
                         </div>
                     ))
                 }
-                {/* <div className="flex flex-col items-center">
-                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{}</h3>
-                    <p className="text-sm text-gray-700 font-semibold">Average Creator</p>
-                </div> */}
                 <div className="flex flex-col items-center">
                     <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">5M+</h3>
                     <p className="text-sm text-gray-700 font-semibold">Total Followers of our Creators</p>

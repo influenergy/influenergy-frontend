@@ -169,7 +169,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 overflow-x-hidden">
             <div className="grid grid-cols-1 md:grid-cols-1  gap-6 w-full">
 
                 <div className="border border-gray-200 rounded-lg px-4 py-4">
@@ -213,18 +213,18 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         ].map((item, idx) => (
                             <div
                                 key={idx}
-                                className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                                className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-3 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                             >
                                 <div className="flex flex-col gap-2">
                                     <p className="text-sm font-normal text-gray-800">
                                         {item.label}
                                     </p>
-                                    <span className="text-2xl font-semibold text-black">
+                                    <span className="text-xl font-semibold text-black">
                                         {String(item.count).padStart(2, "0")}
                                     </span>
                                 </div>
 
-                                <div className={`flex items-center justify-center w-14 h-14 rounded-xl ${item.iconBg} ${item.iconColor}`}>
+                                <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${item.iconBg} ${item.iconColor}`}>
                                     {item.icon}
                                 </div>
                             </div>
@@ -263,25 +263,25 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         ].map((item, idx) => (
                             <div
                                 key={idx}
-                                className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                                className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-3 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                             >
                                 <div className="flex flex-col gap-1">
                                     <p className="text-sm font-medium text-gray-600 tracking-wide">
                                         {item.label}
                                     </p>
 
-                                    <span className="text-2xl font-semibold text-gray-900 leading-tight">
+                                    <span className="text-xl font-semibold text-gray-900 leading-tight">
                                         {String(item.count).padStart(2, "0")}
                                     </span>
 
                                     {item.subLabel && (
-                                        <p className="text-sm text-gray-500 mt-1">
+                                        <p className="text-xs text-gray-500 mt-1">
                                             {item.subLabel}
                                         </p>
                                     )}
                                 </div>
 
-                                <div className={`flex items-center justify-center w-14 h-14 rounded-xl ${item.iconBg} ${item.iconColor}`}>
+                                <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${item.iconBg} ${item.iconColor}`}>
                                     {item.icon}
                                 </div>
                             </div>

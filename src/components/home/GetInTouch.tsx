@@ -20,7 +20,7 @@ const GetInTouch = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ 
+    setFormData((prev) => ({
       ...prev,
       [id]: value,
     }));
@@ -43,11 +43,11 @@ const GetInTouch = () => {
           transition={{ duration: 0.7, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-gray-600 font-medium text-xl md:text-2xl mb-3">
+          <h3 className="text-[#352547] font-medium text-xl md:text-2xl mb-3">
             Get Started
           </h3>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 leading-tight">
-            Get in touch with us.<br className="hidden md:block" /> We are 
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 leading-tight text-[#352547]">
+            Get in touch with us.<br className="hidden md:block" /> We are
             here to assist you.
           </h2>
         </motion.div>
@@ -156,7 +156,7 @@ const GetInTouch = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-primary hover:bg-primary/90 text-white h-14 px-8 py-5 rounded-full flex items-center justify-center gap-3 text-base font-medium transition-all duration-300"
+                  className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm px-3 py-5" size="sm"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">

@@ -104,7 +104,7 @@ export default function Footer() {
           >
             <h3 className="text-xl font-semibold ">Quick Contact</h3>
             <div className="border h-0.5 bg-gray-400 w-full" />
-            <div className="flex flex-col px-10">
+            <div className="flex flex-col">
               <p className="text-gray-300 font-light">
                 Contact Influenergy for any inquiries or questions:
               </p>
@@ -192,27 +192,27 @@ export default function Footer() {
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-xs">
             © All Rights Reserved 2024. Influenergy LLC.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
               href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
               target="_blank"
-              className="text-gray-400 text-sm hover:text-primary transition-colors"
+              className="text-gray-400 text-xs hover:text-primary transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
               target="_blank"
-              className="text-gray-400 text-sm hover:text-primary transition-colors"
+              className="text-gray-400 text-xs hover:text-primary transition-colors"
             >
               Terms of Service
             </Link>
             <Link
               href="faqs"
-              className="text-gray-400 text-sm hover:text-primary transition-colors"
+              className="text-gray-400 text-xs hover:text-primary transition-colors"
             >
               FAQ’s
             </Link>

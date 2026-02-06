@@ -154,3 +154,13 @@ html {
 .dark .react-select__multi-value__remove {
   @apply text-gray-300 hover:bg-red-500 hover:text-white;
 }
+
+/* Hide scrollbar but allow scrolling */
+/* .scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; 
+} */
+

@@ -26,10 +26,10 @@ const NewsLetter = () => {
     <div className="bg-primary py-16 px-4 sm:px-6 lg:px-8 relative w-full">
       <div className="flex flex-col md:flex-row max-w-7xl mx-auto">
         <div className="text-left mb-8">
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-3xl">
             Subscribe to our Newsletter
           </h2>
-          <p className="mt-3 max-w-2xl text-xl font-light text-white sm:mt-4">
+          <p className="mt-3 max-w-2xl text-md font-light text-white sm:mt-4">
             Subscribe for Updates: Stay informed about the latest brand updates,
             Influencers and announcements by subscribing to our newsletter.
           </p>

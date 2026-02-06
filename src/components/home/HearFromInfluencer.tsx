@@ -95,10 +95,10 @@ export default function HearFromInfluencer() {
         className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
       >
         <div className="flex flex-col justify-start items-center mb-8">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h1 className="text-3xl lg:text-5xl font-bold mb-4 text-[#352547]">
             Our Influencers
           </h1>
-          <p className="text-gray-700 text-base font-light ">
+          <p className="text-gray-900 text-sm md:text-base leading-relaxed">
             Collaborate, create, and grow with top influencers
           </p>
         </div>
@@ -167,7 +167,7 @@ export default function HearFromInfluencer() {
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 flex items-center text-lg">
+              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm px-3 py-5" size="sm">
                 <Link href="/get-started">Explore Creators for Free</Link>
               </Button>
             </motion.div>

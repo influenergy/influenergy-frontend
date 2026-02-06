@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function HowItWorks() {
   const container = {
@@ -19,13 +21,13 @@ export default function HowItWorks() {
   };
 
   return (
-    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 xl:px-24 py-6 md:py-10 lg:py-16">
+    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 g:px-20 xl:px-24 py-6 md:py-10 lg:py-16">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+        <h1 className="text-3xl md:text-3xl lg:text-5xl font-bold text-[#352547]">
           How It Works
         </h1>
-        <p className="text-gray-700 text-base font-light ">
-          Tell us what you need - your goals, product, and target audience and let AI curate your brief
+        <p className="text-gray-900 text-sm md:text-base leading-relaxed">
+          Get started in minutes and begin collaborating with top brands. Our streamlined process makes influencer marketing simple and effective.
         </p>
       </div>
       <div className="grid lg:grid-cols-2 w-full gap-8 lg:gap-12 items-stretch  ">
@@ -38,7 +40,6 @@ export default function HowItWorks() {
           viewport={{ once: true, amount: 0.3 }}
         >
 
-
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-5"
             variants={container}
@@ -48,7 +49,7 @@ export default function HowItWorks() {
           >
             {/* Step 1 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-[#e6e6ff] transform transition-all duration-300 hover:shadow-lg"
+              className="w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
@@ -61,17 +62,16 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Create Your Campaign
+                Create Your Profile
               </h2>
-              <p className="text-gray-600 text-base mt-2 ">
-                Tell us what you need—your goals, product, and target audience
-                in a simplified brief
+              <p className="text-gray-600 mt-2 text-sm">
+                Sign up and build your creator profile with your content style, audience demographics, and areas of expertise.
               </p>
             </motion.div>
 
             {/* Step 2 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg"
+              className="w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
@@ -84,16 +84,16 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                AI-Powered Matching
+                Discover Campaigns
               </h2>
-              <p className="text-base  mt-2 text-gray-600">
-                Our AI-Find matches your brand with verified creators that fit your brand
+              <p className="text-sm mt-2 text-gray-600">
+                Browse through curated campaigns from top brands or get personalized recommendations based on your profile.
               </p>
             </motion.div>
 
             {/* Step 3 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg"
+              className="w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
@@ -106,17 +106,16 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Review & Approve
+                Connect & Collaborate
               </h2>
-              <p className="text-base  mt-2 text-gray-600">
-                Browse curated matches, review content examples, and approve
-                your favorites
+              <p className="text-sm mt-2 text-gray-600">
+                Apply to campaigns, negotiate terms, and communicate directly with brands through our secure platform.
               </p>
             </motion.div>
 
             {/* Step 4 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-[#e6e6ff] transform transition-all duration-300 hover:shadow-lg"
+              className="w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
@@ -129,38 +128,26 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Collaborate & Launch
+                Create & Get Paid
               </h2>
-              <p className="text-base  mt-2 text-gray-600">
-                Message, pay, and launch content—all in one seamless platform
+              <p className="text-sm mt-2 text-gray-600">
+                Deliver your content, track performance, and receive secure payments once the work is approved.
               </p>
             </motion.div>
           </motion.div>
         </motion.div>
+
         <motion.div
-          className="flex flex-col"
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          viewport={{ once: true, amount: 0.3 }}
+          className="flex items-center justify-center relative"
+          whileHover={{ x: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
         >
-          <div className="relative w-full h-full rounded-lg overflow-hidden">
-            {/* <div className="mt-6 flex-1"> */}
-            <video
-              controls
-              width="100%"
-              height="100%"
-              style={{ borderRadius: '12px', height: '100%', background: '#000' }}
-              className="w-full h-full object-contain rounded-lg bg-black"
-            >
-              {/* <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" /> */}
-              <source src="https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Brands.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm px-3 py-5" size="sm">
+            <Link href="/get-started">Connect with Collaborators</Link>
+          </Button>
         </motion.div>
 
       </div>
-    </div>
+    </div >
   );
 }

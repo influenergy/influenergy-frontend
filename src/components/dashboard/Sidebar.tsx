@@ -114,8 +114,8 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
   const badgeLevelInfo = Levels.find((lvl) => lvl.key === badge);
 
   return (
-    <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className}`}>
-      <div className=" flex h-full flex-col gap-2 p-2 md:p-4 overflow-auto">
+    <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className} overflow-hidden`}>
+      <div className="flex h-full flex-col p-2 md:p-4 overflow-y-auto scrollbar-hide">
         <Link href="/dashboard" className="flex justify-center items-center">
 
           <Image
@@ -238,7 +238,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
             <p className="text-sm md:block">Logout</p>
           </Button>
 
-          <hr className="border-white mt-5 mb-10" />
+          <hr className="border-white mt-5 mb-5" />
 
           <p className="text-sm md:text-sm text-white hidden md:block text-center">
             © 2026 influenergy

@@ -49,12 +49,12 @@ export default function Home() {
     <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
       {/* <Banner /> */}
       {/* <div className="w-full max-w-[1920px] mx-auto"> */}
-        <Header />
-        <HeroSection />
+      <Header />
+      <HeroSection />
       {/* </div> */}
 
       <div className="w-full max-w-[1920px] mx-auto">
-        <InfluEnergySection />
+        {/* <InfluEnergySection /> */}
 
         <Suspense fallback={<Loader />}>
           <div id="who-we-are">
@@ -73,23 +73,20 @@ export default function Home() {
           <div id="how-it-works">
             <HowItWorks />
           </div>
-          <div id="why-we-do-it">
-            <WhyWeDoIt />
-          </div>
           <HearFromInfluencer />
           <div id="stats">
 
             <Stats />
           </div>
-          {/* <div id="we-empower-brand">
-            <WeEmpowerBrand />
+          {/* <div id="why-we-do-it">
+            <WhyWeDoIt />
           </div> */}
         </Suspense>
 
         <Suspense fallback={<Loader />}>
-          <div id="blog">
+          {/* <div id="blog">
             <Blog />
-          </div>
+          </div> */}
           <div id="get-in-touch">
             <GetInTouch />
           </div>

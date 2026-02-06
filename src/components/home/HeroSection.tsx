@@ -35,7 +35,7 @@ export default function HeroSection() {
   const [mainIndex, setMainIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Auto rotate main video every 8 seconds
+  //Auto rotate main video every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setMainIndex((prev) => (prev + 1) % videos.length);
@@ -74,40 +74,45 @@ export default function HeroSection() {
 
 
   return (
-    <div className="relative w-full h-[350px] sm:h-[450px] md:h-[500px] lg:h-[600px] flex items-center justify-center text-center">
+    <div className="relative w-full h-[350px] sm:h-[450px] md:h-[300px] lg:h-[600px] flex items-center justify-center text-center">
 
-      <div className="grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-[60%_40%] w-full h-full absolute inset-0">
+      <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-[60%_40%] w-full h-full absolute inset-0">
 
-        <div className="text-black relative flex">
+        <div className="text-black relative flex gap-4">
           {/* Centered Content */}
           <motion.div
-            className="relative z-10 text-white px-2 md:px-8 flex items-start justify-center flex-col w-auto"
+            className="relative z-10 text-white px-1 md:px-8 flex items-center justify-center flex-col w-auto gap-4 mt-[5%]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h1 className="text-[clamp(1rem,4vw,3rem)] font-bold leading-tight font-mona md:max-w-[90vw] text-center lg:text-start mx-auto text-black ">
-              AI-POWERED PLATFORM CONNECTING <br className="block sm:hidden" />
-              BRANDS WITH CREATORS
+
+            <p className="font-poppins font-bold text-center text-xs lg:text-start mx-auto text-primary bg-[#F3E8FF] p-2 rounded-md sm">
+              🚀 Welcome to the Future of Influencer Marketing
+            </p>
+
+            <h1 className="text-[clamp(2rem,2vw,1.5rem)] font-bold leading-tight font-poppins md:max-w-[190vw] text-center lg:text-start mx-auto text-[#352547]">
+              AI-Powered Marketplace for High Performance <span className="text-primary">UGC Campaigns</span>
             </h1>
 
-            <p className="mt-3 md:mt-6 text-[clamp(1.025rem,0.9rem+1vw,1.475rem)] max-w-4xl md:max-w-5xl md:text-[1.65rem] lg:text-[1.45rem] font-poppins text-center lg:text-start text-black">
-              Influenergy connects brands with creators for Influencer and UGC marketing campaigns
+            <p className="mt-3 md:mt-6 text-sm px-6 md:text-base lg:text-[1.45rem] font-poppins text-center lg:text-start text-[#352547]">
+              Brands post campaigns. Creators apply or get matched instantly with AI. Clear briefs, fair pricing, fast payouts all in one platform.
             </p>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="text-start flex items-start gap-4 justify-center lg:justify-start w-full"
+              className="text-center flex flex-col items-center gap-2 justify-center md:flex md:flex-row md:gap-10 lg:justify-start"
             >
               <Button
-                className="mt-8 bg-primary hover:bg-primary/90 text-white rounded-xl  lg:px-9 lg:py-7  lg:text-lg border-primary border-2"
+                className="mt-[4%] bg-primary hover:bg-primary/90 text-white rounded-xl  lg:px-9 lg:py-7 lg:text-lg border-primary border-2"
                 onClick={() => router.push("/get-started")}
               >
                 Start Free Campaign
               </Button>
 
-              <Button className="mt-8 text-primary hover:bg-primary/90 bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-9 lg:py-7  lg:text-lg" onClick={handleClick}>
+              <Button className="mt-[4%] text-primary hover:bg-primary/90 bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-9 lg:py-7 lg:text-lg" onClick={handleClick}>
                 Get a Demo
               </Button>
 
@@ -115,7 +120,7 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Companies Bar - Repositioned for better centering */}
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
+          <div className="absolute -bottom-14 left-0 right-0 flex justify-center items-center w-full md:-bottom-16">
             <motion.div
               className="relative -bottom-10 md:-bottom-14 px-3 md:px-6 py-2 md:py-4 w-full lg:w-11/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
               initial={{ opacity: 0, y: 40 }}
