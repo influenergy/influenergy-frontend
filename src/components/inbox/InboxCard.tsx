@@ -229,14 +229,20 @@ const InboxCard: React.FC<InboxCardProps> = ({
                     {data?.campaignId?.brandName}
                   </p>
                   <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
-                    Applied on:{" "}
-                    {data?.createdAt
-                      ? new Date(data.createdAt).toLocaleDateString("en-IN", {
+                    {data.status === "Completed" ? `Completed on: ` : `Applied on: `}
+                    {
+                      data.status === "Completed" ? data?.updatedAt
+                      && new Date(data.updatedAt).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      }) : data?.createdAt
+                      && new Date(data.createdAt).toLocaleDateString("en-IN", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })
-                      : ""}
+                    }
                   </p>
                 </div>
 

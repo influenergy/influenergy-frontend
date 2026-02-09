@@ -44,7 +44,7 @@ export default function FeedbackPage() {
 
   return (
     <div className="p-6 mx-auto">
-      <h2 className="text-xl md:text-3xl font-bold text-gray-800 mb-4 dark:text-white">Send Us Your Feedback</h2>
+      <h2 className="text-2xl font-semibold mb-2">Send Us Your Feedback</h2>
 
       {/* Rating Section */}
       <Card className="p-4 mb-6">

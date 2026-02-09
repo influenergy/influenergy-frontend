@@ -28,13 +28,13 @@ const GetInTouch = () => {
 
   return (
     <motion.div
-      className="bg-[#F4F3FF] w-full py-10 px-6 md:px-8"
+      className="bg-[#F4F3FF] w-full py-8 px-6 md:px-8"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto bg-[#F3F4F6] p-8 border border-gray-300 rounded-xl">
         {/* Header Section */}
         <motion.div
           className="mb-12 md:mb-16 text-center md:text-left"
@@ -46,9 +46,8 @@ const GetInTouch = () => {
           <h3 className="text-[#352547] font-medium text-xl md:text-2xl mb-3">
             Get Started
           </h3>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 leading-tight text-[#352547]">
-            Get in touch with us.<br className="hidden md:block" /> We are
-            here to assist you.
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6 md:mb-8 leading-tight text-[#352547]">
+            Get in touch with us. We are here to assist you.
           </h2>
         </motion.div>
 

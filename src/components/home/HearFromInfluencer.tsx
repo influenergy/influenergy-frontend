@@ -84,7 +84,7 @@ export default function HearFromInfluencer() {
 
   return (
     <motion.div
-      className="w-full py-10 px-2 sm:px-4 bg-white relative"
+      className="w-full py-14 px-2 sm:px-4 bg-white relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
@@ -92,19 +92,19 @@ export default function HearFromInfluencer() {
       id="influencers"
     >
       <motion.h1
-        className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4"
+        className="text-2xl md:text-3xl lg:text-4xl text-center mb-4"
       >
         <div className="flex flex-col justify-start items-center mb-8">
-          <h1 className="text-3xl lg:text-5xl font-bold mb-4 text-[#352547]">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-[#352547]">
             Our Influencers
           </h1>
-          <p className="text-gray-900 text-sm md:text-base leading-relaxed">
+          <p className="text-gray-600 text-sm md:text-base leading-relaxed text-center">
             Collaborate, create, and grow with top influencers
           </p>
         </div>
       </motion.h1>
 
-      <div className="relative flex justify-center items-center overflow-hidden py-2">
+      <div className="relative flex justify-center items-center overflow-hidden mx-32">
         <div className="flex items-center justify-center gap-1 md:gap-3">
           {creators.map((creator, index) => {
             const styles = getCardStyle(index);
@@ -113,7 +113,7 @@ export default function HearFromInfluencer() {
             return (
               <motion.div
                 key={creator.fullName + index}
-                className={`transform transition-all duration-500 overflow-hidden relative cursor-pointer rounded-xl
+                className={`transform transition-all duration-500 overflow-hidden relative cursor-pointer
                   ${styles.height} ${styles.width} ${styles.zIndex} ${styles.opacity}`}
                 onClick={() => setActiveCard(index)}
               >
@@ -147,7 +147,7 @@ export default function HearFromInfluencer() {
                         "https://via.placeholder.com/300x300.png?text=User"
                       }
                       alt={creator.fullName}
-                      className="w-full h-full object-cover opacity-30"
+                      className="w-full h-full object-cover opacity-50"
                     />
                     {/* Vertical name on top */}
                     <h3 className="absolute text-white font-bold tracking-wide text-sm sm:text-base md:text-lg [writing-mode:vertical-rl] rotate-180">
@@ -167,8 +167,8 @@ export default function HearFromInfluencer() {
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm px-3 py-5" size="sm">
-                <Link href="/get-started">Explore Creators for Free</Link>
+              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm p-5 shadow-primary shadow-md" size="sm">
+                <Link href="/get-started">Find Creators for Free</Link>
               </Button>
             </motion.div>
     </motion.div>

@@ -71,8 +71,8 @@ export default function DashboardPage() {
 
   return (
     <div className="relative p-2 px-5 flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4 pr-4">
-        <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+      <div className="flex justify-between items-center mb-4 pr-4 pt-5">
+        <h1 className="text-2xl font-semibold mb-2">Dashboard</h1>
         {userType === "brand" && <NewCampaignButton />}
       </div>
 

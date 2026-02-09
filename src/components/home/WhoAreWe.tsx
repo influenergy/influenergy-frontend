@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function WhoAreWe() {
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-between w-full px-6 lg:px-24 py-10 gap-10 mt-52 items-center max-w-[1440px] mx-auto font-poppins">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-between w-full px-6 lg:px-24 py-10 gap-10 mt-48 lg:mt-16 items-center max-w-[1440px] mx-auto font-poppins">
       {/* Video Section */}
       <motion.div
         className="flex justify-start h-full relative"
@@ -21,16 +21,16 @@ export default function WhoAreWe() {
 
       {/* Text Section */}
       <motion.div
-        className="flex flex-col justify-center space-y-8 h-full lg:py-24"
+        className="flex flex-col justify-center items-center md:items-start space-y-4 h-full lg:py-24"
         initial={{ opacity: 0, x: 40 }}
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
         viewport={{ once: true, amount: 0.3 }}
       >
-        <h1 className="text-3xl md:text-3xl lg:text-5xl font-bold text-[#352547]">
+        <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#352547]">
           Who We Are
         </h1>
-        <p className="text-gray-900 text-sm md:text-md leading-relaxed">
+        <p className="text-gray-900 text-sm md:text-base leading-relaxed text-center md:text-start">
           We’re Influenergy — an AI-powered platform that bridges the gap between brands and creators. Our platform streamlines Influencer collaborations through smart automation, saving time, maximizing campaign success, and ultimately delivering the best ROI
         </p>
         <motion.div
@@ -38,7 +38,7 @@ export default function WhoAreWe() {
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm px-3 py-5" size="sm">
+          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm p-5 shadow-primary shadow-md" size="sm">
             <Link href="/get-started">Start a UGC Camapaign</Link>
           </Button>
         </motion.div>

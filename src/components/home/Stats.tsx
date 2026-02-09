@@ -34,7 +34,7 @@ export default function Stats() {
             id="influencers"
         >
             <motion.h1
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 text-[#352547]"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 text-[#352547]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
@@ -43,7 +43,7 @@ export default function Stats() {
                 Brand success, powered by Influenergy
             </motion.h1>
             <motion.h3
-                className="text-gray-900 text-sm md:text-xl leading-relaxed text-center"
+                className="text-gray-600 text-sm md:text-base leading-relaxed text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}

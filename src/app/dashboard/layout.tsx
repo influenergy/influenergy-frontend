@@ -31,9 +31,9 @@ export default function DashboardLayout({
           </div>
 
           {/* Main header content */}
-          <div className="flex-1 ">
+          {/* <div className="flex-1 ">
             <Header />
-          </div>
+          </div> */}
 
         </div>
 

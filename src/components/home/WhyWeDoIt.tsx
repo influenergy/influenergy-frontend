@@ -1,8 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { Button } from "../ui/button";
-import Link from "next/link";
 
 export default function WhyWeDoIt() {
   const container = {
@@ -20,166 +17,66 @@ export default function WhyWeDoIt() {
     show: { opacity: 1, y: 0 },
   };
 
+  const info = [
+    {
+      val: "95%",
+      title: "Creator Satisfaction Rate"
+    },
+    {
+      val: "$12M+",
+      title: "Paid to Creators"
+    },
+    {
+      val: "50K+",
+      title: "Successful Campaigns"
+    },
+    {
+      val: "4.9★",
+      title: "Average Rating"
+    }
+  ];
+
   return (
-    <div className="bg-[#f7f6ff] w-full">
-      <div className="flex flex-col-reverse md:grid md:grid-cols-2 px-6 md:px-16 lg:px-24 py-6 md:py-10 lg:py-16 gap-10 items-center max-w-[1440px] mx-auto">
-        {/* Left Column  */}
+    <div className="bg-primary">
+      <div className="flex px-6 py-10">
+        {/* Right Column  */}
         <motion.div
-          className="relative w-full space-y-12"
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          {/* AI-Powered Recommendations Card */}
-          <motion.div
-            className="w-full flex flex-col md:flex-row md:items-center md:justify-end gap-6"
-            variants={item}
-          >
-            {/* Arrow 1 */}
-            <motion.div
-              className="hidden md:block"
-              animate={{ x: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-            >
-              <Image
-                src="https://d20cf3kfv1a9jn.cloudfront.net/images/arrow1.png"
-                width={80}
-                height={80}
-                alt="Arrow"
-                className="mr-10"
-              />
-            </motion.div>
-
-            <motion.div
-              className="flex items-start gap-5 bg-white shadow-md p-6 rounded-xl max-w-sm hover:shadow-lg transition-shadow duration-300"
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
-                <Image
-                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/sparkle.png"
-                  width={35}
-                  height={35}
-                  alt="AI Recommendations Icon"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                AI-Powered Solution
-                </h3>
-                <p className="text-gray-600 text-base">
-                  AI-powered platform that connects brands, UGC creators, and
-                  Influencers
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Effortless Brand-Creator Connections Card */}
-          <motion.div
-            className="w-full flex flex-col md:flex-row md:items-center md:justify-evenly gap-6"
-            variants={item}
-          >
-            <motion.div
-              className="flex items-start gap-5 bg-white shadow-md p-6 rounded-xl max-w-sm hover:shadow-lg transition-shadow duration-300"
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
-                <Image
-                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/user.png"
-                  width={35}
-                  height={35}
-                  alt="Brand-Creator Icon"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Effortless Brand-Creator Connections
-                </h3>
-                <p className="text-gray-600 text-base">
-                  We streamline onboarding & brand-creator connections
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Arrow 2 */}
-            <motion.div
-              className="hidden md:block"
-              animate={{ x: [0, -10, 0] }}
-              transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}
-            >
-              <Image
-                src="https://d20cf3kfv1a9jn.cloudfront.net/images/arrow2.png"
-                width={80}
-                height={80}
-                alt="Arrow"
-              />
-            </motion.div>
-          </motion.div>
-
-          {/* Data-Driven Insights Card */}
-          <motion.div
-            className="w-full flex flex-col md:flex-row md:items-center md:justify-end gap-6"
-            variants={item}
-          >
-            <motion.div
-              className="flex items-start gap-5 bg-white shadow-md p-6 rounded-xl max-w-sm hover:shadow-lg transition-shadow duration-300"
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="h-16 w-16 bg-[#f0f2ff] rounded-full flex items-center justify-center flex-shrink-0">
-                <Image
-                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/box1.png"
-                  width={32}
-                  height={32}
-                  alt="Data Insights Icon"
-                  className="w-auto h-auto"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Data-Driven Insights
-                </h3>
-                <p className="text-gray-600 text-base">
-                  We help brands maximize ROI with data-backed insights
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-          {/* Right Column  */}
-        <motion.div
-          className="flex flex-col space-y-6 px-0 md:px-5"
+          className="flex flex-col space-y-6 w-full"
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+          <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold text-white">
             Why We Do It
           </h2>
-          <p className="text-gray-600 text-base font-light m-0 p-0 h-full">
-            Finding the right creator for your brand shouldn’t be a hassle
-          </p>
 
-          <div className="mt-6">
-            <p className="text-xl leading-relaxed mb-8">
-              Today’s consumers trust real stories from real creators. We
-              empower brands to partner with Influencers & UGC creators
+          <div className="mt-6 w-full">
+            <p className="text-md leading-relaxed mb-3 text-white font-light">
+              We believe in the power of authentic connections. In a world saturated with generic advertising, real creators sharing genuine experiences make all the difference.
             </p>
 
-            <motion.div
-              className="flex items-center relative"
-              whileHover={{ x: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-full p-6 flex items-center text-lg">
-                <Link href="/get-started">Explore Now</Link>
-              </Button>
-            </motion.div>
+            <p className="text-dm leading-relaxed mb-3 text-white font-light">
+              Our platform was built to democratize influencer marketing, giving creators of all sizes access to meaningful brand partnerships and providing brands with authentic voices that resonate with their audience.
+            </p>
+
+            <p className="text-md leading-relaxed text-white font-light">
+              Every collaboration facilitated through Influenergy represents a step toward a more authentic, transparent, and effective marketing ecosystem.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+            {info.map((ele, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="text-white bg-[#FFFFFF1A] px-6 py-8 rounded-xl"
+              >
+                <h2 className="text-3xl font-bold">{ele.val}</h2>
+                <p className="text-sm opacity-80">{ele.title}</p>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>

@@ -21,16 +21,16 @@ export default function HowItWorks() {
   };
 
   return (
-    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 g:px-20 xl:px-24 py-6 md:py-10 lg:py-16">
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-3xl lg:text-5xl font-bold text-[#352547]">
+    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 g:px-20 xl:px-24 py-6 md:py-6">
+      <div className="mb-8 flex flex-col justify-center items-center text-center gap-3">
+        <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#352547]">
           How It Works
         </h1>
-        <p className="text-gray-900 text-sm md:text-base leading-relaxed">
+        <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-3xl">
           Get started in minutes and begin collaborating with top brands. Our streamlined process makes influencer marketing simple and effective.
         </p>
       </div>
-      <div className="grid lg:grid-cols-2 w-full gap-8 lg:gap-12 items-stretch  ">
+      <div className="grid w-full gap-8 lg:gap-12 items-stretch  ">
         {/* Right side brand images */}
         <motion.div
           className="flex flex-col justify-between"
@@ -41,7 +41,7 @@ export default function HowItWorks() {
         >
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-5"
             variants={container}
             initial="hidden"
             whileInView="show"
@@ -49,9 +49,10 @@ export default function HowItWorks() {
           >
             {/* Step 1 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
+              className="relative w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
+              <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">01</p>
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
                 <Image
                   src="https://d20cf3kfv1a9jn.cloudfront.net/images/user.png"
@@ -71,9 +72,10 @@ export default function HowItWorks() {
 
             {/* Step 2 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
+              className="relative w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
+              <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">02</p>
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
                 <Image
                   src="https://d20cf3kfv1a9jn.cloudfront.net/images/sparkle.png"
@@ -93,9 +95,10 @@ export default function HowItWorks() {
 
             {/* Step 3 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
+              className="relative w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
+              <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">03</p>
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm rotate-6">
                 <Image
                   src="https://d20cf3kfv1a9jn.cloudfront.net/images/review.png"
@@ -115,9 +118,10 @@ export default function HowItWorks() {
 
             {/* Step 4 */}
             <motion.div
-              className="w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
+              className="relative w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
+              <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">04</p>
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
                 <Image
                   src="https://d20cf3kfv1a9jn.cloudfront.net/images/Group.png"
@@ -142,7 +146,7 @@ export default function HowItWorks() {
           whileHover={{ x: 5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm px-3 py-5" size="sm">
+          <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm p-5 shadow-primary shadow-md" size="sm">
             <Link href="/get-started">Connect with Collaborators</Link>
           </Button>
         </motion.div>

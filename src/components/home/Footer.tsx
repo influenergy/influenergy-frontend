@@ -77,21 +77,26 @@ export default function Footer() {
     { name: "What We Do", href: "/#what-we-do", section: "what-we-do" },
     { name: "How It Works", href: "/#how-it-works", section: "how-it-works" },
     { name: "Why We Do It", href: "/#why-we-do-it", section: "why-we-do-it" },
-    { name: "Blogs", href: "/#blog", section: "blog" },
     { name: "Contact", href: "/#get-in-touch", section: "get-in-touch" },
+  ];
+
+  const privacyLinks = [
+    { name: "Privacy Policy", href: "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf", },
+    { name: "Terms of Service", href: "https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf", },
+    { name: "FAQ’s", href: "faqs" },
   ];
 
   return (
     <motion.footer
-      className="w-full bg-black text-white py-16 md:py-20"
+      className="w-full bg-black text-white py-16 md:py-10"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
+      <div className="w-full px-8 ">
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10"
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24"
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -102,13 +107,13 @@ export default function Footer() {
             className="space-y-4 text-center w-full flex flex-col items-center justify-start gap-4"
             variants={item}
           >
-            <h3 className="text-xl font-semibold ">Quick Contact</h3>
-            <div className="border h-0.5 bg-gray-400 w-full" />
+            <h3 className="text-lg font-semibold">Quick Contact</h3>
+            <div className="border h-0.3 bg-gray-400 w-full" />
             <div className="flex flex-col">
-              <p className="text-gray-300 font-light">
+              <p className="text-gray-300 font-light text-sm">
                 Contact Influenergy for any inquiries or questions:
               </p>
-              <p className="text-gray-300 font-light mt-5">
+              <p className="text-gray-300 font-light mt-3 text-sm">
                 connect@influenergy.co
               </p>
             </div>
@@ -148,75 +153,73 @@ export default function Footer() {
 
           {/* Quick Links */}
           <motion.div
-            className="space-y-4 text-center md:text-left flex flex-col items-center justify-start"
+            className="space-y-4 text-center w-full flex flex-col items-center justify-start gap-2"
             variants={item}
           >
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
             {/* <hr className="border border-gray-400 w-full" />
              */}
-            <div className="h-0.5 bg-gray-400 w-full" />
-            <ul className="space-y-3 font-light">
-              {quickLinks.map((link, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  {link.section ? (
-                    <a
-                      href={link.href}
-                      className="text-gray-300 hover:text-primary transition-colors inline-block"
-                      onClick={(e) => handleSmoothScroll(e, link.section)}
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
+            <div className="border h-0.3 bg-gray-400 w-full" />
+            <div className="grid grid-cols-2 gap-y-3 w-full">
+              <ul className="space-y-3 font-light text-sm">
+                {quickLinks.map((link, index) => (
+                  <motion.li
+                    key={index}
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    {link.section ? (
+                      <a
+                        href={link.href}
+                        className="text-gray-300 hover:text-primary transition-colors inline-block"
+                        onClick={(e) => handleSmoothScroll(e, link.section)}
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-gray-300 hover:text-primary transition-colors inline-block"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
+                  </motion.li>
+                ))}
+              </ul>
+
+              <ul className="space-y-3 font-light text-sm">
+                {privacyLinks.map((link, index) => (
+                  <motion.li
+                    key={index}
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <Link
                       href={link.href}
+                      target={link.name === "FAQ’s" ? "_self" : "_blank"}
                       className="text-gray-300 hover:text-primary transition-colors inline-block"
                     >
                       {link.name}
                     </Link>
-                  )}
-                </motion.li>
-              ))}
-            </ul>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         </motion.div>
 
         {/* Copyright Section */}
         <motion.div
-          className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center font-light"
+          className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-center items-center font-light"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <p className="text-gray-400 text-xs">
-            © All Rights Reserved 2024. Influenergy LLC.
+          <p className="text-gray-400 text-md">
+            © All Rights Reserved 2026. Influenergy LLC.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link
-              href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Privacy Policy.pdf"
-              target="_blank"
-              className="text-gray-400 text-xs hover:text-primary transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="https://d20cf3kfv1a9jn.cloudfront.net/docs/Influenergy - Terms of Service.pdf"
-              target="_blank"
-              className="text-gray-400 text-xs hover:text-primary transition-colors"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="faqs"
-              className="text-gray-400 text-xs hover:text-primary transition-colors"
-            >
-              FAQ’s
-            </Link>
-          </div>
         </motion.div>
       </div>
     </motion.footer>

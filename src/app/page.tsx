@@ -4,7 +4,6 @@ import { Suspense, lazy, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/home/Header";
 import HeroSection from "@/components/home/HeroSection";
-import InfluEnergySection from "@/components/home/Influenergy";
 import { Loader } from "@/components/common/Loader";
 import dynamic from "next/dynamic";
 const HearFromInfluencer = dynamic(
@@ -20,6 +19,7 @@ const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const WhatWeDo = lazy(() => import("@/components/home/WhatWeDo"));
 const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));
 // const WeEmpowerBrand = lazy(() => import("@/components/home/WeEmpowerBrand"));
+const Testimonials = lazy(() => import("@/components/home/Testimonials"));
 const Stats = lazy(() => import("@/components/home/Stats"));
 const Blog = lazy(() => import("@/components/home/Blog"));
 const GetInTouch = lazy(() => import("@/components/home/GetInTouch"));
@@ -78,10 +78,15 @@ export default function Home() {
 
             <Stats />
           </div>
-          {/* <div id="why-we-do-it">
+          <div id="why-we-do-it">
             <WhyWeDoIt />
-          </div> */}
+          </div>
+
+          <div id="testimonials">
+            <Testimonials />
+          </div>
         </Suspense>
+
 
         <Suspense fallback={<Loader />}>
           {/* <div id="blog">

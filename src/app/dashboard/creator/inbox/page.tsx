@@ -55,315 +55,281 @@ const Page = () => {
   }, [tabFromUrl]);
 
   return (
-    <AnimatePresence mode="wait">
-      <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
-        <div className="overflow-auto sticky top-0 z-10 bg-background">
-          <TabsList className="w-full">
+    <>
+      <div className="p-5">
+        <h1 className="text-2xl font-semibold mb-2">My Applications</h1>
+      </div>
+      <AnimatePresence mode="wait">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
+          <div className="overflow-auto sticky top-0 z-10 bg-background">
             <TabsList className="w-full">
-              <TabsTrigger
-                value="Waiting Approval"
-                className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-              >
-                <div className="flex items-center gap-1.5">
-                  <span>All Opportunities</span>
-                  {notificationCounts?.allOpportunities > 0 && (
-                    <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
-                      {notificationCounts.allOpportunities}
-                    </span>
-                  )}
-                </div>
-              </TabsTrigger>
+              <TabsList className="w-full">
+                <TabsTrigger
+                  value="Waiting Approval"
+                  className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span>All Opportunities</span>
+                    {notificationCounts?.allOpportunities > 0 && (
+                      <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                        {notificationCounts.allOpportunities}
+                      </span>
+                    )}
+                  </div>
+                </TabsTrigger>
 
-              <TabsTrigger
-                value="Active"
-                className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-              >
-                <div className="flex items-center gap-1.5">
-                  <span>Ongoing Collaboration</span>
-                  {notificationCounts?.ongoingCollaboration > 0 && (
-                    <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
-                      {notificationCounts.ongoingCollaboration}
-                    </span>
-                  )}
-                </div>
-              </TabsTrigger>
+                <TabsTrigger
+                  value="Active"
+                  className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span>Ongoing Collaboration</span>
+                    {notificationCounts?.ongoingCollaboration > 0 && (
+                      <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                        {notificationCounts.ongoingCollaboration}
+                      </span>
+                    )}
+                  </div>
+                </TabsTrigger>
 
-              <TabsTrigger
-                value="Completed"
-                className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
-              >
-                <div className="flex items-center gap-1.5">
-                  <span>Completed Collaboration</span>
-                  {notificationCounts?.completedCollaboration > 0 && (
-                    <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
-                      {notificationCounts.completedCollaboration}
-                    </span>
-                  )}
-                </div>
-              </TabsTrigger>
+                <TabsTrigger
+                  value="Completed"
+                  className="h-12 sm:h-16 w-1/2 xs:w-1/4 text-xs md:text-sm"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span>Completed Collaboration</span>
+                    {notificationCounts?.completedCollaboration > 0 && (
+                      <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full">
+                        {notificationCounts.completedCollaboration}
+                      </span>
+                    )}
+                  </div>
+                </TabsTrigger>
+              </TabsList>
             </TabsList>
-          </TabsList>
-        </div>
-
-        {activeTab == "" && (
-          <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center dark:bg-background flex-1">
-            <Image
-              src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-              alt=""
-              width={280}
-              height={280}
-              className="mx-auto"
-              priority
-            />
-            <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
-              <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200">
-                Welcome to the inbox. <br /> Collaboration opportunities from
-                brands will appear here.
-              </h3>
-            </div>
           </div>
-        )}
 
-        {/* Use Suspense with lazy loaded components */}
-        <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
-          <Suspense fallback={<TabLoading />}>
-            {activeTab === "Active" &&
-              campaignsData?.collaborations?.length > 0 && (
-                <div className="grid grid-cols-1 gap-5 md:gap-10">
-                  {campaignsData.collaborations.map(
-                    (collaboration: Collaboration, index: number) => (
-                      <InboxCard
-                        key={collaboration._id || index}
-                        status={"Active"}
-                        paymentStatus={collaboration?.paymentStatus}
-                        tab={"Active"}
-                        title={
-                          collaboration?.campaignId?.campaignTitle || "No Title"
-                        }
-                        image={
-                          collaboration?.campaignId?.campaignImage ||
-                          "https://avatar.iran.liara.run/public/boy"
-                        }
-                        data={collaboration}
-                        refetch={refetch}
-                      />
-                    )
-                  )}
-                </div>
-              )}
-            {activeTab === "Active" &&
-              (!campaignsData?.collaborations ||
-                (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                <div className="text-center p-10">
-                  <Image
-                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-                    alt=""
-                    width={280}
-                    height={280}
-                    className="mx-auto"
-                    priority
-                  />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
-                    Welcome to the inbox. <br /> No ongoing collaborations
-                    found.
-                  </h3>
-                </div>
-              )}
-          </Suspense>
-        </TabsContent>
+          {activeTab == "" && (
+            <div className="w-full flex flex-col items-center justify-center  min-h-[calc(100vh-16rem)] px-2 sm:px-4 md:px-6 py-4 sm:py-6 gap-4 sm:gap-6 text-center dark:bg-background flex-1">
+              <Image
+                src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                alt=""
+                width={280}
+                height={280}
+                className="mx-auto"
+                priority
+              />
+              <div className="space-y-2 sm:space-y-3 max-w-xl mx-auto">
+                <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200">
+                  Welcome to the inbox. <br /> Collaboration opportunities from
+                  brands will appear here.
+                </h3>
+              </div>
+            </div>
+          )}
 
-
-        <TabsContent value="Offer Accepted" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
-          <Suspense fallback={<TabLoading />}>
-            {activeTab === "Offer Accepted" &&
-              campaignsData?.collaborations?.length > 0 && (
-                <div className="grid grid-cols-1 gap-5 md:gap-10">
-                  {campaignsData.collaborations.map(
-                    (collaboration: Collaboration, index: number) => (
-                      <InboxCard
-                        key={collaboration._id || index}
-                        status={"Offer Accepted"}
-                        paymentStatus={collaboration?.paymentStatus}
-                        tab={"Offer Accepted"}
-                        title={
-                          collaboration?.campaignId?.campaignTitle || "No Title"
-                        }
-                        image={
-                          collaboration?.campaignId?.campaignImage ||
-                          "https://avatar.iran.liara.run/public/boy"
-                        }
-                        data={collaboration}
-                        refetch={refetch}
-                      />
-                    )
-                  )}
-                </div>
-              )}
-            {activeTab === "Offer Accepted" &&
-              (!campaignsData?.collaborations ||
-                (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                <div className="text-center p-10">
-                  <Image
-                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-                    alt=""
-                    width={280}
-                    height={280}
-                    className="mx-auto"
-                    priority
-                  />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
-                    Welcome to the inbox. <br /> No Accepted collaborations
-                    found.
-                  </h3>
-                </div>
-              )}
-          </Suspense>
-        </TabsContent>
-
-        <TabsContent value="Waiting Approval" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
-          <Suspense fallback={<TabLoading />}>
-            {activeTab === "Waiting Approval" &&
-              campaignsData?.collaborations?.length > 0 && (
-                <div className="grid grid-cols-1 gap-5 md:gap-10">
-                  {campaignsData.collaborations.map(
-                    (collaboration: Collaboration, index: number) => (
-                      <InboxCard
-                        key={collaboration._id || index}
-                        status={"Waiting Approval"}
-                        paymentStatus={collaboration?.paymentStatus}
-                        tab={"Waiting Approval"}
-                        title={
-                          collaboration?.campaignId?.campaignTitle || "No Title"
-                        }
-                        image={
-                          collaboration?.campaignId?.campaignImage ||
-                          "https://avatar.iran.liara.run/public/boy"
-                        }
-                        data={collaboration}
-                        refetch={refetch}
-                      />
-                    )
-                  )}
-                </div>
-              )}
-            {activeTab === "Waiting Approval" &&
-              (!campaignsData?.collaborations ||
-                (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                <div className="text-center p-10">
-                  <Image
-                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-                    alt=""
-                    width={280}
-                    height={280}
-                    className="mx-auto"
-                    priority
-                  />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900  mt-2 dark:text-gray-200">
-                    Welcome to the inbox. <br /> No pending collaborations
-                    found.
-                  </h3>
-                </div>
-              )}
-          </Suspense>
-        </TabsContent>
-
-        <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
-          <Suspense fallback={<TabLoading />}>
-            {activeTab === "Completed" &&
-              campaignsData?.collaborations?.length > 0 && (
-                <div className="grid grid-cols-1 gap-5 md:gap-10">
-                  {campaignsData.collaborations.map(
-                    (collaboration: Collaboration, index: number) => (
-                      <InboxCard
-                        key={collaboration._id || index}
-                        status={"Completed"}
-                        paymentStatus={collaboration?.paymentStatus}
-                        tab={"Completed"}
-                        title={
-                          collaboration?.campaignId?.campaignTitle || "No Title"
-                        }
-                        image={
-                          collaboration?.campaignId?.campaignImage ||
-                          "https://avatar.iran.liara.run/public/boy"
-                        }
-                        data={collaboration}
-                        refetch={refetch}
-                      />
-                    )
-                  )}
-                </div>
-              )}
-            {activeTab === "Completed" &&
-              (!campaignsData?.collaborations ||
-                (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                <div className="text-center p-10">
-                  <Image
-                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-                    alt=""
-                    width={280}
-                    height={280}
-                    className="mx-auto"
-                    priority
-                  />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
-                    Welcome to the inbox. <br /> No completed collaborations
-                    found.
-                  </h3>
-                </div>
-              )}
-          </Suspense>
-        </TabsContent>
-
-        <TabsContent value="Payment" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background pb-3 md:pb-10 pt-5 md:pt-8 flex-1">
-          <Suspense fallback={<TabLoading />}>
-            {activeTab === "Payment" &&
-              campaignsData?.collaborations?.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {campaignsData.collaborations.map(
-                    (collaboration: Collaboration, index: number) => (
-                      <InboxCard
-                        key={collaboration._id || index}
-                        status={"Payment"}
-                        paymentStatus={collaboration?.paymentStatus}
-                        tab={"Payment"}
-                        title={
-                          collaboration?.campaignId?.campaignTitle || "No Title"
-                        }
-                        image={
-                          collaboration?.campaignId?.campaignImage ||
-                          "https://avatar.iran.liara.run/public/boy"
-                        }
-                        data={collaboration}
-                        refetch={refetch}
-                      />
-                    )
-                  )}
-                </div>
-              )}
-            {activeTab === "Payment" &&
-              (!campaignsData?.collaborations ||
-                (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                <div className="text-center p-10">
-                  <Image
-                    src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
-                    alt=""
-                    width={280}
-                    height={280}
-                    className="mx-auto"
-                    priority
-                  />
-                  <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
-                    Welcome to the inbox. <br /> No payment collaborations
-                    found.
-                  </h3>
-                </div>
-              )}
-          </Suspense>
-        </TabsContent>
-      </Tabs>
+          {/* Use Suspense with lazy loaded components */}
+          <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
+            <Suspense fallback={<TabLoading />}>
+              {activeTab === "Active" &&
+                campaignsData?.collaborations?.length > 0 && (
+                  <div className="grid grid-cols-1 gap-5 md:gap-10">
+                    {campaignsData.collaborations.map(
+                      (collaboration: Collaboration, index: number) => (
+                        <InboxCard
+                          key={collaboration._id || index}
+                          status={"Active"}
+                          paymentStatus={collaboration?.paymentStatus}
+                          tab={"Active"}
+                          title={
+                            collaboration?.campaignId?.campaignTitle || "No Title"
+                          }
+                          image={
+                            collaboration?.campaignId?.campaignImage ||
+                            "https://avatar.iran.liara.run/public/boy"
+                          }
+                          data={collaboration}
+                          refetch={refetch}
+                        />
+                      )
+                    )}
+                  </div>
+                )}
+              {activeTab === "Active" &&
+                (!campaignsData?.collaborations ||
+                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
+                  <TabLoading />
+                )}
+            </Suspense>
+          </TabsContent>
 
 
-    </AnimatePresence>
+          {/* <TabsContent value="Offer Accepted" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
+            <Suspense fallback={<TabLoading />}>
+              {activeTab === "Offer Accepted" &&
+                campaignsData?.collaborations?.length > 0 && (
+                  <div className="grid grid-cols-1 gap-5 md:gap-10">
+                    {campaignsData.collaborations.map(
+                      (collaboration: Collaboration, index: number) => (
+                        <InboxCard
+                          key={collaboration._id || index}
+                          status={"Offer Accepted"}
+                          paymentStatus={collaboration?.paymentStatus}
+                          tab={"Offer Accepted"}
+                          title={
+                            collaboration?.campaignId?.campaignTitle || "No Title"
+                          }
+                          image={
+                            collaboration?.campaignId?.campaignImage ||
+                            "https://avatar.iran.liara.run/public/boy"
+                          }
+                          data={collaboration}
+                          refetch={refetch}
+                        />
+                      )
+                    )}
+                  </div>
+                )}
+              {activeTab === "Offer Accepted" &&
+                (!campaignsData?.collaborations ||
+                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
+                  <div className="text-center p-10">
+                    <Image
+                      src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                      alt=""
+                      width={280}
+                      height={280}
+                      className="mx-auto"
+                      priority
+                    />
+                    <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
+                      Welcome to the inbox. <br /> No Accepted collaborations
+                      found.
+                    </h3>
+                  </div>
+                )}
+            </Suspense>
+          </TabsContent> */}
+
+          <TabsContent value="Waiting Approval" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
+            <Suspense fallback={<TabLoading />}>
+              {activeTab === "Waiting Approval" &&
+                campaignsData?.collaborations?.length > 0 && (
+                  <div className="grid grid-cols-1 gap-5 md:gap-10">
+                    {campaignsData.collaborations.map(
+                      (collaboration: Collaboration, index: number) => (
+                        <InboxCard
+                          key={collaboration._id || index}
+                          status={"Waiting Approval"}
+                          paymentStatus={collaboration?.paymentStatus}
+                          tab={"Waiting Approval"}
+                          title={
+                            collaboration?.campaignId?.campaignTitle || "No Title"
+                          }
+                          image={
+                            collaboration?.campaignId?.campaignImage ||
+                            "https://avatar.iran.liara.run/public/boy"
+                          }
+                          data={collaboration}
+                          refetch={refetch}
+                        />
+                      )
+                    )}
+                  </div>
+                )}
+              {activeTab === "Waiting Approval" &&
+                (!campaignsData?.collaborations ||
+                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
+                  <TabLoading />
+                )}
+            </Suspense>
+          </TabsContent>
+
+          <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
+            <Suspense fallback={<TabLoading />}>
+              {activeTab === "Completed" &&
+                campaignsData?.collaborations?.length > 0 && (
+                  <div className="grid grid-cols-1 gap-5 md:gap-10">
+                    {campaignsData.collaborations.map(
+                      (collaboration: Collaboration, index: number) => (
+                        <InboxCard
+                          key={collaboration._id || index}
+                          status={"Completed"}
+                          paymentStatus={collaboration?.paymentStatus}
+                          tab={"Completed"}
+                          title={
+                            collaboration?.campaignId?.campaignTitle || "No Title"
+                          }
+                          image={
+                            collaboration?.campaignId?.campaignImage ||
+                            "https://avatar.iran.liara.run/public/boy"
+                          }
+                          data={collaboration}
+                          refetch={refetch}
+                        />
+                      )
+                    )}
+                  </div>
+                )}
+              {activeTab === "Completed" &&
+                (!campaignsData?.collaborations ||
+                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
+                  <TabLoading />
+                )}
+            </Suspense>
+          </TabsContent>
+
+          {/* <TabsContent value="Payment" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background pb-3 md:pb-10 pt-5 md:pt-8 flex-1">
+            <Suspense fallback={<TabLoading />}>
+              {activeTab === "Payment" &&
+                campaignsData?.collaborations?.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {campaignsData.collaborations.map(
+                      (collaboration: Collaboration, index: number) => (
+                        <InboxCard
+                          key={collaboration._id || index}
+                          status={"Payment"}
+                          paymentStatus={collaboration?.paymentStatus}
+                          tab={"Payment"}
+                          title={
+                            collaboration?.campaignId?.campaignTitle || "No Title"
+                          }
+                          image={
+                            collaboration?.campaignId?.campaignImage ||
+                            "https://avatar.iran.liara.run/public/boy"
+                          }
+                          data={collaboration}
+                          refetch={refetch}
+                        />
+                      )
+                    )}
+                  </div>
+                )}
+              {activeTab === "Payment" &&
+                (!campaignsData?.collaborations ||
+                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
+                  <div className="text-center p-10">
+                    <Image
+                      src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                      alt=""
+                      width={280}
+                      height={280}
+                      className="mx-auto"
+                      priority
+                    />
+                    <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200  mt-2">
+                      Welcome to the inbox. <br /> No payment collaborations
+                      found.
+                    </h3>
+                  </div>
+                )}
+            </Suspense>
+          </TabsContent> */}
+        </Tabs>
+
+
+      </AnimatePresence>
+    </>
   );
 };
 

@@ -39,13 +39,12 @@ export default function WhatWeDo() {
           className="w-full"
         >
           {/* Section Heading */}
-          <div className="flex flex-col justify-start mb-8">
-            <h1 className="text-3xl md:text-3xl lg:text-5xl font-bold text-[#352547]">
+          <div className="flex flex-col justify-start items-center mb-8 gap-4">
+            <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#352547]">
               What We Do
             </h1>
-            <p className="text-gray-900 text-sm md:text-base leading-relaxed">
-              We simplify the process of connecting with high-performing UGC
-              creators through AI-powered matchmaking
+            <p className="text-gray-600 text-sm md:text-base max-w-3xl text-center">
+              We provide a comprehensive platform that connects creators with brands, streamlines collaboration, and drives measurable results.
             </p>
           </div>
 
@@ -69,7 +68,7 @@ export default function WhatWeDo() {
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold mt-4 md:mt-5">{card.title}</h2>
-                    <p className="text-gray-900 text-sm mt-2 ">
+                    <p className="text-gray-600 text-xs lg:text-sm mt-2 ">
                       {card.description}
                     </p>
                   </div>

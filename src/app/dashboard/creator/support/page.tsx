@@ -16,13 +16,13 @@ function Page() {
       open: false,
     },
     {
-      question: "Where can I track my orders?",
-      answer: "You can track your orders in the 'My Orders' section under your account dashboard.",
+      question: "Where can I track my applications?",
+      answer: "You can track your orders in the 'My Applications' section under your account dashboard.",
       open: false,
     },
     {
       question: "How do I contact customer service?",
-      answer: "Fill out the contact form on this page, or email us directly at support@example.com.",
+      answer: "Fill out the contact form on this page, or email us directly at connect@influenergy.co",
       open: false,
     },
   ]);
@@ -68,14 +68,13 @@ function Page() {
   };
 
   return (
-    <div className="p-6  mx-auto">
+    <div className="p-6 mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <UserCog size={32} className="text-blue-600" />
-        <h1 className="text-3xl font-bold">Support</h1>
+        <h1 className="text-2xl font-semibold mb-2">Support</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {/* Contact Section */}
         <section className="">
           <Card className='p-6'>
