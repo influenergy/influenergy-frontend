@@ -187,6 +187,9 @@ export default function ApplicationsReceived() {
       queryClient.invalidateQueries({
         queryKey: ["applications", selectedCampaignId]
       });
+      queryClient.invalidateQueries({
+        queryKey: ["brandNotificationCounts"] // ← ADD THIS
+      });
 
       setSuccessMessage(`Status updated to ${nextStatus}`);
       router.push("/dashboard/brand/application-inbox");

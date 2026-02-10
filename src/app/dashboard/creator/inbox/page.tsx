@@ -11,6 +11,7 @@ import { Collaboration } from "@/types/Collaboration";
 import { pendingCollaborationCount, useAppSelector } from "@/store";
 import { useSearchParams } from "next/navigation";
 import { useCreatorNotificationCounts } from "@/hooks/useNotificationCounts";
+import { useQueryClient } from "@tanstack/react-query";
 
 const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
   ssr: false,
@@ -24,7 +25,7 @@ const InboxCard = dynamic(() => import("@/components/inbox/InboxCard"), {
 const Page = () => {
   const DEFAULT_TAB = "Waiting Approval";
   const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
-  const pendingCollabCount = useAppSelector(pendingCollaborationCount);
+  const queryClient = useQueryClient();
 
   const { data: notificationCounts } = useCreatorNotificationCounts();
 
@@ -53,6 +54,17 @@ const Page = () => {
       setActiveTab(tabFromUrl);
     }
   }, [tabFromUrl]);
+
+  useEffect(() => {
+    if (activeTab === "Completed") {
+      // Backend already marked as read, just refresh the count
+      setTimeout(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["creatorNotificationCounts"]
+        });
+      }, 500); // Small delay to ensure backend update completed
+    }
+  }, [activeTab, queryClient]);
 
   return (
     <>

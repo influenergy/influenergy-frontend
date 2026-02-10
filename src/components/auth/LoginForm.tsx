@@ -42,6 +42,7 @@ export default function LoginForm() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [loginMethod, setLoginMethod] = useState("password");
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const userType = useAppSelector((state) => state.auth.userType);
 
   if (!userType) {
@@ -51,7 +52,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     // reset,
     setValue
   } = useForm<LoginFormData>({
@@ -77,18 +78,31 @@ export default function LoginForm() {
     },
     onSuccess: (data) => {
       if (userType !== null) {
+        // Set redirecting state to keep loader visible
+        setIsRedirecting(true);
+        
         // Store authentication state 
         dispatch(
           setCredentials({
             user: data?.data,
           })
         );
-        toast({ title: "Login Successful 🎉", description: "Redirecting..." });
-        router.replace("/dashboard");
+        
+        // toast({ 
+        //   title: "Login Successful 🎉", 
+        //   description: "Redirecting to dashboard...",
+        //   duration: 2000 
+        // });
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          router.replace("/dashboard");
+        }, 500);
       }
     },
     onError: (error: AxiosError) => {
       console.error("Login error:", error);
+      setIsRedirecting(false);
 
       let message = "Failed to login. Please try again.";
 
@@ -106,7 +120,10 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginFormData) => {
-    // console.log(userType,'userType',data)
+    // Prevent submission if already processing
+    if (loginMutation.isPending || isSubmitting) {
+      return;
+    }
     loginMutation.mutate(data);
   };
 
@@ -190,8 +207,23 @@ export default function LoginForm() {
     }
   }, [mainIndex]);
 
+  // Check if form is in loading state
+  const isLoading = loginMutation.isPending || isSubmitting || isRedirecting;
+
   return (
     <div className="relative w-full min-h-screen flex flex-col  ">
+      {/* Full Screen Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="bg-white rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <p className="text-lg font-semibold text-gray-700">
+              {isRedirecting ? "Redirecting to dashboard..." : "Logging in..."}
+            </p>
+          </div>
+        </div>
+      )}
+      
       <div className="w-full">
         {/* Form container, ensure it's above the background */}
         <motion.div
@@ -288,6 +320,7 @@ export default function LoginForm() {
                         type="button"
                         className="px-0"
                         onClick={() => setIsDialogOpen(true)}
+                        disabled={isLoading}
                       >
                         Forgot Password?
                       </Button>
@@ -301,17 +334,10 @@ export default function LoginForm() {
                     >
                       <Button
                         type="submit"
-                        className="w-full bg-primary hover:bg-primary transition-all py-4 sm:py-5 text-white text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest disabled:opacity-70"
-                        disabled={loginMutation.isPending}
+                        className="w-full bg-primary hover:bg-primary transition-all py-4 sm:py-5 text-white text-base sm:text-lg font-semibold font-poppins rounded-lg tracking-wider sm:tracking-widest disabled:opacity-70 disabled:cursor-not-allowed"
+                        disabled={isLoading}
                       >
-                        {loginMutation.isPending ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            <span>Loading...</span>
-                          </div>
-                        ) : (
-                          "Continue"
-                        )}
+                        Continue
                       </Button>
                     </motion.div>
                   </form> :
@@ -365,10 +391,18 @@ export default function LoginForm() {
 
                 <div className="flex justify-center gap-4">
                   {loginMethod === "password" ?
-                    <button className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500" onClick={() => setLoginMethod("otp")}>
+                    <button 
+                      className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
+                      onClick={() => setLoginMethod("otp")}
+                      disabled={isLoading}
+                    >
                       <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500" /> <span>OTP</span>
                     </button> :
-                    <button className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500" onClick={() => setLoginMethod("password")}>
+                    <button 
+                      className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
+                      onClick={() => setLoginMethod("password")}
+                      disabled={isLoading}
+                    >
                       <KeyRound className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500" /> <span>Password</span>
                     </button>
                   }
@@ -437,139 +471,6 @@ export default function LoginForm() {
           </section>
         </motion.div>
       </div>
-
-
-      {/* {userType === "creator" && <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex flex-col items-center max-w-5xl mx-auto"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">
-            Our creator success stories
-          </h2>
-          <p className="text-center text-gray-600 max-w-2xl mb-10">
-            Explore real-life examples of how creators are using Influenery to
-            connect with top brands and achieve their goals.
-          </p>
-
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="flex flex-col sm:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-dashed border-[#c8c8f1]"
-          >
-            <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
-              <Image
-                src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
-                alt="Creator Success Stories"
-                fill
-                className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
-              />
-            </div>
-
-            <div className="flex flex-col justify-between p-6 w-full">
-              <div className="flex flex-col sm:flex-row gap-6 mb-4 ">
-                <div>
-                  <span className="text-gray-400 block">Creator</span>
-                  <p className="font-semibold text-black">Adam</p>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Joined On</span>
-                  <p className="font-semibold text-black">12th Sep 2025</p>
-                </div>
-                <div>
-                  <span className="text-gray-400 block">Videos Created</span>
-                  <p className="font-semibold text-black">451</p>
-                </div>
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed max-w-lg">
-                Adam, a lifestyle creator from Austin, turned his passion for
-                self-care and storytelling into a thriving career. Through
-                Influenery, he connected with over 15 brands in 8 months — creating
-                authentic product videos that reached 1M+ viewers. He doubled his
-                income and landed a long-term brand deal, all while working from his
-                home studio.
-              </p>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>} */}
-
-      {/* {userType === "creator" && <div className="w-full py-12 px-4 text-center grid grid-cols-1 sm:grid-cols-3 gap-6 bg-white max-w-6xl mx-auto">
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-700">Trusted by brands</p>
-          <h3 className="text-6xl font-bold text-[#8055FE]">100+</h3>
-        </div>
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-700">Home to Creators</p>
-          <h3 className="text-6xl font-bold text-[#8055FE]">170+</h3>
-        </div>
-        <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-700">Average earning </p>
-          <h3 className="text-6xl font-bold text-[#8055FE]">
-            125k{" "}
-            <span className="text-sm font-bold text-[#8055FE]">per annum</span>
-          </h3>
-        </div>
-      </div>} */}
-
-
-      {/* {userType === "brand" &&
-        <section className="bg-[#f5f2ff] py-16 px-4 sm:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="flex flex-col items-center max-w-5xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">
-              Brand Testimonials
-            </h2>
-            <p className="text-center text-gray-600 max-w-2xl mb-10">
-              iscover how leading brands have experienced growth, innovation, and success through our partnerships.
-            </p>
-
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="flex flex-col sm:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-dashed border-[#c8c8f1]"
-            >
-              <div className="w-full sm:w-[261px] h-[240px] sm:h-auto relative">
-                <Image
-                  src="https://d20cf3kfv1a9jn.cloudfront.net/images/sitting.png"
-                  alt="Creator Success Stories"
-                  fill
-                  className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
-                />
-              </div>
-
-              <div className="flex flex-col justify-between p-6 w-full">
-                <div className="flex flex-col sm:flex-row gap-6 mb-4 ">
-                  <div>
-                    <span className="text-gray-400 block">Brand</span>
-                    <p className="font-semibold text-black">Starkbucks</p>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block">Joined On</span>
-                    <p className="font-semibold text-black">12th Sep 2025</p>
-                  </div>
-                  <div>
-                    <span className="text-gray-400 block">Total Collaboration</span>
-                    <p className="font-semibold text-black">51</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed max-w-lg">
-                  Adam, a lifestyle creator from Austin, turned his passion for
-                  self-care and storytelling into a thriving career. Through
-                  Influenery, he connected with over 15 brands in 8 months — creating
-                  authentic product videos that reached 1M+ viewers. He doubled his
-                  income and landed a long-term brand deal, all while working from his
-                  home studio.
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </section>
-        } */}
 
       <Footer />
     </div>
