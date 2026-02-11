@@ -100,12 +100,12 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
     // Separate states as requested
     const [collaborationCount, setCollaborationCount] = useState({ ongoing: 0, pending: 0, completed: 0 });
-    const [favCreators, setFavCreators] = useState<FavCreators[]>([]);
-    const [recentCreators, setRecentCreators] = useState<FavCreators[]>([]);
+    // const [favCreators, setFavCreators] = useState<FavCreators[]>([]);
+    // const [recentCreators, setRecentCreators] = useState<FavCreators[]>([]);
     const [completedCollabs, setCompletedCollabs] = useState<CollaborationItem[]>([]);
-    const [campaignCount, setCampaignCount] = useState({ totalCampaigns: 0, totalApplicants: 0, activeCampaigns: 0, totalSpending: 0, offerSent: 0, offerAccepted: 0, totalPendingPayment: 0, acceptanceRate: 0, pendingCampaignCount: 0, });
+    // const [campaignCount, setCampaignCount] = useState({ totalCampaigns: 0, totalApplicants: 0, activeCampaigns: 0, totalSpending: 0, offerSent: 0, offerAccepted: 0, totalPendingPayment: 0, acceptanceRate: 0, pendingCampaignCount: 0, });
 
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
 
     const [inviteModal, setInviteModal] = useState(false);
@@ -120,25 +120,26 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
 
     const router = useRouter();
 
-    useEffect(() => {
-        Promise.all([
-            // userApi.getRegionAnalysis(),
-            postApi.getCollaborationHistory(),
-            postApi.getCampaignHistory(),
-        ])
-            .then(([collabData, campaignData]) => {
-                // Region data
-                // setRegionAnalysis(regionData.regionAnalysis);
+    const {
+        data: dashboardData,
+        isLoading: dashboardLoading,
+    } = useQuery({
+        queryKey: ["brand-dashboard"],
+        queryFn: async () => {
+            const [collabData, campaignData] = await Promise.all([
+                postApi.getCollaborationHistory(),
+                postApi.getCampaignHistory(),
+            ]);
 
-                const completedCount = campaignData?.campaign?.counts;
-                setCampaignCount(completedCount);
-
-                setFavCreators(collabData?.collaborations?.favCreators ?? []);
-                setRecentCreators(collabData?.collaborations?.recentCreators ?? []);
-            })
-            .catch((err) => console.error("Error fetching data:", err))
-            .finally(() => setLoading(false));
-    }, []);
+            return {
+                campaignCount: campaignData?.campaign?.counts,
+                favCreators: collabData?.collaborations?.favCreators ?? [],
+                recentCreators: collabData?.collaborations?.recentCreators ?? [],
+            };
+        },
+        staleTime: 1000 * 60 * 5, // cache for 5 minutes
+        refetchOnWindowFocus: false,
+    });
 
     const {
         data: campaigns = [],
@@ -152,14 +153,15 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
         },
     });
 
-    if (loading) {
+    if (dashboardLoading) {
         return <BrandDashboardSkeleton />;
     }
 
+
     const tabs = [
         { id: "ongoing", label: "Ongoing Collaborations", count: campaigns.length },
-        { id: "favorites", label: "Favorite Creators", count: favCreators.length },
-        { id: "recent", label: "Recently Worked With", count: recentCreators.length },
+        { id: "favorites", label: "Favorite Creators", count: dashboardData?.favCreators?.length },
+        { id: "recent", label: "Recently Worked With", count: dashboardData?.recentCreators?.length },
     ];
 
 
@@ -177,7 +179,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         {[
                             {
                                 label: "Total Campaigns",
-                                count: campaignCount.totalCampaigns,
+                                count: dashboardData?.campaignCount?.totalCampaigns ?? 0,
                                 icon: (
                                     <Image
                                         src={total_campaigns}
@@ -191,21 +193,21 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             },
                             {
                                 label: "Total Applicants",
-                                count: campaignCount.totalApplicants,
+                                count: dashboardData?.campaignCount?.totalApplicants ?? 0,
                                 icon: <Contact size={32} />,
                                 iconBg: "bg-purple-100",
                                 iconColor: "text-purple-600",
                             },
                             {
                                 label: "Active Campaigns",
-                                count: campaignCount.activeCampaigns,
+                                count: dashboardData?.campaignCount?.activeCampaigns ?? 0,
                                 icon: <CircleCheckBig size={32} />,
                                 iconBg: "bg-green-100",
                                 iconColor: "text-green-600",
                             },
                             {
                                 label: "Total Spending",
-                                count: campaignCount.totalSpending,
+                                count: dashboardData?.campaignCount?.totalSpending ?? 0,
                                 icon: <DollarSign size={32} />,
                                 iconBg: "bg-yellow-100",
                                 iconColor: "text-yellow-600",
@@ -238,7 +240,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                         {[
                             {
                                 label: "Offer Sent",
-                                count: campaignCount.offerSent,
+                                count: dashboardData?.campaignCount?.offerSent,
                                 subLabel: "Last 30 days",
                                 icon: <Send size={32} />,
                                 iconBg: "bg-purple-100",
@@ -246,16 +248,16 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                             },
                             {
                                 label: "Offer Accepted",
-                                count: campaignCount.offerAccepted,
-                                subLabel: `${campaignCount.acceptanceRate}% acceptance rate`,
+                                count: dashboardData?.campaignCount?.offerAccepted,
+                                subLabel: `${dashboardData?.campaignCount?.acceptanceRate}% acceptance rate`,
                                 icon: <CircleCheckBig size={32} />,
                                 iconBg: "bg-green-100",
                                 iconColor: "text-green-600",
                             },
                             {
                                 label: "Payments Pending",
-                                count: campaignCount.totalPendingPayment,
-                                subLabel: `${campaignCount.pendingCampaignCount} campaigns`,
+                                count: dashboardData?.campaignCount?.totalPendingPayment,
+                                subLabel: `${dashboardData?.campaignCount?.pendingCampaignCount} campaigns`,
                                 icon: <Clock4 size={32} />,
                                 iconBg: "bg-yellow-100",
                                 iconColor: "text-yellow-600",
@@ -418,7 +420,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </p>
                                 </div>
 
-                                {favCreators.length === 0 ? (
+                                {dashboardData?.favCreators?.length ?? 0 === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
                                         <p className="text-sm font-medium text-gray-700">
                                             No favorite creators yet
@@ -429,7 +431,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {favCreators.slice(0, 4).map((creator, idx) => (
+                                        {dashboardData?.favCreators?.slice(0, 4).map((creator, idx: number) => (
                                             <ExploreCreatorCard
                                                 key={idx}
                                                 creator={creator}
@@ -460,7 +462,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </p>
                                 </div>
 
-                                {recentCreators.length === 0 ? (
+                                {dashboardData?.recentCreators?.length ?? 0 === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
                                         <p className="text-sm font-medium text-gray-700">
                                             No recent collaborations
@@ -471,7 +473,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {recentCreators.slice(0, 4).map((creator, idx) => (
+                                        {dashboardData?.recentCreators?.slice(0, 4).map((creator, idx: number) => (
                                             <ExploreCreatorCard
                                                 key={idx}
                                                 creator={creator}
