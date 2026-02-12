@@ -142,9 +142,14 @@ const Page = () => {
 
           {/* Use Suspense with lazy loaded components */}
           <TabsContent value="Active" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background h-full pb-5 md:pb-10 pt-5 md:pt-8 flex-1">
-            <Suspense fallback={<TabLoading />}>
-              {activeTab === "Active" &&
-                campaignsData?.collaborations?.length > 0 && (
+            {activeTab === "Active" && (
+              <>
+                {/* ✅ Show Loading First */}
+                {isLoading && <TabLoading />}
+
+
+                {/* ✅ Show Data */}
+                {!isLoading && campaignsData?.collaborations?.length > 0 && (
                   <div className="grid grid-cols-1 gap-5 md:gap-10">
                     {campaignsData.collaborations.map(
                       (collaboration: Collaboration, index: number) => (
@@ -167,12 +172,28 @@ const Page = () => {
                     )}
                   </div>
                 )}
-              {activeTab === "Active" &&
-                (!campaignsData?.collaborations ||
-                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                  <TabLoading />
-                )}
-            </Suspense>
+
+                {/* ✅ Show Empty State ONLY After Loading */}
+                {!isLoading &&
+                  campaignsData?.collaborations &&
+                  campaignsData.collaborations.length === 0 && (
+                    <div className="text-center p-10">
+                      <Image
+                        src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                        alt=""
+                        width={280}
+                        height={280}
+                        className="mx-auto"
+                        priority
+                      />
+                      <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200 mt-2">
+                        No ongoing collaborations found.
+                      </h3>
+                    </div>
+                  )}
+
+              </>
+            )}
           </TabsContent>
 
 
@@ -223,10 +244,17 @@ const Page = () => {
             </Suspense>
           </TabsContent> */}
 
-          <TabsContent value="Waiting Approval" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
-            <Suspense fallback={<TabLoading />}>
-              {activeTab === "Waiting Approval" &&
-                campaignsData?.collaborations?.length > 0 && (
+          <TabsContent
+            value="Waiting Approval"
+            className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full"
+          >
+            {activeTab === "Waiting Approval" && (
+              <>
+                {/* ✅ Show Loading First */}
+                {isLoading && <TabLoading />}
+
+                {/* ✅ Show Data */}
+                {!isLoading && campaignsData?.collaborations?.length > 0 && (
                   <div className="grid grid-cols-1 gap-5 md:gap-10">
                     {campaignsData.collaborations.map(
                       (collaboration: Collaboration, index: number) => (
@@ -249,18 +277,37 @@ const Page = () => {
                     )}
                   </div>
                 )}
-              {activeTab === "Waiting Approval" &&
-                (!campaignsData?.collaborations ||
-                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                  <TabLoading />
-                )}
-            </Suspense>
+
+                {/* ✅ Show Empty State ONLY After Loading */}
+                {!isLoading &&
+                  campaignsData?.collaborations &&
+                  campaignsData.collaborations.length === 0 && (
+                    <div className="text-center p-10">
+                      <Image
+                        src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                        alt=""
+                        width={280}
+                        height={280}
+                        className="mx-auto"
+                        priority
+                      />
+                      <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200 mt-2">
+                        No new opportunities found.
+                      </h3>
+                    </div>
+                  )}
+              </>
+            )}
           </TabsContent>
 
           <TabsContent value="Completed" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 pt-5 md:pt-8 flex-1 dark:bg-background h-full">
-            <Suspense fallback={<TabLoading />}>
-              {activeTab === "Completed" &&
-                campaignsData?.collaborations?.length > 0 && (
+            {activeTab === "Completed" && (
+              <>
+
+                {/* ✅ Show Loading First */}
+                {isLoading && <TabLoading />}
+
+                {!isLoading && campaignsData?.collaborations?.length > 0 && (
                   <div className="grid grid-cols-1 gap-5 md:gap-10">
                     {campaignsData.collaborations.map(
                       (collaboration: Collaboration, index: number) => (
@@ -283,12 +330,28 @@ const Page = () => {
                     )}
                   </div>
                 )}
-              {activeTab === "Completed" &&
-                (!campaignsData?.collaborations ||
-                  (campaignsData.collaborations.length === 0 && !isLoading)) && (
-                  <TabLoading />
-                )}
-            </Suspense>
+
+
+                {/* ✅ Show Empty State ONLY After Loading */}
+                {!isLoading &&
+                  campaignsData?.collaborations &&
+                  campaignsData.collaborations.length === 0 && (
+                    <div className="text-center p-10">
+                      <Image
+                        src="https://d20cf3kfv1a9jn.cloudfront.net/images/intro.png"
+                        alt=""
+                        width={280}
+                        height={280}
+                        className="mx-auto"
+                        priority
+                      />
+                      <h3 className="text-base sm:text-xl md:text-2xl font-medium text-gray-900 dark:text-gray-200 mt-2">
+                        No completed collaborations found.
+                      </h3>
+                    </div>
+                  )}
+              </>
+            )}
           </TabsContent>
 
           {/* <TabsContent value="Payment" className="w-full mt-0 px-2 sm:px-4 bg-gray-50 dark:bg-background pb-3 md:pb-10 pt-5 md:pt-8 flex-1">

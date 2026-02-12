@@ -10,6 +10,7 @@ import {
     Calendar,
     Search,
     Briefcase,
+    CircleCheckBig,
 } from "lucide-react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { postApi } from "@/services/postServices";
@@ -355,8 +356,8 @@ const MyCampaignsPage = () => {
                                 </Button>
 
                                 {campaign.applied ? (
-                                    <span className="text-green-600 font-semibold">
-                                        Applied
+                                    <span className="text-green-600 font-semibold flex gap-1 text-sm">
+                                        <CircleCheckBig/> Applied
                                     </span>
                                 ) : (
                                     <Button

@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithCompleteProfileSkeleton";
-import { selectUser, useAppDispatch, useAppSelector } from "@/store";
 import total_campaigns from "../../../public/images/total_campaigns.svg"
 import { CircleCheckBig, Activity } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -43,21 +42,16 @@ interface Collaboration {
 
 function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProps) {
   const [improvementLoading, setImprovementLoading] = useState<boolean>(false);
-  const [improvementText, setImprovementText] = useState<string | null>(null);
+  // const [improvementText, setImprovementText] = useState<string | null>(null);
   // const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
-  const [counts, setCounts] = useState<{ Pending: number; Active: number; Completed: number }>({ Pending: 0, Active: 0, Completed: 0 });
-  const [collaborationCount, setCollaborationCount] = useState<number>(0);
+  // const [collaborationCount, setCollaborationCount] = useState<number>(0);
 
-  const [open, setOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
-  const videoSrc =
-    "https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4";
+  // const videoSrc =
+  //   "https://d20cf3kfv1a9jn.cloudfront.net/demo%20videos/Creators.mp4";
 
-  const userProfile = useAppSelector(selectUser);
+  // const userProfile = useAppSelector(selectUser);
   // const user = useAppSelector(selectUser);
-
-  const dispatch = useAppDispatch()
 
   // const fetchImprovementText = async () => {
   //   try {
@@ -72,24 +66,24 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
   const router = useRouter();
 
 
-  useEffect(() => {
-    // setImprovementLoading(true);
-    // fetchImprovementText().then((text) => {
-    //   setImprovementText(text.data || "");
-    //   setCollaborationCount(text?.collaborationCount);
+  // setImprovementLoading(true);
+  // fetchImprovementText().then((text) => {
+  //   setImprovementText(text.data || "");
+  //   setCollaborationCount(text?.collaborationCount);
 
-    //   setImprovementLoading(false);
-    // });
+  //   setImprovementLoading(false);
+  // });
 
-    userApi
-      .getCreatorHistoryData()
-      .then((res) => {
-        if (res?.data) {
-          setCounts(res.data || { Pending: 0, Active: 0, Completed: 0 });
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [dispatch]);
+  const { data: counts = { Pending: 0, Active: 0, Completed: 0 } } = useQuery({
+    queryKey: ["creator-history"],
+    queryFn: async () => {
+      const res = await userApi.getCreatorHistoryData();
+      return res?.data ?? { Pending: 0, Active: 0, Completed: 0 };
+    },
+    staleTime: 1000 * 60 * 3, // 3 minutes cache
+    refetchOnWindowFocus: true,
+  });
+
 
   const {
     data: collaborations = [],
@@ -99,24 +93,36 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
     queryKey: ["collaborations", 3],
     queryFn: async () => {
       const res = await postApi.getAllCollaborations(3);
-      return res.collaborations.collaborations ?? [];
+      return res?.collaborations?.collaborations ?? [];
     },
+    staleTime: 1000 * 60 * 2, // 2 min cache
+    refetchOnWindowFocus: true,
   });
 
 
-  const campaigns = collaborations.filter(c => c.status === "Active");
-  const offers = collaborations.filter(c => c.status === "Offered");
+  const campaigns = useMemo(
+    () => collaborations.filter(c => c.status === "Active"),
+    [collaborations]
+  );
 
-  const handleViewDetails = (campaignId: string) => {
+  const offers = useMemo(
+    () => collaborations.filter(c => c.status === "Offered"),
+    [collaborations]
+  );
+
+
+  const handleViewDetails = useCallback((campaignId: string) => {
     router.push(`/dashboard/creator/posts/${campaignId}`);
-  }
+  }, [router]);
 
-  const handleNewOffer = () => {
+
+  const handleNewOffer = useCallback(() => {
     router.push("/dashboard/creator/inbox?tab=Waiting Approval");
-  };
+  }, [router]);
 
 
-  if (improvementLoading) {
+
+  if (isLoading) {
     return <CreatorWithCompleteProfileSkeleton />;
   }
 
@@ -225,7 +231,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between rounded-xl border border-gray-2    00 bg-white p-5 shadow-sm hover:shadow-md transition"
+                className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition"
               >
                 {/* LEFT */}
                 <div className="flex flex-col gap-2">

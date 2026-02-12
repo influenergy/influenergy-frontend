@@ -1,8 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import Image from "next/image";
 import { Contact, DollarSign, CircleCheckBig, Send, Clock4 } from "lucide-react";
-import { userApi } from "@/services/userServices";
 import { postApi } from "@/services/postServices";
 import BrandDashboardSkeleton from "../Skeletons/BrandDashboardSkeleton";
 import { useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import total_campaigns from "../../../public/images/total_campaigns.svg"
 import InviteCreatorModal from "../brand/InviteCreatorModal";
 
 type CreatorBrief = {
+    _id: string;
     fullName?: string;
     email?: string;
     profileIcon?: string;
@@ -57,28 +57,45 @@ type ActiveCampaignItem = {
     campaignDetails: CampaignBrief;
 };
 
-interface FavCreators {
-    _id: string,
-    profileIcon: string,
-    profile: {
-        _id: string,
-        fullName: string,
-        city: string,
-        category: string[],
-        socialLinks: {
-            primary: {
-                platform: string,
-                link: string,
-                followers: string
-            },
-            secondary?: {
-                platform: string,
-                link: string,
-                followers: string
-            },
-        }
-    }
-}
+type BrandDashboardResponse = {
+    campaignCount?: {
+        totalCampaigns?: number;
+        totalApplicants?: number;
+        activeCampaigns?: number;
+        totalSpending?: number;
+        offerSent?: number;
+        offerAccepted?: number;
+        totalPendingPayment?: number;
+        acceptanceRate?: number;
+        pendingCampaignCount?: number;
+    };
+    favCreators: CreatorBrief[];
+    recentCreators: CreatorBrief[];
+};
+
+
+// interface FavCreators {
+//     _id: string,
+//     profileIcon: string,
+//     profile: {
+//         _id: string,
+//         fullName: string,
+//         city: string,
+//         category: string[],
+//         socialLinks: {
+//             primary: {
+//                 platform: string,
+//                 link: string,
+//                 followers: string
+//             },
+//             secondary?: {
+//                 platform: string,
+//                 link: string,
+//                 followers: string
+//             },
+//         }
+//     }
+// }
 
 // CampaignCardSkeleton Component
 const CampaignCardSkeleton = () => {
@@ -94,15 +111,15 @@ const CampaignCardSkeleton = () => {
 
 function BrandDashboard({ fullName }: { fullName?: string }) {
 
-    const [regionAnalysis, setRegionAnalysis] = useState<Record<string, unknown> | null>(null);
+    // const [regionAnalysis, setRegionAnalysis] = useState<Record<string, unknown> | null>(null);
     const [activeTab, setActiveTab] = useState<"ongoing" | "favorites" | "recent">("ongoing");
 
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
     // Separate states as requested
-    const [collaborationCount, setCollaborationCount] = useState({ ongoing: 0, pending: 0, completed: 0 });
+    // const [collaborationCount, setCollaborationCount] = useState({ ongoing: 0, pending: 0, completed: 0 });
     // const [favCreators, setFavCreators] = useState<FavCreators[]>([]);
     // const [recentCreators, setRecentCreators] = useState<FavCreators[]>([]);
-    const [completedCollabs, setCompletedCollabs] = useState<CollaborationItem[]>([]);
+    // const [completedCollabs, setCompletedCollabs] = useState<CollaborationItem[]>([]);
     // const [campaignCount, setCampaignCount] = useState({ totalCampaigns: 0, totalApplicants: 0, activeCampaigns: 0, totalSpending: 0, offerSent: 0, offerAccepted: 0, totalPendingPayment: 0, acceptanceRate: 0, pendingCampaignCount: 0, });
 
     // const [loading, setLoading] = useState(true);
@@ -123,7 +140,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     const {
         data: dashboardData,
         isLoading: dashboardLoading,
-    } = useQuery({
+    } = useQuery<BrandDashboardResponse>({
         queryKey: ["brand-dashboard"],
         queryFn: async () => {
             const [collabData, campaignData] = await Promise.all([
@@ -137,8 +154,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                 recentCreators: collabData?.collaborations?.recentCreators ?? [],
             };
         },
-        staleTime: 1000 * 60 * 5, // cache for 5 minutes
-        refetchOnWindowFocus: false,
+        staleTime: 1000 * 60 * 3,
+        refetchOnWindowFocus: true,
     });
 
     const {
@@ -151,6 +168,8 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
             const res = await postApi.getCollabByStatus("Active", 3);
             return res.campaigns ?? [];
         },
+        staleTime: 1000 * 60 * 2, // cache for 2 minutes
+        refetchOnWindowFocus: true,
     });
 
     if (dashboardLoading) {
@@ -431,7 +450,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {dashboardData?.favCreators?.slice(0, 4).map((creator, idx: number) => (
+                                        {dashboardData?.favCreators?.slice(0, 4).map((creator, idx) => (
                                             <ExploreCreatorCard
                                                 key={idx}
                                                 creator={creator}
@@ -473,7 +492,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {dashboardData?.recentCreators?.slice(0, 4).map((creator, idx: number) => (
+                                        {dashboardData?.recentCreators?.slice(0, 4).map((creator, idx) => (
                                             <ExploreCreatorCard
                                                 key={idx}
                                                 creator={creator}

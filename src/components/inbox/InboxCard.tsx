@@ -33,6 +33,32 @@ interface StatusMessage {
   message: string;
 }
 
+
+const statusStyles: Record<string, string> = {
+  Pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+
+  "Waiting Approval":
+    "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400",
+
+  Interested:
+    "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+
+  Offered:
+    "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+
+  "Offer Accepted":
+    "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+
+  Active:
+    "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
+
+  Completed:
+    "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
+
+  Rejected:
+    "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+};
+
 const InboxCard: React.FC<InboxCardProps> = ({
   status,
   paymentStatus,
@@ -48,7 +74,6 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [contractModalOpen, setContractModalOpen] = useState(false);
-  const [expanded, setExpanded] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<StatusMessage | null>(null);
 
   const { mutate: acceptCollaboration, isPending: isAccepting } =
@@ -66,7 +91,11 @@ const InboxCard: React.FC<InboxCardProps> = ({
         queryClient.invalidateQueries({
           queryKey: ["creatorNotificationCounts"]
         });
-        refetch();
+
+        queryClient.invalidateQueries({ queryKey: ["creator-history"] });
+        queryClient.invalidateQueries({ queryKey: ["collaborations"] });
+
+        //refetch();
         setContractModalOpen(false);
 
         setStatusMessage({
@@ -94,8 +123,11 @@ const InboxCard: React.FC<InboxCardProps> = ({
         queryClient.invalidateQueries({
           queryKey: ["creatorNotificationCounts"]
         });
-        refetch();
 
+        queryClient.invalidateQueries({ queryKey: ["creator-history"] });
+        queryClient.invalidateQueries({ queryKey: ["collaborations"] });
+
+        //refetch();
         setStatusMessage({
           type: "success",
           message: "Collaboration offer declined successfully."
@@ -155,6 +187,9 @@ const InboxCard: React.FC<InboxCardProps> = ({
           queryKey: ["creatorVideos", data._id],
         });
       }
+
+      queryClient.invalidateQueries({ queryKey: ["creator-history"] });
+      queryClient.invalidateQueries({ queryKey: ["collaborations"] });
     }
     setIsStatusModalOpen(false);
   };
@@ -169,32 +204,6 @@ const InboxCard: React.FC<InboxCardProps> = ({
   const handleButtonClick = (e: React.MouseEvent, callback: () => void) => {
     e.stopPropagation();
     callback();
-  };
-
-
-  const statusStyles: Record<string, string> = {
-    Pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
-
-    "Waiting Approval":
-      "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400",
-
-    Interested:
-      "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-
-    Offered:
-      "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
-
-    "Offer Accepted":
-      "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-
-    Active:
-      "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
-
-    Completed:
-      "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
-
-    Rejected:
-      "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
   };
 
 
@@ -232,11 +241,11 @@ const InboxCard: React.FC<InboxCardProps> = ({
                     {data.status === "Completed" ? `Completed on: ` : `Applied on: `}
                     {
                       data.status === "Completed" ? data?.updatedAt
-                      && new Date(data.updatedAt).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      }) : data?.createdAt
+                        && new Date(data.updatedAt).toLocaleDateString("en-IN", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        }) : data?.createdAt
                       && new Date(data.createdAt).toLocaleDateString("en-IN", {
                         day: "2-digit",
                         month: "short",
