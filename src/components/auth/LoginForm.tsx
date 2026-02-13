@@ -74,39 +74,72 @@ export default function LoginForm() {
 
   const loginMutation = useMutation({
     mutationFn: (data: LoginFormData) => {
+      console.log('🔵 [1] Login mutation started');
+      console.log('🔵 [1] Data:', { email: data.email, userType: data.userType });
+      console.log('🔵 [1] API URL:', process.env.NEXT_PUBLIC_API_URL);
       return authApi.login(data);
     },
-    onSuccess: (data) => {
-      console.log('Login successful:', data);
+    onSuccess: async (data) => {
+      console.log('✅ [2] Login API Success');
+      console.log('✅ [2] Response data:', data);
+      console.log('✅ [2] UserType state:', userType);
+      console.log('✅ [2] Current pathname:', window.location.pathname);
+      console.log('✅ [2] Current href:', window.location.href);
 
       if (userType !== null) {
+        console.log('✅ [3] UserType is valid, dispatching credentials...');
+
+        // Dispatch to Redux
         dispatch(
           setCredentials({
             user: data?.data,
           })
         );
 
+        console.log('✅ [4] Credentials dispatched to Redux');
+
+        // Wait for Redux persist
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        console.log('✅ [5] Waited 500ms for Redux persist');
+
+        // Check if data was persisted
+        try {
+          const persistedAuth = localStorage.getItem('persist:root');
+          console.log('✅ [6] localStorage persist:root:', persistedAuth);
+
+          if (persistedAuth) {
+            const parsed = JSON.parse(persistedAuth);
+            console.log('✅ [6] Parsed persisted data:', parsed);
+          } else {
+            console.error('❌ [6] No data in localStorage!');
+          }
+        } catch (e) {
+          console.error('❌ [6] Error reading localStorage:', e);
+        }
+
+        console.log('✅ [7] Setting isRedirecting to true');
         setIsRedirecting(true);
 
-        // Wrap router.push in a try-catch instead
-        try {
-          router.push('/dashboard');
+        console.log('✅ [8] Attempting redirect to /dashboard');
+        console.log('✅ [8] Using window.location.href');
 
-          // Safety fallback
-          setTimeout(() => {
-            if (window.location.pathname !== '/dashboard') {
-              console.log('Router redirect did not complete, using window.location');
-              window.location.href = '/dashboard';
-            }
-          }, 2000);
-        } catch (err) {
-          console.error('Router.push failed:', err);
+        // Try the redirect
+        try {
           window.location.href = '/dashboard';
+          console.log('✅ [9] Redirect command executed');
+        } catch (e) {
+          console.error('❌ [9] Redirect failed:', e);
         }
+
+      } else {
+        console.error('❌ [3] UserType is NULL!');
       }
     },
     onError: (error: AxiosError) => {
-      console.error("Login error:", error);
+      console.error("❌ [ERROR] Login failed:", error);
+      console.error("❌ [ERROR] Error response:", error.response);
+      console.error("❌ [ERROR] Error message:", error.message);
       setIsRedirecting(false);
 
       let message = "Failed to login. Please try again.";
@@ -123,7 +156,7 @@ export default function LoginForm() {
       });
     },
   });
-
+  
   const onSubmit = (data: LoginFormData) => {
     // Prevent submission if already processing
     if (loginMutation.isPending || isSubmitting) {
