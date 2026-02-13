@@ -158,6 +158,9 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
         refetchOnWindowFocus: true,
     });
 
+    console.log("datttt---->",dashboardData);
+    
+
     const {
         data: campaigns = [],
         isLoading,
@@ -439,7 +442,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </p>
                                 </div>
 
-                                {dashboardData?.favCreators?.length ?? 0 === 0 ? (
+                                {dashboardData?.favCreators?.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
                                         <p className="text-sm font-medium text-gray-700">
                                             No favorite creators yet
@@ -481,7 +484,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
                                     </p>
                                 </div>
 
-                                {dashboardData?.recentCreators?.length ?? 0 === 0 ? (
+                                {dashboardData?.recentCreators?.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
                                         <p className="text-sm font-medium text-gray-700">
                                             No recent collaborations

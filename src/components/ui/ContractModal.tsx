@@ -8,12 +8,13 @@ interface CollaborationContractModalProps {
   handleDecline: () => void;
   handleAccept: () => void;
   isAccepting: boolean;
+  isDeclining: boolean;
 }
 
 
 export const CollaborationContractModal: React.FC<
   CollaborationContractModalProps
-> = ({ isOpen, onClose, handleDecline, handleAccept, isAccepting }) => {
+> = ({ isOpen, onClose, handleDecline, handleAccept, isAccepting, isDeclining }) => {
   const [accepted, setAccepted] = useState(false);
 
   const userType = useAppSelector((state) => state.auth.userType);
@@ -69,15 +70,18 @@ export const CollaborationContractModal: React.FC<
           <Button
             variant="secondary"
             onClick={handleDecline}
-            disabled={isAccepting}
+            disabled={isAccepting || isDeclining}
           >
-            Decline
+            {isDeclining && (
+              <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+            )}
+            {isDeclining ? "Declining..." : "Decline"}
           </Button>
 
           <Button
             type="button"
             onClick={handleAccept}
-            disabled={!accepted || isAccepting}
+            disabled={!accepted || isAccepting || isDeclining}
             className="bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
           >
             {isAccepting && (

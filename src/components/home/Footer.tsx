@@ -104,11 +104,11 @@ export default function Footer() {
         >
           {/* Quick Contact */}
           <motion.div
-            className="space-y-4 text-center w-full flex flex-col items-center justify-start gap-4"
+            className="text-center w-full flex flex-col items-center justify-start gap-4"
             variants={item}
           >
             <h3 className="text-lg font-semibold">Quick Contact</h3>
-            <div className="border h-0.3 bg-gray-400 w-full" />
+            <div className="border-t border-gray-400 w-[80%]" />
             <div className="flex flex-col">
               <p className="text-gray-300 font-light text-sm">
                 Contact Influenergy for any inquiries or questions:
@@ -153,13 +153,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <motion.div
-            className="space-y-4 text-center w-full flex flex-col items-center justify-start gap-2"
+            className="text-center w-full flex flex-col items-center justify-start gap-4"
             variants={item}
           >
-            <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
+            <h3 className="text-lg font-semibold">Quick Links</h3>
             {/* <hr className="border border-gray-400 w-full" />
              */}
-            <div className="border h-0.3 bg-gray-400 w-full" />
+            <div className="border-t border-gray-400 w-[80%]" />
             <div className="grid grid-cols-2 gap-y-3 w-full">
               <ul className="space-y-3 font-light text-sm">
                 {quickLinks.map((link, index) => (
@@ -211,16 +211,25 @@ export default function Footer() {
 
         {/* Copyright Section */}
         <motion.div
-          className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-center items-center font-light"
+          className="relative mt-12 pt-8 flex flex-col md:flex-row justify-center items-center font-light"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
         >
+          {/* Gradient Border */}
+          <div className="absolute top-0 left-0 w-full h-[0.2px] 
+    bg-gradient-to-r 
+    from-green-500 
+    via-red-500 
+    to-purple-500"
+          />
+
           <p className="text-gray-400 text-md">
             © All Rights Reserved 2026. Influenergy LLC.
           </p>
         </motion.div>
+
       </div>
     </motion.footer>
   );

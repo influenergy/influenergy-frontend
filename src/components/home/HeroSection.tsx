@@ -89,12 +89,12 @@ export default function HeroSection() {
             transition={{ duration: 0.7 }}
           >
 
-            <p className="font-poppins font-semibold text-center text-xs lg:text-start mx-auto lg:mx-0 text-primary bg-[#F3E8FF] p-2 rounded-md sm">
+            <p className="font-poppins font-semibold text-center text-xs lg:text-start mx-auto lg:mx-0 text-primary bg-[#F3E8FF] p-2 rounded-full sm">
               🚀 Welcome to the Future of Influencer Marketing
             </p>
 
             <h1 className="text-[clamp(2rem,2vw,1.5rem)] font-bold leading-tight font-poppins md:max-w-[190vw] text-center lg:text-start mx-auto text-[#352547]">
-              AI-Powered Marketplace for High Performance <span className="text-primary">UGC Campaigns</span>
+              AI-Powered Marketplace for High Performance <span className="text-primary text-4xl">UGC Campaigns</span>
             </h1>
 
             <p className="mt-3 md:mt-6 lg:mt-4 text-sm md:text-base lg:text-lg font-poppins text-center lg:text-start text-[#352547]">

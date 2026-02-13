@@ -226,15 +226,15 @@ export default function DetailsModal({
 
         {/* Footer */}
         {status === "Offered" && (
-          <div className="absolute bottom-0 left-0 right-0 bg-white border-t p-4 flex justify-between items-center">
+          <div className="absolute bottom-0 right-0 bg-white border-t p-4 flex justify-between items-center">
 
             {/* Status text */}
-            {(isAccepting || isDeclining) && (
+            {/* {(isAccepting || isDeclining) && (
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 {isAccepting ? "Accepting offer..." : "Rejecting offer..."}
               </div>
-            )}
+            )} */}
 
             <div className="flex gap-4">
               <Button
@@ -259,10 +259,14 @@ export default function DetailsModal({
         <CollaborationContractModal
           isOpen={contractModalOpen}
           onClose={() => setContractModalOpen(false)}
-          handleAccept={handleAccept}
+          handleAccept={() => {
+            handleAccept();
+          }}
           handleDecline={handleDecline}
           isAccepting={isAccepting}
+          isDeclining={isDeclining}
         />
+
       </DialogContent>
     </Dialog>
   );

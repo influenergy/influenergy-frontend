@@ -88,6 +88,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
         queryClient.invalidateQueries({
           queryKey: ["collaborationStatusDetails"]
         });
+
         queryClient.invalidateQueries({
           queryKey: ["creatorNotificationCounts"]
         });
@@ -95,20 +96,29 @@ const InboxCard: React.FC<InboxCardProps> = ({
         queryClient.invalidateQueries({ queryKey: ["creator-history"] });
         queryClient.invalidateQueries({ queryKey: ["collaborations"] });
 
-        //refetch();
+        // ✅ Close ALL modals
         setContractModalOpen(false);
+        setIsDetailsModalOpen(false);  // 👈 ADD THIS LINE
 
-        setStatusMessage({
-          type: "success",
-          message: "Collaboration offer accepted successfully! The brand will be notified."
-        });
+        // Slight delay to ensure modals unmount properly before showing status
+        setTimeout(() => {
+          setStatusMessage({
+            type: "success",
+            message:
+              "Collaboration offer accepted successfully! The brand will be notified."
+          });
+        }, 100);
       },
       onError: (error: any) => {
-        console.error("❌ Accept failed:", error);
+        // Close modals on error too
+        setContractModalOpen(false);
+        setIsDetailsModalOpen(false);  // 👈 ADD THIS LINE
 
         setStatusMessage({
           type: "error",
-          message: error?.message || "Failed to accept the collaboration. Please try again."
+          message:
+            error?.message ||
+            "Failed to accept the collaboration. Please try again."
         });
       }
     });
@@ -128,13 +138,22 @@ const InboxCard: React.FC<InboxCardProps> = ({
         queryClient.invalidateQueries({ queryKey: ["collaborations"] });
 
         //refetch();
-        setStatusMessage({
-          type: "success",
-          message: "Collaboration offer declined successfully."
-        });
+        setContractModalOpen(false);
+        setIsDetailsModalOpen(false);
+
+        setTimeout(() => {
+          setStatusMessage({
+            type: "success",
+            message: "Collaboration offer declined successfully."
+          });
+        }, 100);
       },
       onError: (error: any) => {
         console.error("❌ Decline failed:", error);
+
+        // ✅ Close modals on error too
+        setContractModalOpen(false);
+        setIsDetailsModalOpen(false);
 
         setStatusMessage({
           type: "error",
@@ -294,7 +313,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
                       onClick={(e) => handleButtonClick(e, () => setIsStatusModalOpen(true))}
                       className="bg-[#7544DB] hover:bg-[#6339c4] text-white font-semibold py-2 px-4 text-sm rounded-lg transition-colors duration-200 min-w-[140px]"
                     >
-                      Upload Video
+                      {data?.videos && (data?.videos?.length > 0 ? "View Status" : "Upload Video")}
                     </Button>
                   )}
                 </div>
@@ -311,7 +330,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
 
               {/* Status Messages Below */}
               <div className="mt-4">
-                {data?.status === "Waiting Approval" && (
+                {(data?.status === "Waiting Approval" || data?.status === "Interested") && (
                   <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                     <p className="text-sm text-blue-700 dark:text-blue-300">
                       Your application is under review. The brand will respond soon.
@@ -319,13 +338,13 @@ const InboxCard: React.FC<InboxCardProps> = ({
                   </div>
                 )}
 
-                {data?.status === "Interested" && (
+                {/* {data?.status === "Interested" && (
                   <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                     <p className="text-sm text-blue-700 dark:text-blue-300">
                       Your application is under review. The brand will respond soon.
                     </p>
                   </div>
-                )}
+                )} */}
 
                 {data?.status === "Offer Accepted" && (
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
@@ -359,6 +378,7 @@ const InboxCard: React.FC<InboxCardProps> = ({
         handleAccept={handleAccept}
         handleDecline={handleDecline}
         isAccepting={isAccepting}
+        isDeclining={declineLoading}
       />
 
       <PaymentModal

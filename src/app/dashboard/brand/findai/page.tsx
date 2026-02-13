@@ -89,6 +89,11 @@ export default function Page() {
               <span className="flex items-center gap-1.5">
                 <span>Active Collaboration</span>
                 <TabInfo text="This section shows ongoing campaign collaborations where creators are working and you can review their submitted work." />
+                {notificationCounts?.ongoingCollaboration > 0 && (
+                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full z-20">
+                    {notificationCounts.ongoingCollaboration}
+                  </span>
+                )}
               </span>
             </TabsTrigger>
 
@@ -96,6 +101,11 @@ export default function Page() {
               <span className="flex items-center gap-1.5">
                 <span>Completed Collaboration</span>
                 <TabInfo text="This section shows campaign collaborations that have been marked as completed." />
+                {notificationCounts?.completedCollaboration > 0 && (
+                  <span className="flex items-center justify-center min-w-[18px] h-[18px] px-1.5 bg-red-500 text-white text-[10px] font-semibold rounded-full z-20">
+                    {notificationCounts.completedCollaboration}
+                  </span>
+                )}
               </span>
             </TabsTrigger>
           </TabsList>

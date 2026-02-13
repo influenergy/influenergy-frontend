@@ -445,7 +445,7 @@ const MyCampaignsPage = () => {
 
             {showSuccess && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="bg-white dark:bg-background rounded-xl py-10 px-10 w-full max-w-xl text-center">
+                    <div className="bg-white dark:bg-background rounded-xl py-8 px-10 w-full max-w-md text-center">
                         <p className="text-lg font-semibold mb-2">
                             Application submitted successfully!
                         </p>
@@ -454,7 +454,7 @@ const MyCampaignsPage = () => {
                         </p>
                         <button
                             onClick={() => setShowSuccess(false)}
-                            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white"
+                            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-white mt-5"
                         >
                             Close
                         </button>

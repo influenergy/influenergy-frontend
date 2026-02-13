@@ -18,9 +18,9 @@ export default function NewCampaignButton({ label = "Create New Campaign" }: Pro
   return (
     <button
       onClick={handleClick}
-      className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 flex items-center gap-2"
+      className="px-3 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 flex items-center gap-2 text-sm"
     >
-      <span className="text-lg">+</span>
+      <span className="text-sm">+</span>
       {label}
     </button>
   );

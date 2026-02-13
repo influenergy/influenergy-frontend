@@ -75,9 +75,6 @@ export default function Testimonials() {
                   </div>
                 </div>
               </div>
-
-              <h3 className="mt-4 font-semibold text-lg">{t.name}</h3>
-              <p className="text-sm text-gray-500">{t.role}</p>
             </motion.div>
           ))}
         </div>

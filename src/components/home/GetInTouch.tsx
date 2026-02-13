@@ -34,10 +34,10 @@ const GetInTouch = () => {
       transition={{ duration: 0.7 }}
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="max-w-7xl mx-auto bg-[#F3F4F6] p-8 border border-gray-300 rounded-xl">
+      <div className="max-w-7xl mx-auto bg-white p-5 border border-gray-300 rounded-xl shadow-md">
         {/* Header Section */}
         <motion.div
-          className="mb-12 md:mb-16 text-center md:text-left"
+          className="mb-12 md:mb-10 text-center md:text-left"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
@@ -46,7 +46,7 @@ const GetInTouch = () => {
           <h3 className="text-[#352547] font-medium text-xl md:text-2xl mb-3">
             Get Started
           </h3>
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6 md:mb-8 leading-tight text-[#352547]">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-[#352547]">
             Get in touch with us. We are here to assist you.
           </h2>
         </motion.div>
@@ -131,7 +131,7 @@ const GetInTouch = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="Phone Number (optional)"
-                    className="w-full px-4 py-5 h-14 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
+                    className="w-full px-4 py-3 h-14 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:border-primary transition-colors"
                   />
                 </div>
               </div>
@@ -142,7 +142,7 @@ const GetInTouch = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Message"
-                  className="w-full px-4 py-5 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent min-h-[150px] focus-visible:ring-0 focus-visible:border-primary transition-colors resize-none"
+                  className="w-full px-4 py-5 border-0 border-b border-gray-400 shadow-none rounded-none bg-transparent min-h-[50px] focus-visible:ring-0 focus-visible:border-primary transition-colors resize-none"
                   required
                 />
               </div>

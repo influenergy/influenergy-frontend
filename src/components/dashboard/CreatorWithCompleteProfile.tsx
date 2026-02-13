@@ -80,7 +80,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       const res = await userApi.getCreatorHistoryData();
       return res?.data ?? { Pending: 0, Active: 0, Completed: 0 };
     },
-    staleTime: 1000 * 60 * 3, // 3 minutes cache
+    staleTime: 1000 * 60 * 2, // 2 minutes cache
     refetchOnWindowFocus: true,
   });
 
@@ -95,7 +95,7 @@ function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProp
       const res = await postApi.getAllCollaborations(3);
       return res?.collaborations?.collaborations ?? [];
     },
-    staleTime: 1000 * 60 * 2, // 2 min cache
+    staleTime: 1000 * 60 * 1, // 1 min cache
     refetchOnWindowFocus: true,
   });
 

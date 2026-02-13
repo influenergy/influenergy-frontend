@@ -285,7 +285,7 @@ export default function ExploreCreators() {
     return (
         <div className="relative p-6 flex flex-col gap-4">
             <div className="flex justify-between">
-                <h1 className="text-xl font-semibold mb-4">Explore Creators</h1>
+                <h1 className="text-xl font-semibold mb-2">Explore Creators</h1>
                 <NewCampaignButton />
             </div>
 
