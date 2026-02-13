@@ -44,9 +44,11 @@ export default function LoginForm() {
   const [loginMethod, setLoginMethod] = useState("password");
   const userType = useAppSelector((state) => state.auth.userType);
 
-  if (!userType) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (!userType) {
+      router.replace("/");
+    }
+  }, [userType, router]);
 
   const {
     register,
@@ -76,16 +78,15 @@ export default function LoginForm() {
       return authApi.login(data);
     },
     onSuccess: (data) => {
-      if (userType !== null) {
-        // Store authentication state 
-        dispatch(
-          setCredentials({
-            user: data?.data,
-          })
-        );
-        toast({ title: "Login Successful 🎉", description: "Redirecting..." });
-        router.replace("/dashboard");
-      }
+      dispatch(
+        setCredentials({
+          user: data?.data,
+        })
+      );
+
+      toast({ title: "Login Successful 🎉", description: "Redirecting..." });
+
+      router.replace("/dashboard");
     },
     onError: (error: AxiosError) => {
       console.error("Login error:", error);
