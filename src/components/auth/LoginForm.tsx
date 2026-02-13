@@ -77,27 +77,32 @@ export default function LoginForm() {
       return authApi.login(data);
     },
     onSuccess: (data) => {
+      console.log('Login successful:', data);
+
       if (userType !== null) {
-        // Set redirecting state to keep loader visible
-        setIsRedirecting(true);
-        
-        // Store authentication state 
         dispatch(
           setCredentials({
             user: data?.data,
           })
         );
-        
-        // toast({ 
-        //   title: "Login Successful 🎉", 
-        //   description: "Redirecting to dashboard...",
-        //   duration: 2000 
-        // });
-        
-        // Redirect after a short delay
-        setTimeout(() => {
-          router.replace("/dashboard");
-        }, 500);
+
+        setIsRedirecting(true);
+
+        // Wrap router.push in a try-catch instead
+        try {
+          router.push('/dashboard');
+
+          // Safety fallback
+          setTimeout(() => {
+            if (window.location.pathname !== '/dashboard') {
+              console.log('Router redirect did not complete, using window.location');
+              window.location.href = '/dashboard';
+            }
+          }, 2000);
+        } catch (err) {
+          console.error('Router.push failed:', err);
+          window.location.href = '/dashboard';
+        }
       }
     },
     onError: (error: AxiosError) => {
@@ -223,7 +228,7 @@ export default function LoginForm() {
           </div>
         </div>
       )}
-      
+
       <div className="w-full">
         {/* Form container, ensure it's above the background */}
         <motion.div
@@ -391,15 +396,15 @@ export default function LoginForm() {
 
                 <div className="flex justify-center gap-4">
                   {loginMethod === "password" ?
-                    <button 
-                      className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    <button
+                      className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={() => setLoginMethod("otp")}
                       disabled={isLoading}
                     >
                       <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500" /> <span>OTP</span>
                     </button> :
-                    <button 
-                      className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    <button
+                      className="border-2 border-gray-300 rounded-2xl p-3 flex items-center gap-2 text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={() => setLoginMethod("password")}
                       disabled={isLoading}
                     >
