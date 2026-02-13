@@ -156,10 +156,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
         },
         staleTime: 1000 * 60 * 3,
         refetchOnWindowFocus: true,
-    });
-
-    console.log("datttt---->",dashboardData);
-    
+    });    
 
     const {
         data: campaigns = [],
