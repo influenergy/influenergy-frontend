@@ -90,7 +90,7 @@ export default function ProfileMatch() {
   const queryClient = useQueryClient();
 
   const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite({
-    filters: { search: filter, niche: "" }, // Pass filters here
+    filters: filter, // Pass filters here
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["exploreCreators", filter] });
     },

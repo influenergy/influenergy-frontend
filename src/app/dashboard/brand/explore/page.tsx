@@ -106,6 +106,15 @@ type ExploreResponse = {
     creators: Creator[];
 };
 
+type CampaignFilters = {
+  sort?: string;
+  platform?: string;
+  followers?: string;
+  niche?: string;
+  search?: string;
+};
+
+
 // API fetch with filters
 const fetchCreators = async ({
     pageParam = 1,
@@ -136,12 +145,14 @@ export default function ExploreCreators() {
 
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
-    const [filters, setFilters] = useState({
-        sort: sortFromUrl, // 👈 key change
+    const [filters, setFilters] = useState<CampaignFilters>({
+        sort: sortFromUrl,
         platform: "",
         followers: "",
         niche: "",
+        search: "",
     });
+
 
     const togglePlatform = (p: string) => {
         setPlatforms((prev) =>
