@@ -139,14 +139,18 @@ const ExploreCreatorCard = ({
                 {/* FAVORITE ICON (RIGHT) */}
                 {showFavoriteIcon && (
                     <button
+                        type="button"
                         onClick={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
                             onToggleFavorite?.();
                         }}
                         className="absolute top-4 right-4 z-10 bg-white/90 rounded-full p-1 shadow"
+                        // Add this to prevent double-clicks during optimistic update
+                        disabled={false} // Remove any disabled logic based on isToggling
                     >
                         <Heart
-                            className={`w-6 h-6 ${creator?.isFavorite
+                            className={`w-6 h-6 transition-all ${creator?.isFavorite
                                     ? "fill-red-500 text-red-500"
                                     : "text-gray-500"
                                 }`}

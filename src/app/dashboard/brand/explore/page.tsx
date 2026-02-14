@@ -107,11 +107,33 @@ type ExploreResponse = {
 };
 
 type CampaignFilters = {
-  sort?: string;
-  platform?: string;
-  followers?: string;
-  niche?: string;
-  search?: string;
+    sort?: string;
+    platform?: string;
+    followers?: string;
+    niche?: string;
+    search?: string;
+};
+
+type ToggleFavoriteResponse = {
+    added: boolean;
+    removed: boolean;
+};
+
+// 🔹 Creator inside explore list
+type ExploreCreator = {
+    _id: string;
+    isFavorite: boolean;
+    // add more fields if you have them
+};
+
+// 🔹 Each page of infinite query
+type ExploreCreatorsPage = {
+    creators: ExploreCreator[];
+};
+
+// 🔹 Full infinite query cache structure
+type ExploreCreatorsResponse = {
+    pages: ExploreCreatorsPage[];
 };
 
 
@@ -181,14 +203,18 @@ export default function ExploreCreators() {
         setNiches([]);
         setFollowers([]);
     };
+
     const queryClient = useQueryClient();
 
     const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite({
-        filters: filters, // Pass filters here
+        filters: filters,
+        debouncedSearch: debouncedSearch, // ✅ Pass it here
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["exploreCreators", filters] });
+            console.log("Favorite toggled successfully");
         },
     });
+
+
 
     const toggleBio = (id: string) => {
         const willExpand = !expanded[id];
@@ -257,9 +283,10 @@ export default function ExploreCreators() {
 
     useEffect(() => {
         if (searchInputRef.current) {
-            searchInputRef.current.focus();
+            searchInputRef.current.focus({ preventScroll: true });
         }
     }, [data]);
+
 
     // filter handlers
     const handleSort = (sort: string) => {
@@ -505,7 +532,7 @@ export default function ExploreCreators() {
                                         someActive={!!activeCardId}
                                         level={level}
                                         badgePrice={badgePrice}
-                                        isToggling={isToggling}
+                                        //isToggling={isToggling}
                                         onToggleBio={() => toggleBio(creator._id)}
                                         onToggleFavorite={() =>
                                             toggleFavorite({ creatorId: creator._id })

@@ -202,73 +202,70 @@ export const useAcceptOrDeclineVideo = ({ onSuccess }: { onSuccess?: () => void 
 
 // Update the hook to handle both cases
 export const useToggleFavorite = (
-  options?: { onSuccess?: () => void; filters?: CampaignFilters | string }
+  options?: {
+    onSuccess?: () => void;
+    filters?: CampaignFilters | string;
+    debouncedSearch?: string;
+  }
 ) => {
   const queryClient = useQueryClient();
 
-  // Normalize filters to always be an object or consistent format
-  const normalizedFilters = typeof options?.filters === 'string'
-    ? { search: options.filters, niche: "" }
-    : options?.filters;
+  const normalizedFilters =
+    typeof options?.filters === "string"
+      ? { search: options.filters, niche: "" }
+      : options?.filters;
+
+  const searchParam = options?.debouncedSearch ?? "";
+
+  const buildQueryKey = () =>
+    ["exploreCreators", searchParam, normalizedFilters];
 
   return useMutation<
-    ToggleFavoriteResponse,                  // TData (return type)
-    Error,                                   // TError
-    { creatorId: string },                   // TVariables
-    { previousCreators?: ExploreCreatorsResponse } // TContext
+    ToggleFavoriteResponse,                     // ✅ Mutation return type
+    Error,                                      // ✅ Error type
+    { creatorId: string },                      // ✅ Variables type
+    { previousCreators?: ExploreCreatorsResponse } // ✅ Context type
   >({
     mutationFn: async ({ creatorId }) => {
-      const res = await postApi.toggleFavoriteCreator(creatorId);
-      return res as ToggleFavoriteResponse;
+      return await postApi.toggleFavoriteCreator(creatorId);
     },
+
+    // 🔹 Optimistic update
     onMutate: async ({ creatorId }) => {
-      await queryClient.cancelQueries({
-        queryKey: ["exploreCreators", normalizedFilters],
-      });
+      const queryKey = buildQueryKey();
+      await queryClient.cancelQueries({ queryKey });
 
       const previousCreators =
-        queryClient.getQueryData<ExploreCreatorsResponse>([
-          "exploreCreators",
-          normalizedFilters,
-        ]);
+        queryClient.getQueryData<ExploreCreatorsResponse>(queryKey);
 
-      queryClient.setQueryData<ExploreCreatorsResponse>(
-        ["exploreCreators", normalizedFilters],
-        (old) => {
-          if (!old?.pages) return old;
+      queryClient.setQueryData<ExploreCreatorsResponse>(queryKey, (old) => {
+        if (!old?.pages) return old;
 
-          return {
-            ...old,
-            pages: old.pages.map((page) => ({
-              ...page,
-              creators: page.creators.map((creator) =>
-                creator._id === creatorId
-                  ? { ...creator, isFavorite: !creator.isFavorite }
-                  : creator
-              ),
-            })),
-          };
-        }
-      );
+        return {
+          ...old,
+          pages: old.pages.map((page) => ({
+            ...page,
+            creators: page.creators.map((creator) =>
+              creator._id === creatorId
+                ? { ...creator, isFavorite: !creator.isFavorite }
+                : creator
+            ),
+          })),
+        };
+      });
 
       return { previousCreators };
     },
 
     onError: (_err, _variables, context) => {
+      const queryKey = buildQueryKey();
       if (context?.previousCreators) {
-        queryClient.setQueryData(
-          ["exploreCreators", normalizedFilters],
-          context.previousCreators
-        );
+        queryClient.setQueryData(queryKey, context.previousCreators);
       }
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["finddaiCampaignsList"],
-      });
-
-      if (options?.onSuccess) options.onSuccess();
+      options?.onSuccess?.();
     },
   });
 };
