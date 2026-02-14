@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Sidebar from "@/components/dashboard/Sidebar";
-import Header from "@/components/dashboard/Header";
 import { MobileSidebar } from "@/components/dashboard/MobileSidebar";
 
 export const metadata: Metadata = {

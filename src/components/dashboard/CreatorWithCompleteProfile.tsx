@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import Image from "next/image";
 import { userApi } from "@/services/userServices";
 import CreatorWithCompleteProfileSkeleton from "../Skeletons/CreatorWithCompleteProfileSkeleton";
@@ -31,17 +31,17 @@ interface CreatorWithCompleteProfileProps {
 }
 
 
-interface Collaboration {
-  _id: string;
-  brandName: string;
-  status: string;
-  videos: Array<{ link: string, status: string }>;
-  campaignImage?: string;
-}
+// interface Collaboration {
+//   _id: string;
+//   brandName: string;
+//   status: string;
+//   videos: Array<{ link: string, status: string }>;
+//   campaignImage?: string;
+// }
 
 
 function CreatorWithCompleteProfile({ fullName }: CreatorWithCompleteProfileProps) {
-  const [improvementLoading, setImprovementLoading] = useState<boolean>(false);
+  // const [improvementLoading, setImprovementLoading] = useState<boolean>(false);
   // const [improvementText, setImprovementText] = useState<string | null>(null);
   // const [collaborations, setCollaborations] = useState<Collaboration[]>([]);
   // const [collaborationCount, setCollaborationCount] = useState<number>(0);

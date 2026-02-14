@@ -87,15 +87,9 @@ export const getSocialMediaIcon = (platform?: string) => {
 const ExploreCreatorCard = ({
     creator,
     isExpanded = false,
-    isActive = false,
-    someActive = false,
     showFavoriteIcon = true,
-    level,
-    badgePrice,
-    onToggleBio,
     onToggleFavorite,
     onInvite,
-    isToggling,
     showInviteButton = true,
     similarity,
 }: CreatorCardProps) => {

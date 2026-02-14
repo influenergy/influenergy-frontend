@@ -154,7 +154,7 @@ export default function CampaignDetailsPage() {
     fetchApplications();
   }, [campaignId]);
 
-  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
+  const { mutateAsync: initiatePayment } = useInitiatePayment();
 
   const handleBack = () => {
     router.push("/dashboard/brand/application-inbox");

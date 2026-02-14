@@ -1,35 +1,29 @@
 "use client";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { MdVerified } from "react-icons/md";
-import Link from "next/link";
 import { useInfiniteFindAiCampaign } from "@/hooks/useFindAi";
-import { Badge, ArrowLeft, SlidersHorizontal, X } from "lucide-react";
-import { CreatorAPIResponse } from "@/types/Creator";
+import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import Loader from "@/components/brand/Loader";
 import { useEffect, useRef, useState } from "react";
-import CardSkeleton from "@/components/common/CardSkeleton";
 import ExploreCreatorCard from "@/components/brand/ExploreCreatorCard";
 import InviteCreatorModal from "@/components/brand/InviteCreatorModal";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToggleFavorite } from "@/hooks/usePost";
 import ExploreCreatorsSkeleton from "@/components/Skeletons/ExploreCreatorsSkeleton";
 
-const Levels = [
-  {
-    key: "level_1",
-    img: "/bronze-award.svg",
-  },
-  {
-    key: "level_2",
-    img: "/gold-award.svg",
-  },
-  {
-    key: "level_3",
-    img: "/award.svg",
-  },
-];
+// const Levels = [
+//   {
+//     key: "level_1",
+//     img: "/bronze-award.svg",
+//   },
+//   {
+//     key: "level_2",
+//     img: "/gold-award.svg",
+//   },
+//   {
+//     key: "level_3",
+//     img: "/award.svg",
+//   },
+// ];
 
 export default function ProfileMatch() {
   const { campaignId } = useParams<{ campaignId: string }>();
@@ -58,7 +52,6 @@ export default function ProfileMatch() {
     hasNextPage,
     isFetchingNextPage,
     status,
-    refetch,
   } = useInfiniteFindAiCampaign(campaignId as string, filter);
 
   const creators =
@@ -97,14 +90,14 @@ export default function ProfileMatch() {
   const queryClient = useQueryClient();
 
   const { mutate: toggleFavorite, isPending: isToggling } = useToggleFavorite({
-    filters: filter, // Pass filters here
+    filters: { search: filter, niche: "" }, // Pass filters here
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["exploreCreators", filter] });
     },
   });
 
   const handleSort = (sort: string) => {
-    let newSort = sort === filter? "" : sort;
+    const newSort = sort === filter ? "" : sort;
     setFilters(newSort);
     router.replace(`/dashboard/brand/ai-find/${campaignId}?sort=${newSort}`);
   };

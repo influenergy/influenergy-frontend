@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { UserCog, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { useMutation } from '@tanstack/react-query';
 import { userApi } from '@/services/userServices';

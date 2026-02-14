@@ -3,6 +3,7 @@ import { postApi } from "@/services/postServices";
 import { useAppSelector } from "@/store";
 import { useQueryClient } from "@tanstack/react-query";
 import { userApi } from "@/services/userServices";
+import { Campaign } from "@/types/Collaboration";
 
 export const queryKeys = {
   uploadPost: "uploadPost",
@@ -10,6 +11,60 @@ export const queryKeys = {
   addVideo: "addVideo",
   paymentCollect: "paymentCollect",
 };
+
+type CampaignFilters = {
+  search: string;
+  niche: string;
+};
+
+type ApplyCampaignPayload = {
+  brandId: string;
+  coverMessage?: string;
+  creatorBudget?: string;
+};
+
+
+// 🔹 Favorite API response
+type ToggleFavoriteResponse = {
+  added: boolean;
+  removed: boolean;
+};
+
+// 🔹 Creator inside explore list
+type ExploreCreator = {
+  _id: string;
+  isFavorite: boolean;
+  // add more fields if you have them
+};
+
+// 🔹 Each page of infinite query
+type ExploreCreatorsPage = {
+  creators: ExploreCreator[];
+};
+
+// 🔹 Full infinite query cache structure
+type ExploreCreatorsResponse = {
+  pages: ExploreCreatorsPage[];
+};
+
+type CollaborationData = {
+  collaborationId: string;
+  brandId: string;
+  creatorId: string;
+  campaignId: string;
+  creatorBudget?: string;
+  status: string;
+  createdAt: string;
+};
+
+
+type CreateCollaborationResponse = {
+  success: boolean;
+  message: string;
+  data: CollaborationData;
+};
+
+
 
 export const useGetPost = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -141,51 +196,58 @@ export const useAcceptOrDeclineVideo = ({ onSuccess }: { onSuccess?: () => void 
   });
 };
 
-export const useToggleFavorite = (options?: { onSuccess?: () => void, filters?: any }) => {
+export const useToggleFavorite = (
+  options?: { onSuccess?: () => void; filters?: CampaignFilters }
+) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: async ({ creatorId }: { creatorId: string }) => {
-      try {
-        const res = await postApi.toggleFavoriteCreator(creatorId);
-        return res.data;
-      } catch (error) {
-        console.error("Error in favoriteToggle:", error);
-        throw error;
-      }
+  return useMutation<
+    ToggleFavoriteResponse,                // mutation return type
+    Error,                                 // error type
+    { creatorId: string },                 // variables type
+    { previousCreators?: ExploreCreatorsResponse } // context type
+  >({
+    mutationFn: async ({ creatorId }) => {
+      const res = await postApi.toggleFavoriteCreator(creatorId);
+      return res as ToggleFavoriteResponse;
     },
 
-    // ✨ OPTIMISTIC UPDATE - runs immediately when toggleFavorite is called
+    // ✨ OPTIMISTIC UPDATE
     onMutate: async ({ creatorId }) => {
-      // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ["exploreCreators", options?.filters] });
-
-      // Snapshot the previous value
-      const previousCreators = queryClient.getQueryData(["exploreCreators", options?.filters]);
-
-      // Optimistically update the UI
-      queryClient.setQueryData(["exploreCreators", options?.filters], (old: any) => {
-        if (!old?.pages) return old;
-
-        return {
-          ...old,
-          pages: old.pages.map((page: any) => ({
-            ...page,
-            creators: page.creators?.map((creator: any) =>
-              creator._id === creatorId
-                ? { ...creator, isFavorite: !creator.isFavorite }
-                : creator
-            ),
-          })),
-        };
+      await queryClient.cancelQueries({
+        queryKey: ["exploreCreators", options?.filters],
       });
 
-      // Return context with the snapshot
+      const previousCreators =
+        queryClient.getQueryData<ExploreCreatorsResponse>([
+          "exploreCreators",
+          options?.filters,
+        ]);
+
+      queryClient.setQueryData<ExploreCreatorsResponse>(
+        ["exploreCreators", options?.filters],
+        (old) => {
+          if (!old?.pages) return old;
+
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              creators: page.creators.map((creator) =>
+                creator._id === creatorId
+                  ? { ...creator, isFavorite: !creator.isFavorite }
+                  : creator
+              ),
+            })),
+          };
+        }
+      );
+
       return { previousCreators };
     },
 
-    // If mutation fails, rollback to previous value
-    onError: (err, variables, context) => {
+    // 🔁 Rollback on error
+    onError: (_err, _variables, context) => {
       if (context?.previousCreators) {
         queryClient.setQueryData(
           ["exploreCreators", options?.filters],
@@ -194,9 +256,12 @@ export const useToggleFavorite = (options?: { onSuccess?: () => void, filters?: 
       }
     },
 
-    // Always refetch after success to ensure data consistency
+    // 🔄 Refetch after success
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["finddaiCampaignsList"] });
+      queryClient.invalidateQueries({
+        queryKey: ["finddaiCampaignsList"],
+      });
+
       if (options?.onSuccess) options.onSuccess();
     },
   });
@@ -221,24 +286,21 @@ export const useApplyCampaign = (filters: {
 }) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: async ({
-      campaignId,
-      payload,
-    }: {
-      campaignId: string;
-      payload: any;
-    }) => {
+  return useMutation<
+    CreateCollaborationResponse & { campaignId: string },
+    Error,
+    { campaignId: string; payload: ApplyCampaignPayload }
+  >({
+    mutationFn: async ({ campaignId, payload }) => {
       const res = await postApi.createCollaboration(campaignId, payload);
 
-      if (!res?.status) {
-        throw new Error(res?.message || "Something went wrong");
+      if (!res.success) {
+        throw new Error(res.message);
       }
 
       return { ...res, campaignId };
     },
 
-    // ✅ UPDATE UI IMMEDIATELY AFTER SUCCESS
     onSuccess: (data) => {
       const campaignId = data.campaignId;
 
@@ -251,7 +313,7 @@ export const useApplyCampaign = (filters: {
             ...old,
             pages: old.pages.map((page: any) => ({
               ...page,
-              campaigns: page.campaigns.map((campaign: any) =>
+              campaigns: page.campaigns.map((campaign: Campaign) =>
                 campaign._id === campaignId
                   ? { ...campaign, applied: true }
                   : campaign
@@ -260,13 +322,6 @@ export const useApplyCampaign = (filters: {
           };
         }
       );
-    },
-
-    // Optional safety refetch
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["campaigns", filters.search, filters.niche],
-      });
     },
   });
 };

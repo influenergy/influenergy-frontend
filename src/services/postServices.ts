@@ -74,7 +74,7 @@ export const postApi = {
   },
 
   // Get a single campaign by ID
-  getCampaignById: async (id: string, creatorId: string, status: string = "Completed") => {
+  getCampaignById: async (id: string,) => {
     try {
       const response = await api.get(
         `/brand/campaign/${id}`

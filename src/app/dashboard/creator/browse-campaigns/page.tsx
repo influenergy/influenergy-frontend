@@ -277,7 +277,7 @@ const MyCampaignsPage = () => {
 
                 {/* Campaign Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {campaigns.map((campaign: any) => (
+                    {campaigns.map((campaign) => (
                         <div
                             key={campaign._id}
                             className="border rounded-lg p-5 flex flex-col hover:shadow-lg transition"

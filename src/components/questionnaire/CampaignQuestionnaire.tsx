@@ -19,7 +19,6 @@ import {Bookmark, ArrowLeft } from "lucide-react";
 const CreateCampaign = ({
     mode = "create",
     defaultValues,
-    onClose = () => { },
 }: {
     mode?: "create" | "edit";
     defaultValues?: Partial<CampaignQuestionnaireData>;
@@ -29,6 +28,7 @@ const CreateCampaign = ({
     const router = useRouter();
     const user = useAppSelector(selectUser);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     // 🔐 Auth check
     useEffect(() => {
@@ -78,7 +78,7 @@ const CreateCampaign = ({
         },
     });
 
-    const { handleSubmit, reset, watch, setValue, formState: { errors, isValid } } = methods;
+    const { handleSubmit, reset, watch, setValue, formState: { errors } } = methods;
 
     // ✅ Watch for type mismatches and fix them
     useEffect(() => {
@@ -113,9 +113,6 @@ const CreateCampaign = ({
 
     const onSubmit = async (data: CampaignQuestionnaireData) => {
         try {
-            setIsSubmitting(true);
-
-
             /* ---------- 🔥 HANDLE OTHERS NICHE ---------- */
             let finalNiches = data.targetNiche || [];
 
@@ -161,7 +158,7 @@ const CreateCampaign = ({
                 requirements: processedRequirements,
             };
 
-            delete (processedData as any).customNiche;
+            delete (processedData as CreateCampaignPayload).customNiche;
 
 
             await postApi.createCampaign(processedData);
@@ -170,6 +167,8 @@ const CreateCampaign = ({
             router.push("/dashboard/brand/my-campaigns");
 
         } catch (error: any) {
+            console.log(error?.response?.data);
+            
             toast({
                 title: "Error",
                 description: error?.response?.data?.message || "Something went wrong",
@@ -177,17 +176,23 @@ const CreateCampaign = ({
             });
         } finally {
             setIsSubmitting(false);
+            setIsSaving(false);
         }
     };
 
     const submitWithStatus = (status: "PUBLISHED" | "DRAFT") => {
         setValue("status", status, { shouldValidate: false });
+        if(status == "DRAFT"){
+            setIsSaving(true);
+        }else{
+            setIsSubmitting(true);
+        }
         handleSubmit(onSubmit)();
     };
 
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8 mt-8">
             <button
                 type="button"
                 onClick={() => router.back()}
@@ -238,17 +243,17 @@ const CreateCampaign = ({
                             type="button"
                             variant="outline"
                             className="flex-1"
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || isSaving}
                             onClick={() => submitWithStatus("DRAFT")}
                         >
-                            {isSubmitting ? "Saving..." : "Save as Draft"}
+                            {isSaving ? "Saving..." : "Save as Draft"}
                             <Bookmark />
                         </Button>
 
                         <Button
                             type="button"
                             className="flex-1"
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || isSaving}
                             onClick={() => submitWithStatus("PUBLISHED")}
                         >
                             {isSubmitting ? "Publishing..." : mode === "edit" ? "Update & Publish" : "Publish Campaign"}

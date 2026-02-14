@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Sun } from 'lucide-react';
 
 export function UserNav() {
   const [theme, setTheme] = useState<'light'>('light');

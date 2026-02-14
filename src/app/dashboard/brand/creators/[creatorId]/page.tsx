@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { postApi } from "@/services/postServices";
 import {
-    ArrowLeft, CreditCard, CheckCircle2, XCircle, Clock,
+    ArrowLeft, CheckCircle2, XCircle, Clock,
     Loader2, X,
     CircleCheckBig,
     CircleX
@@ -121,15 +121,6 @@ const CreatorDetailsPage = () => {
         fetchCreator();
     }, [creatorId]);
 
-    const formatDate = (date?: string) => {
-        if (!date) return "N/A";
-        return new Date(date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    };
-
     const calculateAge = (dob?: string) => {
         if (!dob) return null;
         const birthDate = new Date(dob);
@@ -195,18 +186,6 @@ const CreatorDetailsPage = () => {
         }
     };
 
-
-    const formatNumber = (num?: number | string) => {
-        if (!num) return "N/A";
-        const number = typeof num === 'string' ? parseFloat(num) : num;
-        if (number >= 1000000) {
-            return `${(number / 1000000).toFixed(1)}M`;
-        } else if (number >= 1000) {
-            return `${(number / 1000).toFixed(1)}K`;
-        }
-        return number.toLocaleString();
-    };
-
     const handleStatus = async (newStatus: string, collaborationId: string) => {
         setStatusLoading(true);
         try {
@@ -261,7 +240,7 @@ const CreatorDetailsPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-5">
             {/* Status Modal */}
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
@@ -313,7 +292,7 @@ const CreatorDetailsPage = () => {
                 </div>
             )}
 
-            <div className="max-w-7xl mx-auto space-y-6">
+            <div className="max-w-7xl space-y-6">
                 {/* Back Button */}
                 <button
                     type="button"
@@ -326,7 +305,7 @@ const CreatorDetailsPage = () => {
 
                 {/* Header Card (Compact Creator Layout) */}
                 <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm">
-                    <div className="flex flex-col items-start gap-4 px-5 py-5">
+                    <div className="flex flex-col items-start gap-4 p-5">
 
                         <div className="flex items-start gap-4">
                             {/* Avatar */}
@@ -462,12 +441,12 @@ const CreatorDetailsPage = () => {
 
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-3 px-4 flex flex-nowrap justify-between gap-4 w-full overflow-x-auto">
+                        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-3 px-4 flex flex-nowrap justify-between gap-4 w-full">
 
                             {/* Average Views */}
                             {creator.averageView && (
-                                <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl px-1 py-2 min-w-[320px]">
-                                    <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                                <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl px-1 py-2 min-w-[300px]">
+                                    <p className="text-md font-semibold text-gray-900 dark:text-white">
                                         {creator.averageView}
                                     </p>
                                     <p className="text-sm text-gray-700 dark:text-gray-400">
@@ -478,8 +457,8 @@ const CreatorDetailsPage = () => {
 
                             {/* Growth Rate */}
                             {creator.growthRate && (
-                                <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl min-w-[320px]">
-                                    <p className="text-xl font-semibold text-gray-900 dark:text-white">
+                                <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl min-w-[250px]">
+                                    <p className="text-md font-semibold text-gray-900 dark:text-white">
                                         {creator.growthRate}
                                     </p>
                                     <p className="text-sm text-gray-700 dark:text-gray-400">
@@ -489,8 +468,8 @@ const CreatorDetailsPage = () => {
                             )}
 
                             {/* Completed Campaigns */}
-                            <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl  min-w-[320px]">
-                                <p className="text-xl font-semibold text-gray-900 dark:text-white">
+                            <div className="flex justify-center items-center gap-1 border border-primary dark:border-primary/30 rounded-xl min-w-[250px]">
+                                <p className="text-md font-semibold text-gray-900 dark:text-white">
                                     {creator.completedCount}
                                 </p>
                                 <p className="text-sm text-gray-700 dark:text-gray-400">
@@ -599,7 +578,7 @@ const CreatorDetailsPage = () => {
 
 
                     {activeTab === "Audience Insights" && (
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
                             <div className="overflow-hidden rounded-xl border dark:border-gray-700">
                                 <table className="w-full border-collapse">
                                     <thead className="bg-gray-50 dark:bg-gray-700/50">

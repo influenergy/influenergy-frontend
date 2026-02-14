@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { postApi } from "@/services/postServices";
 import { Button } from "@/components/ui/button";
 import { Loader2, X, CheckCircle2, AlertCircle } from "lucide-react";
+import { Campaign } from "@/types/Collaboration";
 
 export default function InviteCreatorModal({
   creatorId,
@@ -11,7 +12,7 @@ export default function InviteCreatorModal({
   creatorId: string;
   onClose: () => void;
 }) {
-  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [campaignId, setCampaignId] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -24,7 +25,7 @@ export default function InviteCreatorModal({
       const res = await postApi.getCampaigns({
         all: true,
       });
-      setCampaigns(res.campaigns.filter((c: any) => c.status === "PUBLISHED"));
+      setCampaigns(res.campaigns.filter((c: Campaign) => c.status === "PUBLISHED"));
       setLoading(false);
     };
     fetchCampaigns();

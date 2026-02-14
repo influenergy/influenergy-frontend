@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Upload, Link2, Check, Loader2, AlertCircle } from "lucide-react";
 import { postApi } from "@/services/postServices";
 import { useQueryClient } from "@tanstack/react-query";
+import { Campaign } from "@/types/Collaboration";
 
 interface Video {
   link: string;
@@ -41,7 +42,7 @@ export default function UpdateStatusModal({
   data,
   status,
 }: StatusModalProps) {
-  const [campaignDetails, setCampaignDetails] = useState<any>(null);
+  const [campaignDetails, setCampaignDetails] = useState<Campaign | null>(null);
   const [deliverables, setDeliverables] = useState<DeliverableUpload[]>([]);
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [isFetchingCampaign, setIsFetchingCampaign] = useState(true);
@@ -86,7 +87,7 @@ export default function UpdateStatusModal({
 
       if (response?.collaborations && response.collaborations.length > 0) {
         const campaign = response.collaborations[0].campaignId;
-        const collaboration = response.collaborations[0];
+        // const collaboration = response.collaborations[0];
 
         setCampaignDetails(campaign);
 
@@ -95,7 +96,7 @@ export default function UpdateStatusModal({
         if (campaign.expectedDeliverables && Array.isArray(campaign.expectedDeliverables)) {
           campaign.expectedDeliverables.forEach((deliverableType: string) => {
             const existingVideo = data.find(
-              (v: any) => v.deliverableType === deliverableType
+              (v) => v.deliverableType === deliverableType
             );
 
             initialDeliverables.push({
@@ -254,10 +255,10 @@ export default function UpdateStatusModal({
                   <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-2">
                     <span className="font-medium">Collaboration Status:</span>
                     <span className={`px-2 py-1 rounded text-xs font-medium ${status === "Active"
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        : status === "Completed"
-                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                          : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                      : status === "Completed"
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                        : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
                       }`}>
                       {status}
                     </span>
@@ -313,12 +314,12 @@ export default function UpdateStatusModal({
                       <div
                         key={index}
                         className={`border rounded-lg p-4 ${isApproved
-                            ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20"
-                            : isPending
-                              ? "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
-                              : isDeclined
-                                ? "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20"
-                                : "border-gray-200 dark:border-gray-700"
+                          ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20"
+                          : isPending
+                            ? "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20"
+                            : isDeclined
+                              ? "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20"
+                              : "border-gray-200 dark:border-gray-700"
                           }`}
                       >
                         <div className="flex items-start justify-between mb-3">
@@ -339,12 +340,12 @@ export default function UpdateStatusModal({
                           {deliverable.status ? (
                             <span
                               className={`text-xs px-2 py-1 rounded-full ${isApproved
-                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                  : isWaitingApproval
-                                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                    : isPending
-                                      ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                      : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                : isWaitingApproval
+                                  ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                  : isPending
+                                    ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                                    : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                                 }`}
                             >
                               {deliverable.status}
@@ -409,32 +410,32 @@ export default function UpdateStatusModal({
                           {/* Show feedback for ANY status with messages */}
                           {deliverable.message && (
                             <div className={`p-3 border rounded-lg text-sm ${isDeclined
-                                ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"
-                                : isPending
-                                  ? "bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-800"
-                                  : "bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800"
+                              ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"
+                              : isPending
+                                ? "bg-yellow-50 dark:bg-yellow-900/10 border-yellow-200 dark:border-yellow-800"
+                                : "bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800"
                               }`}>
                               <div className="flex items-start gap-2">
                                 <AlertCircle className={`h-4 w-4 mt-0.5 flex-shrink-0 ${isDeclined
-                                    ? "text-red-600 dark:text-red-400"
-                                    : isPending
-                                      ? "text-yellow-600 dark:text-yellow-400"
-                                      : "text-blue-600 dark:text-blue-400"
+                                  ? "text-red-600 dark:text-red-400"
+                                  : isPending
+                                    ? "text-yellow-600 dark:text-yellow-400"
+                                    : "text-blue-600 dark:text-blue-400"
                                   }`} />
                                 <div className="flex-1">
                                   <p className={`font-medium text-xs mb-1 ${isDeclined
-                                      ? "text-red-800 dark:text-red-200"
-                                      : isPending
-                                        ? "text-yellow-800 dark:text-yellow-200"
-                                        : "text-blue-800 dark:text-blue-200"
+                                    ? "text-red-800 dark:text-red-200"
+                                    : isPending
+                                      ? "text-yellow-800 dark:text-yellow-200"
+                                      : "text-blue-800 dark:text-blue-200"
                                     }`}>
                                     {isDeclined ? "❌ Declined - Feedback:" : "💬 Feedback:"}
                                   </p>
                                   <p className={`text-xs ${isDeclined
-                                      ? "text-red-700 dark:text-red-300"
-                                      : isPending
-                                        ? "text-yellow-700 dark:text-yellow-300"
-                                        : "text-blue-700 dark:text-blue-300"
+                                    ? "text-red-700 dark:text-red-300"
+                                    : isPending
+                                      ? "text-yellow-700 dark:text-yellow-300"
+                                      : "text-blue-700 dark:text-blue-300"
                                     }`}>
                                     {deliverable.message}
                                   </p>
@@ -473,8 +474,8 @@ export default function UpdateStatusModal({
           <DialogHeader>
             <DialogTitle
               className={`text-base ${statusModal.type === "error"
-                  ? "text-red-600"
-                  : "text-green-600"
+                ? "text-red-600"
+                : "text-green-600"
                 }`}
             >
               {statusModal.title}

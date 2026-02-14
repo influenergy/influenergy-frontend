@@ -21,6 +21,7 @@ export interface Campaign {
   requirements: string[];
   applicationQuestions: string;
   status: "DRAFT" | "PUBLISHED" | "CLOSED";
+  applied?: boolean;
 }
 
 export interface Collaboration {

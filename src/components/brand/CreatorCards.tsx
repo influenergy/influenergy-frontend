@@ -323,7 +323,6 @@ export default function CreatorCard({
                     const isApproved = video?.status === "Approved";
                     const isWaitingApproval = video?.status === "Waiting Approval";
                     const isDeclined = video?.status === "Declined";
-                    const isPending = !video || video?.status === "Pending";
 
                     return (
                       <div
@@ -475,7 +474,6 @@ export default function CreatorCard({
                     const isApproved = video?.status === "Approved";
                     const isWaitingApproval = video?.status === "Waiting Approval";
                     const isDeclined = video?.status === "Declined";
-                    const isPending = !video || video?.status === "Pending";
 
                     return (
                       <div

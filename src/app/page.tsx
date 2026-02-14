@@ -21,7 +21,6 @@ const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));
 // const WeEmpowerBrand = lazy(() => import("@/components/home/WeEmpowerBrand"));
 const Testimonials = lazy(() => import("@/components/home/Testimonials"));
 const Stats = lazy(() => import("@/components/home/Stats"));
-const Blog = lazy(() => import("@/components/home/Blog"));
 const GetInTouch = lazy(() => import("@/components/home/GetInTouch"));
 const NewsLetter = lazy(() => import("@/components/home/NewsLetter"));
 const Footer = lazy(() => import("@/components/home/Footer"));

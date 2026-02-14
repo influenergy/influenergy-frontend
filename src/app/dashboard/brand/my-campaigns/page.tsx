@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Loader2, Search, Briefcase, CheckCircle2, XCircle, X } from 'lucide-react';
 import { postApi } from "@/services/postServices";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import NewCampaignButton from "@/components/brand/NewCampaignButton";
 import CampaignSkeleton from "@/components/Skeletons/CampaignSkeleton";
 import ErrorState from "@/components/common/ErrorState";
@@ -55,7 +55,6 @@ const MyCampaignsPage = () => {
 
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
     const loadMoreRef = React.useRef<HTMLDivElement | null>(null);
-    const searchInputRef = React.useRef<HTMLInputElement | null>(null);
 
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
@@ -124,8 +123,8 @@ const MyCampaignsPage = () => {
     });
 
 
-    const campaigns =
-        data?.pages.flatMap((page) => page.campaigns) ?? [];
+    // const campaigns =
+    //     data?.pages.flatMap((page) => page.campaigns) ?? [];
 
     /* Infinite scroll */
     useEffect(() => {

@@ -2,13 +2,12 @@
 import React, { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnimatePresence } from "framer-motion";
-import { useState, Suspense } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { TabLoading } from "@/components/inbox/TabLoading";
 import { useCollaborationStatusDetails } from "@/hooks/useQueryCampaigns";
 import { Collaboration } from "@/types/Collaboration";
-import { pendingCollaborationCount, useAppSelector } from "@/store";
 import { useSearchParams } from "next/navigation";
 import { useCreatorNotificationCounts } from "@/hooks/useNotificationCounts";
 import { useQueryClient } from "@tanstack/react-query";

@@ -8,10 +8,8 @@ type Props = {
 
 export default function NewCampaignButton({ label = "Create New Campaign" }: Props) {
   const router = useRouter();
-  const pathname = usePathname();
 
   const handleClick = () => {
-    const basePath = pathname.split("/").slice(0, -1).join("/");
     router.push(`/dashboard/brand/create-campaign`);
   };
 

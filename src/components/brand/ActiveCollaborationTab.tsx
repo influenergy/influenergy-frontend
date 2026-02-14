@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { postApi } from "@/services/postServices";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
@@ -56,7 +56,6 @@ export default function ApplicationsReceived() {
     const router = useRouter();
 
     const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
-    const params = useParams();
     const searchParams = useSearchParams();
     const campaignIdFromUrl = searchParams.get("campaignId");
 
@@ -64,7 +63,6 @@ export default function ApplicationsReceived() {
     const isActiveTab = true;
 
     // const [applications, setApplications] = useState<Application[]>([]);
-    const [campaign, setCampaign] = useState<Campaign | null>(null);
     // const [isLoading, setIsLoading] = useState(true);
     const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -72,7 +70,7 @@ export default function ApplicationsReceived() {
     const queryClient = useQueryClient();
 
 
-    const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
+    const { mutateAsync: initiatePayment } = useInitiatePayment();
 
     const {
         data: campaigns = [],

@@ -17,26 +17,26 @@ import { useEffect } from "react";
 
 
 // import { useState } from "react";
-const Levels = [
-  {
-    key: "level_1",
-    title: "Level 1 - Rising Creator",
-    img: "/bronze-award.svg",
-    color: "#b1b1b1", // Bronze
-  },
-  {
-    key: "level_2",
-    title: "Level 2 - Active Creator",
-    img: "/gold-award.svg",
-    color: "#ffbe4b", // Gold
-  },
-  {
-    key: "level_3",
-    title: "Level 3 - Pro Creator",
-    img: "/diamond-award.svg",
-    color: "#32bdd8", // Diamond / Sky Blue
-  },
-];
+// const Levels = [
+//   {
+//     key: "level_1",
+//     title: "Level 1 - Rising Creator",
+//     img: "/bronze-award.svg",
+//     color: "#b1b1b1", // Bronze
+//   },
+//   {
+//     key: "level_2",
+//     title: "Level 2 - Active Creator",
+//     img: "/gold-award.svg",
+//     color: "#ffbe4b", // Gold
+//   },
+//   {
+//     key: "level_3",
+//     title: "Level 3 - Pro Creator",
+//     img: "/diamond-award.svg",
+//     color: "#32bdd8", // Diamond / Sky Blue
+//   },
+// ];
 interface NavItem {
   href?: string;
   icon: LucideIcon;
@@ -74,7 +74,7 @@ const commonLinks: NavItem[] = [
 
 export default function Sidebar({ type, className, onClose }: { type: string, className: string, onClose?: () => void }) {
   const user = useAppSelector((state) => state.auth.userType);
-  const badge = useAppSelector((state) => state.auth.user?.badge);
+  // const badge = useAppSelector((state) => state.auth.user?.badge);
 
   const userProfile = useAppSelector(selectUser);
 
@@ -111,7 +111,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
     }
   };
 
-  const badgeLevelInfo = Levels.find((lvl) => lvl.key === badge);
+  // const badgeLevelInfo = Levels.find((lvl) => lvl.key === badge);
 
   return (
     <div className={`sticky top-0 h-screen min-h-screen border-r bg-primary z-10 transition-all duration-300 flex flex-col justify-between ${className} overflow-hidden`}>

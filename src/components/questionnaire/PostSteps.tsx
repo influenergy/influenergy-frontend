@@ -292,6 +292,28 @@ export const FormField = ({ field }: FormFieldProps) => {
             const values = selected.map((opt) => opt.value);
             setValue(fieldName, values, { shouldValidate: true });
           }}
+          styles={{
+            control: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+              border: "none",
+              boxShadow: "none",
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: "#F3F3F5",
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isFocused ? "#7544DB" : "#F3F3F5",
+              color: state.isFocused ? "#FFFFFF" : "#000000",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#7544DB",
+                color: "#FFFFFF",
+              },
+            }),
+          }}
           placeholder={field.placeholder || "Select options..."}
           classNamePrefix="react-select"
         />
@@ -306,7 +328,7 @@ export const FormField = ({ field }: FormFieldProps) => {
                 shouldDirty: true,
               })
             }
-            className="w-full p-3 rounded-lg bg-[#F3F3F5] focus:ring-primary focus:outline-none"
+            className="w-full p-3 rounded-lg bg-red-700 focus:ring-primary focus:outline-none"
           />
         )}
       </div>
@@ -459,8 +481,8 @@ export const FormField = ({ field }: FormFieldProps) => {
           };
         }}
         className={`w-full p-3 border rounded-lg transition-all duration-200 dark:bg-gray-900 dark:text-gray-100 ${error
-            ? "border-red-500 focus:ring-red-500 dark:border-red-500"
-            : "border-gray-300 focus:ring-primary dark:border-gray-700"
+          ? "border-red-500 focus:ring-red-500 dark:border-red-500"
+          : "border-gray-300 focus:ring-primary dark:border-gray-700"
           } focus:outline-none focus:ring-2`}
       />
     );
@@ -549,20 +571,15 @@ export const FormField = ({ field }: FormFieldProps) => {
         <input
           type="number"
           value={displayValue}
-          min="4"
           step="1"
           onChange={(e) => {
-            let numValue = e.target.value;
+            setValue(fieldName, e.target.value, { shouldValidate: true });
+          }}
+          onBlur={(e) => {
+            let numValue = Number(e.target.value);
+            if (!numValue || numValue < 4) numValue = 4;
 
-            // prevent values < 4
-            if (numValue && Number(numValue) < 4) {
-              numValue = "4";
-            }
-
-            const formattedValue = numValue
-              ? `${numValue} ${numValue === "1" ? "day" : "days"}`
-              : "";
-
+            const formattedValue = `${numValue} ${numValue === 1 ? "day" : "days"}`;
             setValue(fieldName, formattedValue, { shouldValidate: true });
           }}
           placeholder={field.placeholder || "5"}
@@ -597,7 +614,7 @@ export const StepComponent = ({ fields, mode }: StepProps) => {
 
   return (
     <>
-      {fields.map((field, index) => {
+      {fields.map((field) => {
         const fieldName = field.slug as keyof PostQuestionnaireData;
         const error = errors[fieldName];
         const required = isFieldRequired(field.slug);
@@ -658,7 +675,7 @@ export const Step = ({ fields, mode }: StepProps) => {
   let currentRowIndex = 0;
   let currentRow: Field[] = [];
 
-  fields.forEach((field, index) => {
+  fields.forEach((field) => {
     const isRow0or2 = currentRowIndex === 0 || currentRowIndex === 2;
 
     // Special handling for row 2 (Niche, Budget, Deadline) - 3 columns

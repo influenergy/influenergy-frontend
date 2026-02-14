@@ -2,7 +2,7 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import { CollaborationConfirmationModal } from "@/components/ui/CollaborationConfirmationModal";
 import { CollaborationSuccessModal } from "@/components/ui/CollaborationSuccessModal";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCampaignProfileDetails } from "@/hooks/useFindAi";
@@ -10,7 +10,6 @@ import { CollaborationFailedModal } from "@/components/ui/CollaborationFailedMod
 import { useInitiatePayment } from "@/hooks/usePayment";
 import { toast } from "@/hooks/use-toast";
 import { useGetAISummary } from "@/hooks/useQueryCampaigns";
-import { CollaborationContractModal } from "@/components/ui/ContractModal";
 import ErrorState from "@/components/common/ErrorState";
 
 const CreatorHeader = lazy(() => import("@/components/creator/CreatorHeader"));
@@ -51,7 +50,6 @@ export default function CreatorDetailsPage() {
   const [failedModalOpen, setFailedModalOpen] = useState(false);
   const [contractModalOpen, setContractModalOpen] = useState(false);
   const [alreadyPaid, setAlreadyPaid] = useState(false);
-  const router = useRouter();
 
   const searchParams = useSearchParams();
   const similarity = searchParams.get("similarity");
@@ -77,9 +75,6 @@ export default function CreatorDetailsPage() {
 
   const handleContractModalOpen = () => {
     setContractModalOpen(true);
-  }
-  const handleContractModalClose = () => {
-    setContractModalOpen(false);
   }
 
   const handleCollaborate = async () => {

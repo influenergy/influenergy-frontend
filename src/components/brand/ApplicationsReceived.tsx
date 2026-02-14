@@ -63,13 +63,11 @@ export default function ApplicationsReceived() {
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
   // const [loadingApps, setLoadingApps] = useState(false);
 
-  const params = useParams();
   const searchParams = useSearchParams();
 
   const isActiveTab = searchParams.get("tab") === "active";
 
   // const [applications, setApplications] = useState<Application[]>([]);
-  const [campaign, setCampaign] = useState<Campaign | null>(null);
   // const [isLoading, setIsLoading] = useState(true);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -82,7 +80,7 @@ export default function ApplicationsReceived() {
 
 
 
-  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
+  const { mutateAsync: initiatePayment } = useInitiatePayment();
 
 
   const {

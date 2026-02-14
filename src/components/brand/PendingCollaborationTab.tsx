@@ -4,6 +4,30 @@ import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import Loader from "./Loader";
 import React, { useEffect, useState } from "react";
 
+interface Collaboration {
+  collaborationId: string;
+  status: string;
+  creatorName: string;
+  creatorId: string;
+  profileIcon?: string;
+  createdAt: string;
+  coverMessage?: string;
+  creatorBudget?: string;
+  amount?: string;
+  paymentStatus?: string;
+}
+
+interface Campaign {
+  campaignId: string;
+  campaignTitle: string;
+  campaignDescription?: string;
+  campaignImage?: string;
+  brandName?: string;
+  budgetForCampaign?: string;
+  socialPlatforms?: string;
+  deadline?: string;
+  collaborations?: Collaboration[];
+}
 
 export default function PendingCollaborationTab() {
     const router = useRouter();
@@ -39,13 +63,13 @@ export default function PendingCollaborationTab() {
     };
 
     // Filter to get only the selected campaign
-    const selectedCampaign = campaigns?.campaigns?.find(
-        (campaign: any) => campaign.campaignId === selectedCampaignId
-    );
+    // const selectedCampaign = campaigns?.campaigns?.find(
+    //     (campaign: any) => campaign.campaignId === selectedCampaignId
+    // );
 
 
     // Get collaborations from the selected campaign
-    const collaborationsToShow = campaigns?.collaborations || [];
+    // const collaborationsToShow = campaigns?.collaborations || [];
 
 
 
@@ -55,7 +79,7 @@ export default function PendingCollaborationTab() {
             {campaigns?.campaigns?.length > 0 ? (
                 /* Campaign Cards Section */
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    {campaigns.campaigns.map((campaign: any) => (
+                    {campaigns.campaigns.map((campaign: Campaign) => (
                         <div
                             key={campaign.campaignId}
                             className="border rounded-lg p-4 bg-white dark:bg-card shadow-sm hover:shadow-md transition"
@@ -84,7 +108,7 @@ export default function PendingCollaborationTab() {
                                 {campaign.campaignDescription}
                             </p>
 
-                            {campaign.campaignDescription?.length > 120 && (
+                            {campaign.campaignDescription && campaign.campaignDescription?.length > 120 && (
                                 <button
                                     onClick={() =>
                                         setExpandedDesc((prev) => ({

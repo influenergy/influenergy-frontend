@@ -4,15 +4,46 @@ import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import Loader from "./Loader";
 import React, { useState } from "react";
 
+interface Collaboration {
+  collaborationId: string;
+  status: string;
+  creatorName: string;
+  creatorId: string;
+  profileIcon?: string;
+  createdAt: string;
+  coverMessage?: string;
+  creatorBudget?: string;
+  amount?: string;
+  paymentStatus?: string;
+}
+
+interface Campaign {
+  campaignId: string;
+  campaignTitle: string;
+  campaignDescription?: string;
+  campaignImage?: string;
+  brandName?: string;
+  budgetForCampaign?: string;
+  socialPlatforms?: string;
+  deadline?: string;
+  collaborations?: Collaboration[];
+}
+
+
+// interface CampaignsResponse {
+//   status: boolean;
+//   message: string;
+//   campaigns: Campaign[];
+// }
+
 
 export default function ShortlistedApplications() {
-    const router = useRouter();
     const {
         data: campaigns,
         isLoading,
         isError,
     } = useFindAiCampaignsList("Interested");
-    const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+    // const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
     const [expandedDesc, setExpandedDesc] = useState<Record<string, boolean>>({});
 
 
@@ -29,19 +60,19 @@ export default function ShortlistedApplications() {
         );
     }
 
-    const handleCampaignSelect = (campaignId: string) => {
-        setSelectedCampaignId(campaignId);
-        router.push(`/dashboard/brand/application-inbox/${campaignId}`);
-    };
+    // const handleCampaignSelect = (campaignId: string) => {
+    //     setSelectedCampaignId(campaignId);
+    //     router.push(`/dashboard/brand/application-inbox/${campaignId}`);
+    // };
 
     // Filter to get only the selected campaign
-    const selectedCampaign = campaigns?.campaigns?.find(
-        (campaign: any) => campaign.campaignId === selectedCampaignId
-    );
+    // const selectedCampaign = campaigns?.campaigns?.find(
+    //     (campaign: any) => campaign.campaignId === selectedCampaignId
+    // );
 
 
     // Get collaborations from the selected campaign
-    const collaborationsToShow = campaigns?.collaborations || [];
+    // const collaborationsToShow = campaigns?.collaborations || [];
     // console.log(campaigns);
     // console.log(campaigns.campaigns[0].collaborations);
 
@@ -59,7 +90,7 @@ export default function ShortlistedApplications() {
             {campaigns?.campaigns?.length > 0 ? (
                 /* Campaign Cards Section */
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    {campaigns.campaigns.map((campaign: any) => (
+                    {campaigns.campaigns.map((campaign: Campaign) => (
                         <div
                             key={campaign.campaignId}
                             className="border rounded-lg p-4 bg-white dark:bg-card shadow-sm hover:shadow-md transition"
@@ -88,7 +119,7 @@ export default function ShortlistedApplications() {
                                 {campaign.campaignDescription}
                             </p>
 
-                            {campaign.campaignDescription?.length > 120 && (
+                            {campaign.campaignDescription && campaign.campaignDescription?.length > 120 && (
                                 <button
                                     onClick={() =>
                                         setExpandedDesc((prev) => ({
@@ -105,7 +136,7 @@ export default function ShortlistedApplications() {
 
                             {/* View Applications Button */}
                             <button
-                                onClick={() => handleCampaignSelect(campaign.campaignId)}
+                                onClick={() => {}}
                                 className="w-full bg-primary text-white text-sm py-2 rounded-md hover:opacity-90 transition"
                             >
                                 View Applications

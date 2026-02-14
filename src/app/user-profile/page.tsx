@@ -16,7 +16,6 @@ import { setCredentials } from "@/store/features/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { userApi } from "@/services/userServices";
 import { Loader2 } from "lucide-react";
-import ProfileInfo from "@/components/profile/ProfileInfo";
 import Link from "next/link";
 import EditCreatorQuestionnaireModal from "@/components/userProfile/EditCreatorQuestionnaireModal";
 // import Link from "next/link";

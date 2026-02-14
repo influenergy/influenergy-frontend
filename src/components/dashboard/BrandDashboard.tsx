@@ -42,16 +42,16 @@ type CampaignBrief = {
     _id: string
 };
 
-type CollaborationItem = {
-    _id: string;
-    creatorId?: CreatorBrief | string;
-    campaignId?: CampaignBrief | string;
-    status?: string;
-    amount?: number;
-    paymentStatus?: string;
-    createdAt?: string;
-    updatedAt?: string;
-};
+// type CollaborationItem = {
+//     _id: string;
+//     creatorId?: CreatorBrief | string;
+//     campaignId?: CampaignBrief | string;
+//     status?: string;
+//     amount?: number;
+//     paymentStatus?: string;
+//     createdAt?: string;
+//     updatedAt?: string;
+// };
 
 type ActiveCampaignItem = {
     campaignDetails: CampaignBrief;
@@ -114,7 +114,7 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     // const [regionAnalysis, setRegionAnalysis] = useState<Record<string, unknown> | null>(null);
     const [activeTab, setActiveTab] = useState<"ongoing" | "favorites" | "recent">("ongoing");
 
-    const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+    // const [expanded, setExpanded] = useState<Record<string, boolean>>({});
     // Separate states as requested
     // const [collaborationCount, setCollaborationCount] = useState({ ongoing: 0, pending: 0, completed: 0 });
     // const [favCreators, setFavCreators] = useState<FavCreators[]>([]);
@@ -128,12 +128,12 @@ function BrandDashboard({ fullName }: { fullName?: string }) {
     const [inviteModal, setInviteModal] = useState(false);
     const [selectedCreator, setSelectedCreator] = useState<string | null>(null);
 
-    const toggleExpand = (id: string) => {
-        setExpanded((prev) => ({
-            ...prev,
-            [id]: !prev[id],
-        }));
-    };
+    // const toggleExpand = (id: string) => {
+    //     setExpanded((prev) => ({
+    //         ...prev,
+    //         [id]: !prev[id],
+    //     }));
+    // };
 
     const router = useRouter();
 

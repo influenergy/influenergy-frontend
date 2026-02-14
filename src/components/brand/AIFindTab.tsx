@@ -1,18 +1,17 @@
-import { useRouter } from "next/navigation";
 import { useFindAiCampaignsList } from "@/hooks/useFindAi";
 import Loader from "./Loader";
 
 export default function AIFindTab() {
-  const router = useRouter();
+  // const router = useRouter();
   const {
-    data: campaigns,
+    data,
     isLoading,
     isError,
   } = useFindAiCampaignsList("Pending");
 
-  const handleFindAI = async (campaignId: string) => {
-    router.push(`/dashboard/brand/findai/campaign/${campaignId}`);
-  };
+  // const handleFindAI = async (campaignId: string) => {
+  //   router.push(`/dashboard/brand/findai/campaign/${campaignId}`);
+  // };
 
   if (isLoading) {
     return <Loader />;

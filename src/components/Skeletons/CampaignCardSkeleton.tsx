@@ -1,4 +1,4 @@
-const CampaignCardSkeleton = () => (
+export const CampaignCardSkeleton = () => (
     <div className="rounded-xl border border-gray-200 bg-white p-4 animate-pulse">
         <div className="h-32 bg-gray-200 rounded-lg mb-4" />
 

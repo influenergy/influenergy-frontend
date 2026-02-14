@@ -9,7 +9,7 @@ import ErrorState from "@/components/common/ErrorState";
 const Page = () => {
   const user = useAppSelector((state) => state.auth.user);
   const creatorId = user?._id;
-  const { postId, status } = useParams();
+  const { postId } = useParams();
 
   const [campaignData, setCampaignData] = useState<NewCampaignResponse | null>(null);
   const [collaborations, setCollaborations] = useState<Collaboration[]>([]);

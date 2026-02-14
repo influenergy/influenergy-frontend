@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { postApi } from "@/services/postServices";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "./Loader";
@@ -35,6 +35,44 @@ interface Video {
   deliverableType: string;
 }
 
+interface CollaborationData {
+  collaborationId: string;
+  status: "Pending" | "Offered" | "Offer Accepted" | "Shortlisted" | "Active" | "Completed" | "Rejected" | "Interested" | "Waiting Approval";
+  creatorName: string;
+  creatorId: string;
+  profileIcon?: string;
+  createdAt: string;
+  coverMessage?: string;
+  creatorBudget?: string;
+  amount: number;
+  paymentStatus: "Cancelled" | "Under Process" | "Done" | "Pending";
+  profile?: {
+    socialLinks?: string[];
+    category?: string[];
+  };
+  videos: Video[];
+  isFavorite: boolean;
+}
+
+// Grouped campaign type returned from backend
+interface GroupedCampaign {
+  campaignId: string;
+  campaignTitle: string;
+  campaignDescription: string;
+  campaignImage: string;
+  brandName: string;
+  budgetForCampaign: string;
+  socialPlatforms: string;
+  deadline: string;
+  status: string;
+  campaignDetails: {
+    // optional, contains the raw campaign object from DB
+    [key: string]: any;
+  };
+  campaignCreatedAt: string;
+  collaborations: CollaborationData[];
+}
+
 interface Application {
   _id: string;
   creatorId: Creator;
@@ -57,14 +95,7 @@ export default function ApplicationsReceived() {
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
   // const [loadingApps, setLoadingApps] = useState(false);
-
-  const params = useParams();
-  const searchParams = useSearchParams();
-
-  const isActiveTab = searchParams.get("tab") === "active";
-
   // const [applications, setApplications] = useState<Application[]>([]);
-  const [campaign, setCampaign] = useState<Campaign | null>(null);
   // const [isLoading, setIsLoading] = useState(true);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -72,17 +103,13 @@ export default function ApplicationsReceived() {
   const queryClient = useQueryClient();
 
 
-  const { mutateAsync: initiatePayment, isPending } = useInitiatePayment();
+  const { mutateAsync: initiatePayment } = useInitiatePayment();
 
-  const {
-    data: campaigns = [],
-    isLoading,
-    isError
-  } = useQuery({
+  const { data: campaigns = [], isLoading, isError } = useQuery<GroupedCampaign[]>({
     queryKey: ["campaigns", "Completed"],
-    queryFn: () => postApi.getCollabByStatus("Completed"),
-    select: (res) => res.campaigns || []
+    queryFn: () => postApi.getCollabByStatus("Completed").then(res => res.campaigns),
   });
+
 
 
   const {

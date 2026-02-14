@@ -72,7 +72,6 @@ const PostDescription = ({ data, role }: PostDescriptionProps) => {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [coverMessage, setCoverMessage] = useState("");
-  const [portfolioLink, setPortfolioLink] = useState("");
   const [creatorBudget, setCreatorBudget] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
