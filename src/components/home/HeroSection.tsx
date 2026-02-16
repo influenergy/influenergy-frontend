@@ -108,14 +108,14 @@ export default function HeroSection() {
               className="text-center flex flex-col items-center gap-2 justify-center md:flex md:flex-row md:gap-10 lg:justify-start"
             >
               <Button
-                className="mt-[4%] bg-primary hover:bg-primary/90 text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg border-primary border-2"
+                className="mt-[4%] bg-primary hover:bg-primary/70 text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg border-primary border-2"
                 onClick={() => router.push("/get-started")}
               >
                 Start Free Campaign
                 <MoveRight/>
               </Button>
 
-              <Button className="mt-[4%] text-primary hover:bg-primary/90 bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg" onClick={handleClick}>
+              <Button className="mt-[4%] text-primary hover:bg-primary/70 bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg" onClick={handleClick}>
                 Get a Demo
               </Button>
 

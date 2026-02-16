@@ -3,14 +3,14 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { userApi } from "@/services/userServices";
 
-interface StatsProps { 
-    typeStats:{
-        type:string,
-        percentage:number
+interface StatsProps {
+    typeStats: {
+        type: string,
+        percentage: number
     }[],
-    usStats:{
-        usPercentage:number,
-        nonUsPercentage:number
+    usStats: {
+        usPercentage: number,
+        nonUsPercentage: number
     }
 }
 
@@ -55,20 +55,26 @@ export default function Stats() {
 
             <div className="w-full py-12 px-4 text-center grid grid-cols-2 sm:grid-cols-4 gap-6  max-w-6xl mx-auto">
                 <div className="flex flex-col items-center">
-                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stats?.usStats.usPercentage}%</h3>
-                    <p className="text-sm text-gray-700 font-semibold">US Audience</p>
+                    <div className="flex flex-col items-start">
+                        <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stats?.usStats.usPercentage}%</h3>
+                        <p className="text-sm text-gray-700 font-semibold text-start">US Audience</p>
+                    </div>
                 </div>
                 {
                     stats?.typeStats.map((stat, index) => (
                         <div key={index} className="flex flex-col items-center">
-                            <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stat.percentage}%</h3>
-                            <p className="text-sm text-gray-700 font-semibold">{stat.type === "Creator"?"Influencers":"UGC Creators"}</p>
+                            <div className="flex flex-col items-start">
+                                <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stat.percentage}%</h3>
+                                <p className="text-sm text-gray-700 font-semibold">{stat.type === "Creator" ? "Influencers" : "UGC Creators"}</p>
+                            </div>
                         </div>
                     ))
                 }
                 <div className="flex flex-col items-center">
-                    <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">5M+</h3>
-                    <p className="text-sm text-gray-700 font-semibold">Total Followers of our Creators</p>
+                    <div className="flex flex-col items-start">
+                        <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">5M+</h3>
+                        <p className="text-sm text-gray-700 font-semibold">Total Followers of our Creators</p>
+                    </div>
                 </div>
 
             </div>

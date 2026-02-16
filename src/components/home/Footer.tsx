@@ -218,12 +218,14 @@ export default function Footer() {
           viewport={{ once: true }}
         >
           {/* Gradient Border */}
-          <div className="absolute top-0 left-0 w-full h-[0.2px] 
-    bg-gradient-to-r 
-    from-green-500 
-    via-red-500 
-    to-purple-500"
+          <div
+            className="absolute top-0 left-0 w-full h-[0.2px]
+  bg-gradient-to-r
+  from-[#FCBB4E4D]
+  via-[#7544DB]
+  to-[#FBED654D]"
           />
+
 
           <p className="text-gray-400 text-md">
             © All Rights Reserved 2026. Influenergy LLC.

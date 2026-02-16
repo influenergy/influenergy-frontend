@@ -95,7 +95,7 @@ export default function HowItWorks() {
 
             {/* Step 3 */}
             <motion.div
-              className="relative w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
+              className="relative w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
               <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">03</p>
@@ -118,7 +118,7 @@ export default function HowItWorks() {
 
             {/* Step 4 */}
             <motion.div
-              className="relative w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
+              className="relative w-full rounded-2xl p-4 md:p-5 bg-[#fff9f2] transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
               <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">04</p>
