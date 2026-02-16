@@ -285,7 +285,7 @@ const MyCampaignsPage = () => {
                             {/* Header */}
                             <div className="flex gap-4 mb-3">
                                 <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
-                                    {campaign.campaignImage ? (
+                                    {campaign && campaign.campaignImage ? (
                                         <img
                                             src={campaign.campaignImage}
                                             alt={campaign.campaignTitle}
@@ -300,29 +300,29 @@ const MyCampaignsPage = () => {
 
                                 <div>
                                     <h3 className="font-medium line-clamp-1">
-                                        {campaign.campaignTitle}
+                                        {campaign && campaign.campaignTitle}
                                     </h3>
                                     <p className="text-xs text-muted-foreground">
-                                        {campaign.brandName}
+                                        {campaign && campaign.brandName}
                                     </p>
                                 </div>
                             </div>
 
                             <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                                {campaign.campaignDescription}
+                                {campaign && campaign.campaignDescription}
                             </p>
 
                             <div className="flex items-center gap-2 text-sm mb-2">
                                 <DollarSign className="w-4 h-4 text-primary" />
-                                {campaign.budgetForCampaign}
+                                {campaign && campaign.budgetForCampaign}
                             </div>
 
                             <div className="flex items-center gap-2 text-sm mb-2">
                                 <Calendar className="w-4 h-4 text-primary" />
-                                {campaign.deadline}
+                                {campaign && campaign.deadline}
                             </div>
 
-                            {campaign.targetNiche?.length > 0 && (
+                            {campaign && campaign.targetNiche?.length > 0 && (
                                 <div className="flex items-center gap-2 mb-3">
                                     <Target className="w-4 h-4 text-primary" />
                                     <span className="text-sm">
@@ -333,7 +333,7 @@ const MyCampaignsPage = () => {
                                 </div>
                             )}
 
-                            {campaign.expectedDeliverables && (
+                            {campaign && campaign.expectedDeliverables && (
                                 <div className="flex items-center gap-2 text-sm mb-3">
                                     <Package className="w-4 h-4 text-primary" />
                                     <span className="line-clamp-1">
