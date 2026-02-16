@@ -68,6 +68,15 @@ type CreateCollaborationResponse = {
   data: CollaborationData;
 };
 
+type ApplyCampaignVariables = {
+  campaignId: string;
+  payload: ApplyCampaignPayload;
+};
+
+type ApplyCampaignContext = {
+  previousData: any;
+};
+
 
 
 export const useGetPost = () => {
@@ -292,20 +301,29 @@ export const useApplyCampaign = (filters: {
   return useMutation<
     CreateCollaborationResponse & { campaignId: string },
     Error,
-    { campaignId: string; payload: ApplyCampaignPayload }
+    ApplyCampaignVariables,
+    ApplyCampaignContext
   >({
     mutationFn: async ({ campaignId, payload }) => {
       const res = await postApi.createCollaboration(campaignId, payload);
 
-      if (!res.success) {
+      if (!res.status) {
         throw new Error(res.message);
       }
 
       return { ...res, campaignId };
     },
 
-    onSuccess: (data) => {
-      const campaignId = data.campaignId;
+    onMutate: async ({ campaignId }) => {
+      await queryClient.cancelQueries({
+        queryKey: ["campaigns", filters.search, filters.niche],
+      });
+
+      const previousData = queryClient.getQueryData([
+        "campaigns",
+        filters.search,
+        filters.niche,
+      ]);
 
       queryClient.setQueryData(
         ["campaigns", filters.search, filters.niche],
@@ -316,7 +334,7 @@ export const useApplyCampaign = (filters: {
             ...old,
             pages: old.pages.map((page: any) => ({
               ...page,
-              campaigns: page.campaigns.map((campaign: Campaign) =>
+              campaigns: page.campaigns.map((campaign: any) =>
                 campaign._id === campaignId
                   ? { ...campaign, applied: true }
                   : campaign
@@ -325,6 +343,23 @@ export const useApplyCampaign = (filters: {
           };
         }
       );
+
+      return { previousData };
+    },
+
+    onError: (_err, _vars, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          ["campaigns", filters.search, filters.niche],
+          context.previousData
+        );
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["campaigns", filters.search, filters.niche],
+      });
     },
   });
 };

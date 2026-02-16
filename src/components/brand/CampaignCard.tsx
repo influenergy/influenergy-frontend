@@ -72,7 +72,7 @@ const CampaignCard = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  onActionClick("CLOSED", campaign._id)
+                  onActionClick("CLOSED", campaign && campaign._id)
                 }
                 }
                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 text-red-600"
@@ -88,7 +88,7 @@ const CampaignCard = ({
       {/* Header */}
       <div className="flex gap-5 mb-3">
         <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0">
-          {campaign.campaignImage ? (
+          {campaign && campaign.campaignImage ? (
             <img
               src={campaign.campaignImage}
               alt={campaign.campaignTitle}
@@ -103,52 +103,52 @@ const CampaignCard = ({
 
         <div>
           <h3 className="text-md font-medium mb-1 line-clamp-1">
-            {campaign.campaignTitle}
+            {campaign && campaign.campaignTitle}
           </h3>
           <h4 className="text-xs text-muted-foreground line-clamp-1">
-            {campaign.brandName}
+            {campaign && campaign.brandName}
           </h4>
         </div>
       </div>
 
       {/* Description */}
       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-        {campaign.campaignDescription}
+        {campaign && campaign.campaignDescription}
       </p>
 
       {/* Budget */}
       <div className="flex items-center gap-2 text-sm mb-2 text-muted-foreground">
         <DollarSign className="w-4 h-4 text-primary" />
-        {campaign.budgetForCampaign}
+        {campaign && campaign.budgetForCampaign}
       </div>
 
       {/* Duration */}
       <div className="flex items-center gap-2 text-sm mb-2 text-muted-foreground">
         <Calendar className="w-4 h-4 text-primary" />
-        {campaign.deadline}
+        {campaign && campaign.deadline}
       </div>
 
       {/* Niches */}
-      {campaign.targetNiche?.length > 0 && (
+      {campaign && campaign.targetNiche?.length > 0 && (
         <div className="flex items-start gap-2 mb-3 text-sm text-muted-foreground">
           <Target className="w-4 h-4 mt-0.5 text-primary" />
 
           <span>
-            {campaign.targetNiche.slice(0, 2).join(", ")}
+            {campaign && campaign.targetNiche.slice(0, 2).join(", ")}
 
-            {campaign.targetNiche.length > 2 &&
-              `, +${campaign.targetNiche.length - 2} more`}
+            {campaign && campaign.targetNiche.length > 2 &&
+              `, +${campaign && campaign.targetNiche.length - 2} more`}
           </span>
         </div>
       )}
 
 
       {/* Deliverables */}
-      {campaign.expectedDeliverables?.length > 0 && (
+      {campaign && campaign.expectedDeliverables?.length > 0 && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
           <Package className="w-4 h-4 text-primary" />
           <span className="line-clamp-1">
-            {campaign.expectedDeliverables.join(", ")}
+            {campaign && campaign.expectedDeliverables.join(", ")}
           </span>
         </div>
       )}
@@ -161,7 +161,7 @@ const CampaignCard = ({
           className="w-full"
           onClick={(e) => {
             e.stopPropagation(); // 🚨 THIS IS THE KEY
-            onActionClick(campaign.status, campaign._id);
+            onActionClick(campaign && campaign.status, campaign && campaign._id);
           }}
         >
           {isUpdating ? (
@@ -169,7 +169,7 @@ const CampaignCard = ({
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Processing...
             </>
-          ) : campaign.status === "PUBLISHED" ? (
+          ) : campaign && campaign.status === "PUBLISHED" ? (
             actionLabel.published
           ) : (
             actionLabel.draft
