@@ -285,7 +285,7 @@ const MyCampaignsPage = () => {
                 </div>
             )}
 
-            <div className="max-w-7xl mx-auto">
+            <div className="">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                     <div>

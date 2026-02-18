@@ -283,7 +283,7 @@ export default function ApplicationsReceived() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto">
+      <div className="">
 
         {applications.length > 0 && (
           <div className="mb-6 flex flex-wrap gap-4 items-end">

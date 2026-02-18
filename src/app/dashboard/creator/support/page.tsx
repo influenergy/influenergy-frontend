@@ -68,10 +68,10 @@ function Page() {
   };
 
   return (
-    <div className="p-6 mx-auto">
+    <div className="pt-[2%] px-[2%]">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-8">
-        <h1 className="text-2xl font-semibold mb-2">Support</h1>
+      <div className="flex items-center gap-3 mb-4">
+        <h1 className="text-xl font-semibold mb-2">Support</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-6">

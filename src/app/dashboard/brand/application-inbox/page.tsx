@@ -141,12 +141,12 @@ const MyCampaignsPage = () => {
 
 
     return (
-        <div className="pt-[2%] px-[2%] dark:bg-background">
+        <div className="pt-[2%] px-[2%]">
             <div className="">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-xl font-semibold mb-2">Collaboration Manager</h1>
+                        <h1 className="text-xl font-semibold mb-1">Collaboration Manager</h1>
                         <p className="text-muted-foreground text-md">
                             Review and manage creator applications
                         </p>

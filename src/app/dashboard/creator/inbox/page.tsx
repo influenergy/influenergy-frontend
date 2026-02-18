@@ -66,9 +66,9 @@ const Page = () => {
   }, [activeTab, queryClient]);
 
   return (
-    <>
-      <div className="p-5">
-        <h1 className="text-2xl font-semibold mb-2">My Applications</h1>
+    <div className="pt-[2%] px-[2%]">
+      <div className="">
+        <h1 className="text-xl font-semibold mb-2">My Applications</h1>
       </div>
       <AnimatePresence mode="wait">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col h-full dark:bg-foreground">
@@ -403,7 +403,7 @@ const Page = () => {
 
 
       </AnimatePresence>
-    </>
+    </div>
   );
 };
 

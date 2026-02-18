@@ -70,31 +70,35 @@ export default function DashboardPage() {
   } = userDetails.data;
 
   return (
-    <div className="relative p-2 px-5 flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4 pr-4 pt-5">
-        <h1 className="text-xl font-semibold mb-2">Dashboard</h1>
-        {userType === "brand" && <NewCampaignButton />}
-      </div>
+    <div className="pt-[2%] px-[2%]">
 
-      {userType === "creator" ? (
-        !isProfileCompleted || !profileIcon ? (
-          <NonVerifiedCreatorProfile
-            isProfileCompleted={isProfileCompleted}
-            profileIcon={profileIcon}
-            fullName={fullName}
-          />
+
+      <div className="relative flex flex-col h-full">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-semibold mb-2">Dashboard</h1>
+          {userType === "brand" && <NewCampaignButton />}
+        </div>
+
+        {userType === "creator" ? (
+          !isProfileCompleted || !profileIcon ? (
+            <NonVerifiedCreatorProfile
+              isProfileCompleted={isProfileCompleted}
+              profileIcon={profileIcon}
+              fullName={fullName}
+            />
+          ) : (
+            <CreatorWithCompleteProfile fullName={fullName} />
+          )
         ) : (
-          <CreatorWithCompleteProfile fullName={fullName} />
-        )
-      ) : (
-        <BrandDashboard fullName={fullName} />
-      )}
+          <BrandDashboard fullName={fullName} />
+        )}
 
-      <FeaturedModal
-        isOpen={showFeatured}
-        onClose={() => setShowFeatured(false)}
-        showBtn={false}
-      />
+        <FeaturedModal
+          isOpen={showFeatured}
+          onClose={() => setShowFeatured(false)}
+          showBtn={false}
+        />
+      </div>
     </div>
   );
 }

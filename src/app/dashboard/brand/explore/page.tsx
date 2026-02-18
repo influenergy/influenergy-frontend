@@ -321,21 +321,22 @@ export default function ExploreCreators() {
 
 
     return (
-        <div className="relative p-6 flex flex-col gap-4">
-            <div className="flex justify-between">
-                <h1 className="text-xl font-semibold mb-2">Explore Creators</h1>
-                <NewCampaignButton />
-            </div>
+        <div className="pt-[2%] px-[2%]">
+            <div className="relative flex flex-col gap-4">
+                <div className="flex justify-between">
+                    <h1 className="text-xl font-semibold mb-2">Explore Creators</h1>
+                    <NewCampaignButton />
+                </div>
 
-            <div className="relative w-1/2">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                    ref={searchInputRef}
-                    type="search"
-                    placeholder="Search by niche..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="
+                <div className="relative w-1/2">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <input
+                        ref={searchInputRef}
+                        type="search"
+                        placeholder="Search by niche..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="
   w-full pl-10 pr-4 py-2
   border border-primary
   rounded-md
@@ -343,49 +344,49 @@ export default function ExploreCreators() {
   focus:ring-0
   focus:border-primary/95
 "
-                />
-            </div>
+                    />
+                </div>
 
-            {/* Filter Options */}
-            <div className="my-4 space-y-3">
-                <div className="lg:flex gap-3 items-center">
-                    <div className="relative inline-flex items-center mb-2 lg:mb-0">
-                        <Button onClick={() => setIsOpen(true)}>
-                            <SlidersHorizontal className="w-4 h-4" />
-                            Filter
-                        </Button>
-                        {selectedFiltersCount > 0 && (
-                            <Badge
-                                variant="secondary"
-                                className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] leading-none"
-                            >
-                                {selectedFiltersCount}
-                            </Badge>
-                        )}
-                    </div>
+                {/* Filter Options */}
+                <div className="my-4 space-y-3">
+                    <div className="lg:flex gap-3 items-center">
+                        <div className="relative inline-flex items-center mb-2 lg:mb-0">
+                            <Button onClick={() => setIsOpen(true)}>
+                                <SlidersHorizontal className="w-4 h-4" />
+                                Filter
+                            </Button>
+                            {selectedFiltersCount > 0 && (
+                                <Badge
+                                    variant="secondary"
+                                    className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] leading-none"
+                                >
+                                    {selectedFiltersCount}
+                                </Badge>
+                            )}
+                        </div>
 
-                    <div className="flex gap-3 items-center pl-3 border-l-2">
-                        <p>Sort:</p>
-                        <div className="flex gap-3 md:space-x-0 md:space-y-0 items-center flex-wrap">
-                            <Button
-                                onClick={() => handleSort("recentlyCollaborated")}
-                                className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "recentlyCollaborated"
-                                    ? "border-blue-500 text-blue-500"
-                                    : "border-gray-300 text-gray-500"
-                                    }`}
-                            >
-                                Recently Collaborated
-                            </Button>
-                            <Button
-                                onClick={() => handleSort("favorites")}
-                                className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "favorites"
-                                    ? "border-blue-500 text-blue-500"
-                                    : "border-gray-300 text-gray-500"
-                                    }`}
-                            >
-                                Favorites
-                            </Button>
-                            {/* <Button
+                        <div className="flex gap-3 items-center pl-3 border-l-2">
+                            <p>Sort:</p>
+                            <div className="flex gap-3 md:space-x-0 md:space-y-0 items-center flex-wrap">
+                                <Button
+                                    onClick={() => handleSort("recentlyCollaborated")}
+                                    className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "recentlyCollaborated"
+                                        ? "border-blue-500 text-blue-500"
+                                        : "border-gray-300 text-gray-500"
+                                        }`}
+                                >
+                                    Recently Collaborated
+                                </Button>
+                                <Button
+                                    onClick={() => handleSort("favorites")}
+                                    className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "favorites"
+                                        ? "border-blue-500 text-blue-500"
+                                        : "border-gray-300 text-gray-500"
+                                        }`}
+                                >
+                                    Favorites
+                                </Button>
+                                {/* <Button
                                 onClick={() => handleSort("featured")}
                                 className={`bg-transparent border p-2 rounded-lg hover:bg-transparent hover:scale-105 ${filters.sort === "featured"
                                     ? "border-blue-500 text-blue-500"
@@ -394,173 +395,174 @@ export default function ExploreCreators() {
                             >
                                 Featured
                             </Button> */}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {isOpen && (
-                <>
-                    {/* Overlay to capture outside clicks */}
-                    <div
-                        className="fixed inset-0 bg-black/30 z-40"
-                        onClick={() => setIsOpen(false)}
-                    />
-                    <div className="absolute top-0 left-0 w-72 bg-white shadow-lg z-50 p-4 overflow-y-auto dark:text-black rounded-lg">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-semibold">Filter</h2>
-                            <button onClick={() => setIsOpen(false)}>
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
+                {isOpen && (
+                    <>
+                        {/* Overlay to capture outside clicks */}
+                        <div
+                            className="fixed inset-0 bg-black/30 z-40"
+                            onClick={() => setIsOpen(false)}
+                        />
+                        <div className="absolute top-0 left-0 w-72 bg-white shadow-lg z-50 p-4 overflow-y-auto dark:text-black rounded-lg">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-lg font-semibold">Filter</h2>
+                                <button onClick={() => setIsOpen(false)}>
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
 
-                        {/* Platforms */}
-                        <div className="mb-4">
-                            <h3 className="font-medium mb-2">Select Platform</h3>
-                            <div className="overflow-auto">
+                            {/* Platforms */}
+                            <div className="mb-4">
+                                <h3 className="font-medium mb-2">Select Platform</h3>
+                                <div className="overflow-auto">
 
-                                {Platforms.map((p) => (
+                                    {Platforms.map((p) => (
+                                        <label key={p} className="block">
+                                            <input
+                                                type="checkbox"
+                                                checked={platforms.includes(p)}
+                                                onChange={() => togglePlatform(p)}
+                                                className="mr-2"
+                                            />
+                                            {p}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Followers range */}
+                            <div className="mb-4">
+                                <h3 className="font-medium mb-2">Range of Followers</h3>
+                                {FollowerRanges.map((p) => (
                                     <label key={p} className="block">
                                         <input
                                             type="checkbox"
-                                            checked={platforms.includes(p)}
-                                            onChange={() => togglePlatform(p)}
+                                            checked={followers.includes(p)}
+                                            onChange={() => toggleFollowers(p)}
                                             className="mr-2"
                                         />
                                         {p}
                                     </label>
                                 ))}
                             </div>
-                        </div>
 
-                        {/* Followers range */}
-                        <div className="mb-4">
-                            <h3 className="font-medium mb-2">Range of Followers</h3>
-                            {FollowerRanges.map((p) => (
-                                <label key={p} className="block">
-                                    <input
-                                        type="checkbox"
-                                        checked={followers.includes(p)}
-                                        onChange={() => toggleFollowers(p)}
-                                        className="mr-2"
-                                    />
-                                    {p}
-                                </label>
-                            ))}
-                        </div>
+                            {/* Niches */}
+                            <div className="mb-4">
+                                <h3 className="font-medium mb-2">Select Niche</h3>
+                                <div className="h-40 overflow-auto">
 
-                        {/* Niches */}
-                        <div className="mb-4">
-                            <h3 className="font-medium mb-2">Select Niche</h3>
-                            <div className="h-40 overflow-auto">
+                                    {Niches.map((n) => (
+                                        <label key={n} className="block text-md">
+                                            <input
+                                                type="checkbox"
+                                                checked={niches.includes(n)}
+                                                onChange={() => toggleNiche(n)}
+                                                className="mr-2"
+                                            />
+                                            {n}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
 
-                                {Niches.map((n) => (
-                                    <label key={n} className="block text-md">
-                                        <input
-                                            type="checkbox"
-                                            checked={niches.includes(n)}
-                                            onChange={() => toggleNiche(n)}
-                                            className="mr-2"
-                                        />
-                                        {n}
-                                    </label>
-                                ))}
+                            {/* Actions */}
+                            <div className="flex justify-between">
+                                <button
+                                    onClick={clearFilters}
+                                    className="px-4 py-2 bg-gray-200 rounded-md"
+                                >
+                                    Clear Filter
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setFilters({
+                                            ...filters,
+                                            platform: platforms.join(","), // send comma-separated
+                                            niche: niches.join(","),
+                                            followers: followers.join("&"),
+                                        });
+                                        setIsOpen(false);
+                                        refetch();
+                                    }}
+                                    className="px-4 py-2 bg-purple-600 text-white rounded-md"
+                                >
+                                    Apply Filter
+                                </button>
                             </div>
                         </div>
+                    </>
+                )}
 
-                        {/* Actions */}
-                        <div className="flex justify-between">
-                            <button
-                                onClick={clearFilters}
-                                className="px-4 py-2 bg-gray-200 rounded-md"
-                            >
-                                Clear Filter
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setFilters({
-                                        ...filters,
-                                        platform: platforms.join(","), // send comma-separated
-                                        niche: niches.join(","),
-                                        followers: followers.join("&"),
-                                    });
-                                    setIsOpen(false);
-                                    refetch();
-                                }}
-                                className="px-4 py-2 bg-purple-600 text-white rounded-md"
-                            >
-                                Apply Filter
-                            </button>
-                        </div>
+                {isFetching && !isLoading && (
+                    <p className="text-sm text-muted-foreground">Updating results…</p>
+                )}
+
+
+                {/* Creator Grid */}
+                {isLoading ? (
+                    <SkeletonCard />
+                ) : !hasCreators ? (
+                    <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+                        <p className="text-lg font-semibold text-gray-700">
+                            No creators found
+                        </p>
+                        <p className="mt-2 max-w-md text-sm text-gray-500">
+                            Try adjusting your filters or removing some selections to see more creators.
+                        </p>
                     </div>
-                </>
-            )}
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {data?.pages.flatMap((page) =>
+                            page.creators
+                                ? page.creators.map((creator: Creator) => {
+                                    const isExpanded = expanded[creator._id] || false;
+                                    const badge = creator.badge;
+                                    const level = Levels.find((l) => l.key === badge);
+                                    const badgePrice = creator.badgePrice || "";
 
-            {isFetching && !isLoading && (
-                <p className="text-sm text-muted-foreground">Updating results…</p>
-            )}
+                                    return (
+                                        <ExploreCreatorCard
+                                            key={creator._id}
+                                            creator={creator}
+                                            isExpanded={isExpanded}
+                                            isActive={activeCardId === creator._id}
+                                            someActive={!!activeCardId}
+                                            level={level}
+                                            badgePrice={badgePrice}
+                                            //isToggling={isToggling}
+                                            onToggleBio={() => toggleBio(creator._id)}
+                                            onToggleFavorite={() =>
+                                                toggleFavorite({ creatorId: creator._id })
+                                            }
+                                            onInvite={() =>
+                                                handleSelecteCreatorForCampaign(creator._id)
+                                            }
+                                        />
+                                    );
+                                })
+                                : null
+                        )}
+                    </div>
+                )}
 
-
-            {/* Creator Grid */}
-            {isLoading ? (
-                <SkeletonCard />
-            ) : !hasCreators ? (
-                <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
-                    <p className="text-lg font-semibold text-gray-700">
-                        No creators found
-                    </p>
-                    <p className="mt-2 max-w-md text-sm text-gray-500">
-                        Try adjusting your filters or removing some selections to see more creators.
-                    </p>
+                {/* Load More */}
+                <div ref={loadMoreRef} className="h-10 flex justify-center items-center mt-4">
+                    {isFetchingNextPage && <p>Loading more...</p>}
                 </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {data?.pages.flatMap((page) =>
-                        page.creators
-                            ? page.creators.map((creator: Creator) => {
-                                const isExpanded = expanded[creator._id] || false;
-                                const badge = creator.badge;
-                                const level = Levels.find((l) => l.key === badge);
-                                const badgePrice = creator.badgePrice || "";
 
-                                return (
-                                    <ExploreCreatorCard
-                                        key={creator._id}
-                                        creator={creator}
-                                        isExpanded={isExpanded}
-                                        isActive={activeCardId === creator._id}
-                                        someActive={!!activeCardId}
-                                        level={level}
-                                        badgePrice={badgePrice}
-                                        //isToggling={isToggling}
-                                        onToggleBio={() => toggleBio(creator._id)}
-                                        onToggleFavorite={() =>
-                                            toggleFavorite({ creatorId: creator._id })
-                                        }
-                                        onInvite={() =>
-                                            handleSelecteCreatorForCampaign(creator._id)
-                                        }
-                                    />
-                                );
-                            })
-                            : null
-                    )}
-                </div>
-            )}
+                {inviteModal && selectedCreator && (
+                    <InviteCreatorModal
+                        creatorId={selectedCreator}
+                        onClose={() => setInviteModal(false)}
+                    />
 
-            {/* Load More */}
-            <div ref={loadMoreRef} className="h-10 flex justify-center items-center mt-4">
-                {isFetchingNextPage && <p>Loading more...</p>}
+                )}
+
             </div>
-
-            {inviteModal && selectedCreator && (
-                <InviteCreatorModal
-                    creatorId={selectedCreator}
-                    onClose={() => setInviteModal(false)}
-                />
-
-            )}
-
         </div>
     );
 }

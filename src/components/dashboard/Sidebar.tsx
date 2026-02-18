@@ -207,7 +207,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
 
         {/* Settings button */}
         <div className="text-center">
-          <nav className="grid items-start gap-1 md:gap-2">
+          <nav className="grid items-start gap-1 md:gap-1">
             {commonLinks.map((item: NavItem) => (
               <Link key={item.slug} href={item.href || "#"} onClick={onClose}>
                 <Button
@@ -230,7 +230,7 @@ export default function Sidebar({ type, className, onClose }: { type: string, cl
           <Button
             variant="ghost"
             className={cn(
-              "w-full justify-start gap-2 md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-color text-white"
+              "w-full justify-start gap-2 mt-[2%] md:gap-3 py-2 px-1 md:px-3 hover:text-primary transition-color text-white"
             )}
             onClick={() => { handleLogout(); onClose?.(); }}
           >

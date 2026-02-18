@@ -189,12 +189,12 @@ const MyCampaignsPage = () => {
     }
 
     return (
-        <div className="w-full h-full p-[2%] dark:bg-background">
-            <div className="max-w-7xl mx-auto">
+        <div className="w-full h-full pt-[2%] px-[2%] dark:bg-background">
+            <div className="">
                 {/* Header */}
                 <div className="mb-6">
-                    <h1 className="text-2xl font-semibold mb-2">
-                        Discover Campaigns
+                    <h1 className="text-xl font-semibold mb-2">
+                        Discover Campaigns 
                     </h1>
                     <p className="text-muted-foreground">
                         Browse and apply to campaigns that match your niche

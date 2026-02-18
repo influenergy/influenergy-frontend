@@ -238,7 +238,7 @@ const ExploreCreatorCard = ({
                 )}
 
                 {/* BIO */}
-                {creator.profile?.aboutYourself && (
+                {/* {creator.profile?.aboutYourself && (
                     <div>
                         <p className={`text-sm text-gray-600 ${isExpanded ? "" : "line-clamp-2"}`}>
                             {creator.profile.aboutYourself}
@@ -253,7 +253,7 @@ const ExploreCreatorCard = ({
                             </button>
                         )}
                     </div>
-                )}
+                )} */}
             </div>
 
             {/* ACTION */}

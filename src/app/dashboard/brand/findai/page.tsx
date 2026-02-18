@@ -69,7 +69,7 @@ export default function Page() {
 
   return (
     <AnimatePresence mode="sync">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="dark:bg-background h-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="dark:bg-background h-full w-full">
         {/* HEADER — UNCHANGED */}
         <div className="overflow-visible sticky top-0 z-10 bg-background pb-2">
           <TabsList className="w-full !overflow-visible relative">
