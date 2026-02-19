@@ -94,11 +94,11 @@ export default function HeroSection() {
             </p>
 
             <h1 className="text-[clamp(2rem,2vw,1.5rem)] font-bold leading-tight font-poppins md:max-w-[190vw] text-center lg:text-start mx-auto text-[#352547]">
-              AI-Powered Marketplace for High Performance <span className="text-primary text-4xl">UGC Campaigns</span>
+              AI-Powered Marketplace Connect Brands and Creators for High-Performing <span className="text-primary text-4xl">UGC Campaigns</span>
             </h1>
 
             <p className="mt-3 md:mt-6 lg:mt-4 text-sm md:text-base lg:text-lg font-poppins text-center lg:text-start text-[#352547]">
-              Brands post campaigns. Creators apply or get matched instantly with AI. Clear briefs, fair pricing, fast payouts all in one platform.
+              Brands launch campaigns. Creators get matches instantly with AI. Clear briefs, transparent pricing and fast payouts - all in one seamless platform
             </p>
 
             <motion.div
@@ -112,7 +112,7 @@ export default function HeroSection() {
                 onClick={() => router.push("/get-started")}
               >
                 Start Free Campaign
-                <MoveRight/>
+                <MoveRight />
               </Button>
 
               <Button className="mt-[4%] text-primary hover:bg-primary/70 bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg" onClick={handleClick}>

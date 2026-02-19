@@ -22,7 +22,7 @@ const WhyWeDoIt = lazy(() => import("@/components/home/WhyWeDoIt"));
 const Testimonials = lazy(() => import("@/components/home/Testimonials"));
 const Stats = lazy(() => import("@/components/home/Stats"));
 const GetInTouch = lazy(() => import("@/components/home/GetInTouch"));
-const NewsLetter = lazy(() => import("@/components/home/NewsLetter"));
+// const NewsLetter = lazy(() => import("@/components/home/NewsLetter"));
 const Footer = lazy(() => import("@/components/home/Footer"));
 
 function SearchParamsComponent() {
@@ -94,7 +94,7 @@ export default function Home() {
           <div id="get-in-touch">
             <GetInTouch />
           </div>
-          <NewsLetter />
+          {/* <NewsLetter /> */}
         </Suspense>
 
         <Suspense fallback={<Loader />}>

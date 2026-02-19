@@ -30,7 +30,7 @@ export default function WhatWeDo() {
 
   return (
     <div className="bg-white w-full">
-      <div className="flex flex-col lg:flex-row w-full px-6 lg:px-20 xl:px-24 py-6 md:py-10 lg:py-16 gap-8 lg:gap-12 items-center max-w-[1440px] mx-auto">
+      <div className="flex flex-col lg:flex-row w-full px-6 lg:px-20 xl:px-24 gap-8 lg:gap-12 items-center  mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -44,7 +44,7 @@ export default function WhatWeDo() {
               What We Do
             </h1>
             <p className="text-gray-600 text-sm md:text-base max-w-3xl text-center">
-              We provide a comprehensive platform that connects creators with brands, streamlines collaboration, and drives measurable results.
+              We provide a comprehensive platform that connects creators with brands, streamlines collaboration, and drives results.
             </p>
           </div>
 
@@ -57,18 +57,20 @@ export default function WhatWeDo() {
                 transition={{ duration: 0.5, delay: card.delay }}
                 viewport={{ once: true }}
               >
-                <Card className="p-4 bg-white flex flex-col gap-4 h-full transform transition-all duration-300 hover:shadow-lg">
-                  <div className="h-14 w-14 sm:h-16 sm:w-16 bg-white rounded-full flex items-center justify-center shadow-sm">
-                    <Image
-                      src={card.icon}
-                      width={35}
-                      height={35}
-                      alt={card.title}
-                    />
+                <Card className="p-6   bg-white flex flex-col gap-4 h-full transform transition-all duration-300 hover:shadow-lg">
+                  <div className="bg-white rounded-full flex items-center shadow-sm gap-4">
+                    <div className="bg-[#F3E8FF] p-2 rounded-md">
+                      <Image
+                        src={card.icon}
+                        width={35}
+                        height={35}
+                        alt={card.title}
+                      />
+                    </div>
+                    <h2 className="text-lg font-semibold">{card.title}</h2>
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold mt-4 md:mt-5">{card.title}</h2>
-                    <p className="text-gray-600 text-xs lg:text-sm mt-2 ">
+                    <p className="text-gray-600 text-xs lg:text-sm mt-1">
                       {card.description}
                     </p>
                   </div>

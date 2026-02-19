@@ -32,7 +32,7 @@ export default function Testimonials() {
 
   return (
     <>
-      <section className="max-w-[1440px] mx-auto px-6 py-16">
+      <section className="mx-auto px-6 py-14">
         <div className="text-start mb-12">
           <h2 className="text-4xl font-bold text-[#352547]">
             What Our Creators are Saying about Influenergy          </h2>

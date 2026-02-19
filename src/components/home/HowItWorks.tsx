@@ -20,8 +20,10 @@ export default function HowItWorks() {
     show: { opacity: 1, y: 0 },
   };
 
+  // max-w-[1440px]
+
   return (
-    <div className="bg-white w-full max-w-[1440px] mx-auto px-6 g:px-20 xl:px-24 py-6 md:py-6">
+    <div className="bg-white w-full mx-auto px-6 lg:px-20 xl:px-24 py-6 md:py-16">
       <div className="mb-8 flex flex-col justify-center items-center text-center gap-3">
         <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#352547]">
           How It Works
@@ -52,7 +54,7 @@ export default function HowItWorks() {
               className="relative w-full rounded-2xl p-4 md:p-5 bg-white transform transition-all duration-300 hover:shadow-lg border border-gray-300"
               variants={item}
             >
-              <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 px-1 py-0.5 text-center">01</p>
+              <p className="absolute -right-3 -top-3 bg-primary rounded-full text-white w-7 py-0.5 text-center">01</p>
               <div className="h-14 md:h-16 w-14 md:w-16 flex justify-center items-center bg-white rounded-lg shadow-sm -rotate-6">
                 <Image
                   src="https://d20cf3kfv1a9jn.cloudfront.net/images/user.png"
@@ -63,7 +65,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Create Your Profile
+                Launch Your Camapign
               </h2>
               <p className="text-gray-600 mt-2 text-sm">
                 Sign up and build your creator profile with your content style, audience demographics, and areas of expertise.
@@ -86,7 +88,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Discover Campaigns
+                AI Matchmaking
               </h2>
               <p className="text-sm mt-2 text-gray-600">
                 Browse through curated campaigns from top brands or get personalized recommendations based on your profile.
@@ -109,7 +111,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Connect & Collaborate
+                Collaborate & Deliver
               </h2>
               <p className="text-sm mt-2 text-gray-600">
                 Apply to campaigns, negotiate terms, and communicate directly with brands through our secure platform.
@@ -132,7 +134,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Create & Get Paid
+                Approve & Get Paid
               </h2>
               <p className="text-sm mt-2 text-gray-600">
                 Deliver your content, track performance, and receive secure payments once the work is approved.

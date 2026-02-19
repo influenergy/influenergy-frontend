@@ -26,7 +26,7 @@ export default function Stats() {
 
     return (
         <motion.div
-            className="w-full py-6 sm:py-8 md:py-10 px-2 sm:px-4 bg-[#f7f6ff] relative"
+            className="w-full py-6 sm:py-8 md:py-16 px-2 sm:px-4 bg-[#f7f6ff]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.7 }}

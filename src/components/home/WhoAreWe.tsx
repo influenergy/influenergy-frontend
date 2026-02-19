@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function WhoAreWe() {
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-between w-full px-6 lg:px-24 py-10 gap-10 mt-48 lg:mt-16 items-center max-w-[1440px] mx-auto font-poppins">
+    <div className="grid grid-cols-1 md:grid-cols-2 justify-between w-full px-6 lg:px-24 py-10 gap-10 mt-48 lg:mt-[3%] items-center mx-auto font-poppins">
       {/* Video Section */}
       <motion.div
         className="flex justify-start h-full relative"

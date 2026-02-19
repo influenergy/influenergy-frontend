@@ -84,7 +84,7 @@ export default function HearFromInfluencer() {
 
   return (
     <motion.div
-      className="w-full py-14 px-2 sm:px-4 bg-white relative"
+      className="w-full px-2 sm:px-4 bg-white relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}

@@ -28,13 +28,13 @@ const GetInTouch = () => {
 
   return (
     <motion.div
-      className="bg-[#F4F3FF] w-full py-8 px-6 md:px-8"
+      className="bg-[#F4F3FF] w-full px-6 md:px-8"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
       viewport={{ once: true, amount: 0.2 }}
     >
-      <div className="max-w-7xl mx-auto bg-white p-5 border border-gray-300 rounded-xl shadow-md">
+      <div className="mx-auto bg-white p-5 border border-gray-300 rounded-xl shadow-md">
         {/* Header Section */}
         <motion.div
           className="mb-12 md:mb-10 text-center md:text-left"
