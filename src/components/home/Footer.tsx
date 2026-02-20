@@ -219,15 +219,14 @@ export default function Footer() {
         >
           {/* Gradient Border */}
           <div
-            className="absolute top-0 left-0 w-full h-[0.2px]
+            className="absolute top-0 left-0 w-full h-[1px]
   bg-gradient-to-r
   from-[#FCBB4E4D]
   via-[#7544DB]
   to-[#FBED654D]"
           />
 
-
-          <p className="text-gray-400 text-md">
+          <p className="text-gray-400 text-sm text-center">
             © All Rights Reserved 2026. Influenergy LLC.
           </p>
         </motion.div>

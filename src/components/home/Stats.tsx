@@ -26,7 +26,7 @@ export default function Stats() {
 
     return (
         <motion.div
-            className="w-full py-6 sm:py-8 md:py-16 px-2 sm:px-4 bg-[#f7f6ff]"
+            className="w-full pt-6 sm:pt-8 md:pt-14 px-2 sm:px-4 bg-[#f7f6ff]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.7 }}
@@ -42,7 +42,7 @@ export default function Stats() {
             >
                 Brand success, powered by Influenergy
             </motion.h1>
-            <motion.h3
+            {/* <motion.h3
                 className="text-gray-600 text-sm md:text-base leading-relaxed text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -50,10 +50,10 @@ export default function Stats() {
                 viewport={{ once: true }}
             >
                 See how brands use Influenergy to boost ROAS, cut CPAs, and scale faster with creator video ads.
-            </motion.h3>
+            </motion.h3> */}
 
 
-            <div className="w-full py-12 px-4 text-center grid grid-cols-2 sm:grid-cols-4 gap-6  max-w-6xl mx-auto">
+            <div className="w-full py-6 px-4 text-center grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-6xl mx-auto">
                 <div className="flex flex-col items-center">
                     <div className="flex flex-col items-start">
                         <h3 className="text-3xl md:text-4xl lg:text-6xl font-bold text-primary">{stats?.usStats.usPercentage}%</h3>

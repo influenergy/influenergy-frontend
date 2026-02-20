@@ -84,7 +84,7 @@ export default function HearFromInfluencer() {
 
   return (
     <motion.div
-      className="w-full px-2 sm:px-4 bg-white relative"
+      className="w-full bg-white relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.7 }}
@@ -104,7 +104,7 @@ export default function HearFromInfluencer() {
         </div>
       </motion.h1>
 
-      <div className="relative flex justify-center items-center overflow-hidden mx-32">
+      <div className="relative flex justify-center items-center overflow-hidden">
         <div className="flex items-center justify-center gap-1 md:gap-3">
           {creators.map((creator, index) => {
             const styles = getCardStyle(index);

@@ -89,16 +89,16 @@ export default function HeroSection() {
             transition={{ duration: 0.7 }}
           >
 
-            <p className="font-poppins font-semibold text-center text-xs lg:text-start mx-auto lg:mx-0 text-primary bg-[#F3E8FF] p-2 rounded-full sm">
+            <p className="font-poppins font-semibold text-center text-sm lg:text-md lg:text-start lg:mx-0 text-primary bg-[#F3E8FF] lg:px-3 lg:py-2 rounded-full sm">
               🚀 Welcome to the Future of Influencer Marketing
             </p>
 
-            <h1 className="text-[clamp(2rem,2vw,1.5rem)] font-bold leading-tight font-poppins md:max-w-[190vw] text-center lg:text-start mx-auto text-[#352547]">
-              AI-Powered Marketplace Connect Brands and Creators for High-Performing <span className="text-primary text-4xl">UGC Campaigns</span>
+            <h1 className="text-3xl md:text-[clamp(2.7rem,2vw,2rem)] font-bold leading-tight font-poppins md:max-w-[190vw] text-center lg:text-start mx-auto text-[#352547]">
+              Your AI-Powered Marketplace for High Performance <span className="block text-primary text-3xl md:text-5xl">UGC Campaigns</span>
             </h1>
 
-            <p className="mt-3 md:mt-6 lg:mt-4 text-sm md:text-base lg:text-lg font-poppins text-center lg:text-start text-[#352547]">
-              Brands launch campaigns. Creators get matches instantly with AI. Clear briefs, transparent pricing and fast payouts - all in one seamless platform
+            <p className="mt-3 md:mt-6 lg:mt-2 text-sm md:text-base lg:text-lg font-poppins text-center lg:text-start text-[#352547]">
+              Whether you're a brand launching your next UGC campaign or a creator looking for paid collaborations, Influenergy connects you instantly with the right match powered by AI.
             </p>
 
             <motion.div
@@ -108,38 +108,23 @@ export default function HeroSection() {
               className="text-center flex flex-col items-center gap-2 justify-center md:flex md:flex-row md:gap-10 lg:justify-start"
             >
               <Button
-                className="mt-[4%] bg-primary hover:bg-primary/70 text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg border-primary border-2"
+                className="mt-[4%] text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm p-5 shadow-primary shadow-md" size="sm"
                 onClick={() => router.push("/get-started")}
               >
                 Start Free Campaign
                 <MoveRight />
               </Button>
 
-              <Button className="mt-[4%] text-primary hover:bg-primary/70 bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg" onClick={handleClick}>
+              <Button className="mt-[4%] text-primary hover:bg-primary bg-transparent border-primary border-2 hover:text-white rounded-xl lg:px-5 lg:py-5 lg:text-lg" onClick={handleClick}>
                 Get a Demo
               </Button>
 
             </motion.div>
           </motion.div>
-
-          {/* Companies Bar - Repositioned for better centering */}
-          <div className="absolute -bottom-14 left-0 right-0 flex justify-center items-center lg:items-start lg:justify-start w-full md:bottom-1">
-            <motion.div
-              className="relative -bottom-8 md:-bottom-32 lg:bottom-1 px-3 md:px-6 py-2 w-full lg:w-11/12  flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20 mx-auto"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-            >
-              {/* Replace static logos with Marquee component */}
-              <div className="w-full overflow-hidden">
-                <MarqueeLogos images={imageList} />
-              </div>
-            </motion.div>
-          </div>
         </div>
         <div className="hidden lg:block relative w-full mx-auto overflow-hidden">
           {/* Gradient background fading from white to transparent */}
-          <div className="absolute inset-0 z-50 bg-fade-gradient pointer-events-none h-[100%] " />
+          <div className="absolute inset-0 z-40 bg-fade-gradient pointer-events-none h-[100%] " />
 
           {/* <Image src="/hero.jpg" alt="Hero Image" width={600} height={600} className="absolute inset-0 object-cover w-full h-full rounded-lg z-0" /> */}
           <div className="flex w-full max-w-2xl gap-4 lg:h-[630px]">
@@ -179,12 +164,26 @@ export default function HeroSection() {
             </div>
 
             {/* Side Thumbnails */}
-
           </div>
 
         </div>
-      </div>
 
+
+      </div>
+      {/* Companies Bar - Repositioned for better centering */}
+      <div className="absolute -bottom-[50%] left-0 right-0 flex justify-center items-center lg:items-start lg:justify-start w-full md:-bottom-[45%] lg:-bottom-[35%]">
+        <motion.div
+          className="relative -bottom-8 md:-bottom-32 lg:bottom-1 px-3 md:px-6 py-2 w-full flex flex-col sm:flex-row items-center justify-between gap-4 rounded-full shadow-xl bg-white z-20"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          {/* Replace static logos with Marquee component */}
+          <div className="w-full overflow-hidden">
+            <MarqueeLogos images={imageList} />
+          </div>
+        </motion.div>
+      </div>
 
     </div>
   );

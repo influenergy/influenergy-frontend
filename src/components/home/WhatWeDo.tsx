@@ -7,30 +7,30 @@ export default function WhatWeDo() {
   const cardData = [
     {
       icon: "https://d20cf3kfv1a9jn.cloudfront.net/images/sparkle.png",
-      title: "Brand Discovery",
+      title: "AI-Powered Matching",
       description:
-        "Connect with cutting-edge brands that align with your values, audience, and content style. Our smart matching algorithm finds the perfect partnerships.",
+        "Enter your campaign goals and budget, and our AI instantly matches you with high-fit creators based on audience alignment, past performance, and fair pricing no manual vetting or cold outreach required.",
       delay: 0.2,
     },
     {
       icon: "https://d20cf3kfv1a9jn.cloudfront.net/images/bulb.png",
-      title: "Seamless Collaboration",
+      title: "Paid Campaign With Creators",
       description:
-        "Manage campaigns, communications, and deliverables all in one place. Streamlined workflows make collaboration effortless and productive.",
+        "Launch with structured briefs, defined deliverables, and transparent pricing upfront so both brands and creators stay aligned, reduce revisions, and execute faster as quick as three days.",
       delay: 0.4,
     },
     {
       icon: "https://d20cf3kfv1a9jn.cloudfront.net/images/payment.png",
-      title: "Create Quick Campaigns",
+      title: "Streamlined Contracts & Payouts",
       description:
-        "Track your performance with detailed analytics and insights. Grow your influence with data-driven recommendations and campaign optimization.",
+        "Built-in contracts and payment workflows eliminate Net-30 and Net-60 delays, helping creators get paid faster while brands operate with clear scope and smoother transactions.",
       delay: 0.6,
     },
   ];
 
   return (
-    <div className="bg-white w-full">
-      <div className="flex flex-col lg:flex-row w-full px-6 lg:px-20 xl:px-24 gap-8 lg:gap-12 items-center  mx-auto">
+    <div className="bg-white w-full mt-[10%] lg:mt-[5%]">
+      <div className="flex flex-col lg:flex-row w-full px-6 lg:px-20 xl:px-24 gap-8 lg:gap-12 items-center mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -57,20 +57,23 @@ export default function WhatWeDo() {
                 transition={{ duration: 0.5, delay: card.delay }}
                 viewport={{ once: true }}
               >
-                <Card className="p-6   bg-white flex flex-col gap-4 h-full transform transition-all duration-300 hover:shadow-lg">
-                  <div className="bg-white rounded-full flex items-center shadow-sm gap-4">
-                    <div className="bg-[#F3E8FF] p-2 rounded-md">
+                <Card className="p-5 bg-white flex flex-col gap-4 h-full transform transition-all duration-300 hover:shadow-lg border border-gray-300">
+                  <div className="bg-white rounded-full flex flex-col lg:flex-row shadow-sm gap-4 items-center">
+                    <div className="w-14 h-14 flex items-center justify-center bg-[#F3E8FF] rounded-lg">
                       <Image
                         src={card.icon}
-                        width={35}
-                        height={35}
+                        width={32}
+                        height={32}
                         alt={card.title}
                       />
                     </div>
-                    <h2 className="text-lg font-semibold">{card.title}</h2>
+
+                    <h2 className="text-lg font-bold mt-4 md:mt-5 lg:mt-0">
+                      {card.title}
+                    </h2>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-xs lg:text-sm mt-1">
+                    <p className="text-gray-600 mt-2 text-sm">
                       {card.description}
                     </p>
                   </div>

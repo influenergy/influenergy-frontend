@@ -45,7 +45,7 @@ function SearchParamsComponent() {
 
 export default function Home() {
   return (
-    <section className="w-full min-h-screen flex flex-col items-center overflow-hidden">
+    <section className="w-full min-h-screen flex flex-col items-center">
       {/* <Banner /> */}
       {/* <div className="w-full max-w-[1920px] mx-auto"> */}
       <Header />

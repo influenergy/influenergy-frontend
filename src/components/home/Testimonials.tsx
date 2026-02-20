@@ -33,11 +33,11 @@ export default function Testimonials() {
   return (
     <>
       <section className="mx-auto px-6 py-14">
-        <div className="text-start mb-12">
-          <h2 className="text-4xl font-bold text-[#352547]">
-            What Our Creators are Saying about Influenergy          </h2>
-          <p className="text-gray-600 mt-3">
-            From campaign discovery to successful collaborations — hear it from creators.
+        <div className="text-start mb-[10%] lg:mb-[2%]">
+          <h2 className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#352547]">
+            What Our Creators are Saying about Influenergy</h2>
+          <p className="text-gray-600 text-sm md:text-base leading-relaxed md:text-start mt-[5%] lg:mt-[1%]">
+            From campaign discovery to successful collaborations hear it from creators.
           </p>
         </div>
 

@@ -119,7 +119,6 @@ const MyCampaignsPage = () => {
         },
 
         getNextPageParam: (lastPage) => lastPage.nextPage,
-        staleTime: 1000 * 60 * 2,
     });
 
 

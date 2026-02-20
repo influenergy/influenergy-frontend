@@ -60,10 +60,9 @@ export default function Header() {
   };
 
   return (
-    <header className="flex flex-wrap justify-between items-center w-full h-auto py-4 px-6 sticky top-0 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-gray-100 z-50">
-      {/* Logo */}
+    <header className="flex flex-wrap justify-between items-center w-full py-4 px-6 sticky top-0 bg-[#F3E8FF]/50 backdrop-blur-xl border-b border-gray-100 z-50">
       <Link href="/" className="inline-flex items-center">
-        <Image src="/images/logo.svg" alt="Influenergy" width={180} height={180} className="w-28 h-auto lg:w-36" />
+        <Image src="/images/logo.svg" alt="Influenergy" width={180} height={180} className="w-28 h-auto lg:w-40 ml-[7%]" />
       </Link>
 
       {/* Mobile menu button */}
@@ -95,7 +94,7 @@ export default function Header() {
               >
                 Creator
               </Button>
-            
+
             </div>
           )}
         </div>
