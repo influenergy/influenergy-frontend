@@ -29,9 +29,9 @@ export default function HeroSection() {
 
   const videos = [
     "https://d20cf3kfv1a9jn.cloudfront.net/videos/video1.mp4",
-    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video2.mov",
-    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video3.mov",
-    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video4.mov",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video2.mp4",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video3.mp4",
+    "https://d20cf3kfv1a9jn.cloudfront.net/videos/video4.mp4",
   ];
 
   const [mainIndex, setMainIndex] = useState(0);
