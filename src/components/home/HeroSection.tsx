@@ -37,11 +37,11 @@ export default function HeroSection() {
   const [mainIndex, setMainIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  //Auto rotate main video every 8 seconds
+  //Auto rotate main video every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setMainIndex((prev) => (prev + 1) % videos.length);
-    }, 8000);
+    }, 30000);
     return () => clearInterval(interval);
   }, [videos.length]);
 
