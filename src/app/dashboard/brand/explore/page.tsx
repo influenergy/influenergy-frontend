@@ -259,18 +259,21 @@ export default function ExploreCreators() {
         if (!hasNextPage) return;
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting) {
+                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
                     fetchNextPage();
                 }
             },
-            { threshold: 1 }
+            {
+                threshold: 0,
+                rootMargin: "0px 0px 200px 0px"  // triggers 200px before the element enters view
+            }
         );
         const node = loadMoreRef.current;
         if (node) observer.observe(node);
         return () => {
             if (node) observer.unobserve(node);
         };
-    }, [fetchNextPage, hasNextPage]);
+    }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
 
     useEffect(() => {
