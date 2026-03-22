@@ -65,7 +65,7 @@ export default function HowItWorks() {
                 />
               </div>
               <h2 className="text-lg font-bold mt-4 md:mt-5">
-                Launch Your Camapign
+                Launch Your Campaign
               </h2>
               <p className="text-gray-600 mt-2 text-sm">
                 Sign up and build your creator profile with your content style, audience demographics, and areas of expertise.

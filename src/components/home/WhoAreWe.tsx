@@ -43,7 +43,7 @@ export default function WhoAreWe() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Button className="text-white bg-primary hover:bg-primary/90 border border-primary rounded-xl flex items-center text-sm p-5 shadow-primary shadow-md" size="sm">
-              <Link href="/get-started">Start a UGC Camapaign</Link>
+              <Link href="/get-started">Start a UGC Campaign </Link>
             </Button>
           </motion.div>
         </div>
